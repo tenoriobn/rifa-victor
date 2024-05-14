@@ -1,0 +1,27 @@
+@import url("./icons.css");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  body {
+    @apply bg-tertiary;
+  }
+
+  .normal-transition {
+    @apply transition-all duration-200;
+  }
+}
+
+:root {
+  --header-height: 5.5rem;
+}
+
+.header-height {
+  height: var(--header-height);
+}
+
+.min-content-height {
+  min-height: calc(100vh - var(--header-height));
+}
