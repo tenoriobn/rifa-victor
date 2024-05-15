@@ -17,7 +17,7 @@ export default function Sidebar(props) {
       <div className="bg-blue-950 border-customTransparent border-r pt-8 min-h-screen">
         <div>
           <div className="pr-3 pl-3 pb-10 flex items-center justify-between lg:justify-center">
-            <Link to="/" className="w-fit block cursor-pointer">
+            <Link to="/rifas" className="w-fit block cursor-pointer">
               <img
                 src={logo2}
                 alt="Sulkey Logo"
