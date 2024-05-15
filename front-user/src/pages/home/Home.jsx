@@ -7,6 +7,7 @@ import Payment from "./components/Payment";
 import { sendRequest } from "../../util/util";
 import { useState, useEffect } from "react";
 import HomeFooter from "./components/HomeFooter";
+import Links from "./components/Links";
 
 export default function Home() {
   const [formData, setFormData] = useState(() => {
@@ -95,6 +96,8 @@ export default function Home() {
         closePaymentContainer={() => closePaymentContainer(setPaymentData)}
         rifaTitle={formData.data.title}
       />
+
+      <Links />
 
       <HomeFooter
         openPaymentContainer={() =>
