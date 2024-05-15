@@ -679,6 +679,22 @@ async function handleRequest(formData, setFormData, setIsLoading, postId) {
     "fourthPacoteDiscount",
     formData.data.fourthPacoteDiscount
   );
+  formDataToSend.append(
+    "fifthPacoteNumbers",
+    formData.data.fifthPacoteNumbers
+  );
+  formDataToSend.append(
+    "fifthPacoteDiscount",
+    formData.data.fifthPacoteDiscount
+  );
+  formDataToSend.append(
+    "sixthPacoteNumbers",
+    formData.data.sixthPacoteNumbers
+  );
+  formDataToSend.append(
+    "sixthPacoteDiscount",
+    formData.data.sixthPacoteDiscount
+  );
 
   if (formData.data.thumbnail) {
     if (formData.data.thumbnail.notImage) {

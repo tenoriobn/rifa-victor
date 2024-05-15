@@ -10,6 +10,7 @@ use App\Http\Resources\V1\RifasResource;
 use App\Http\Resources\V1\RifasCollection;
 use App\Http\Requests\V1\PaymentRequest;
 use \Exception;
+use Illuminate\Support\Facades\Log;
 
 class RifasController extends Controller
 {
@@ -57,7 +58,7 @@ class RifasController extends Controller
             $relativePath = "assets/images/post-images/" . $uniqueFileName;
 
             $thumbnailUrl = asset($relativePath);
-
+            Log::info($request);
             $newRifaData = Rifas::create([
                 "title" =>  strip_tags($request->get("title")),
                 "description" => $request->get("description"),
@@ -158,10 +159,6 @@ class RifasController extends Controller
                 "fifth_pacote_discount" => $request->get("fifthPacoteDiscount"),
                 "sixth_pacote_numbers" => $request->get("sixthPacoteNumbers"),
                 "sixth_pacote_discount" => $request->get("sixthPacoteDiscount"),
-                "seventh_pacote_numbers" => $request->get("seventhPacoteNumbers"),
-                "seventh_pacote_discount" => $request->get("seventhPacoteDiscount"),
-                "eighth_pacote_numbers" => $request->get("eighthPacoteNumbers"),
-                "eighth_pacote_discount" => $request->get("eighthPacoteDiscount"),
                 "thumbnail" => $thumbnailUrl ?? $rifaData->thumbnail,
                 "rifa_numbers" => $request->get("rifaNumbers"),
             ]);

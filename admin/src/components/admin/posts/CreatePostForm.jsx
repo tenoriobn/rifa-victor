@@ -22,6 +22,10 @@ export default function CreatePostForm() {
         thirdPacoteDiscount: 0,
         fourthPacoteNumbers: "",
         fourthPacoteDiscount: 0,
+        fifthPacoteNumbers: "",
+        fifthPacoteDiscount: 0,
+        sixthPacoteNumbers: "",
+        sixthPacoteDiscount: 0,
         rifaNumbers: "",
       },
       status: {
@@ -80,6 +84,22 @@ export default function CreatePostForm() {
             msg: "Numbers Pricing Error",
           },
           fourthPacoteDiscount: {
+            error: false,
+            msg: "Numbers Pricing Error",
+          },
+          fifthPacoteNumbers: {
+            error: false,
+            msg: "Numbers Pricing Error",
+          },
+          fifthPacoteDiscount: {
+            error: false,
+            msg: "Numbers Pricing Error",
+          },
+          sixthPacoteNumbers: {
+            error: false,
+            msg: "Numbers Pricing Error",
+          },
+          sixthPacoteDiscount: {
             error: false,
             msg: "Numbers Pricing Error",
           },
@@ -362,6 +382,78 @@ export default function CreatePostForm() {
               )}
             </div>
           </div>
+
+          <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2">
+              <input
+                placeholder="Quantidade de Números"
+                type="text"
+                name="fifthPacoteNumbers"
+                onChange={(event) => handleOnChange(event.target, setFormData)}
+                value={formData.data.fifthPacoteNumbers}
+                className="p-2 text-tertiary font-normal text-base border border-customTransparent rounded-lg"
+              />
+
+              {formData.status.errors.fifthPacoteNumbers.error && (
+                <p className="text-base font-medium text-red-500">
+                  {formData.status.errors.fifthPacoteNumbers.msg}
+                </p>
+              )}
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <input
+                placeholder="Desconto %"
+                type="number"
+                name="fifthPacoteDiscount"
+                onChange={(event) => handleOnChange(event.target, setFormData)}
+                value={formData.data.fifthPacoteDiscount}
+                className="p-2 text-tertiary font-normal text-base border border-customTransparent rounded-lg"
+              />
+
+              {formData.status.errors.fifthPacoteDiscount.error && (
+                <p className="text-base font-medium text-red-500">
+                  {formData.status.errors.fifthPacoteDiscount.msg}
+                </p>
+              )}
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2">
+              <input
+                placeholder="Quantidade de Números"
+                type="text"
+                name="sixthPacoteNumbers"
+                onChange={(event) => handleOnChange(event.target, setFormData)}
+                value={formData.data.sixthPacoteNumbers}
+                className="p-2 text-tertiary font-normal text-base border border-customTransparent rounded-lg"
+              />
+
+              {formData.status.errors.sixthPacoteNumbers.error && (
+                <p className="text-base font-medium text-red-500">
+                  {formData.status.errors.sixthPacoteNumbers.msg}
+                </p>
+              )}
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <input
+                placeholder="Desconto %"
+                type="number"
+                name="sixthPacoteDiscount"
+                onChange={(event) => handleOnChange(event.target, setFormData)}
+                value={formData.data.sixthPacoteDiscount}
+                className="p-2 text-tertiary font-normal text-base border border-customTransparent rounded-lg"
+              />
+
+              {formData.status.errors.sixthPacoteDiscount.error && (
+                <p className="text-base font-medium text-red-500">
+                  {formData.status.errors.sixthPacoteDiscount.msg}
+                </p>
+              )}
+            </div>
+          </div>
         </div>
       </div>
 
@@ -488,6 +580,22 @@ async function handleRequest(formData, setFormData, setIsLoading) {
   formDataToSend.append(
     "fourthPacoteDiscount",
     formData.data.fourthPacoteDiscount
+  );
+  formDataToSend.append(
+    "fifthPacoteNumbers",
+    formData.data.fifthPacoteNumbers
+  );
+  formDataToSend.append(
+    "fifthPacoteDiscount",
+    formData.data.fifthPacoteDiscount
+  );
+  formDataToSend.append(
+    "sixthPacoteNumbers",
+    formData.data.sixthPacoteNumbers
+  );
+  formDataToSend.append(
+    "sixthPacoteDiscount",
+    formData.data.sixthPacoteDiscount
   );
 
   if (formData.data.thumbnail) {
