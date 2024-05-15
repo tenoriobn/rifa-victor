@@ -136,7 +136,7 @@ async function handleRequest(formData, setFormData, setIsLoading, navigate) {
     localStorage.setItem("adminUser", JSON.stringify(response.data.adminUser));
     localStorage.setItem("adminToken", response.data.token);
 
-    navigate("/");
+    navigate("/rifas");
   } catch (error) {
     window.alert(
       `Houve um erro no servidor, por favor, tente novamente mais tarde. Erro: ${error}`
