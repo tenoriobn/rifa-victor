@@ -4,7 +4,7 @@ import { Link, NavLink } from "react-router-dom";
 import Footer from "./Footer";
 
 export default function Header() {
-  const [menuIsActive, setMenuIsActive] = useState(() => false);
+  const [menuIsActive, setMenuIsActive] = useState(false);
 
   return (
     <header className="px-8 pt-4 pb-8 bg-primary header-height">
@@ -32,7 +32,7 @@ export default function Header() {
           </NavLink>
 
           <i
-            onClick={() => activeMenu(setMenuIsActive)}
+            onClick={() => setMenuIsActive(!menuIsActive)}
             className="icon-bars text-white hover:text-grayBlue text-3xl cursor-pointer normal-transition"
           ></i>
         </div>
@@ -48,6 +48,7 @@ function activeMenu(setMenuIsActive) {
 }
 
 function hideMenu(setMenuIsActive) {
+  console.log(setMenuIsActive);
   setMenuIsActive(() => false);
 }
 
@@ -103,6 +104,7 @@ function MenuItemElement(props) {
   return (
     <li className="text-white hover:text-grayBlue normal-transition py-4 border-b border-white">
       <NavLink
+        onClick={() => hideMenu(props.setMenuIsActive)}
         to={props.sendTo}
         className={(navData) =>
           navData.isActive
