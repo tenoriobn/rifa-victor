@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 export default function Pricing(props) {
   const pricingData = getPricingData(props.rifaData);
 
@@ -53,13 +54,16 @@ export default function Pricing(props) {
 
 function PricingContainer(props) {
   return (
-    <article
+    <a
+      href="#"
+      onClick={() => props.openPaymentContainer(props.numbers, props.price)}
       className={`${
         props.popular ? "bg-yellowOrange" : "bg-lightGreen"
-      } rounded-lg flex-grow relative`}
+      } rounded-lg flex-grow relative hover:scale-105 duration-300 transition-all`}
     >
       <article
         className={` ${
+          // eslint-disable-next-line react/prop-types
           props.popular ? "bg-darkerYellow" : "bg-darkGreen"
         } flex flex-col items-center justify-center font-bold gap-1 p-2 w-full rounded-t-lg rounded-b-3xl`}
       >
@@ -75,9 +79,7 @@ function PricingContainer(props) {
 
         <button
           type="button"
-          onClick={(event) =>
-            props.openPaymentContainer(props.numbers, props.price)
-          }
+          onClick={() => props.openPaymentContainer(props.numbers, props.price)}
           className={`py-1 px-2 ${
             props.popular ? "bg-white" : "bg-customYellow"
           } text-lighterGreen rounded-xl font-medium w-full text-sm sm:text-base normal-transition hover:bg-darkYellow`}
@@ -91,7 +93,7 @@ function PricingContainer(props) {
           Top de Vendas
         </mark>
       )}
-    </article>
+    </a>
   );
 }
 
