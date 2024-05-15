@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import React from "react";
 
 export default function TablePosts(props) {
   const postsData = props.postsData;
@@ -29,13 +30,35 @@ export default function TablePosts(props) {
         </tr>
       </thead>
 
-      <tbody>{postsInfoRows}</tbody>
+      <tbody className="h-[200px]">{postsInfoRows}</tbody>
     </table>
   );
 }
 
 function PostInfoRow(props) {
+  const [ativo, setAtivo] = React.useState(false);
+  const refUl = React.useRef()
+
+  console.log(refUl.current);
   const postData = props.postData;
+
+
+  function useClickOutside(ref, callback) {
+    console.log(ref,callback);
+    React.useEffect(() => {
+        function handleClickOutside(event) {
+            if (ref.current && !ref.current.contains(event.target)) {
+                callback();
+            }
+        }
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [ref, callback]);
+}
+
+useClickOutside(refUl, () => setAtivo(false));
 
   const domParser = new DOMParser();
   const contentDom = domParser.parseFromString(
@@ -97,7 +120,7 @@ function PostInfoRow(props) {
         <p className="text-lg font-bold text-gray-700"> R${postData.price}</p>
       </td>
 
-      <td className="border-t border-b border-gray-400">
+      <td className="border-t border-b border-gray-400 relative">
         <div className="p-8 pt-6 pb-6 text-2xl flex items-center gap-4">
           <button
             onClick={() =>
@@ -123,6 +146,26 @@ function PostInfoRow(props) {
           >
             <i className="icon-eye"></i>
           </Link>
+
+          <div className="relative">
+          <button
+            onClick={() => setAtivo(!ativo)}
+            className="bg-blue-900 text-white font-bold text-base py-2 px-4 cursor-pointer rounded-lg hover:bg-blue-700 transition-all duration-200"
+          >
+            Ações
+          </button>
+          {ativo && (
+            <ul ref={refUl} className="absolute bg-slate-200 right-0  rounded-lg w-36  shadow-xl">
+              <li className="">
+                <Link className="text-black block text-sm font-bold py-2 px-2 hover:bg-slate-300 rounded-lg">Compras</Link>
+              </li>
+              <li className="">
+                <Link className="text-green-500 block text-sm font-bold py-2 px-2 hover:bg-slate-300 rounded-lg">Definir Ganhador </Link>
+              </li>
+            </ul>
+          )}
+          </div>
+
         </div>
       </td>
     </tr>

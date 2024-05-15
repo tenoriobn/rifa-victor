@@ -97,7 +97,7 @@ export default function Posts() {
           <div>
             {postsData.length >= 1 ? (
               <div className="flex flex-col gap-6">
-                <div className="w-full overflow-auto">
+                <div className="w-full overflow-x-auto ">
                   <TablePosts
                     postsData={postsData}
                     handleDeleteContainer={(postName, postId) =>
