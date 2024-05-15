@@ -12,7 +12,7 @@ export default function AuthMiddleware() {
   }
 
   if (isAdmin && isAdminToken && location === "/login") {
-    return <Navigate to="/" />;
+    return <Navigate to="/rifas" />;
   }
 
   return <Outlet />;

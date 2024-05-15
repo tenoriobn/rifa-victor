@@ -157,10 +157,10 @@ useClickOutside(refUl, () => setAtivo(false));
           {ativo && (
             <ul ref={refUl} className="absolute bg-slate-200 right-0  rounded-lg w-36  shadow-xl">
               <li className="">
-                <Link className="text-black block text-sm font-bold py-2 px-2 hover:bg-slate-300 rounded-lg">Compras</Link>
+                <Link to={`/compras/${postData.id}`} className="text-black block text-sm font-bold py-2 px-2 hover:bg-slate-300 rounded-lg">Compras</Link>
               </li>
               <li className="">
-                <Link className="text-green-500 block text-sm font-bold py-2 px-2 hover:bg-slate-300 rounded-lg">Definir Ganhador </Link>
+                <Link to={`/definir-ganhador/${postData.id}`} className="text-green-500 block text-sm font-bold py-2 px-2 hover:bg-slate-300 rounded-lg">Definir Ganhador </Link>
               </li>
             </ul>
           )}
