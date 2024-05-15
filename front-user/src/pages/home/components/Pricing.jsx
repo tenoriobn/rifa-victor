@@ -145,5 +145,49 @@ function getPricingData(rifaData) {
       ),
       popular: false,
     },
+    {
+      id: 5,
+      numbers: rifaData.fifthPacoteNumbers,
+      price: formatPrice(
+        rifaData.fifthPacoteNumbers * rifaData.price -
+          rifaData.fifthPacoteNumbers *
+            rifaData.price *
+            (rifaData.fifthPacoteDiscount / 100)
+      ),
+      popular: false,
+    },
+    {
+      id: 6,
+      numbers: rifaData.sixthPacoteNumbers,
+      price: formatPrice(
+        rifaData.sixthPacoteNumbers * rifaData.price -
+          rifaData.sixthPacoteNumbers *
+            rifaData.price *
+            (rifaData.sixthPacoteDiscount / 100)
+      ),
+      popular: false,
+    },
+    {
+      id: 7,
+      numbers: rifaData.seventhPacoteNumbers,
+      price: formatPrice(
+        rifaData.seventhPacoteNumbers * rifaData.price -
+          rifaData.seventhPacoteNumbers *
+            rifaData.price *
+            (rifaData.seventhPacoteDiscount / 100)
+      ),
+      popular: false,
+    },
+    {
+      id: 8,
+      numbers: rifaData.eighthPacoteNumbers,
+      price: formatPrice(
+        rifaData.eighthPacoteNumbers * rifaData.price -
+          rifaData.eighthPacoteNumbers *
+            rifaData.price *
+            (rifaData.eighthPacoteDiscount / 100)
+      ),
+      popular: false,
+    },
   ];
 }

@@ -26,6 +26,14 @@ export default function Home() {
         thirdPacoteDiscount: "",
         fourthPacoteNumbers: "",
         fourthPacoteDiscount: "",
+        fifthPacoteNumbers: "",
+        fifthPacoteDiscount: "",
+        sixthPacoteNumbers: "",
+        sixthPacoteDiscount: "",
+        seventhPacoteNumbers: "",
+        seventhPacoteDiscount: "",
+        eighthPacoteNumbers: "",
+        eighthPacoteDiscount: "",
       },
     };
   });
@@ -134,6 +142,14 @@ async function getPostData(setContentIsLoading, setFormData, setCotasData) {
         thirdPacoteDiscount: responsePostData.thirdPacoteDiscount,
         fourthPacoteNumbers: responsePostData.fourthPacoteNumbers,
         fourthPacoteDiscount: responsePostData.fourthPacoteDiscount,
+        fifthPacoteNumbers: responsePostData.fifthPacoteNumbers,
+        fifthPacoteDiscount: responsePostData.fifthPacoteDiscount,
+        sixthPacoteNumbers: responsePostData.sixthPacoteNumbers,
+        sixthPacoteDiscount: responsePostData.sixthPacoteDiscount,
+        seventhPacoteNumbers: responsePostData.seventhPacoteNumbers,
+        seventhPacoteDiscount: responsePostData.seventhPacoteDiscount,
+        eighthPacoteNumbers: responsePostData.eighthPacoteNumbers,
+        eighthPacoteDiscount: responsePostData.eighthPacoteDiscount,
         thumbnail: responsePostData.thumbnail,
       };
 
