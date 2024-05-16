@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\V1\AuthController;
+use App\Http\Controllers\V1\MercadoPagoController;
 use App\Http\Controllers\V1\RifasController;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -34,6 +35,8 @@ Route::middleware('auth:sanctum')->get(
 //         "password" => Hash::make("testing0000"),
 //     ]);
 // });
+
+Route::post("/v1/mercado-pago-payments", [MercadoPagoController::class, 'index'])->middleware(['validateMercadoPagoSignature']);
 
 Route::post("/v1/pix", [PixController::class, "index"]);
 
