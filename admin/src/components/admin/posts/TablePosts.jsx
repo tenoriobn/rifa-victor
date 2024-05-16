@@ -38,27 +38,27 @@ export default function TablePosts(props) {
 function PostInfoRow(props) {
   const [ativo, setAtivo] = React.useState(false);
   const refUl = React.useRef()
+  const refButton = React.useRef()
 
   console.log(refUl.current);
   const postData = props.postData;
 
+  React.useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        refUl.current && !refUl.current.contains(event.target) &&
+        refButton.current && !refButton.current.contains(event.target)
+    ) {
+        setAtivo(false);
+    }
+    }
 
-  function useClickOutside(ref, callback) {
-    console.log(ref,callback);
-    React.useEffect(() => {
-        function handleClickOutside(event) {
-            if (ref.current && !ref.current.contains(event.target)) {
-                callback();
-            }
-        }
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, [ref, callback]);
-}
+    window.addEventListener('click', handleClickOutside);
+    return () => {
+        window.removeEventListener('click', handleClickOutside);
+    };
+}, [refUl]);
 
-useClickOutside(refUl, () => setAtivo(false));
 
   const domParser = new DOMParser();
   const contentDom = domParser.parseFromString(
@@ -148,8 +148,8 @@ useClickOutside(refUl, () => setAtivo(false));
           </Link>
 
           <div className="relative">
-          <button
-            onClick={() => setAtivo(!ativo)}
+          <button ref={refButton}
+             onClick={() => setAtivo((prev) => !prev)}
             className="bg-blue-900 text-white font-bold text-base py-2 px-4 cursor-pointer rounded-lg hover:bg-blue-700 transition-all duration-200"
           >
             Ações
