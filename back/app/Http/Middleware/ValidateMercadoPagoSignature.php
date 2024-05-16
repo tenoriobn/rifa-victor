@@ -13,13 +13,13 @@ use Symfony\Component\HttpFoundation\Response;
 class ValidateMercadoPagoSignature
 {
     private function validateHeaders(Request $request) {
-        $xSignature = $request->header('HTTP_X_SIGNATURE');
-        $xRequestId = $request->header('HTTP_X_REQUEST_ID');
+        $xSignature = $request->header('x-signature');
+        $xRequestId = $request->header('x-request-id');
         if ($xSignature === null) {
-            throw new BadRequestException('Missing HTTP_X_SIGNATURE header');
+            throw new BadRequestException('Missing x-signature header');
         }
         if ($xRequestId === null) {
-            throw new BadRequestException('Missing HTTP_X_REQUEST_ID header');
+            throw new BadRequestException('Missing x-request-id header');
         }
         return [$xSignature, $xRequestId];
     }
@@ -73,7 +73,7 @@ class ValidateMercadoPagoSignature
             
             return $next($request);
         } catch (BadRequestException $th) {
-            return response()->json(["message" => $th->getMessage()], 404);
+            return response()->json(["message" => $th->getMessage()], 400);
         } catch (Exception $e) {
             return response()->json(["message" => "Internal Error"], 500);
         }
