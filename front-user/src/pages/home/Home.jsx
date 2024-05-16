@@ -31,10 +31,6 @@ export default function Home() {
         fifthPacoteDiscount: "",
         sixthPacoteNumbers: "",
         sixthPacoteDiscount: "",
-        seventhPacoteNumbers: "",
-        seventhPacoteDiscount: "",
-        eighthPacoteNumbers: "",
-        eighthPacoteDiscount: "",
       },
     };
   });
@@ -149,10 +145,6 @@ async function getPostData(setContentIsLoading, setFormData, setCotasData) {
         fifthPacoteDiscount: responsePostData.fifthPacoteDiscount,
         sixthPacoteNumbers: responsePostData.sixthPacoteNumbers,
         sixthPacoteDiscount: responsePostData.sixthPacoteDiscount,
-        seventhPacoteNumbers: responsePostData.seventhPacoteNumbers,
-        seventhPacoteDiscount: responsePostData.seventhPacoteDiscount,
-        eighthPacoteNumbers: responsePostData.eighthPacoteNumbers,
-        eighthPacoteDiscount: responsePostData.eighthPacoteDiscount,
         thumbnail: responsePostData.thumbnail,
       };
 
