@@ -1,4 +1,5 @@
 export default function Informations(props) {
+  console.log(props);
   return (
     <section className="py-5">
       <div className="flex flex-col gap-4">
@@ -7,7 +8,7 @@ export default function Informations(props) {
 
           <article className="p-4 flex flex-col gap-4 bg-darkerBlue rounded-xl w-full">
             <h3 className="text-base sm:text-lg font-bold">
-              LAMBORGHINI AVENTADOR
+              {props.rifaData.title}
             </h3>
 
             <div
