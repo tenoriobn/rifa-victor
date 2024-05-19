@@ -37,28 +37,31 @@ export default function TablePosts(props) {
 
 function PostInfoRow(props) {
   const [ativo, setAtivo] = React.useState(false);
-  const refUl = React.useRef()
-  const refButton = React.useRef()
-
-  console.log(refUl.current);
+  const refUl = React.useRef();
+  const [ganhador, setGanhador] = React.useState("");
+  const refButton = React.useRef();
+  const [modalWin, setModalWin] = React.useState(false);
+  const [inputError, setInputError] = React.useState(false);
+  const [modalInfoWin, setModalInfoWin] = React.useState(false);
   const postData = props.postData;
 
   React.useEffect(() => {
     function handleClickOutside(event) {
       if (
-        refUl.current && !refUl.current.contains(event.target) &&
-        refButton.current && !refButton.current.contains(event.target)
-    ) {
+        refUl.current &&
+        !refUl.current.contains(event.target) &&
+        refButton.current &&
+        !refButton.current.contains(event.target)
+      ) {
         setAtivo(false);
-    }
+      }
     }
 
-    window.addEventListener('click', handleClickOutside);
+    window.addEventListener("click", handleClickOutside);
     return () => {
-        window.removeEventListener('click', handleClickOutside);
+      window.removeEventListener("click", handleClickOutside);
     };
-}, [refUl]);
-
+  }, [refUl]);
 
   const domParser = new DOMParser();
   const contentDom = domParser.parseFromString(
@@ -86,88 +89,188 @@ function PostInfoRow(props) {
   }
 
   return (
-    <tr>
-      <td className="border-t border-b border-gray-400 ">
-        <div className="flex items-center gap-4 p-8 pr-32 pt-6 pb-6">
-          <div className="shrink-0">
-            <picture>
-              <img
-                className="w-32 h-32 object-cover"
-                src={postData.thumbnail}
-                alt="Thumbnail do Post"
-              />
-            </picture>
-          </div>
+    <>
+      <tr>
+        <td className="border-t border-b border-gray-400 ">
+          <div className="flex items-center gap-4 p-8 pr-32 pt-6 pb-6">
+            <div className="shrink-0">
+              <picture>
+                <img
+                  className="w-32 h-32 object-cover"
+                  src={postData.thumbnail}
+                  alt="Thumbnail do Post"
+                />
+              </picture>
+            </div>
 
-          <div className="flex flex-col gap-2 shrink-0">
-            <h2 className="text-lg max-w-[50ch] truncate text-nowrap text-primary font-bold">
-              {postData.title}
-            </h2>
-            <p
-              className={`text-base max-w-[50ch] truncate text-nowrap ${
-                !descriptionError
-                  ? "text-tertiary font-normal"
-                  : "text-red-500 font-medium"
-              }`}
+            <div className="flex flex-col gap-2 shrink-0">
+              <h2 className="text-lg max-w-[50ch] truncate text-nowrap text-primary font-bold">
+                {postData.title}
+              </h2>
+              <p
+                className={`text-base max-w-[50ch] truncate text-nowrap ${
+                  !descriptionError
+                    ? "text-tertiary font-normal"
+                    : "text-red-500 font-medium"
+                }`}
+              >
+                {description}
+              </p>
+            </div>
+          </div>
+        </td>
+
+        <td className="border-t border-b border-gray-400 px-8">
+          <p className="text-lg font-bold text-gray-700"> R${postData.price}</p>
+        </td>
+
+        <td className="border-t border-b border-gray-400 relative">
+          <div className="p-8 pt-6 pb-6 text-2xl flex items-center gap-4">
+            <button
+              onClick={() =>
+                props.handleDeleteContainer(postData.title, postData.id)
+              }
+              type="button"
+              className="text-red-500 cursor-pointer hover:text-red-700 transition-all duration-200"
             >
-              {description}
-            </p>
+              <i className="icon-bin"></i>
+            </button>
+
+            <Link
+              to={`/rifas/${postData.id}`}
+              className="text-yellow-400 cursor-pointer hover:text-yellow-600 transition-all duration-200"
+            >
+              <i className="icon-pencil"></i>
+            </Link>
+
+            <Link
+              to="/"
+              target="_blank"
+              className="text-primary cursor-pointer hover:text-blue-900 transition-all duration-200"
+            >
+              <i className="icon-eye"></i>
+            </Link>
+
+            <div className="relative">
+              <button
+                ref={refButton}
+                onClick={() => setAtivo((prev) => !prev)}
+                className="bg-blue-900 text-white font-bold text-base py-2 px-4 cursor-pointer rounded-lg hover:bg-blue-700 transition-all duration-200"
+              >
+                Ações
+              </button>
+              {ativo && (
+                <ul
+                  ref={refUl}
+                  className="absolute bg-slate-200 right-0  rounded-lg w-36  shadow-xl"
+                >
+                  <li className="">
+                    <Link
+                      to={`/compras/${postData.id}`}
+                      className="text-black block text-sm font-bold py-2 px-2 hover:bg-slate-300 rounded-lg"
+                    >
+                      Compras
+                    </Link>
+                  </li>
+                  <li
+                    className="cursor-pointer"
+                    onClick={() => setModalWin(!modalWin)}
+                  >
+                    <Link className="text-green-500 block text-sm font-bold py-2 px-2 hover:bg-slate-300 rounded-lg">
+                      Definir Ganhador{" "}
+                    </Link>
+                  </li>
+                </ul>
+              )}
+            </div>
+          </div>
+        </td>
+      </tr>
+
+      {modalWin && (
+        <div className="fixed flex flex-col items-center justify-center z-40 top-0 bottom-0 left-0 right-0 bg-transparentBlack min-h-screen p-2 pt-5 pb-10 sm:p-10">
+          <form
+            className="bg-white px-10 max-w-[550px] w-full py-10 relative rounded-2xl"
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (ganhador.trim() === "") {
+                setInputError(true);
+                return;
+              }
+              setInputError(false);
+              setModalWin(false);
+              setModalInfoWin(true);
+            }}
+          >
+            <span
+              onClick={() => setModalWin(false)}
+              className="text-xl text-black absolute top-3 right-3 cursor-pointer font-bold"
+            >
+              X
+            </span>
+            <div>
+              <h1 className="text-2xl font-bold text-center">
+                Definir ganhador
+              </h1>
+              <span className="h-[3px] bg-blue-900 w-16 mx-auto mt-2 block"></span>
+              <div className="my-4">
+                <label
+                  className="font-bold text-lg mb-2 block"
+                  htmlFor="ganhador"
+                >
+                  Ganhador
+                </label>
+                <input
+                  className={`p-2 pl-4 pr-4 text-base border-2 text-tertiary w-full ${
+                    inputError ? "border-red-500" : "border-gray-300"
+                  }`}
+                  type="text"
+                  id="ganhador"
+                  placeholder="Cota vencedora"
+                  value={ganhador}
+                  onChange={(event) => {
+                    setGanhador(event.target.value);
+                    if (inputError) setInputError(false);
+                  }}
+                />
+              </div>
+              <div className="w-full">
+                <button
+                  type="submit"
+                  className="bg-blue-900 text-white font-bold text-base py-2 px-4 cursor-pointer rounded-lg hover:bg-blue-700 transition-all duration-200 block mx-auto"
+                >
+                  Finalizar
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      )}
+
+      {modalInfoWin && (
+        <div className="fixed flex flex-col items-center justify-center z-40 top-0 bottom-0 left-0 right-0 bg-transparentBlack min-h-screen p-2 pt-5 pb-10 sm:p-10">
+          <div className="bg-white px-10 max-w-[550px] w-full py-10 relative rounded-2xl">
+            <span
+              onClick={() => setModalInfoWin(false)}
+              className="text-xl text-black absolute top-3 right-3 cursor-pointer font-bold"
+            >
+              X
+            </span>
+            <div>
+              <div>
+                <img src="" alt="" />
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold text-center">Nome Sorteio</h1>
+                <p>
+                  Data do sorteio: <span>26/07/2024</span>
+                </p>
+              </div>
+            </div>
+            <span className="h-[3px] bg-blue-900 w-16 mx-auto mt-2 block"></span>
           </div>
         </div>
-      </td>
-
-      <td className="border-t border-b border-gray-400 px-8">
-        <p className="text-lg font-bold text-gray-700"> R${postData.price}</p>
-      </td>
-
-      <td className="border-t border-b border-gray-400 relative">
-        <div className="p-8 pt-6 pb-6 text-2xl flex items-center gap-4">
-          <button
-            onClick={() =>
-              props.handleDeleteContainer(postData.title, postData.id)
-            }
-            type="button"
-            className="text-red-500 cursor-pointer hover:text-red-700 transition-all duration-200"
-          >
-            <i className="icon-bin"></i>
-          </button>
-
-          <Link
-            to={`/rifas/${postData.id}`}
-            className="text-yellow-400 cursor-pointer hover:text-yellow-600 transition-all duration-200"
-          >
-            <i className="icon-pencil"></i>
-          </Link>
-
-          <Link
-            to="/"
-            target="_blank"
-            className="text-primary cursor-pointer hover:text-blue-900 transition-all duration-200"
-          >
-            <i className="icon-eye"></i>
-          </Link>
-
-          <div className="relative">
-          <button ref={refButton}
-             onClick={() => setAtivo((prev) => !prev)}
-            className="bg-blue-900 text-white font-bold text-base py-2 px-4 cursor-pointer rounded-lg hover:bg-blue-700 transition-all duration-200"
-          >
-            Ações
-          </button>
-          {ativo && (
-            <ul ref={refUl} className="absolute bg-slate-200 right-0  rounded-lg w-36  shadow-xl">
-              <li className="">
-                <Link to={`/compras/${postData.id}`} className="text-black block text-sm font-bold py-2 px-2 hover:bg-slate-300 rounded-lg">Compras</Link>
-              </li>
-              <li className="">
-                <Link to={`/definir-ganhador/${postData.id}`} className="text-green-500 block text-sm font-bold py-2 px-2 hover:bg-slate-300 rounded-lg">Definir Ganhador </Link>
-              </li>
-            </ul>
-          )}
-          </div>
-
-        </div>
-      </td>
-    </tr>
+      )}
+    </>
   );
 }
