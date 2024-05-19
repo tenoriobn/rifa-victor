@@ -1,6 +1,24 @@
+import { useEffect, useState } from "react";
 import { sendRequest } from "../../../util/util";
 
 export default function Payment(props) {
+  const [qrCodeBase64, setQrCodeBase64] = useState();
+  const [paymentHash, setPaymentHash] = useState();
+  
+  useEffect(() => {
+    async function generatePaymentQRCode() {
+      const requestData = {
+        method: "POST",
+        body: { email: "teste@gmail.com" },
+        url: "pix",
+      };
+      const { data } = await sendRequest(requestData);
+      setPaymentHash(data.hash);
+      setQrCodeBase64(data.qrCode);
+    }
+    generatePaymentQRCode();
+  }, []);
+
   return (
     <div
       className={`${
@@ -16,6 +34,14 @@ export default function Payment(props) {
         </i>
 
         <article className="flex flex-col gap-2">
+          {
+            qrCodeBase64 && (<img src={`data:image/jpeg;base64,${qrCodeBase64}`}/>)
+          }
+          {
+            paymentHash && (<h2 className="text-secondary text-base font-medium text-hash">
+            {paymentHash}
+          </h2>)
+          }
           <h2 className="text-secondary text-base font-medium">
             Você está adquirindo {props.rifaNumbers} número(s) do sorteio (
             {props.rifaTitle}), seu pedido será efetivado assim que concluir a

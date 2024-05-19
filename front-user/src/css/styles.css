@@ -25,3 +25,7 @@
 .min-content-height {
   min-height: calc(100vh - var(--header-height));
 }
+
+.text-hash {
+  word-break: break-word;
+}
