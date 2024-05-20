@@ -5,10 +5,11 @@ import { handleOnChange, sendRequest } from "../../../util/util";
 import Loading from "../../Loading";
 import { useParams, Navigate } from "react-router-dom";
 import ContentLoading from "../../ContentLoading";
+import { useNavigate } from "react-router-dom";
 
 export default function UpdatePostForm() {
   const postId = useParams().id;
-
+  const navigate = useNavigate();
   validateId(postId);
 
   const [isLoading, setIsLoading] = useState(() => false);
@@ -736,80 +737,79 @@ async function handleRequest(formData, setFormData, setIsLoading, postId) {
 
         return newFormData;
       });
-
       return;
     }
-
-    setFormData((prevFormData) => {
-      return {
-        ...prevFormData,
-        status: {
-          success: true,
-          errors: {
-            title: {
-              error: false,
-              msg: "Title Error",
-            },
-            description: {
-              error: false,
-              msg: "Content Error",
-            },
-            thumbnail: {
-              error: false,
-              msg: "Thumbnail Error",
-            },
-            rifaStatus: {
-              error: false,
-              msg: "Rifa Status Error",
-            },
-            rifaDate: {
-              error: false,
-              msg: "Rifa Date Error",
-            },
-            price: {
-              error: false,
-              msg: "Price Error",
-            },
-            firstPacoteNumbers: {
-              error: false,
-              msg: "Numbers Pricing Error",
-            },
-            firstPacoteDiscount: {
-              error: false,
-              msg: "Numbers Pricing Error",
-            },
-            secondPacoteNumbers: {
-              error: false,
-              msg: "Numbers Pricing Error",
-            },
-            secondPacoteDiscount: {
-              error: false,
-              msg: "Numbers Pricing Error",
-            },
-            thirdPacoteNumbers: {
-              error: false,
-              msg: "Numbers Pricing Error",
-            },
-            thirdPacoteDiscount: {
-              error: false,
-              msg: "Numbers Pricing Error",
-            },
-            fourthPacoteNumbers: {
-              error: false,
-              msg: "Numbers Pricing Error",
-            },
-            fourthPacoteDiscount: {
-              error: false,
-              msg: "Numbers Pricing Error",
-            },
-            rifaNumbers: {
-              error: false,
-              msg: "Numbers Pricing Error",
-            },
-          },
-        },
-      };
-    });
+    window.location.href = '/rifas';
+    // setFormData((prevFormData) => {
+    //   return {
+    //     ...prevFormData,
+    //     status: {
+    //       success: true,
+    //       errors: {
+    //         title: {
+    //           error: false,
+    //           msg: "Title Error",
+    //         },
+    //         description: {
+    //           error: false,
+    //           msg: "Content Error",
+    //         },
+    //         thumbnail: {
+    //           error: false,
+    //           msg: "Thumbnail Error",
+    //         },
+    //         rifaStatus: {
+    //           error: false,
+    //           msg: "Rifa Status Error",
+    //         },
+    //         rifaDate: {
+    //           error: false,
+    //           msg: "Rifa Date Error",
+    //         },
+    //         price: {
+    //           error: false,
+    //           msg: "Price Error",
+    //         },
+    //         firstPacoteNumbers: {
+    //           error: false,
+    //           msg: "Numbers Pricing Error",
+    //         },
+    //         firstPacoteDiscount: {
+    //           error: false,
+    //           msg: "Numbers Pricing Error",
+    //         },
+    //         secondPacoteNumbers: {
+    //           error: false,
+    //           msg: "Numbers Pricing Error",
+    //         },
+    //         secondPacoteDiscount: {
+    //           error: false,
+    //           msg: "Numbers Pricing Error",
+    //         },
+    //         thirdPacoteNumbers: {
+    //           error: false,
+    //           msg: "Numbers Pricing Error",
+    //         },
+    //         thirdPacoteDiscount: {
+    //           error: false,
+    //           msg: "Numbers Pricing Error",
+    //         },
+    //         fourthPacoteNumbers: {
+    //           error: false,
+    //           msg: "Numbers Pricing Error",
+    //         },
+    //         fourthPacoteDiscount: {
+    //           error: false,
+    //           msg: "Numbers Pricing Error",
+    //         },
+    //         rifaNumbers: {
+    //           error: false,
+    //           msg: "Numbers Pricing Error",
+    //         },
+    //       },
+    //     },
+    //   };
+    // });
 
     setTimeout(() => {
       setFormData((prevFormData) => {

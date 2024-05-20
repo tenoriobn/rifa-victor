@@ -637,92 +637,92 @@ async function handleRequest(formData, setFormData, setIsLoading) {
       return;
     }
 
-    setFormData((prevFormData) => {
-      return {
-        data: {
-          title: "",
-          description: "",
-          thumbnail: null,
-          rifaStatus: "",
-          rifaDate: "",
-          price: "",
-          firstPacoteNumbers: "",
-          firstPacoteDiscount: 0,
-          secondPacoteNumbers: "",
-          secondPacoteDiscount: 0,
-          thirdPacoteNumbers: "",
-          thirdPacoteDiscount: 0,
-          fourthPacoteNumbers: "",
-          fourthPacoteDiscount: 0,
-          rifaNumbers: "",
-        },
-        status: {
-          success: true,
-          errors: {
-            title: {
-              error: false,
-              msg: "Title Error",
-            },
-            description: {
-              error: false,
-              msg: "Content Error",
-            },
-            thumbnail: {
-              error: false,
-              msg: "Thumbnail Error",
-            },
-            rifaStatus: {
-              error: false,
-              msg: "Rifa Status Error",
-            },
-            rifaDate: {
-              error: false,
-              msg: "Rifa Date Error",
-            },
-            price: {
-              error: false,
-              msg: "Price Error",
-            },
-            firstPacoteNumbers: {
-              error: false,
-              msg: "Numbers Pricing Error",
-            },
-            firstPacoteDiscount: {
-              error: false,
-              msg: "Numbers Pricing Error",
-            },
-            secondPacoteNumbers: {
-              error: false,
-              msg: "Numbers Pricing Error",
-            },
-            secondPacoteDiscount: {
-              error: false,
-              msg: "Numbers Pricing Error",
-            },
-            thirdPacoteNumbers: {
-              error: false,
-              msg: "Numbers Pricing Error",
-            },
-            thirdPacoteDiscount: {
-              error: false,
-              msg: "Numbers Pricing Error",
-            },
-            fourthPacoteNumbers: {
-              error: false,
-              msg: "Numbers Pricing Error",
-            },
-            fourthPacoteDiscount: {
-              error: false,
-              msg: "Numbers Pricing Error",
-            },
-            rifaNumbers: {
-              error: false,
-              msg: "Numbers Pricing Error",
-            },
-          },
-        },
-      };
-    });
+    // setFormData((prevFormData) => {
+    //   return {
+    //     data: {
+    //       title: "",
+    //       description: "",
+    //       thumbnail: null,
+    //       rifaStatus: "",
+    //       rifaDate: "",
+    //       price: "",
+    //       firstPacoteNumbers: "",
+    //       firstPacoteDiscount: 0,
+    //       secondPacoteNumbers: "",
+    //       secondPacoteDiscount: 0,
+    //       thirdPacoteNumbers: "",
+    //       thirdPacoteDiscount: 0,
+    //       fourthPacoteNumbers: "",
+    //       fourthPacoteDiscount: 0,
+    //       rifaNumbers: "",
+    //     },
+    //     status: {
+    //       success: true,
+    //       errors: {
+    //         title: {
+    //           error: false,
+    //           msg: "Title Error",
+    //         },
+    //         description: {
+    //           error: false,
+    //           msg: "Content Error",
+    //         },
+    //         thumbnail: {
+    //           error: false,
+    //           msg: "Thumbnail Error",
+    //         },
+    //         rifaStatus: {
+    //           error: false,
+    //           msg: "Rifa Status Error",
+    //         },
+    //         rifaDate: {
+    //           error: false,
+    //           msg: "Rifa Date Error",
+    //         },
+    //         price: {
+    //           error: false,
+    //           msg: "Price Error",
+    //         },
+    //         firstPacoteNumbers: {
+    //           error: false,
+    //           msg: "Numbers Pricing Error",
+    //         },
+    //         firstPacoteDiscount: {
+    //           error: false,
+    //           msg: "Numbers Pricing Error",
+    //         },
+    //         secondPacoteNumbers: {
+    //           error: false,
+    //           msg: "Numbers Pricing Error",
+    //         },
+    //         secondPacoteDiscount: {
+    //           error: false,
+    //           msg: "Numbers Pricing Error",
+    //         },
+    //         thirdPacoteNumbers: {
+    //           error: false,
+    //           msg: "Numbers Pricing Error",
+    //         },
+    //         thirdPacoteDiscount: {
+    //           error: false,
+    //           msg: "Numbers Pricing Error",
+    //         },
+    //         fourthPacoteNumbers: {
+    //           error: false,
+    //           msg: "Numbers Pricing Error",
+    //         },
+    //         fourthPacoteDiscount: {
+    //           error: false,
+    //           msg: "Numbers Pricing Error",
+    //         },
+    //         rifaNumbers: {
+    //           error: false,
+    //           msg: "Numbers Pricing Error",
+    //         },
+    //       },
+    //     },
+    //   };
+    // });
 
     setTimeout(() => {
       setFormData((prevFormData) => {
@@ -735,6 +735,7 @@ async function handleRequest(formData, setFormData, setIsLoading) {
         };
       });
     }, 5000);
+    window.location.href = '/rifas';
   } catch (error) {
     window.alert(`Houve um erro no servidor ${error}`);
   } finally {
