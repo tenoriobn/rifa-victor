@@ -13,6 +13,7 @@ export default function Home() {
   const [formData, setFormData] = useState(() => {
     return {
       data: {
+        id: "",
         title: "",
         description: "",
         thumbnail: null,
@@ -68,8 +69,8 @@ export default function Home() {
 
       <Pricing
         rifaData={formData.data}
-        openPaymentContainer={(rifaNumbers, price) =>
-          openPaymentContainer(setPaymentData, rifaNumbers, price)
+        openPaymentContainer={(rifaNumbers, price, packageId) =>
+          openPaymentContainer(setPaymentData, rifaNumbers, price, packageId)
         }
       />
 
@@ -83,15 +84,21 @@ export default function Home() {
 
       <Informations rifaData={formData.data} />
 
-      <Payment
-        rifaNumbers={paymentData.rifaNumbers}
-        price={paymentData.price}
-        isPaying={paymentData.isPaying}
-        showPaymentContainer={paymentData.showPaymentContainer}
-        phoneNumber={paymentData.phoneNumber}
-        closePaymentContainer={() => closePaymentContainer(setPaymentData)}
-        rifaTitle={formData.data.title}
-      />
+      {
+        paymentData.showPaymentContainer && (
+          <Payment
+            rifaId={formData.data.id}
+            rifaNumbers={paymentData.rifaNumbers}
+            price={paymentData.price}
+            isPaying={paymentData.isPaying}
+            showPaymentContainer={paymentData.showPaymentContainer}
+            phoneNumber={paymentData.phoneNumber}
+            packageId={paymentData.packageId}
+            closePaymentContainer={() => closePaymentContainer(setPaymentData)}
+            rifaTitle={formData.data.title}
+          />
+        )
+      }
 
       <Links />
 
@@ -128,6 +135,7 @@ async function getPostData(setContentIsLoading, setFormData, setCotasData) {
 
     setFormData((prevFormData) => {
       const newFormData = {
+        id: responsePostData.id,
         title: responsePostData.title,
         description: responsePostData.description,
         rifaStatus: responsePostData.rifaStatus,
@@ -172,13 +180,15 @@ async function getPostData(setContentIsLoading, setFormData, setCotasData) {
   }
 }
 
-function openPaymentContainer(setPaymentData, rifaNumbers, price) {
+function openPaymentContainer(setPaymentData, rifaNumbers, price, packageId = undefined) {
+  console.log(packageId);
   setPaymentData((prevPaymentData) => {
     return {
       ...prevPaymentData,
       rifaNumbers,
       price,
       showPaymentContainer: true,
+      packageId
     };
   });
 }

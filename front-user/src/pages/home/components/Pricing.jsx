@@ -9,7 +9,7 @@ export default function Pricing(props) {
         numbers={pricing.numbers}
         price={pricing.price}
         popular={pricing.popular}
-        openPaymentContainer={props.openPaymentContainer}
+        openPaymentContainer={(numbers, price) => props.openPaymentContainer(numbers, price, pricing.id)}
       />
     );
   });

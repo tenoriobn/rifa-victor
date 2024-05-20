@@ -1,23 +1,37 @@
+/* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import { sendRequest } from "../../../util/util";
 
 export default function Payment(props) {
   const [qrCodeBase64, setQrCodeBase64] = useState();
   const [paymentHash, setPaymentHash] = useState();
+  const [phone, setPhone] = useState();
+  const [disableBtn, setDisableBtn] = useState(false);
   
-  useEffect(() => {
-    async function generatePaymentQRCode() {
-      const requestData = {
-        method: "POST",
-        body: { email: "teste@gmail.com" },
-        url: "pix",
-      };
-      const { data } = await sendRequest(requestData);
+  async function generatePaymentQRCode() {
+    const requestData = {
+      method: "POST",
+      body: { id: props.rifaId, phone: "1111111" },
+      url: "pix",
+    };
+    if (props.packageId === undefined) {
+      requestData.body.rifaNumbers = props.rifaNumbers;
+    }
+    if (props.packageId) {
+      requestData.body.packageId = props.packageId;
+    }
+    const { data } = await sendRequest(requestData);
+    setPaymentHash(data.hash);
+    setQrCodeBase64(data.qrCode);
+  }
+
+  function getQrCode() {
+    setDisableBtn(true);
+    generatePaymentQRCode().then(({ data }) => {
       setPaymentHash(data.hash);
       setQrCodeBase64(data.qrCode);
-    }
-    generatePaymentQRCode();
-  }, []);
+    });
+  }
 
   return (
     <div
@@ -34,21 +48,13 @@ export default function Payment(props) {
         </i>
 
         <article className="flex flex-col gap-2">
-          {
-            qrCodeBase64 && (<img src={`data:image/jpeg;base64,${qrCodeBase64}`}/>)
-          }
-          {
-            paymentHash && (<h2 className="text-secondary text-base font-medium text-hash">
-            {paymentHash}
-          </h2>)
-          }
           <h2 className="text-secondary text-base font-medium">
             Você está adquirindo {props.rifaNumbers} número(s) do sorteio (
             {props.rifaTitle}), seu pedido será efetivado assim que concluir a
             compra.
           </h2>
 
-          <form action="">
+          <form>
             <div className="flex flex-col gap-2">
               <div className="flex flex-col gap-1">
                 <label
@@ -64,16 +70,24 @@ export default function Payment(props) {
                   placeholder="(11) 99999-9999"
                 />
               </div>
-              <p className="text-base font-medium text-red-600">
-                {" "}
-                Phone Error{" "}
-              </p>
             </div>
 
             <p className="text-primary font-bold text-base">
               Informe seu telefone para continuar!
             </p>
+            <button onClick={ getQrCode }>Continuar</button>
           </form>
+          {
+            qrCodeBase64 && (<img src={`data:image/jpeg;base64,${qrCodeBase64}`}/>)
+          }
+          {
+            paymentHash &&
+            (
+            <h2 className="text-secondary text-base font-medium text-hash">
+              {paymentHash}
+            </h2>
+            )
+          }
         </article>
       </article>
     </div>
