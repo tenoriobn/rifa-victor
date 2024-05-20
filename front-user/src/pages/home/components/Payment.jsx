@@ -75,7 +75,7 @@ export default function Payment(props) {
             <p className="text-primary font-bold text-base">
               Informe seu telefone para continuar!
             </p>
-            <button onClick={ getQrCode }>Continuar</button>
+            <button className="qrcode-btn" onClick={ getQrCode }>Continuar</button>
           </form>
           {
             qrCodeBase64 && (<img src={`data:image/jpeg;base64,${qrCodeBase64}`}/>)

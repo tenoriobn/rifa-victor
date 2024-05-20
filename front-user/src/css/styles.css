@@ -29,3 +29,17 @@
 .text-hash {
   word-break: break-word;
 }
+
+.qrcode-btn {
+  color: black;
+  background-color: white;
+  border: 1px solid black;
+  padding: 4px;
+}
+
+.qrcode-btn:disabled {
+  color: black;
+  cursor: not-allowed;
+  background-color: #8080806b;
+  padding: 4px;
+}
