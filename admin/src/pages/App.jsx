@@ -16,6 +16,7 @@ export default function App() {
           <Route path="/login" element={<Login />} />
 
           <Route path="/" element={<AdminLayout />}>
+            <Route exact path="/" element={<Posts />} />
             <Route path="/rifas" element={<Posts />} />
             <Route path="/rifas/:id" element={<UpdatePost />} />
             <Route path="/rifas/nova-rifa" element={<CreatePost />} />
