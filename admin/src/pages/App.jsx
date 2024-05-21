@@ -7,6 +7,7 @@ import CreatePost from "./admin/posts/CreatePost";
 import UpdatePost from "./admin/posts/UpdatePost";
 import Buyers from "./admin/buyers/Buyers";
 import ChooseWinner from "./admin/winner/ChooseWinner";
+import Config from "./admin/config/Config";
 
 export default function App() {
   return (
@@ -21,6 +22,7 @@ export default function App() {
             <Route path="/rifas/:id" element={<UpdatePost />} />
             <Route path="/rifas/nova-rifa" element={<CreatePost />} />
             <Route path="/compras/:rifaId" element={<Buyers />} />
+            <Route path="/configuracao-do-site" element={<Config />} />
             <Route path="/definir-ganhador/:rifaId" element={<ChooseWinner />} />
 
             <Route path="*" element={<h1>Page not found </h1>} />
