@@ -7,7 +7,7 @@ export default function Header() {
   const [menuIsActive, setMenuIsActive] = useState(false);
 
   return (
-    <header className="px-8 pt-4 pb-8 bg-primary header-height">
+    <header className="px-8 pt-4 pb-8 bg-[#6D29E4] header-height">
       <div className="flex items-center justify-between max-w-lg m-auto">
         <Link to="/" className="cursor-pointer">
           <picture>
@@ -126,29 +126,23 @@ function getMenuItems() {
     {
       id: 1,
       sendTo: "/",
-      sendTitle: "Início",
-      icon: "icon-home",
-    },
-    {
-      id: 2,
-      sendTo: "/sorteios",
       sendTitle: "Sorteios",
       icon: "icon-list",
     },
     {
-      id: 3,
+      id: 2,
       sendTo: "/meus-numeros",
       sendTitle: "Meus Números",
       icon: "icon-list-numbered",
     },
     {
-      id: 4,
+      id: 3,
       sendTo: "/ganhadores",
       sendTitle: "Ganhadores",
       icon: "icon-trophy",
     },
     {
-      id: 5,
+      id: 4,
       sendTo: "/termos-de-uso",
       sendTitle: "Termos de Uso",
       icon: "icon-book",

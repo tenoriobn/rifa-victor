@@ -45,7 +45,20 @@ function PostInfoRow(props) {
   const [modalWin, setModalWin] = React.useState(false);
   const [inputError, setInputError] = React.useState(false);
   const [modalInfoWin, setModalInfoWin] = React.useState(false);
+  const [seeNumber, setSeeNumber] = React.useState(false)
+  const [numberPhone, setNumberPhone] = React.useState('*****-****')
   const postData = props.postData;
+
+  function handleNumberPhone(){
+    setSeeNumber(!seeNumber)
+    if(seeNumber){
+      setNumberPhone('*****-****')
+    }else{
+      setNumberPhone('78978-9632')
+
+    }
+
+  }
 
   React.useEffect(() => {
     function handleClickOutside(event) {
@@ -282,8 +295,8 @@ function PostInfoRow(props) {
                     Nome: <span>Julia</span>
                   </p>
                   <p className="font-bold flex gap-3 mb-1">
-                    Telefone: <span>(11) 25252-2525</span>{" "}
-                    <img className="cursor-pointer" src={eyeTel} alt="" />
+                    Telefone: <span>(11) {numberPhone}</span>{" "}
+                    <img onClick={handleNumberPhone} className="cursor-pointer" src={eyeTel} alt="" />
                   </p>
                   <p className="font-bold mb-1">
                     Status: <span className="text-white bg-green-500 p-1 rounded-md">Pago</span>
