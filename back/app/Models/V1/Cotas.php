@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\V1;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -31,5 +31,5 @@ class Cotas extends Model
      *
      * @var array
      */
-    protected $fillable = ['payment_status'];
+    protected $fillable = ['payment_status', 'payment_id'];
 }
