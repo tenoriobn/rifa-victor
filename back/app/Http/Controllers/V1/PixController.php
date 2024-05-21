@@ -5,6 +5,7 @@ namespace App\Http\Controllers\V1;
 use App\Http\Controllers\Controller;
 use App\Models\V1\Rifas;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use MercadoPago\Client\Common\RequestOptions;
 use MercadoPago\Client\Payment\PaymentClient;
@@ -58,27 +59,32 @@ class PixController extends Controller
     public function index(Request $request)
     {
         try{
-            MercadoPagoConfig::setAccessToken($this->accessToken);
-            MercadoPagoConfig::setRuntimeEnviroment(MercadoPagoConfig::LOCAL);
-            $request_options = new RequestOptions();
-            $request_options->setCustomHeaders(["X-Idempotency-Key: ". uniqid()]);
-            $rifa = Rifas::find($request->id);
-            if (!isset($rifa)) {
-                return response()->json(["success" => false, "data" => [ "message" => "Rifa not found!" ]], 404);
-            }
-            $price = $this->getPrice($rifa, $request->packageId, $request->rifaNumbers);
-            
-            $createRequest = [
-                "transaction_amount" => $price,
-                "description" => "Comprando rifas",
-                "payment_method_id" => "pix",
-                "payer" => [
-                    "email" => "crissmykel10@gmail.com",
-                ]
-            ];
-            $mercadoPagoClient = new PaymentClient();
-            $payment = $mercadoPagoClient->create($createRequest, $request_options);
-            return response()->json(["success" => true, "data" => [ "qrCode" => $payment->point_of_interaction->transaction_data->qr_code_base64, "hash" => $payment->point_of_interaction->transaction_data->qr_code ]], 200);
+            $res = Cache::lock('criar-rifas')->block(10, function () use ($request) {
+                MercadoPagoConfig::setAccessToken($this->accessToken);
+                MercadoPagoConfig::setRuntimeEnviroment(MercadoPagoConfig::LOCAL);
+                $request_options = new RequestOptions();
+                $request_options->setCustomHeaders(["X-Idempotency-Key: ". uniqid()]);
+                $rifa = Rifas::find($request->id);
+                if (!isset($rifa)) {
+                    return response()->json(["success" => false, "data" => [ "message" => "Rifa not found!" ]], 404);
+                }
+                $price = $this->getPrice($rifa, $request->packageId, $request->rifaNumbers);
+                if ($request->sleep) {
+                    sleep(2);
+                }
+                $createRequest = [
+                    "transaction_amount" => $price,
+                    "description" => "Comprando rifas",
+                    "payment_method_id" => "pix",
+                    "payer" => [
+                        "email" => "crissmykel10@gmail.com",
+                    ]
+                ];
+                $mercadoPagoClient = new PaymentClient();
+                $payment = $mercadoPagoClient->create($createRequest, $request_options);
+                return response()->json(["success" => true, "data" => [ "qrCode" => $payment->point_of_interaction->transaction_data->qr_code_base64, "hash" => $payment->point_of_interaction->transaction_data->qr_code ]], 200);
+            });
+            return $res;
         } catch (MPApiException $e) {
             return response()->json(["success" => true, "data" => [
                 "statusCode" => $e->getApiResponse()->getStatusCode(),
