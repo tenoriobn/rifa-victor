@@ -90,7 +90,7 @@ export default function Buyers() {
         )}
       </section>
       <section>
-        <div className="bg-green-700 py-4 px-4 text-white mt-4 flex items-center justify-between mb-4">
+        <div className="bg-green-700 py-4 px-4 text-white mt-4 flex flex-col gap-3 sm:gap-0 sm:flex-row items-center justify-between mb-4">
           <div className="flex items-center gap-3">
             <div className="">
               <img className="w-32 object-cover" src={imgRifa} alt="" />
@@ -116,7 +116,7 @@ export default function Buyers() {
           </div>
         </div>
 
-        <div className="bg-green-700 py-4 px-4 text-white mt-4 flex items-center justify-between mb-4">
+        <div className="bg-green-700 py-4 px-4 text-white mt-4 flex flex-col gap-3 sm:gap-0 sm:flex-row items-center justify-between mb-4">
           <div className="flex items-center  gap-3">
             <div className="">
               <img className="w-32 object-cover" src={imgRifa} alt="" />
@@ -139,7 +139,7 @@ export default function Buyers() {
           </div>
         </div>
 
-        <div className="bg-green-700 py-4 px-4 text-white mt-4 flex items-center justify-between mb-4">
+        <div className="bg-green-700 py-4 px-4 text-white mt-4 flex flex-col gap-3 sm:gap-0 sm:flex-row items-center justify-between mb-4">
           <div className="flex items-center  gap-3">
             <div className="">
               <img className="w-32 object-cover" src={imgRifa} alt="" />
@@ -165,7 +165,7 @@ export default function Buyers() {
 
       {modalInfo && (
         <div className="fixed flex flex-col items-center justify-center z-40 top-0 bottom-0 left-0 right-0 bg-transparentBlack min-h-screen p-2 pt-5 pb-10 sm:p-10">
-          <div className="bg-white px-10 max-w-[550px] w-full py-10 relative rounded-2xl">
+          <div className="bg-white px-10 max-w-[550px] w-full py-10 relative rounded-2xl overflow-x-auto">
             <span
               onClick={() => setModalInfo(false)}
               className="text-xl text-black absolute top-3 right-3 cursor-pointer font-bold"
@@ -178,7 +178,7 @@ export default function Buyers() {
               </h1>
               <span className="h-[3px] bg-blue-900 w-14 mx-auto mt-2 block"></span>
               <div>
-                <div className="flex justify-between my-3 gap-2">
+                <div className="flex justify-between my-3 gap-2 flex-col sm:flex-row">
                   <div>
                     <label className="font-bold mb-1 block" htmlFor="">Nome</label>
                     <input
@@ -305,7 +305,7 @@ export default function Buyers() {
                     </div>
                   </div>
                     <span class="h-[3px] bg-blue-900 w-16 mx-auto mt-2 block"></span>
-                    <div className="flex justify-start gap-4 my-4">
+                    <div className="flex justify-start gap-4 my-4 ">
                       <div>
                         <p className="font-bold mb-1 block">Subtotal</p>
                         <p>R$ <span>6.00</span></p>
@@ -320,7 +320,7 @@ export default function Buyers() {
                       <p>Comprar Aprovada</p>
                     </div>
                     <span class="h-[3px] bg-blue-900 w-16 mx-auto mt-2 block"></span>
-                    <div className="flex gap-4 my-4">
+                    <div className="flex gap-4 my-4 flex-col sm:flex-row">
                       <div className="flex-1" >
                         <p className="font-bold mb-1 block">Reserva efetuada</p>
                         <p>02/04/2024 10:48:32</p>

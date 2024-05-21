@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import React from "react";
+import imgRifa from "../../../assets/images/exRifa.jpg";
+import eyeTel from "../../../assets/images/eye.svg";
 
 export default function TablePosts(props) {
   const postsData = props.postsData;
@@ -190,7 +192,7 @@ function PostInfoRow(props) {
       {modalWin && (
         <div className="fixed flex flex-col items-center justify-center z-40 top-0 bottom-0 left-0 right-0 bg-transparentBlack min-h-screen p-2 pt-5 pb-10 sm:p-10">
           <form
-            className="bg-white px-10 max-w-[550px] w-full py-10 relative rounded-2xl"
+            className="bg-white px-10 max-w-[550px] w-full py-10 relative rounded-2xl overflow-x-auto"
             onSubmit={(e) => {
               e.preventDefault();
               if (ganhador.trim() === "") {
@@ -249,25 +251,62 @@ function PostInfoRow(props) {
 
       {modalInfoWin && (
         <div className="fixed flex flex-col items-center justify-center z-40 top-0 bottom-0 left-0 right-0 bg-transparentBlack min-h-screen p-2 pt-5 pb-10 sm:p-10">
-          <div className="bg-white px-10 max-w-[550px] w-full py-10 relative rounded-2xl">
+          <div className="bg-white px-10 max-w-[550px] w-full py-10 relative rounded-2xl overflow-x-auto">
             <span
               onClick={() => setModalInfoWin(false)}
               className="text-xl text-black absolute top-3 right-3 cursor-pointer font-bold"
             >
               X
             </span>
-            <div>
+            <div className="flex gap-4">
               <div>
-                <img src="" alt="" />
+                <img className="rounded-lg w-40" src={imgRifa} alt="" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-center">Nome Sorteio</h1>
-                <p>
+                <h1 className="text-2xl text-start font-bold mb-2">
+                  Nome Sorteio
+                </h1>
+                <p className="font-bold">
                   Data do sorteio: <span>26/07/2024</span>
                 </p>
               </div>
             </div>
-            <span className="h-[3px] bg-blue-900 w-16 mx-auto mt-2 block"></span>
+                <span className="h-[3px] bg-blue-900 w-16 mx-auto mt-2 block"></span>
+            <div className="my-4">
+              <div className="flex gap-3">
+                <div>
+                  <h2 className="font-bold text-5xl">1</h2>
+                </div>
+                <div>
+                  <p className="font-bold mb-1">
+                    Nome: <span>Julia</span>
+                  </p>
+                  <p className="font-bold flex gap-3 mb-1">
+                    Telefone: <span>(11) 25252-2525</span>{" "}
+                    <img className="cursor-pointer" src={eyeTel} alt="" />
+                  </p>
+                  <p className="font-bold mb-1">
+                    Status: <span className="text-white bg-green-500 p-1 rounded-md">Pago</span>
+                  </p>
+                  <p className="font-bold mb-1">
+                    Rifa: <span>Nome da Rifa</span>
+                  </p>
+                  <p className="font-bold mb-1">
+                    Data de Compra: <span>10/05/2202 10:40:25</span>
+                  </p>
+                  <p className="font-bold mb-1">
+                    Número Sorteado: <span className="text-white bg-green-500 p-1 rounded-md">45852</span>
+                  </p>
+                  <p className="font-bold mb-1">
+                    Valor Pago: <span className="text-white bg-blue-500 p-1 rounded-md">R$ 6,00</span>
+                  </p>
+                  <p className="font-bold mb-1">
+                    <span>800</span> Bilhetes comprados
+                  </p>
+                <button className="bg-green-600 font-bold text-white py-1 px-2 rounded-lg hover:bg-green-700" onClick={() => window.open(`https://web.whatsapp.com/send?phone=21999276614`,'_blank')}>Entrar em contato</button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       )}
