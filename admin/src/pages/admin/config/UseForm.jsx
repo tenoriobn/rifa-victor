@@ -34,6 +34,7 @@ const UseForm = (type = "text") => {
   return {
     value,
     setValue,
+    setError,
     error,
     onChange,
     validate: () => validate(value),

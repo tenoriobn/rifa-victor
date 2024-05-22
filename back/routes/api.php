@@ -5,9 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\V1\AuthController;
 use App\Http\Controllers\V1\MercadoPagoController;
 use App\Http\Controllers\V1\RifasController;
-use App\Models\User;
-use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\V1\PixController;
+use App\Http\Controllers\V1\SiteConfigController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,6 +52,13 @@ Route::group(["prefix" => "v1", "middleware" => ["cors"]], function () {
     Route::group(["prefix" => "public-rifas", "controller" => RifasController::class,], function () {
         Route::get("/latest", "latest");
     });
+
+    Route::group(["prefix" => "site-config", "controller" => SiteConfigController::class, "middleware" => "auth:sanctum"], function () {
+        Route::get("/", "index");
+        Route::post("/", "store");
+    });
+
+    Route::get("/config", [SiteConfigController::class, "getUserSiteConfig"]);
     Route::post("/pix", [PixController::class, "index"]);
-    Route::post("/mercado-pago-payments", [MercadoPagoController::class, 'index'])->middleware(['validateMercadoPagoSignature']);
+    Route::post("/mercado-pago-payments", [MercadoPagoController::class, 'index']);
 });
