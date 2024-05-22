@@ -8,6 +8,8 @@ import { sendRequest } from "../../util/util";
 import { useState, useEffect } from "react";
 import HomeFooter from "./components/HomeFooter";
 import Links from "./components/Links";
+import ConfirmPhone from "./components/ConfirmPhone";
+import IsPaying from "./components/IsPaying";
 
 export default function Home() {
   const [formData, setFormData] = useState(() => {
@@ -41,7 +43,8 @@ export default function Home() {
   const [paymentData, setPaymentData] = useState(() => {
     return {
       showPaymentContainer: false,
-      isPaying: false,
+      showConfirmPhoneModal: false,
+      showIsPayingModal: false,
       rifaNumbers: 0,
       price: formData.data.price,
       phoneNumber: 0,
@@ -83,7 +86,6 @@ export default function Home() {
       />
 
       <Informations rifaData={formData.data} />
-
       {
         paymentData.showPaymentContainer && (
           <Payment
@@ -94,7 +96,43 @@ export default function Home() {
             showPaymentContainer={paymentData.showPaymentContainer}
             phoneNumber={paymentData.phoneNumber}
             packageId={paymentData.packageId}
+            submitBtn={() => {
+              openShowConfirmPhoneModal(setPaymentData, paymentData.rifaNumbers, paymentData.price, paymentData.packageId)
+            }}
             closePaymentContainer={() => closePaymentContainer(setPaymentData)}
+            rifaTitle={formData.data.title}
+          />
+        )
+      }
+      {
+        paymentData.showConfirmPhoneModal && (
+          <ConfirmPhone
+            rifaId={formData.data.id}
+            rifaNumbers={paymentData.rifaNumbers}
+            price={paymentData.price}
+            isPaying={paymentData.isPaying}
+            showPaymentContainer={paymentData.showConfirmPhoneModal}
+            submitBtn={() => {
+              openIsPayingModal(setPaymentData, paymentData.rifaNumbers, paymentData.price, paymentData.packageId)
+            }}
+            phoneNumber={paymentData.phoneNumber}
+            packageId={paymentData.packageId}
+            closePaymentContainer={() => closeConfirmPhoneModal(setPaymentData)}
+            rifaTitle={formData.data.title}
+          />
+        )
+      }
+      {
+        paymentData.showIsPayingModal && (
+          <IsPaying
+            rifaId={formData.data.id}
+            rifaNumbers={paymentData.rifaNumbers}
+            price={paymentData.price}
+            isPaying={paymentData.isPaying}
+            showPaymentContainer={paymentData.showIsPayingModal}
+            phoneNumber={paymentData.phoneNumber}
+            packageId={paymentData.packageId}
+            closePaymentContainer={() => closeIsPayingModal(setPaymentData)}
             rifaTitle={formData.data.title}
           />
         )
@@ -181,7 +219,6 @@ async function getPostData(setContentIsLoading, setFormData, setCotasData) {
 }
 
 function openPaymentContainer(setPaymentData, rifaNumbers, price, packageId = undefined) {
-  console.log(packageId);
   setPaymentData((prevPaymentData) => {
     return {
       ...prevPaymentData,
@@ -193,6 +230,34 @@ function openPaymentContainer(setPaymentData, rifaNumbers, price, packageId = un
   });
 }
 
+function openShowConfirmPhoneModal(setPaymentData, rifaNumbers, price, packageId = undefined) {
+  setPaymentData((prevPaymentData) => {
+    return {
+      ...prevPaymentData,
+      rifaNumbers,
+      price,
+      showPaymentContainer: false,
+      showConfirmPhoneModal: true,
+      packageId
+    };
+  });
+}
+
+function openIsPayingModal(setPaymentData, rifaNumbers, price, packageId = undefined) {
+  setPaymentData((prevPaymentData) => {
+    return {
+      ...prevPaymentData,
+      rifaNumbers,
+      price,
+      showPaymentContainer: false,
+      showConfirmPhoneModal: false,
+      showIsPayingModal: true,
+      packageId
+    };
+  });
+}
+
+
 function closePaymentContainer(setPaymentData) {
   setPaymentData((prevPaymentData) => {
     return {
@@ -200,6 +265,28 @@ function closePaymentContainer(setPaymentData) {
       showPaymentContainer: false,
     };
   });
+}
+
+function closeConfirmPhoneModal(setPaymentData) {
+  setPaymentData((prevPaymentData) => {
+    return {
+      ...prevPaymentData,
+      showConfirmPhoneModal: false,
+    };
+  });
+}
+
+function closeIsPayingModal(setPaymentData) {
+  setPaymentData((prevPaymentData) => {
+    return {
+      ...prevPaymentData,
+      showIsPayingModal: false,
+    };
+  });
+}
+
+function submitConfirmPhone() {
+
 }
 
 function handleCotas(setCotasData, numbers, operator = "plus") {
