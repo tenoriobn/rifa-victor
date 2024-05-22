@@ -34,7 +34,7 @@ export default function Sidebar(props) {
           </div>
 
           <ul>
-            <li>
+            <li className="mb-6">
               <NavLink
                 to="/rifas"
                 className={({ isActive }) =>
@@ -54,6 +54,29 @@ export default function Sidebar(props) {
                   }`}
                 >
                   Rifas
+                </mark>
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/configuracao-do-site"
+                className={({ isActive }) =>
+                  isActive
+                    ? `bg-blue-900 text-white ${sidebarAnchorClasses}`
+                    : `bg-white text-blue-900 ${sidebarAnchorClasses}`
+                }
+              >
+                <i
+                  className={`icon-pencil text-2xl ${
+                    !props.isSidebarActive && "lg:text-4xl"
+                  }`}
+                ></i>
+                <mark
+                  className={`text-inherit font-medium text-base ${
+                    !props.isSidebarActive && "lg:hidden"
+                  }`}
+                >
+                  Configuração
                 </mark>
               </NavLink>
             </li>

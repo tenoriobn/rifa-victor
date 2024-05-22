@@ -90,7 +90,7 @@ export default function Buyers() {
         )}
       </section>
       <section>
-        <div className="bg-green-700 py-4 px-4 text-white mt-4 flex flex-col gap-3 sm:gap-0 sm:flex-row items-center justify-between mb-4">
+        <div className="bg-green-600 py-4 px-4 text-white mt-4 flex flex-col gap-3 sm:gap-0 sm:flex-row items-center justify-between mb-4">
           <div className="flex items-center gap-3">
             <div className="">
               <img className="w-32 object-cover" src={imgRifa} alt="" />
@@ -116,7 +116,7 @@ export default function Buyers() {
           </div>
         </div>
 
-        <div className="bg-green-700 py-4 px-4 text-white mt-4 flex flex-col gap-3 sm:gap-0 sm:flex-row items-center justify-between mb-4">
+        <div className="bg-yellow-600 py-4 px-4 text-white mt-4 flex flex-col gap-3 sm:gap-0 sm:flex-row items-center justify-between mb-4">
           <div className="flex items-center  gap-3">
             <div className="">
               <img className="w-32 object-cover" src={imgRifa} alt="" />
@@ -139,7 +139,7 @@ export default function Buyers() {
           </div>
         </div>
 
-        <div className="bg-green-700 py-4 px-4 text-white mt-4 flex flex-col gap-3 sm:gap-0 sm:flex-row items-center justify-between mb-4">
+        <div className="bg-red-600 py-4 px-4 text-white mt-4 flex flex-col gap-3 sm:gap-0 sm:flex-row items-center justify-between mb-4">
           <div className="flex items-center  gap-3">
             <div className="">
               <img className="w-32 object-cover" src={imgRifa} alt="" />
