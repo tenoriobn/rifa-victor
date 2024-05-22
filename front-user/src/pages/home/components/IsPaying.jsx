@@ -2,10 +2,32 @@
 import { useEffect, useState } from "react";
 import { sendRequest } from "../../../util/util";
 
-export default function Payment(props) {
+export default function IsPaying(props) {
+  const [qrCodeBase64, setQrCodeBase64] = useState();
+  const [paymentHash, setPaymentHash] = useState();
   const [phone, setPhone] = useState();
   const [disableBtn, setDisableBtn] = useState(false);
   
+  useEffect(() => {
+    async function generatePaymentQRCode() {
+      const requestData = {
+        method: "POST",
+        body: { id: props.rifaId, phone: "1111111" },
+        url: "pix",
+      };
+      if (props.packageId === undefined) {
+        requestData.body.rifaNumbers = props.rifaNumbers;
+      }
+      if (props.packageId) {
+        requestData.body.packageId = props.packageId;
+      }
+      const { data } = await sendRequest(requestData);
+      setPaymentHash(data.hash);
+      setQrCodeBase64(data.qrCode);
+    }
+    generatePaymentQRCode();
+  }, []);
+
   return (
     <div
       className={`${
@@ -22,7 +44,7 @@ export default function Payment(props) {
 
         <article className="flex flex-col gap-2">
           <h2 className="text-secondary text-base font-medium">
-            PRIMEIRO MODAL DE INSERIR TELEFONE
+            TERCEIRO MODAL DE PAGAR
             Você está adquirindo {props.rifaNumbers} número(s) do sorteio (
             {props.rifaTitle}), seu pedido será efetivado assim que concluir a
             compra.
@@ -49,8 +71,19 @@ export default function Payment(props) {
             <p className="text-primary font-bold text-base">
               Informe seu telefone para continuar!
             </p>
-            <button className="qrcode-btn" onClick={ () => props.submitBtn() }>Continuar</button>
+            <button className="qrcode-btn">Continuar</button>
           </form>
+          {
+            qrCodeBase64 && (<img src={`data:image/jpeg;base64,${qrCodeBase64}`}/>)
+          }
+          {
+            paymentHash &&
+            (
+            <h2 className="text-secondary text-base font-medium text-hash">
+              {paymentHash}
+            </h2>
+            )
+          }
         </article>
       </article>
     </div>

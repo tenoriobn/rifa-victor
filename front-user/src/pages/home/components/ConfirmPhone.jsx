@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { sendRequest } from "../../../util/util";
 
-export default function Payment(props) {
+export default function ConfirmPhone(props) {
   const [phone, setPhone] = useState();
   const [disableBtn, setDisableBtn] = useState(false);
   
@@ -22,7 +22,7 @@ export default function Payment(props) {
 
         <article className="flex flex-col gap-2">
           <h2 className="text-secondary text-base font-medium">
-            PRIMEIRO MODAL DE INSERIR TELEFONE
+            SEGUNDO MODAL DE CONFIRMAR TELEFONE
             Você está adquirindo {props.rifaNumbers} número(s) do sorteio (
             {props.rifaTitle}), seu pedido será efetivado assim que concluir a
             compra.
@@ -35,7 +35,35 @@ export default function Payment(props) {
                   htmlFor="phone"
                   className="text-lg text-primary font-bold"
                 >
-                  Seu Telefone:
+                  Nome Completo
+                </label>
+
+                <input
+                  className="p-2 w-full rounded-lg bg-white text-grayBlack text-base border border-grayBlue"
+                  type="text"
+                  placeholder="(11) 99999-9999"
+                />
+              </div>
+              <div className="flex flex-col gap-1">
+                <label
+                  htmlFor="phone"
+                  className="text-lg text-primary font-bold"
+                >
+                  Seu Telefone
+                </label>
+
+                <input
+                  className="p-2 w-full rounded-lg bg-white text-grayBlack text-base border border-grayBlue"
+                  type="text"
+                  placeholder="(11) 99999-9999"
+                />
+              </div>
+              <div className="flex flex-col gap-1">
+                <label
+                  htmlFor="phone"
+                  className="text-lg text-primary font-bold"
+                >
+                  Confirme Seu Telefone
                 </label>
 
                 <input
