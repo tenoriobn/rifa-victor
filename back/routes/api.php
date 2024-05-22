@@ -36,11 +36,6 @@ Route::middleware('auth:sanctum')->get(
 //     ]);
 // });
 
-Route::post("/v1/mercado-pago-payments", [MercadoPagoController::class, 'index'])->middleware(['validateMercadoPagoSignature']);
-
-Route::post("/v1/pix", [PixController::class, "index"]);
-
-
 Route::group(["prefix" => "v1", "middleware" => ["cors"]], function () {
     Route::group(["controller" => AuthController::class], function () {
         Route::post("login", "login");
@@ -58,4 +53,6 @@ Route::group(["prefix" => "v1", "middleware" => ["cors"]], function () {
     Route::group(["prefix" => "public-rifas", "controller" => RifasController::class,], function () {
         Route::get("/latest", "latest");
     });
+    Route::post("/pix", [PixController::class, "index"]);
+    Route::post("/mercado-pago-payments", [MercadoPagoController::class, 'index'])->middleware(['validateMercadoPagoSignature']);
 });
