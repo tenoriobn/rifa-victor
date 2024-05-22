@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\V1;
 
+use App\Exceptions\ForbiddenRequestException;
 use App\Http\Controllers\Controller;
 use App\Models\V1\RifaNumbers;
 use App\Models\V1\Clients;
+use App\Models\V1\Cotas;
 use App\Models\V1\Rifas;
 use App\Services\PaymentStatusService;
+use Carbon\Carbon;
 use Error;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -95,14 +98,17 @@ class PixController extends Controller
         return RifaNumbers::where(['rifa_id' => $rifaId])->count();
     }
 
-    private function generateNumbersForRifa($rifa, $numbersQuant) {
+    private function validateRifaLeftNumbers($rifa, $numbersQuant) {
         $rifaId = $rifa->id;
         $rifaMaxNumbers = $rifa->rifa_numbers;
         $totalNumbers = $this->rifaTotalNumbers($rifaId);
         if ($totalNumbers + $numbersQuant > $rifaMaxNumbers) {
             $rifaLeftNumbersQuant = $rifaMaxNumbers - $totalNumbers;
-            throw new Error("Left numbers quantity: $rifaLeftNumbersQuant");
+            throw new ForbiddenRequestException("Left numbers quantity: $rifaLeftNumbersQuant");
         }
+    }
+
+    private function generateNumbersForRifa($numbersQuant) {
         $nums = DB::select(
             "SELECT @row := @row + 1 AS nums FROM 
             (select 0 union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) t,
@@ -117,24 +123,45 @@ class PixController extends Controller
         return $nums;
     }
 
+    private function insertNums($nums, $rifaId, $clientId, $paymentId) {
+        $now = Carbon::now('utc')->toDateTimeString();
+        $data = [];
+        $cota = Cotas::create(['payment_id' => $paymentId, 'payment_status' => Cotas::PENDING]);
+        for($index = 0; $index < count($nums); $index += 1) {
+            $currentNumber = $nums[$index]->nums;
+            array_push($data, ['client_id' => $clientId, 'number' => $currentNumber, 'rifa_id' => $rifaId, 'cota_id' => $cota->id, 'created_at'=> $now,
+            'updated_at'=> $now
+            ]);
+        }
+        RifaNumbers::insert($data);
+    }
+
+    private function getNumbersQuant($rifa, $packageId, $numbers) {
+        if (isset($packageId)) {
+            $packageName = $this->getPackageName($packageId);
+            $packageNumbers = $packageName . '_pacote_numbers';
+            return $rifa[$packageNumbers];
+        }
+        if (isset($numbers)) {
+            return $numbers;
+        }
+    }
+
     public function index(Request $request)
     {
-        try{
+        try {
             $res = Cache::lock('criar-rifas')->block(10, function () use ($request) {
-                $client = $this->getClient($request->phone);
                 $rifa = Rifas::find($request->id);
                 if (!isset($rifa)) {
                     throw new ItemNotFoundException('Rifa not found!');
                 }
+                $numbersQuant = $this->getNumbersQuant($rifa, $request->packageId, $request->rifaNumbers);
+                $this->validateRifaLeftNumbers($rifa, $numbersQuant);
                 $price = $this->getPrice($rifa, $request->packageId, $request->rifaNumbers);
-                if ($request->sleep) {
-                    sleep(2);
-                }
+                $client = $this->getClient($request->phone);
                 $payment = $this->createPayment($price);
-                $nums = $this->generateNumbersForRifa($rifa, 300);
-                Log::info($nums);
-                // RifaNumbers::create(['rifa_id' => $rifa->id, 'client_id' => $client->id, 'numbers' => []]);
-                // DB::query('insert into rifa_numbers (username, email, password) values ("johndoe", "john@johndoe.com", "password")');
+                $nums = $this->generateNumbersForRifa($numbersQuant);
+                $this->insertNums($nums, $rifa->id, $client->id, $payment->id);
                 return response()->json(["success" => true, "data" => [ "qrCode" => $payment->point_of_interaction->transaction_data->qr_code_base64, "hash" => $payment->point_of_interaction->transaction_data->qr_code ]], 200);
             });
             if (!$res instanceof JsonResponse) {
@@ -151,6 +178,10 @@ class PixController extends Controller
             return response()->json(["success" => false, "data" => [
                 "message" => $e->getMessage(),
             ]], 400);
+        } catch (ForbiddenRequestException $e) {
+            return response()->json(["success" => false, "data" => [
+                "message" => $e->getMessage(),
+            ]], 403);
         } catch (ItemNotFoundException $e) {
             return response()->json(["success" => false, "data" => [
                 "message" => $e->getMessage(),
