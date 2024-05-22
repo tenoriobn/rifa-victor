@@ -124,7 +124,7 @@ class PixController extends Controller
             (select 0 union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) t4, 
             (SELECT @row:=0) numbers
             HAVING nums NOT IN (SELECT number FROM rifa_numbers INNER JOIN cotas ON cotas.id = rifa_numbers.cota_id WHERE cotas.payment_status NOT IN ($notReserved))
-            ORDER BY nums ASC
+            ORDER BY RAND()
             LIMIT $numbersQuant"
         );
         return $nums;
