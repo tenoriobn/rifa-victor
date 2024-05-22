@@ -78,6 +78,7 @@ class PixController extends Controller
             "transaction_amount" => $price,
             "description" => "Comprando rifas",
             "payment_method_id" => "pix",
+            'notification_url' => 'http://test.com/api/v1/mercado-pago-payments',
             "payer" => [
                 "email" => "crissmykel10@gmail.com",
             ]
