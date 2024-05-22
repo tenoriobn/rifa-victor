@@ -87,6 +87,12 @@ class PixController extends Controller
         return $payment;
     }
 
+    private function updateOlderPayments() {
+        $date = Carbon::now()->subMinutes(30);
+
+        Cotas::whereIn('payment_status', [Cotas::PENDING])->where('created_at', '<=', $date)->update(['payment_status' => Cotas::LOST_RESERVATION]);
+    }
+
     private function getClient($phone) {
         if (!isset($phone)) {
             throw new BadRequestException("Phone is required");
@@ -109,6 +115,7 @@ class PixController extends Controller
     }
 
     private function generateNumbersForRifa($numbersQuant) {
+        $notReserved = Cotas::LOST_RESERVATION;
         $nums = DB::select(
             "SELECT @row := @row + 1 AS nums FROM 
             (select 0 union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) t,
@@ -116,7 +123,7 @@ class PixController extends Controller
             (select 0 union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) t3, 
             (select 0 union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) t4, 
             (SELECT @row:=0) numbers
-            HAVING nums NOT IN (SELECT number FROM rifa_numbers)
+            HAVING nums NOT IN (SELECT number FROM rifa_numbers INNER JOIN cotas ON cotas.id = rifa_numbers.cota_id WHERE cotas.payment_status NOT IN ($notReserved))
             ORDER BY nums ASC
             LIMIT $numbersQuant"
         );
@@ -149,6 +156,7 @@ class PixController extends Controller
 
     public function index(Request $request)
     {
+        $this->updateOlderPayments();
         try {
             $res = Cache::lock('criar-rifas')->block(10, function () use ($request) {
                 $rifa = Rifas::find($request->id);

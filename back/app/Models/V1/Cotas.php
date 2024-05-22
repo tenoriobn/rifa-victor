@@ -18,6 +18,7 @@ class Cotas extends Model
     public const CANCELLED = 6;
     public const REFUNDED = 7;
     public const CHARGED_BACK = 8;
+    public const LOST_RESERVATION = 9;
 
     /**
      * The table associated with the model.
