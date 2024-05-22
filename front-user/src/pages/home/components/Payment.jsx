@@ -1,11 +1,35 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from "react";
-import { sendRequest } from "../../../util/util";
+import { useState } from "react";
 
 export default function Payment(props) {
-  const [phone, setPhone] = useState();
-  const [disableBtn, setDisableBtn] = useState(false);
-  
+  const [phone, setPhone] = useState("");
+  const [error, setError] = useState("");
+
+  function formatarTelefone(telefone) {
+    telefone = telefone.replace(/\D/g, "");
+    telefone = telefone.replace(/(\d{2})(\d)/, "($1) $2");
+    telefone = telefone.replace(/(\d)(\d{4})$/, "$1-$2");
+    return telefone;
+  }
+
+  const handleChange = (event) => {
+    const formattedPhone = formatarTelefone(event.target.value);
+    setPhone(formattedPhone);
+    setError(""); 
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const phonePattern = /^\(\d{2}\) \d{4,5}-\d{4}$/;
+    if (!phonePattern.test(phone)) {
+      setError("O telefone inválido");
+      return;
+    }
+
+    props.submitBtn();
+  };
+
   return (
     <div
       className={`${
@@ -22,13 +46,12 @@ export default function Payment(props) {
 
         <article className="flex flex-col gap-2">
           <h2 className="text-secondary text-base font-medium">
-            PRIMEIRO MODAL DE INSERIR TELEFONE
-            Você está adquirindo {props.rifaNumbers} número(s) do sorteio (
-            {props.rifaTitle}), seu pedido será efetivado assim que concluir a
-            compra.
+            PRIMEIRO MODAL DE INSERIR TELEFONE Você está adquirindo{" "}
+            {props.rifaNumbers} número(s) do sorteio ({props.rifaTitle}), seu
+            pedido será efetivado assim que concluir a compra.
           </h2>
 
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="flex flex-col gap-2">
               <div className="flex flex-col gap-1">
                 <label
@@ -42,14 +65,20 @@ export default function Payment(props) {
                   className="p-2 w-full rounded-lg bg-white text-grayBlack text-base border border-grayBlue"
                   type="text"
                   placeholder="(11) 99999-9999"
+                  value={phone}
+                  maxLength={15}
+                  onChange={handleChange}
                 />
+                {error && <p className="text-red-500">{error}</p>}
               </div>
             </div>
 
             <p className="text-primary font-bold text-base">
               Informe seu telefone para continuar!
             </p>
-            <button className="qrcode-btn" onClick={ () => props.submitBtn() }>Continuar</button>
+            <button  className=" mt-4 block w-full p-2 text-white font-bold bg-blue-700" type="submit" >
+              Continuar
+            </button>
           </form>
         </article>
       </article>
