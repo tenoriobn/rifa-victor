@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::table('clients', function (Blueprint $table) {
             $table->dropColumn("numbers");
+            $table->dropForeign("clients_rifa_id_foreign");
             $table->dropColumn("rifa_id");
         });
     }
@@ -24,7 +25,7 @@ return new class extends Migration
     {
         Schema::table('clients', function (Blueprint $table) {
             $table->integer("numbers");
-            $table->unsignedInteger('rifa_id');
+            $table->unsignedBigInteger('rifa_id');
             $table->foreign("rifa_id")->references("id")->on("rifas")->onDelete("cascade");
         });
     }
