@@ -192,6 +192,7 @@ async function getPostData(setContentIsLoading, setFormData, setCotasData) {
         sixthPacoteNumbers: responsePostData.sixthPacoteNumbers,
         sixthPacoteDiscount: responsePostData.sixthPacoteDiscount,
         thumbnail: responsePostData.thumbnail,
+        biggestBuyer: responsePostData.biggestBuyer,
       };
 
       return {

@@ -10,6 +10,7 @@ use App\Http\Resources\V1\RifasResource;
 use App\Http\Resources\V1\RifasCollection;
 use App\Http\Requests\V1\PaymentRequest;
 use \Exception;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class RifasController extends Controller
@@ -202,6 +203,12 @@ class RifasController extends Controller
 
             if (!$rifaData) {
                 return response()->json(["success" => false, "msg" => "Rifa has not been found."], $this->notFound);
+            }
+            $buyer = DB::select("SELECT clients.phone, clients.name, count(rifa_numbers.client_id) numbers FROM rifas.rifa_numbers INNER JOIN clients ON rifa_numbers.client_id = clients.id INNER JOIN cotas ON cotas.id = rifa_numbers.cota_id WHERE rifa_numbers.rifa_id = $rifaData->id AND cotas.payment_status IN (1, 2, 10) GROUP BY client_id ORDER BY numbers DESC LIMIT 1");
+            $rifaData->biggestBuyer = isset($buyer[0]) ? $buyer[0] : null;
+            if (isset($rifaData->biggestBuyer->phone)) {
+                $re = '*******';
+                $rifaData->biggestBuyer->phone = $re . substr($rifaData->biggestBuyer->phone, 7);
             }
 
             return response()->json(["success" => true, "data" => new RifasResource($rifaData)], $this->success);

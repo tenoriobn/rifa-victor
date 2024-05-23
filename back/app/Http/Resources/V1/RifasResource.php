@@ -35,6 +35,7 @@ class RifasResource extends JsonResource
             "fifthPacoteDiscount" => $this->fifth_pacote_discount,
             "sixthPacoteNumbers" => $this->sixth_pacote_numbers,
             "sixthPacoteDiscount" => $this->sixth_pacote_discount,
+            "biggestBuyer" => $this->biggestBuyer,
             "createdAt" => $this->created_at,
             "updatedAt" => $this->updated_at,
         ];

@@ -26,10 +26,10 @@ export default function Pricing(props) {
             <i className="icon-trophy text-5xl sm:text-[4rem]"></i>
 
             <article className="flex flex-col">
-              <h3 className="text-sm font-bold sm:text-base">MATHEUS</h3>
-              <h4 className="text-sm font-bold sm:text-base">(44)9999-*****</h4>
+              <h3 className="text-sm font-bold sm:text-base">{props.rifaData.biggestBuyer && props.rifaData.biggestBuyer.name ? props.rifaData.biggestBuyer.name : '-'}</h3>
+              <h4 className="text-sm font-bold sm:text-base">{props.rifaData.biggestBuyer && props.rifaData.biggestBuyer.phone ? props.rifaData.biggestBuyer.phone : '-'}</h4>
               <h5 className="font-bold text-[8px] sm:text-sm">
-                160 NÚMEROS COMPRADOS
+                {props.rifaData.biggestBuyer && props.rifaData.biggestBuyer.numbers ? `${props.rifaData.biggestBuyer.numbers} NÚMEROS COMPRADOS` : '-'}
               </h5>
             </article>
           </article>
