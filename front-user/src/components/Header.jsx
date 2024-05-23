@@ -55,6 +55,7 @@ function hideMenu(setMenuIsActive) {
 }
 
 function Menu(props) {
+  const config = useConfig();
   const menuItems = getMenuItems();
 
   const menuElements = menuItems.map((item) => {
@@ -79,7 +80,7 @@ function Menu(props) {
           <Link to="/" className="cursor-pointer">
             <picture>
               <img
-                src="/assets/images/logos/logo.png"
+                src={config.logoUrl}
                 alt="Logo do aplicativo"
                 className="h-12"
               />
