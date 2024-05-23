@@ -1,9 +1,11 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
+import { usePay } from "../../../context/PayContext";
 
 export default function Payment(props) {
   const [phone, setPhone] = useState("");
   const [error, setError] = useState("");
+  const payInfo = usePay();
 
   function formatarTelefone(telefone) {
     telefone = telefone.replace(/\D/g, "");
@@ -26,7 +28,7 @@ export default function Payment(props) {
       setError("O telefone inválido");
       return;
     }
-
+    payInfo.setPhone(phone);
     props.submitBtn();
   };
 
@@ -46,7 +48,7 @@ export default function Payment(props) {
 
         <article className="flex flex-col gap-2">
           <h2 className="text-secondary text-base font-medium">
-            PRIMEIRO MODAL DE INSERIR TELEFONE Você está adquirindo{" "}
+            Você está adquirindo{" "}
             {props.rifaNumbers} número(s) do sorteio ({props.rifaTitle}), seu
             pedido será efetivado assim que concluir a compra.
           </h2>

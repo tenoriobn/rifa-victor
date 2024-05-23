@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import infoCheck from "../../../public/assets/images/check2.svg";
-import { sendRequest } from "../../util/util";
+import { formatDate, formatPrice, sendRequest } from "../../util/util";
 import Login from "../../components/Login";
+import Paying from "./Paying";
 
 export default function MeusNumeros() {
   const [modalNumberCota, setModalNumberCota] = React.useState(false);
@@ -10,6 +11,9 @@ export default function MeusNumeros() {
   const [orders, setOrders] = useState(null);
   const [client, setClient] = useState();
   const [orderId, setOrderId] = useState();
+  const [qrCodeBase64, setQrCodeBase64] = useState();
+  const [paymentHash, setPaymentHash] = useState();
+  const [payingRifa, setPayingRifa] = useState();
 
   function payment(status) {
     switch (status) {
@@ -53,6 +57,7 @@ export default function MeusNumeros() {
         return;
       }
       if (response.data.orders && response.data.orders.length > 0) {
+        localStorage.setItem('phone', phone);
         setOrders(response.data.orders);
         setClient(response.data.client);
       } else {
@@ -64,8 +69,27 @@ export default function MeusNumeros() {
     }
   }
 
+  async function getQr(cotaId) {
+    const requestData = {
+      method: "POST",
+      body: { cotaId },
+      url: `pay-cota`,
+    }
+
+    try {
+      const response = await sendRequest(requestData);
+      if (!response.success) {
+        return;
+      }
+      setPaymentHash(response.data.hash);
+      setQrCodeBase64(response.data.qrCode);
+    } catch (error) {
+      // window.alert(`Houve um erro no servidor ${error}`);
+    }
+  }
+
   useEffect(() => {
-    const phone = localStorage.getItem('phone')
+    const phone = localStorage.getItem('phone');
     if (phone) {
       getNumbers(phone);
     }
@@ -90,16 +114,19 @@ export default function MeusNumeros() {
                 </p>
                 <p className="mb-1">{client.name} {client.phone}</p>
                 <p className="mb-1">
-                  Valor da compra: <span className="font-bold">R$ 4,50</span>
+                  Valor da compra: <span className="font-bold">R$ {formatPrice(order.price)}</span>
                 </p>
                 <p>
                   Data da compra:{" "}
-                  <span className="font-bold">22/05/2024 às 22:53:50</span>
+                  <span className="font-bold">{ formatDate(order.created_at) }</span>
                 </p>
               </div>
             </div>
             <div className="flex">
-              {order.payment_status === 0 ? (<button className="bg-red-600 text-white font-bold py-1 px-1 flex-1 hover:bg-red-700 rounded-l-md ">
+              {order.payment_status === 0 ? (<button onClick={() => {
+                getQr(order.id);
+                setPayingRifa({ title: order.title, price: order.price, name: client.name, phone: client.phone })
+              }} className="bg-red-600 text-white font-bold py-1 px-1 flex-1 hover:bg-red-700 rounded-l-md ">
                 PAGAR PEDIDO
               </button>) : (<button
                 onClick={() => {
@@ -124,6 +151,11 @@ export default function MeusNumeros() {
           <Login submitBtn={ (phone, setError) => {
             getNumbers(phone, setError);
           } } closeLoginContainer={() => setShowLoginContainer(false)} showLoginContainer={showLoginContainer} />
+        )
+      }
+      {
+        paymentHash && qrCodeBase64 && payingRifa && (
+          <Paying info={payingRifa} paymentHash={paymentHash} qrCodeBase64={qrCodeBase64} />
         )
       }
       {modalNumberCota && numbersCota && orderId && (

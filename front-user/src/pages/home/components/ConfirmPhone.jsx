@@ -1,11 +1,14 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { usePay } from "../../../context/PayContext";
 
 export default function ConfirmPhone(props) {
   const [phone, setPhone] = useState("");
   const [confirmPhone, setConfirmPhone] = useState("");
+  const [name, setName] = useState("");
   const [error, setError] = useState("");
   const [disableBtn, setDisableBtn] = useState(false);
+  const payInfo = usePay();
 
   function formatarTelefone(telefone) {
     telefone = telefone.replace(/\D/g, "");
@@ -13,6 +16,10 @@ export default function ConfirmPhone(props) {
     telefone = telefone.replace(/(\d)(\d{4})$/, "$1-$2");
     return telefone;
   }
+
+  useEffect(() => {
+    setPhone(payInfo.phone);
+  }, []);
 
   const handleChange = (event, setState) => {
     const formattedPhone = formatarTelefone(event.target.value);
@@ -23,12 +30,16 @@ export default function ConfirmPhone(props) {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const phonePattern = /^\(\d{2}\) \d{4,5}-\d{4}$/;
-    if (!phonePattern.test(phone) || !phonePattern.test(confirmPhone)) {
-      setError("O telefone deve estar no formato (XX) XXXXX-XXXX ou (XX) XXXX-XXXX");
+    if (phone !== confirmPhone) {
+      setError("Telefones diferentes");
       return;
     }
 
+    if (name === '') {
+      setError("Insira o seu nome");
+      return;
+    }
+    payInfo.setName(name);
     props.submitBtn();
   };
 
@@ -48,7 +59,6 @@ export default function ConfirmPhone(props) {
 
         <article className="flex flex-col gap-2">
           <h2 className="text-secondary text-base font-medium">
-            SEGUNDO MODAL DE CONFIRMAR TELEFONE
             Você está adquirindo {props.rifaNumbers} número(s) do sorteio (
             {props.rifaTitle}), seu pedido será efetivado assim que concluir a
             compra.
@@ -67,6 +77,8 @@ export default function ConfirmPhone(props) {
                 <input
                   className="p-2 w-full rounded-lg bg-white text-grayBlack text-base border border-grayBlue"
                   type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                   placeholder="Seu Nome Completo"
                 />
               </div>
@@ -81,10 +93,11 @@ export default function ConfirmPhone(props) {
                 <input
                   className="p-2 w-full rounded-lg bg-white text-grayBlack text-base border border-grayBlue"
                   type="text"
+                  disabled={true}
                   placeholder="(11) 99999-9999"
                   value={phone}
-                  maxLength={15}
                   onChange={(e) => handleChange(e, setPhone)}
+                  maxLength={15}
                 />
               </div>
               <div className="flex flex-col gap-1">
