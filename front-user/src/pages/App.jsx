@@ -4,20 +4,23 @@ import ContentLayout from "../layouts/ContentLayout";
 import Home from "./home/Home";
 import NotFound from "./notFound/NotFound";
 import Termos from "./termos/Termos";
+import { ConfigProvider } from "../context/ConfigContext";
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<AppLayout />}>
-          <Route path="/" element={<ContentLayout />}>
-            <Route index element={<Home />} />
-            <Route path="termos-de-uso" element={<Termos />} />
-          </Route>
+    <ConfigProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<AppLayout />}>
+            <Route path="/" element={<ContentLayout />}>
+              <Route index element={<Home />} />
+              <Route path="termos-de-uso" element={<Termos />} />
+            </Route>
 
-          <Route path="*" element={<NotFound />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+            <Route path="*" element={<NotFound />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </ConfigProvider>
   );
 }
