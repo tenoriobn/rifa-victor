@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\V1\AuthController;
+use App\Http\Controllers\V1\ClientController;
 use App\Http\Controllers\V1\MercadoPagoController;
 use App\Http\Controllers\V1\RifasController;
 use App\Http\Controllers\V1\PixController;
@@ -57,7 +58,7 @@ Route::group(["prefix" => "v1", "middleware" => ["cors"]], function () {
         Route::get("/", "index");
         Route::post("/", "store");
     });
-
+    Route::get("/get-numbers", [ClientController::class, "getNumbers"]);
     Route::get("/config", [SiteConfigController::class, "getUserSiteConfig"]);
     Route::post("/pix", [PixController::class, "index"]);
     Route::post("/mercado-pago-payments", [MercadoPagoController::class, 'index']);
