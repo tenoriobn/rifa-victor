@@ -5,6 +5,8 @@ import Home from "./home/Home";
 import NotFound from "./notFound/NotFound";
 import Termos from "./termos/Termos";
 import { ConfigProvider } from "../context/ConfigContext";
+import MeusNumeros from "./meusNumeros/MeusNumeros";
+import Ganhadores from "./ganhadores/Ganhadores";
 
 export default function App() {
   return (
@@ -14,6 +16,8 @@ export default function App() {
           <Route path="/" element={<AppLayout />}>
             <Route path="/" element={<ContentLayout />}>
               <Route index element={<Home />} />
+              <Route path="meus-numeros" element={<MeusNumeros />} />
+              <Route path="ganhadores" element={<Ganhadores />} />
               <Route path="termos-de-uso" element={<Termos />} />
             </Route>
 
