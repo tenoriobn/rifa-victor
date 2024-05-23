@@ -33,5 +33,5 @@ class Cotas extends Model
      *
      * @var array
      */
-    protected $fillable = ['payment_status', 'payment_id'];
+    protected $fillable = ['payment_status', 'payment_id', 'price'];
 }
