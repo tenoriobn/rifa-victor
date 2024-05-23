@@ -132,10 +132,10 @@ class PixController extends Controller
         return $nums;
     }
 
-    private function insertNums($nums, $rifaId, $clientId, $paymentId, $free) {
+    private function insertNums($nums, $rifaId, $clientId, $payment, $free) {
         $now = Carbon::now()->toDateTimeString();
         $data = [];
-        $cota = Cotas::create(['payment_id' => $paymentId, 'payment_status' => $free ? Cotas::FREE : Cotas::PENDING]);
+        $cota = Cotas::create(['payment_id' => $payment->id, 'payment_status' => $free ? Cotas::FREE : Cotas::PENDING, 'price' => $free ? 0 : "$payment->transaction_amount"]);
         for($index = 0; $index < count($nums); $index += 1) {
             $currentNumber = $nums[$index]->nums;
             array_push($data, ['client_id' => $clientId, 'number' => $currentNumber, 'rifa_id' => $rifaId, 'cota_id' => $cota->id, 'created_at'=> $now,
@@ -176,7 +176,7 @@ class PixController extends Controller
                     $payment = $this->createPayment($price);
                 }
                 $nums = $this->generateNumbersForRifa($numbersQuant);
-                $this->insertNums($nums, $rifa->id, $client->id, $payment->id, $free);
+                $this->insertNums($nums, $rifa->id, $client->id, $payment, $free);
                 if ($free) {
                     return response()->json(["success" => true, "data" => [ "freeRifa" => true]], 200);
                 }
