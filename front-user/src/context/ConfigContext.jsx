@@ -7,8 +7,8 @@ export function useConfig() {
 }
 
 export function ConfigProvider({ children }) {
-    const [faviconUrl, setFaviconUrl] = useState();
-    const [logoUrl, setLogoUrl] = useState();
+    const [faviconUrl, setFaviconUrl] = useState(localStorage.getItem('favicon_url'));
+    const [logoUrl, setLogoUrl] = useState(localStorage.getItem('logo_url'));
     const [linkWpp, setLinkWpp] = useState();
     const [linkInsta, setLinkInsta] = useState();
     const [title, setTitle] = useState();
@@ -61,15 +61,6 @@ export function ConfigProvider({ children }) {
             }
 
             try {
-                //   {
-                //     "meta_pixel": "690655526454288",
-                //     "instagram_link": "André",
-                //     "whatsapp_link": "link zap zap",
-                //     "url_logo_site": "http://127.0.0.1:8000/assets/images/logo/664e7493420c2.png",
-                //     "url_favicon_site": "http://127.0.0.1:8000/assets/images/favicon/664e749341844.png",
-                //     "site_name": "Victor",
-                //     "plataform_name": "rifas minhas"
-                // }
                 const response = await sendRequest(requestData);
 
                 if (!response.success) {
@@ -87,7 +78,9 @@ export function ConfigProvider({ children }) {
                     }
                     setFaviconUrl(responseData.url_favicon_site);
                     link.href = responseData.url_favicon_site;
+                    localStorage.setItem('favicon_url', responseData.url_favicon_site);
                     setLogoUrl(responseData.url_logo_site);
+                    localStorage.setItem('logo_url', responseData.url_logo_site);
                     setLinkInsta(responseData.instagram_link);
                     setLinkWpp(responseData.whatsapp_link);
                     generatePixel(responseData.meta_pixel);
