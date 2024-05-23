@@ -15,7 +15,7 @@ export default function Config() {
   const senha = UseForm("text");
   const pixel = UseForm("text");
 
-  console.log(logoSite);
+
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -50,12 +50,12 @@ export default function Config() {
       requestData.append("logosite", logoSite.value);
       requestData.append("faviconsite", favIcon.value);
       requestData.append("linkwppsite", linkWpp.value);
-      requestData.append("linkwppsite", linkInsta.value);
-      requestData.append("linkwppsite", email.value);
-      requestData.append("linkwppsite", senha.value);
-      requestData.append("linkwppsite", tokenPublicMercadoPago.value);
-      requestData.append("linkwppsite", tokenMercadoPago.value);
-      requestData.append("linkwppsite", pixel.value);
+      requestData.append("linkwppista", linkInsta.value);
+      requestData.append("email", email.value);
+      requestData.append("senha", senha.value);
+      requestData.append("tokenpublicmercadopago", tokenPublicMercadoPago.value);
+      requestData.append("tokenmercadopago", tokenMercadoPago.value);
+      requestData.append("pixel", pixel.value);
       for (let val of requestData.entries()) {
         console.log(val);
       }
