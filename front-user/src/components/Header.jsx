@@ -2,8 +2,10 @@ import { useState } from "react";
 
 import { Link, NavLink } from "react-router-dom";
 import Footer from "./Footer";
+import { useConfig } from "../context/ConfigContext";
 
 export default function Header() {
+  const config = useConfig();
   const [menuIsActive, setMenuIsActive] = useState(false);
 
   return (
@@ -12,7 +14,7 @@ export default function Header() {
         <Link to="/" className="cursor-pointer">
           <picture>
             <img
-              src="/assets/images/logos/logo.png"
+              src={config.logoUrl}
               alt="Logo do aplicativo"
               className="h-7 md:h-10"
             />

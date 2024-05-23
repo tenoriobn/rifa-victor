@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import UseForm from "./UseForm";
 import Input from "./Input";
+import { sendRequest } from "../../../util/util";
 
 export default function Config() {
   const nomePlataforma = UseForm("text");
@@ -15,51 +16,94 @@ export default function Config() {
   const senha = UseForm("text");
   const pixel = UseForm("text");
 
+  function loadData(data) {
+    nomePlataforma.setValue(data.plataform_name);
+    nomeSite.setValue(data.site_name);
+    linkWpp.setValue(data.whatsapp_link);
+    linkInsta.setValue(data.instagram_link);
+    email.setValue(data.email);
+    tokenPublicMercadoPago.setValue(data.mercadoPagoPublic);
+    tokenMercadoPago.setValue(data.mercadoPagoAccessToken);
+    pixel.setValue(data.meta_pixel);
+  }
 
+  useEffect(() => {
+    async function getData() {
+      try {
+        const requestApiData = {
+          method: "GET",
+          url: "site-config",
+        };
+        const { data } = await sendRequest(requestApiData);
+        if (data) {
+          loadData(data);
+        }
+      } catch (error) {
+        window.alert(`Houve um erro no servidor ${error}`);
+      }
+    }
+    getData();
+  }, []);
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
     const isNomePlataformaValid = nomePlataforma.validate();
-    const isLogoSiteValid = logoSite.validate();
-    const isFavIconValid = favIcon.validate();
     const isNomeSite = nomeSite.validate();
     const isLinkWpp = linkWpp.validate();
     const isLinkInsta = linkInsta.validate();
     const isEmail = email.validate();
     const isTokenPublicMercadoPago = tokenPublicMercadoPago.validate();
     const isTokenMercadoPago = tokenMercadoPago.validate();
-    const isSenha = senha.validate();
     const isPixel = pixel.validate();
 
     if (
       isNomePlataformaValid &&
-      isLogoSiteValid &&
-      isFavIconValid &&
       isNomeSite &&
       isLinkWpp &&
       isLinkInsta &&
       isEmail &&
       isTokenMercadoPago &&
       isTokenPublicMercadoPago &&
-      isSenha &&
       isPixel
     ) {
-      const requestData = new FormData();
-      requestData.append("plataforma", nomePlataforma.value);
-      requestData.append("nomesite", nomeSite.value);
-      requestData.append("logosite", logoSite.value);
-      requestData.append("faviconsite", favIcon.value);
-      requestData.append("linkwppsite", linkWpp.value);
-      requestData.append("linkwppista", linkInsta.value);
-      requestData.append("email", email.value);
-      requestData.append("senha", senha.value);
-      requestData.append("tokenpublicmercadopago", tokenPublicMercadoPago.value);
-      requestData.append("tokenmercadopago", tokenMercadoPago.value);
-      requestData.append("pixel", pixel.value);
-      for (let val of requestData.entries()) {
-        console.log(val);
+      const formDataToSend = new FormData();
+      formDataToSend.append("plataforma", nomePlataforma.value);
+      formDataToSend.append("nomesite", nomeSite.value);
+      if (logoSite.value) {
+        formDataToSend.append("logosite", logoSite.value);
       }
-      console.log("Enviar");
+      if (favIcon.value) {
+        formDataToSend.append("faviconsite", favIcon.value);
+      }
+      formDataToSend.append("linkwppsite", linkWpp.value);
+      formDataToSend.append("linkinstasite", linkInsta.value);
+      formDataToSend.append("email", email.value);
+      if (senha.length !== 0) {
+        formDataToSend.append("password", senha.value);
+      }
+      formDataToSend.append("publickeymercado", tokenPublicMercadoPago.value);
+      formDataToSend.append("secretmercadopago", tokenMercadoPago.value);
+      formDataToSend.append("pixel", pixel.value);
+
+      const requestApiData = {
+        method: "POST",
+        url: "site-config",
+        body: formDataToSend,
+        dataForm: true,
+      };
+
+      try {
+        const response = await sendRequest(requestApiData);
+
+        if (!response.success) {
+          window.alert(response.msg);
+          return;
+        }
+        window.alert("Dados atualizados com sucesso!")
+        // window.location.href = '/rifas';
+      } catch (error) {
+        window.alert(`Houve um erro no servidor ${error}`);
+      }
     } else {
       console.log("Não enviar");
     }

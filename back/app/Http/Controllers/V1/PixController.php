@@ -78,6 +78,8 @@ class PixController extends Controller
             "transaction_amount" => $price,
             "description" => "Comprando rifas",
             "payment_method_id" => "pix",
+            // "date_of_expiration" => Carbon::now()->addMinutes(30),
+            'notification_url' => 'http://test.com/api/v1/mercado-pago-payments',
             "payer" => [
                 "email" => "crissmykel10@gmail.com",
             ]
@@ -124,16 +126,16 @@ class PixController extends Controller
             (select 0 union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) t4, 
             (SELECT @row:=0) numbers
             HAVING nums NOT IN (SELECT number FROM rifa_numbers INNER JOIN cotas ON cotas.id = rifa_numbers.cota_id WHERE cotas.payment_status NOT IN ($notReserved))
-            ORDER BY nums ASC
+            ORDER BY RAND()
             LIMIT $numbersQuant"
         );
         return $nums;
     }
 
-    private function insertNums($nums, $rifaId, $clientId, $paymentId) {
-        $now = Carbon::now('utc')->toDateTimeString();
+    private function insertNums($nums, $rifaId, $clientId, $paymentId, $free) {
+        $now = Carbon::now()->toDateTimeString();
         $data = [];
-        $cota = Cotas::create(['payment_id' => $paymentId, 'payment_status' => Cotas::PENDING]);
+        $cota = Cotas::create(['payment_id' => $paymentId, 'payment_status' => $free ? Cotas::FREE : Cotas::PENDING]);
         for($index = 0; $index < count($nums); $index += 1) {
             $currentNumber = $nums[$index]->nums;
             array_push($data, ['client_id' => $clientId, 'number' => $currentNumber, 'rifa_id' => $rifaId, 'cota_id' => $cota->id, 'created_at'=> $now,
@@ -167,9 +169,17 @@ class PixController extends Controller
                 $this->validateRifaLeftNumbers($rifa, $numbersQuant);
                 $price = $this->getPrice($rifa, $request->packageId, $request->rifaNumbers);
                 $client = $this->getClient($request->phone);
-                $payment = $this->createPayment($price);
+                $free = false;
+                if ($rifa->price === 0) {
+                    $free = true;
+                } else {
+                    $payment = $this->createPayment($price);
+                }
                 $nums = $this->generateNumbersForRifa($numbersQuant);
-                $this->insertNums($nums, $rifa->id, $client->id, $payment->id);
+                $this->insertNums($nums, $rifa->id, $client->id, $payment->id, $free);
+                if ($free) {
+                    return response()->json(["success" => true, "data" => [ "freeRifa" => true]], 200);
+                }
                 return response()->json(["success" => true, "data" => [ "qrCode" => $payment->point_of_interaction->transaction_data->qr_code_base64, "hash" => $payment->point_of_interaction->transaction_data->qr_code ]], 200);
             });
             if (!$res instanceof JsonResponse) {
