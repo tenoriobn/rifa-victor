@@ -1,10 +1,11 @@
 import { useState } from "react";
 
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import Footer from "./Footer";
 import { useConfig } from "../context/ConfigContext";
 
 export default function Header() {
+  const location = useLocation();
   const config = useConfig();
   const [menuIsActive, setMenuIsActive] = useState(false);
 
@@ -37,6 +38,7 @@ export default function Header() {
             onClick={() => setMenuIsActive(!menuIsActive)}
             className="icon-bars text-white hover:text-grayBlue text-3xl cursor-pointer normal-transition"
           ></i>
+          {['/meus-numeros', '/ganhadores'].includes(location.pathname) && (<p>Sair vai ficar aqui</p>)}
         </div>
 
         <Menu menuIsActive={menuIsActive} setMenuIsActive={setMenuIsActive} />
