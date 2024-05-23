@@ -39,7 +39,10 @@ export default function Header() {
             onClick={() => setMenuIsActive(!menuIsActive)}
             className="icon-bars text-white hover:text-grayBlue text-3xl cursor-pointer normal-transition"
           ></i>
-          {['/meus-numeros', '/ganhadores'].includes(location.pathname) && (<img className="cursor-pointer" src={iconSair} alt="" />)}
+          {['/meus-numeros', '/ganhadores'].includes(location.pathname) && localStorage.getItem('phone') && (<button onClick={() => {
+            localStorage.removeItem('phone');
+            window.location.href = '/';
+          }}><img className="cursor-pointer" src={iconSair} alt="" /></button>)}
         </div>
 
         <Menu menuIsActive={menuIsActive} setMenuIsActive={setMenuIsActive} />

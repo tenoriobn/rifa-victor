@@ -14,5 +14,5 @@ class Clients extends Model
      *
      * @var array
      */
-    protected $fillable = ['phone'];
+    protected $fillable = ['phone', 'name'];
 }

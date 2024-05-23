@@ -95,11 +95,15 @@ class PixController extends Controller
         Cotas::whereIn('payment_status', [Cotas::PENDING])->where('created_at', '<=', $date)->update(['payment_status' => Cotas::LOST_RESERVATION]);
     }
 
-    private function getClient($phone) {
+    private function getClient($phone, $name) {
         if (!isset($phone)) {
             throw new BadRequestException("Phone is required");
         }
-        return Clients::firstOrCreate(['phone' => $phone], ['phone' => $phone]);
+        if (!isset($name)) {
+            throw new BadRequestException("Name is required");
+        }
+        Log::info($name);
+        return Clients::firstOrCreate(['phone' => $phone], ['phone' => $phone, 'name' => $name]);
     }
 
     private function rifaTotalNumbers($rifaId) {
@@ -168,7 +172,7 @@ class PixController extends Controller
                 $numbersQuant = $this->getNumbersQuant($rifa, $request->packageId, $request->rifaNumbers);
                 $this->validateRifaLeftNumbers($rifa, $numbersQuant);
                 $price = $this->getPrice($rifa, $request->packageId, $request->rifaNumbers);
-                $client = $this->getClient($request->phone);
+                $client = $this->getClient($request->phone, $request->name);
                 $free = false;
                 if ($rifa->price === 0) {
                     $free = true;

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string("phone");
             $table->integer("numbers");
-            $table->unsignedInteger('rifa_id');
+            $table->unsignedBigInteger('rifa_id');
             $table->foreign("rifa_id")->references("id")->on("rifas")->onDelete("cascade");
             $table->timestamps();
         });
