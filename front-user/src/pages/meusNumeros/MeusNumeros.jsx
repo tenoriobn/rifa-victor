@@ -2,6 +2,7 @@ import React from "react";
 import imgRifa from "../../../public/assets/images/exRifa.jpg";
 import infoCheck from "../../../public/assets/images/check2.svg";
 
+
 export default function MeusNumeros() {
   const [modalNumberCota, setModalNumberCota] = React.useState(false);
   // useEffect(() => {}, []);

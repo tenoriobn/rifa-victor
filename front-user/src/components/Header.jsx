@@ -1,4 +1,5 @@
 import { useState } from "react";
+import iconSair from "../../public/assets/images/iconSair.svg";
 
 import { Link, NavLink, useLocation } from "react-router-dom";
 import Footer from "./Footer";
@@ -38,7 +39,7 @@ export default function Header() {
             onClick={() => setMenuIsActive(!menuIsActive)}
             className="icon-bars text-white hover:text-grayBlue text-3xl cursor-pointer normal-transition"
           ></i>
-          {['/meus-numeros', '/ganhadores'].includes(location.pathname) && (<p>Sair vai ficar aqui</p>)}
+          {['/meus-numeros', '/ganhadores'].includes(location.pathname) && (<img className="cursor-pointer" src={iconSair} alt="" />)}
         </div>
 
         <Menu menuIsActive={menuIsActive} setMenuIsActive={setMenuIsActive} />
