@@ -270,6 +270,29 @@ class RifasController extends Controller
         }
     }
 
+    public function getLatestWinner() {
+        try {
+            $rifaData = Rifas::orderBy("updated_at", "desc")->first();
+
+            if (!$rifaData) {
+                return response()->json(["success" => false, "msg" => "Rifa has not been found."], $this->notFound);
+            }
+            if ($rifaData->winner_id === null) {
+                return response()->json(["success" => false, "data" => ['winner' => null]], 200);
+            }
+            Log::info($rifaData);
+            $winner = DB::select("SELECT rifas.winner_number, rifas.thumbnail,rifas.title, cotas.payment_status, cotas.price, clients.id client_id, clients.phone, clients.name, count(rifa_numbers.client_id) numbers, cotas.created_at, cotas.updated_at FROM rifa_numbers INNER JOIN clients ON rifa_numbers.client_id = clients.id INNER JOIN cotas ON cotas.id = rifa_numbers.cota_id INNER JOIN rifas ON rifa_numbers.rifa_id = rifas.id WHERE client_id = $rifaData->winner_id GROUP BY client_id LIMIT 1")[0];
+            $rifaData->biggestBuyer = isset($buyer[0]) ? $buyer[0] : null;
+            if (isset($winner->phone)) {
+                $winner->phone = preg_replace("/\d{4,5}/", '****' ,$winner->phone);
+            }
+
+            return response()->json(["success" => true, "data" => ['winner' => $winner]], $this->success);
+        } catch (Exception $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], $this->serverError);
+        }
+    }
+
     public function defineWinner(Request $request) {
         try {
             $rifaData = Rifas::find($request->id);
@@ -280,7 +303,7 @@ class RifasController extends Controller
 
             $buyers = DB::select("SELECT cotas.payment_status, cotas.id, cotas.price, clients.id client_id, clients.phone, clients.name, count(rifa_numbers.client_id) numbers, cotas.created_at, cotas.updated_at, GROUP_CONCAT(rifa_numbers.number) nums FROM rifa_numbers INNER JOIN clients ON rifa_numbers.client_id = clients.id INNER JOIN cotas ON cotas.id = rifa_numbers.cota_id WHERE rifa_id = $rifaData->id AND cotas.payment_status IN (1, 2, 10) AND rifa_numbers.number = $request->cotaId GROUP BY client_id LIMIT 1");
             if (isset($buyers[0])) {
-                $rifaData->update(['winner_id' => $buyers[0]->client_id]);
+                $rifaData->update(['winner_id' => $buyers[0]->client_id, 'winner_number' => $request->cotaId]);
                 return response()->json(["success" => true, "data" => ["buyer" => $buyers[0]]], $this->success);
             } else {
                 return response()->json(["success" => false, "message" => "Cota não encontrada"], 404);

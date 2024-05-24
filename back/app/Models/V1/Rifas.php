@@ -19,7 +19,8 @@ class Rifas extends Model
         "seventh_pacote_discount",
         "eighth_pacote_numbers",
         "eighth_pacote_discount",
-        "winner_id"
+        "winner_id",
+        "winner_number"
     ];
 
 

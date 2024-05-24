@@ -55,6 +55,7 @@ Route::group(["prefix" => "v1", "middleware" => ["cors"]], function () {
 
     Route::group(["prefix" => "public-rifas", "controller" => RifasController::class,], function () {
         Route::get("/latest", "latest");
+        Route::get("/latest-winner", "getLatestWinner");
     });
 
     Route::group(["prefix" => "site-config", "controller" => SiteConfigController::class, "middleware" => "auth:sanctum"], function () {
