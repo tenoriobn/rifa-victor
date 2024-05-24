@@ -112,7 +112,7 @@ function PostInfoRow(props) {
               <picture>
                 <img
                   className="w-32 h-32 object-cover"
-                  src={postData.thumbnail}
+                  src={postData.thumbnail.split(',')[0]}
                   alt="Thumbnail do Post"
                 />
               </picture>
