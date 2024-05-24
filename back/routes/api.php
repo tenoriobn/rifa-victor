@@ -42,6 +42,7 @@ Route::group(["prefix" => "v1", "middleware" => ["cors"]], function () {
     });
 
     Route::group(["prefix" => "rifas", "controller" => RifasController::class, "middleware" => "auth:sanctum"], function () {
+        Route::post('/define-winner', 'defineWinner');
         Route::post('/search-order', 'searchOrder');
         Route::get("/", "index");
         Route::get("/{id}", "show");

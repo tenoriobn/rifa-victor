@@ -270,6 +270,26 @@ class RifasController extends Controller
         }
     }
 
+    public function defineWinner(Request $request) {
+        try {
+            $rifaData = Rifas::find($request->id);
+
+            if (!$rifaData) {
+                return response()->json(["success" => false, "message" => "Rifa não encontrada."], 404);
+            }
+
+            $buyers = DB::select("SELECT cotas.payment_status, cotas.id, cotas.price, clients.id client_id, clients.phone, clients.name, count(rifa_numbers.client_id) numbers, cotas.created_at, cotas.updated_at, GROUP_CONCAT(rifa_numbers.number) nums FROM rifa_numbers INNER JOIN clients ON rifa_numbers.client_id = clients.id INNER JOIN cotas ON cotas.id = rifa_numbers.cota_id WHERE rifa_id = $rifaData->id AND cotas.payment_status IN (1, 2, 10) AND rifa_numbers.number = $request->cotaId GROUP BY client_id LIMIT 1");
+            if (isset($buyers[0])) {
+                $rifaData->update(['winner_id' => $buyers[0]->client_id]);
+                return response()->json(["success" => true, "data" => ["buyer" => $buyers[0]]], $this->success);
+            } else {
+                return response()->json(["success" => false, "message" => "Cota não encontrada"], 404);
+            }
+        } catch (Exception $e) {
+            return response()->json(["success" => false, "message" => $e->getMessage()], $this->serverError);
+        }
+    }
+
     public function payment(PaymentRequest $request)
     {
         // try {

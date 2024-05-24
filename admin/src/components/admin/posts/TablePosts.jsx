@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import React from "react";
 import imgRifa from "../../../assets/images/exRifa.jpg";
 import eyeTel from "../../../assets/images/eye.svg";
+import { formatDate, formatPrice, sendRequest } from "../../../util/util";
+import { useState } from "react";
 
 export default function TablePosts(props) {
   const postsData = props.postsData;
@@ -39,6 +41,7 @@ export default function TablePosts(props) {
 
 function PostInfoRow(props) {
   const [ativo, setAtivo] = React.useState(false);
+  const [winnerInfo, setWinnerInfo] = useState();
   const refUl = React.useRef();
   const [ganhador, setGanhador] = React.useState("");
   const refButton = React.useRef();
@@ -55,9 +58,56 @@ function PostInfoRow(props) {
       setNumberPhone('*****-****')
     }else{
       setNumberPhone('78978-9632')
-
     }
+  }
 
+  function todayDate() {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    let mm = today.getMonth() + 1; // Months start at 0!
+    let dd = today.getDate();
+
+    if (dd < 10) dd = '0' + dd;
+    if (mm < 10) mm = '0' + mm;
+
+    const formattedToday = dd + '/' + mm + '/' + yyyy;
+    return formattedToday;
+  }
+
+  function hideNum(phone) {
+    if (phone.length > 4) {
+      console.log()
+      return phone.slice(0, 4) + phone.slice(4).replaceAll(/\d{4,5}/g, '****');
+    }
+    return phone;
+  }
+  
+
+  async function submitModalWind(e) {
+    e.preventDefault();
+    if (ganhador.trim() === "") {
+      setInputError(true);
+      return;
+    }
+    
+    const requestData = {
+      method: "POST",
+      url: "rifas/define-winner",
+      body: { id: postData.id, cotaId: ganhador },
+    }
+    try {
+      const response = await sendRequest(requestData);
+  
+      if (response.success === false) {
+        alert(response.message);
+        return;
+      }
+      setWinnerInfo({...response.data.buyer, winnerNum: ganhador});
+      setModalWin(false);
+      setModalInfoWin(true);
+    } catch (error) {
+      window.alert(`Houve um erro no servidor ${error}`);
+    }
   }
 
   React.useEffect(() => {
@@ -206,16 +256,7 @@ function PostInfoRow(props) {
         <div className="fixed flex flex-col items-center justify-center z-40 top-0 bottom-0 left-0 right-0 bg-transparentBlack min-h-screen p-2 pt-5 pb-10 sm:p-10">
           <form
             className="bg-white px-10 max-w-[550px] w-full py-10 relative rounded-2xl overflow-x-auto"
-            onSubmit={(e) => {
-              e.preventDefault();
-              if (ganhador.trim() === "") {
-                setInputError(true);
-                return;
-              }
-              setInputError(false);
-              setModalWin(false);
-              setModalInfoWin(true);
-            }}
+            onSubmit={submitModalWind}
           >
             <span
               onClick={() => setModalWin(false)}
@@ -262,7 +303,7 @@ function PostInfoRow(props) {
         </div>
       )}
 
-      {modalInfoWin && (
+      {modalInfoWin && winnerInfo && (
         <div className="fixed flex flex-col items-center justify-center z-40 top-0 bottom-0 left-0 right-0 bg-transparentBlack min-h-screen p-2 pt-5 pb-10 sm:p-10">
           <div className="bg-white px-10 max-w-[550px] w-full py-10 relative rounded-2xl overflow-x-auto">
             <span
@@ -273,14 +314,14 @@ function PostInfoRow(props) {
             </span>
             <div className="flex gap-4">
               <div>
-                <img className="rounded-lg w-40" src={imgRifa} alt="" />
+                <img className="rounded-lg w-40" src={postData.thumbnail.split(',')[0]} alt="" />
               </div>
               <div>
                 <h1 className="text-2xl text-start font-bold mb-2">
                   Nome Sorteio
                 </h1>
                 <p className="font-bold">
-                  Data do sorteio: <span>26/07/2024</span>
+                  Data do sorteio: <span>{todayDate()}</span>
                 </p>
               </div>
             </div>
@@ -292,31 +333,31 @@ function PostInfoRow(props) {
                 </div>
                 <div>
                   <p className="font-bold mb-1">
-                    Nome: <span>Julia</span>
+                    Nome: <span>{winnerInfo.name}</span>
                   </p>
                   <p className="font-bold flex gap-3 mb-1">
-                    Telefone: <span>(11) {numberPhone}</span>{" "}
+                    Telefone: <span>{seeNumber ? winnerInfo.phone : hideNum(winnerInfo.phone)}</span>{" "}
                     <img onClick={handleNumberPhone} className="cursor-pointer" src={eyeTel} alt="" />
                   </p>
                   <p className="font-bold mb-1">
-                    Status: <span className="text-white bg-green-500 p-1 rounded-md">Pago</span>
+                    Status: <span className="text-white bg-green-500 p-1 rounded-md">{ winnerInfo.payment_status === 1 || winnerInfo.payment_status === 2 ? 'Pago' : 'Rifa gratuita' }</span>
                   </p>
                   <p className="font-bold mb-1">
-                    Rifa: <span>Nome da Rifa</span>
+                    Rifa: <span>{ postData.title }</span>
                   </p>
                   <p className="font-bold mb-1">
-                    Data de Compra: <span>10/05/2202 10:40:25</span>
+                    Data de Compra: <span>{ formatDate(winnerInfo.updated_at) }</span>
                   </p>
                   <p className="font-bold mb-1">
-                    Número Sorteado: <span className="text-white bg-green-500 p-1 rounded-md">45852</span>
+                    Número Sorteado: <span className="text-white bg-green-500 p-1 rounded-md">{winnerInfo.winnerNum}</span>
                   </p>
                   <p className="font-bold mb-1">
-                    Valor Pago: <span className="text-white bg-blue-500 p-1 rounded-md">R$ 6,00</span>
+                    Valor Pago: <span className="text-white bg-blue-500 p-1 rounded-md">R$ {formatPrice(winnerInfo.price)}</span>
                   </p>
                   <p className="font-bold mb-1">
-                    <span>800</span> Bilhetes comprados
+                    <span>{winnerInfo.numbers}</span> Bilhetes comprados
                   </p>
-                <button className="bg-green-600 font-bold text-white py-1 px-2 rounded-lg hover:bg-green-700" onClick={() => window.open(`https://web.whatsapp.com/send?phone=21999276614`,'_blank')}>Entrar em contato</button>
+                <button className="bg-green-600 font-bold text-white py-1 px-2 rounded-lg hover:bg-green-700" onClick={() => window.open(`https://web.whatsapp.com/send?phone=${winnerInfo.phone.replaceAll(' ', '')}`,'_blank')}>Entrar em contato</button>
                 </div>
               </div>
             </div>

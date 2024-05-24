@@ -662,7 +662,7 @@ async function handleRequest(formData, setFormData, setIsLoading) {
         };
       });
     }, 5000);
-    // window.location.href = '/rifas';
+    window.location.href = '/rifas';
   } catch (error) {
     window.alert(`Houve um erro no servidor ${error}`);
   } finally {
