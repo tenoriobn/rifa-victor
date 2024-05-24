@@ -54,13 +54,16 @@ class RifasController extends Controller
     public function store(StoreRifasRequest $request)
     {
         try {
-            $thumbnail = $request->file("thumbnail");
-            $uniqueFileName = uniqid() . '.' . $thumbnail->getClientOriginalExtension();
-            $thumbnail->move(public_path("assets/images/post-images"), $uniqueFileName);
-            $relativePath = "assets/images/post-images/" . $uniqueFileName;
-
-            $thumbnailUrl = asset($relativePath);
-            Log::info($request);
+            $thumbnailUrl = [];
+            $thumbs = $request->file("thumbnail");
+            for ($index = 0; $index < count($thumbs); $index += 1) {
+                $thumbnail = $thumbs[$index];
+                $uniqueFileName = uniqid() . '.' . $thumbnail->getClientOriginalExtension();
+                $thumbnail->move(public_path("assets/images/post-images"), $uniqueFileName);
+                $relativePath = "assets/images/post-images/" . $uniqueFileName;
+                array_push($thumbnailUrl, asset($relativePath));
+            }
+            $thumbnailUrl = implode(',',$thumbnailUrl);
             $newRifaData = Rifas::create([
                 "title" =>  strip_tags($request->get("title")),
                 "description" => $request->get("description"),

@@ -63,7 +63,7 @@ function handleOnChange(target, setFormData) {
   if (inputType !== "file") {
     targetValue = target.value;
   } else {
-    targetValue = target.files[0];
+    targetValue = target.files;
   }
 
   setFormData((prevFormData) => {

@@ -113,7 +113,18 @@ export default function CreatePostForm() {
   });
 
   const [isLoading, setIsLoading] = useState(() => false);
-
+  function fileNames(fileList) {
+    let str = "";
+    for(let index = 0; index < fileList.length; index += 1) {
+      const currentFile = fileList[index];
+      if (index === fileList.length - 1) {
+        str = str + currentFile.name;
+      } else {
+        str = str + currentFile.name + ", ";
+      }
+    }
+    return str;
+  }
   return (
     <form
       className="flex flex-col gap-4 relative"
@@ -170,7 +181,7 @@ export default function CreatePostForm() {
           className="text-base font-medium text-tertiary p-2 w-full border cursor-pointer border-customTransparent"
         >
           {formData.data.thumbnail
-            ? formData.data.thumbnail.name
+            ? fileNames(formData.data.thumbnail)
             : "Escolher imagem"}
         </label>
 
@@ -180,6 +191,7 @@ export default function CreatePostForm() {
           id="thumbnail"
           type="file"
           name="thumbnail"
+          multiple={true}
           accept=".file,.jpeg,.jpg,.webp,.png"
         />
 
@@ -599,7 +611,9 @@ async function handleRequest(formData, setFormData, setIsLoading) {
   );
 
   if (formData.data.thumbnail) {
-    formDataToSend.append("thumbnail", formData.data.thumbnail);
+    for (let index = 0; index < formData.data.thumbnail.length; index += 1) {
+      formDataToSend.append("thumbnail[]", formData.data.thumbnail[index]);
+    }
   }
 
   const requestData = {
@@ -648,7 +662,7 @@ async function handleRequest(formData, setFormData, setIsLoading) {
         };
       });
     }, 5000);
-    window.location.href = '/rifas';
+    // window.location.href = '/rifas';
   } catch (error) {
     window.alert(`Houve um erro no servidor ${error}`);
   } finally {
