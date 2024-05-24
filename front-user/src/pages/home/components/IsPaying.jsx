@@ -61,7 +61,7 @@ export default function IsPaying(props) {
     <div
       className={`${
         props.showPaymentContainer ? "flex" : "hidden"
-      } fixed top-0 bottom-0 left-0 right-0 z-50  bg-[rgba(0,0,0,.7)] overflow-auto flex-col items-center justify-center p-4`}
+      } fixed top-0 bottom-0 left-0 right-0 z-50  bg-[rgba(0,0,0,.7)] overflow-auto flex-col items-center justify-center p-4 z-50`}
     >
       <article className="w-full max-w-xl bg-white overflow-auto p-4 py-16 rounded-lg relative">
         <i
