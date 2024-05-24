@@ -15,6 +15,7 @@ import "swiper/css/autoplay";
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 
 export default function Hero(props) {
+  console.log(props.rifaData);
   return (
     <section>
       <div className="flex flex-col gap-6">
@@ -32,18 +33,13 @@ export default function Hero(props) {
             autoplay={{ delay: 3000, disableOnInteraction: false }}
             navigation
           >
-            <SwiperSlide>
-              <img className="max-h-[572px]" src={imgRifa} alt="Slide 1" />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img className="max-h-[572px]" src={imgRifa} alt="Slide 2" />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img className="max-h-[572px]" src={imgRifa} alt="Slide 3" />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img className="max-h-[572px]" src={imgRifa} alt="Slide 4" />
-            </SwiperSlide>
+            {
+              props.rifaData.thumbnail && (props.rifaData.thumbnail.split(',').map((element) => (
+                <SwiperSlide key={element}>
+                  <img className="max-h-[572px]" src={element} alt="Slide 1" />
+                </SwiperSlide>
+              )))
+            }
           </Swiper>
 
           <article className="px-2 pb-2 flex flex-col gap-2">
