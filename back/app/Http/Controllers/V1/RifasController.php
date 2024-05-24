@@ -84,6 +84,8 @@ class RifasController extends Controller
                 "sixth_pacote_discount" => $request->get("sixthPacoteDiscount"),
                 "thumbnail" => $thumbnailUrl,
                 "rifa_numbers" => $request->get("rifaNumbers"),
+                "min_numbers" => $request->get("minNumbers") !== "" ? $request->get("minNumbers") : null,
+                "max_numbers" => $request->get("maxNumbers") !== "" ? $request->get("maxNumbers") : null,
                 "rifa_numbers_remaining" => $request->get("rifaNumbers"),
             ]);
 
@@ -125,28 +127,38 @@ class RifasController extends Controller
     public function update(UpdateRifasRequest $request, $id)
     {
         try {
-            $thumbnail = $request->file("thumbnail");
+            // $thumbnail = $request->file("thumbnail");
 
             $rifaData = Rifas::find($id);
 
-            if ($thumbnail) {
+            // if ($thumbnail) {
 
-                $postImage =  $rifaData->thumbnail;
+            //     $postImage =  $rifaData->thumbnail;
 
-                $imagePath = parse_url($postImage, PHP_URL_PATH);
+            //     $imagePath = parse_url($postImage, PHP_URL_PATH);
 
-                if (file_exists(public_path($imagePath))) {
-                    unlink(public_path($imagePath));
+            //     if (file_exists(public_path($imagePath))) {
+            //         unlink(public_path($imagePath));
+            //     }
+
+            //     $uniqueFileName = uniqid() . '.' . $thumbnail->getClientOriginalExtension();
+            //     $thumbnail->move(public_path("assets/images/post-images"), $uniqueFileName);
+            //     $relativePath = "assets/images/post-images/" . $uniqueFileName;
+
+            //     $thumbnailUrl = asset($relativePath);
+            // }
+            $thumbnailUrl = [];
+            $thumbs = $request->file("thumbnail");
+            if ($thumbs) {
+                for ($index = 0; $index < count($thumbs); $index += 1) {
+                    $thumbnail = $thumbs[$index];
+                    $uniqueFileName = uniqid() . '.' . $thumbnail->getClientOriginalExtension();
+                    $thumbnail->move(public_path("assets/images/post-images"), $uniqueFileName);
+                    $relativePath = "assets/images/post-images/" . $uniqueFileName;
+                    array_push($thumbnailUrl, asset($relativePath));
                 }
-
-                $uniqueFileName = uniqid() . '.' . $thumbnail->getClientOriginalExtension();
-                $thumbnail->move(public_path("assets/images/post-images"), $uniqueFileName);
-                $relativePath = "assets/images/post-images/" . $uniqueFileName;
-
-                $thumbnailUrl = asset($relativePath);
             }
-
-            $newRifaData = $rifaData->update([
+            $data = [
                 "title" =>  strip_tags($request->get("title")),
                 "description" => $request->get("description"),
                 "rifa_status" => $request->get("rifaStatus"),
@@ -164,9 +176,14 @@ class RifasController extends Controller
                 "fifth_pacote_discount" => $request->get("fifthPacoteDiscount"),
                 "sixth_pacote_numbers" => $request->get("sixthPacoteNumbers"),
                 "sixth_pacote_discount" => $request->get("sixthPacoteDiscount"),
-                "thumbnail" => $thumbnailUrl ?? $rifaData->thumbnail,
+                "min_numbers" => $request->get("minNumbers"),
+                "max_numbers" => $request->get("maxNumbers"),
                 "rifa_numbers" => $request->get("rifaNumbers"),
-            ]);
+            ];
+            if (count($thumbnailUrl) > 0) {
+                $data['thumbnail'] = implode(',', $thumbnailUrl);
+            }
+            $newRifaData = $rifaData->update($data);
 
             return response()->json(["success" => true, "data" => new RifasResource($rifaData)], $this->postSuccess);
         } catch (Exception $e) {

@@ -10,6 +10,8 @@ import { useNavigate } from "react-router-dom";
 export default function UpdatePostForm() {
   const postId = useParams().id;
   const navigate = useNavigate();
+
+  
   validateId(postId);
 
   const [isLoading, setIsLoading] = useState(() => false);
@@ -38,10 +40,20 @@ export default function UpdatePostForm() {
         sixthPacoteNumbers: "",
         sixthPacoteDiscount: 0,
         rifaNumbers: "",
+        maxNums: "",
+        minNums: "",
       },
       status: {
         success: false,
         errors: {
+          maxNums: {
+            error: false,
+            msg: "Max Error"
+          },
+          minNums: {
+            error: false,
+            msg: "Min Error"
+          },
           title: {
             error: false,
             msg: "Title Error",
@@ -123,6 +135,22 @@ export default function UpdatePostForm() {
     };
   });
 
+  function fileNames(fileList) {
+    let str = "";
+    if (fileList.name) {
+      return fileList.name;
+    }
+    for(let index = 0; index < fileList.length; index += 1) {
+      const currentFile = fileList[index];
+      if (index === fileList.length - 1) {
+        str = str + currentFile.name;
+      } else {
+        str = str + currentFile.name + ", ";
+      }
+    }
+    return str;
+  }
+
   useEffect(() => {
     getPostData(postId, setPostData, setContentIsLoading, setFormData);
   }, []);
@@ -187,7 +215,7 @@ export default function UpdatePostForm() {
           className="text-base font-medium text-tertiary p-2 w-full border cursor-pointer border-customTransparent"
         >
           {formData.data.thumbnail
-            ? formData.data.thumbnail.name
+            ? fileNames(formData.data.thumbnail)
             : "Escolher imagem"}
         </label>
 
@@ -196,6 +224,7 @@ export default function UpdatePostForm() {
           className="hidden"
           id="thumbnail"
           type="file"
+          multiple={true}
           name="thumbnail"
           accept=".file,.jpeg,.jpg,.webp,.png"
         />
@@ -497,6 +526,53 @@ export default function UpdatePostForm() {
           </p>
         )}
       </div>
+      <div className="flex flex-col gap-2">
+        <label
+          htmlFor="min-numbers"
+          className="font-bold text-blue-900 text-2xl"
+        >
+          Quantidade Minima de Números:
+        </label>
+
+        <input
+          id="min-numbers"
+          type="number"
+          name="minNums"
+          onChange={(event) => handleOnChange(event.target, setFormData)}
+          value={formData.data.minNums}
+          className="p-2 text-tertiary font-normal text-base border border-customTransparent rounded-lg"
+        />
+
+        {formData.status.errors.minNums.error && (
+          <p className="text-base font-medium text-red-500">
+            {formData.status.errors.minNums.msg}
+          </p>
+        )}
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <label
+          htmlFor="max-numbers"
+          className="font-bold text-blue-900 text-2xl"
+        >
+          Quantidade Máxima de Números:
+        </label>
+
+        <input
+          id="max-numbers"
+          type="number"
+          name="maxNums"
+          onChange={(event) => handleOnChange(event.target, setFormData)}
+          value={formData.data.maxNums}
+          className="p-2 text-tertiary font-normal text-base border border-customTransparent rounded-lg"
+        />
+
+        {formData.status.errors.maxNums.error && (
+          <p className="text-base font-medium text-red-500">
+            {formData.status.errors.maxNums.msg}
+          </p>
+        )}
+      </div>
 
       <div className="flex flex-col gap-2">
         <label htmlFor="price" className="font-bold text-blue-900 text-2xl">
@@ -606,6 +682,8 @@ async function getPostData(
         sixthPacoteNumbers: responsePostData.sixthPacoteNumbers,
         sixthPacoteDiscount: responsePostData.sixthPacoteDiscount,
         rifaNumbers: responsePostData.rifaNumbers,
+        minNums: responsePostData.minNumbers,
+        maxNums: responsePostData.maxNumbers,
         thumbnail: { name: responsePostData.thumbnail, notImage: true },
       };
 
@@ -655,6 +733,8 @@ async function handleRequest(formData, setFormData, setIsLoading, postId) {
   formDataToSend.append("price", formData.data.price);
   formDataToSend.append("rifaNumbers", formData.data.rifaNumbers);
   formDataToSend.append("firstPacoteNumbers", formData.data.firstPacoteNumbers);
+  formDataToSend.append("minNumbers", formData.data.minNums);
+  formDataToSend.append("maxNumbers", formData.data.maxNums);
   formDataToSend.append(
     "firstPacoteDiscount",
     formData.data.firstPacoteDiscount
@@ -700,7 +780,10 @@ async function handleRequest(formData, setFormData, setIsLoading, postId) {
   if (formData.data.thumbnail) {
     if (formData.data.thumbnail.notImage) {
     } else {
-      formDataToSend.append("thumbnail", formData.data.thumbnail);
+      console.log(formData.data.thumbnail);
+      for (let index = 0; index < formData.data.thumbnail.length; index += 1) {
+        formDataToSend.append("thumbnail[]", formData.data.thumbnail[index]);
+      }
     }
   }
 

@@ -56,7 +56,7 @@ class UpdateRifasRequest extends FormRequest
                 "thirdPacoteDiscount" => ["bail",  "max:255", "nullable"],
                 "fourthPacoteNumbers" => ["sometimes", "required", "bail",  new StripTags(), "max:255"],
                 "fourthPacoteDiscount" => ["bail", "max:255", "nullable"],
-                "thumbnail" => ["required", "bail", "image", "mimes:jpeg,png,jpg,webp", "max:10000"],
+                "thumbnail.*" => ["required", "bail", "image", "mimes:jpeg,png,jpg,webp", "max:10000"],
                 "rifaNumbers" => ["required", "bail", "numeric", "integer", new RifaMinNumbers()],
             ];
         } else if ($method === "PATCH" || $method === "POST") {
@@ -74,7 +74,7 @@ class UpdateRifasRequest extends FormRequest
                 "thirdPacoteDiscount" => ["bail",  "max:255", "nullable"],
                 "fourthPacoteNumbers" => ["sometimes", "required", "bail",  new StripTags(), "max:255"],
                 "fourthPacoteDiscount" => ["bail", "max:255", "nullable"],
-                "thumbnail" => ["sometimes", "required", "bail", "image", "mimes:jpeg,png,jpg,webp", "max:10000"],
+                // "thumbnail.*" => ["sometimes", "required", "bail", "image", "mimes:jpeg,png,jpg,webp", "max:10000"],
                 "rifaNumbers" => ["required", "bail", "numeric", "integer", new RifaMinNumbers()],
             ];
         }

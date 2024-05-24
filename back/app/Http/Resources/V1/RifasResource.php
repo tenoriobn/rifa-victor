@@ -38,6 +38,8 @@ class RifasResource extends JsonResource
             "biggestBuyer" => $this->biggestBuyer,
             "createdAt" => $this->created_at,
             "updatedAt" => $this->updated_at,
+            "maxNumbers" => $this->max_numbers,
+            "minNumbers" => $this->min_numbers,
         ];
     }
 }

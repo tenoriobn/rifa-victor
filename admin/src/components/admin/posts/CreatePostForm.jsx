@@ -26,11 +26,21 @@ export default function CreatePostForm() {
         fifthPacoteDiscount: 0,
         sixthPacoteNumbers: "",
         sixthPacoteDiscount: 0,
+        maxNums: "",
+        minNums: "",
         rifaNumbers: "",
       },
       status: {
         success: false,
         errors: {
+          maxNums: {
+            error: false,
+            msg: "Max Error"
+          },
+          minNums: {
+            error: false,
+            msg: "Min Error"
+          },
           title: {
             error: false,
             msg: "Title Error",
@@ -494,6 +504,53 @@ export default function CreatePostForm() {
       </div>
 
       <div className="flex flex-col gap-2">
+        <label
+          htmlFor="min-numbers"
+          className="font-bold text-blue-900 text-2xl"
+        >
+          Quantidade Minima de Números:
+        </label>
+
+        <input
+          id="min-numbers"
+          type="number"
+          name="minNums"
+          onChange={(event) => handleOnChange(event.target, setFormData)}
+          value={formData.data.minNums}
+          className="p-2 text-tertiary font-normal text-base border border-customTransparent rounded-lg"
+        />
+
+        {formData.status.errors.minNums.error && (
+          <p className="text-base font-medium text-red-500">
+            {formData.status.errors.minNums.msg}
+          </p>
+        )}
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <label
+          htmlFor="max-numbers"
+          className="font-bold text-blue-900 text-2xl"
+        >
+          Quantidade Máxima de Números:
+        </label>
+
+        <input
+          id="max-numbers"
+          type="number"
+          name="maxNums"
+          onChange={(event) => handleOnChange(event.target, setFormData)}
+          value={formData.data.maxNums}
+          className="p-2 text-tertiary font-normal text-base border border-customTransparent rounded-lg"
+        />
+
+        {formData.status.errors.maxNums.error && (
+          <p className="text-base font-medium text-red-500">
+            {formData.status.errors.maxNums.msg}
+          </p>
+        )}
+      </div>
+      <div className="flex flex-col gap-2">
         <label htmlFor="price" className="font-bold text-blue-900 text-2xl">
           Preço do número:
         </label>
@@ -568,6 +625,8 @@ async function handleRequest(formData, setFormData, setIsLoading) {
   formDataToSend.append("price", formData.data.price);
   formDataToSend.append("rifaNumbers", formData.data.rifaNumbers);
   formDataToSend.append("firstPacoteNumbers", formData.data.firstPacoteNumbers);
+  formDataToSend.append("minNumbers", formData.data.minNums);
+  formDataToSend.append("maxNumbers", formData.data.maxNums);
   formDataToSend.append(
     "firstPacoteDiscount",
     formData.data.firstPacoteDiscount
