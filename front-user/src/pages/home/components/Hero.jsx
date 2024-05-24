@@ -9,7 +9,7 @@ export default function Hero(props) {
             <img
               src={props.rifaData.thumbnail}
               alt="Produto da Rifa"
-              className="rounded-t-xl w-full"
+              className="rounded-t-xl w-full max-h-[576px] object-cover"
             />
           </picture>
 

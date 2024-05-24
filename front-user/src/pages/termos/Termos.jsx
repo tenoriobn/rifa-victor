@@ -1,10 +1,12 @@
+import Links from "../home/components/Links";
+
 export default function Termos() {
   return (
     <section>
       <article className="flex flex-col gap-4">
         <h2 className="font-bold text-2xl sm:text-3xl">Termos de Uso</h2>
 
-        <article className="p-4 bg-white rounded-lg flex flex-col gap-3">
+        <article className="p-4 bg-white rounded-lg flex flex-col mb-4 gap-3">
           <p className="text-[#222] text-base">
             A extração será realizada pelo resultado da Loteria Federal do dia
             após a venda de todos os números.
@@ -30,6 +32,8 @@ export default function Termos() {
           </p>
         </article>
       </article>
+      <Links />
+
     </section>
   );
 }

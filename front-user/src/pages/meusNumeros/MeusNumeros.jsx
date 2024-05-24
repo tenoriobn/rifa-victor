@@ -3,6 +3,7 @@ import infoCheck from "../../../public/assets/images/check2.svg";
 import { formatDate, formatPrice, sendRequest } from "../../util/util";
 import Login from "../../components/Login";
 import Paying from "./Paying";
+import Links from "../home/components/Links";
 
 
 export default function MeusNumeros() {
@@ -193,6 +194,7 @@ export default function MeusNumeros() {
 
         </div>
       )}
+          <Links />
     </section>
   );
 }

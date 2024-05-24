@@ -1,4 +1,3 @@
-import React from 'react'
 import insta from '/public/assets/images/instagram.svg'
 import wpp from '/public/assets/images/whatsapp.svg'
 import { useConfig } from '../../../context/ConfigContext'
