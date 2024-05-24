@@ -7,7 +7,8 @@ export default function HomeFooter(props) {
       <p className="font-bold text-base text-white">COMPRAR AGORA</p>
 
       <mark className="bg-transparent text-white font-bold">
-        R${props.rifaPrice.toFixed(2)}
+        R${typeof props.rifaPrice === 'string' ? props.rifaPrice :
+          props.rifaPrice.toFixed(2)}
       </mark>
     </footer>
   );

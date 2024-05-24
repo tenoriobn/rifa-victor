@@ -34,6 +34,7 @@ export default function Home() {
         fifthPacoteDiscount: "",
         sixthPacoteNumbers: "",
         sixthPacoteDiscount: "",
+        minNumbers: 10,
       },
     };
   });
@@ -72,13 +73,21 @@ export default function Home() {
 
       <Pricing
         rifaData={formData.data}
-        openPaymentContainer={(rifaNumbers, price, packageId) =>
+        openPaymentContainer={(rifaNumbers, price, packageId) => {
+          // console.log(price);
+          setCotasData((prevCotasData) => {
+            return {
+              ...prevCotasData,
+              valueToPay: price,
+            };
+          });
           openPaymentContainer(setPaymentData, rifaNumbers, price, packageId)
+        }
         }
       />
 
       <Cotas
-        originalCotas={() => originalCotas(setCotasData)}
+        originalCotas={() => originalCotas(setCotasData, formData.data.minNumbers)}
         rifaNumbers={cotasData.rifaNumbers}
         handleCotas={(numbers, operator = "plus") =>
           handleCotas(setCotasData, numbers, operator)
@@ -195,6 +204,10 @@ async function getPostData(setContentIsLoading, setFormData, setCotasData) {
         biggestBuyer: responsePostData.biggestBuyer,
       };
 
+      if (responsePostData.minNumbers) {
+        newFormData.minNumbers = responsePostData.minNumbers;
+      }
+
       return {
         ...prevFormData,
 
@@ -210,6 +223,7 @@ async function getPostData(setContentIsLoading, setFormData, setCotasData) {
         ...prevCotasData,
         price: responsePostData.price,
         valueToPay: responsePostData.price * 10,
+        rifaNumbers: responsePostData.minNumbers ? responsePostData.minNumbers : 10
       };
     });
   } catch (error) {
@@ -314,12 +328,12 @@ function handleCotas(setCotasData, numbers, operator = "plus") {
   });
 }
 
-function originalCotas(setCotasData) {
+function originalCotas(setCotasData, min) {
   setCotasData((prevCotasData) => {
     return {
       ...prevCotasData,
-      rifaNumbers: 10,
-      valueToPay: prevCotasData.price * 10,
+      rifaNumbers: min,
+      valueToPay: prevCotasData.price * min,
     };
   });
 }
