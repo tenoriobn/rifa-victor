@@ -6,6 +6,11 @@ export default function Sidebar(props) {
     !props.isSidebarActive && "lg:justify-center"
   }`;
 
+  function signout() {
+    localStorage.clear();
+    window.location.href = '/login';
+  }
+
   return (
     <aside
       className={`fixed block z-30 top-0 lg:w-20 ${
@@ -82,6 +87,7 @@ export default function Sidebar(props) {
             </li>
           </ul>
         </div>
+        <button onClick={signout}>DESLOGAR</button>
       </div>
     </aside>
   );

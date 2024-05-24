@@ -16,7 +16,7 @@ export default function Header(props) {
           }`}
         ></i>
 
-        <Link to="/perfil" className="cursor-pointer block rounded-full w-fit">
+        <Link to="/configuracao-do-site" className="cursor-pointer block rounded-full w-fit">
           <img
             src={user}
             alt="Imagem de usuário"
