@@ -104,7 +104,7 @@ export default function MeusNumeros() {
           <div key={order.id} className="bg-[#001c44] p-3 mb-3">
             <div className="flex mb-4 gap-4">
               <div>
-                <img className="w-44 rounded-lg" src={order.thumbnail} alt="" />
+                <img className="w-44 rounded-lg" src={order.thumbnail.split(',')[0]} alt="" />
               </div>
               <div>
                 <p className="text-2xl font-bold mb-2">{order.title}</p>
