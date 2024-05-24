@@ -78,4 +78,20 @@ function handleOnChange(target, setFormData) {
   });
 }
 
-export { sendRequest, handleOnChange };
+function formatDate(date) {
+  const dateTime = new Date(date);
+  const day = String(dateTime.getDate()).padStart(2, '0');
+  const month = String(dateTime.getMonth() + 1).padStart(2, '0');
+  const year = dateTime.getFullYear();
+  const hours = String(dateTime.getHours()).padStart(2, '0');
+  const minutes = String(dateTime.getMinutes()).padStart(2, '0');
+  const formattedDate = `${day}/${month}/${year}`;
+  const formattedTime = `${hours}:${minutes}`;
+  return `${formattedDate} às ${formattedTime}`;
+}
+
+function formatPrice(price) {
+  return Number(price).toFixed(2).replace(".", ",");
+}
+
+export { sendRequest, handleOnChange, formatDate, formatPrice };

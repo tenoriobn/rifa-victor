@@ -42,12 +42,14 @@ Route::group(["prefix" => "v1", "middleware" => ["cors"]], function () {
     });
 
     Route::group(["prefix" => "rifas", "controller" => RifasController::class, "middleware" => "auth:sanctum"], function () {
+        Route::post('/search-order', 'searchOrder');
         Route::get("/", "index");
         Route::get("/{id}", "show");
         Route::get("/latest", "latest");
         Route::post("/", "store");
         Route::match(["put", "patch", "post"], "/{id}", "update");
         Route::delete("/{id}", "destroy");
+        Route::get('/orders/{id}', 'orders');
     });
 
     Route::group(["prefix" => "public-rifas", "controller" => RifasController::class,], function () {

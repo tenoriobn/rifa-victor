@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\V1;
 
 use App\Models\V1\Rifas;
+use Illuminate\Http\Request;
 use App\Http\Requests\V1\StoreRifasRequest;
 use App\Http\Requests\V1\UpdateRifasRequest;
 use App\Http\Controllers\Controller;
@@ -204,7 +205,7 @@ class RifasController extends Controller
             if (!$rifaData) {
                 return response()->json(["success" => false, "msg" => "Rifa has not been found."], $this->notFound);
             }
-            $buyer = DB::select("SELECT clients.phone, clients.name, count(rifa_numbers.client_id) numbers FROM rifa_numbers INNER JOIN clients ON rifa_numbers.client_id = clients.id INNER JOIN cotas ON cotas.id = rifa_numbers.cota_id WHERE rifa_numbers.rifa_id = 1 AND cotas.payment_status IN (1, 2, 10) AND DATE_FORMAT(cotas.created_at, '%Y-%m-%d') = CURDATE() GROUP BY client_id ORDER BY numbers DESC LIMIT 1");
+            $buyer = DB::select("SELECT clients.phone, clients.name, count(rifa_numbers.client_id) numbers FROM rifa_numbers INNER JOIN clients ON rifa_numbers.client_id = clients.id INNER JOIN cotas ON cotas.id = rifa_numbers.cota_id WHERE rifa_numbers.rifa_id = $rifaData->id AND cotas.payment_status IN (1, 2, 10) AND DATE_FORMAT(cotas.created_at, '%Y-%m-%d') = CURDATE() GROUP BY client_id ORDER BY numbers DESC LIMIT 1");
             $rifaData->biggestBuyer = isset($buyer[0]) ? $buyer[0] : null;
             if (isset($rifaData->biggestBuyer->phone)) {
                 $re = '*******';
@@ -212,6 +213,55 @@ class RifasController extends Controller
             }
 
             return response()->json(["success" => true, "data" => new RifasResource($rifaData)], $this->success);
+        } catch (Exception $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], $this->serverError);
+        }
+    }
+
+    public function orders($id) {
+        try {
+            $rifaData = Rifas::find($id);
+
+            if (!$rifaData) {
+                return response()->json(["success" => false, "msg" => "Rifa has not been found."], $this->notFound);
+            }
+            $buyers = DB::select("SELECT cotas.payment_status, cotas.id, cotas.price, clients.phone, clients.name, count(rifa_numbers.client_id) numbers, cotas.created_at, cotas.updated_at, GROUP_CONCAT(rifa_numbers.number) nums FROM rifa_numbers INNER JOIN clients ON rifa_numbers.client_id = clients.id INNER JOIN cotas ON cotas.id = rifa_numbers.cota_id WHERE rifa_id = $rifaData->id AND cotas.payment_status IN (0, 1, 2, 10) GROUP BY client_id;");
+
+            return response()->json(["success" => true, "data" => ["rifa" => $rifaData, "buyers" => $buyers]], $this->success);
+        } catch (Exception $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], $this->serverError);
+        }
+    }
+
+    public function searchOrder(Request $request) {
+        try {
+            $rifaData = Rifas::find($request->id);
+
+            if (!$rifaData) {
+                return response()->json(["success" => false, "msg" => "Rifa has not been found."], $this->notFound);
+            }
+            $getWhere = "";
+            $conditions = [];
+            if ($request->cota) {
+                $cota = "rifa_numbers.number = $request->cota";
+                array_push($conditions, $cota);
+            }
+            if ($request->buyId) {
+                $buyId = "cotas.id = $request->buyId";
+                array_push($conditions, $buyId);
+            }
+            if ($request->phone) {
+                $phone = $getWhere." clients.phone = $request->phone ";
+                array_push($conditions, $phone);
+            }
+            if (count($conditions) > 0) {
+                $con = implode(" OR ", $conditions);
+                $getWhere = "AND ($con)";
+            }
+            $buyers = DB::select("SELECT cotas.payment_status, cotas.id, cotas.price, clients.phone, clients.name, count(rifa_numbers.client_id) numbers, cotas.created_at, cotas.updated_at, GROUP_CONCAT(rifa_numbers.number) nums FROM rifa_numbers INNER JOIN clients ON rifa_numbers.client_id = clients.id INNER JOIN cotas ON cotas.id = rifa_numbers.cota_id WHERE rifa_id = $rifaData->id AND cotas.payment_status IN (0, 1, 2, 10) $getWhere GROUP BY client_id LIMIT 1");
+            $buyer = isset($buyers[0]) ? $buyers[0] : null;
+
+            return response()->json(["success" => true, "data" => ["buyer" => $buyer]], $this->success);
         } catch (Exception $e) {
             return response()->json(["success" => false, "msg" => $e->getMessage()], $this->serverError);
         }
