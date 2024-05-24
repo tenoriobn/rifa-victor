@@ -204,7 +204,7 @@ class RifasController extends Controller
             if (!$rifaData) {
                 return response()->json(["success" => false, "msg" => "Rifa has not been found."], $this->notFound);
             }
-            $buyer = DB::select("SELECT clients.phone, clients.name, count(rifa_numbers.client_id) numbers FROM rifas.rifa_numbers INNER JOIN clients ON rifa_numbers.client_id = clients.id INNER JOIN cotas ON cotas.id = rifa_numbers.cota_id WHERE rifa_numbers.rifa_id = $rifaData->id AND cotas.payment_status IN (1, 2, 10) GROUP BY client_id ORDER BY numbers DESC LIMIT 1");
+            $buyer = DB::select("SELECT clients.phone, clients.name, count(rifa_numbers.client_id) numbers FROM rifa_numbers INNER JOIN clients ON rifa_numbers.client_id = clients.id INNER JOIN cotas ON cotas.id = rifa_numbers.cota_id WHERE rifa_numbers.rifa_id = 1 AND cotas.payment_status IN (1, 2, 10) AND DATE_FORMAT(cotas.created_at, '%Y-%m-%d') = CURDATE() GROUP BY client_id ORDER BY numbers DESC LIMIT 1");
             $rifaData->biggestBuyer = isset($buyer[0]) ? $buyer[0] : null;
             if (isset($rifaData->biggestBuyer->phone)) {
                 $re = '*******';
