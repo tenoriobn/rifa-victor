@@ -43,3 +43,9 @@
   background-color: #8080806b;
   padding: 4px;
 }
+
+
+.swiper{
+ margin-left: initial !important;
+ margin-right: initial !important;
+}
