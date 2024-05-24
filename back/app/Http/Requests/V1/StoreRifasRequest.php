@@ -43,7 +43,7 @@ class StoreRifasRequest extends FormRequest
             "description" => ["required", "bail", "min:1", new StripTags(), "max:20000"],
             "rifaStatus" => ["required", "bail", "min:1", new StripTags(), "max:255"],
             "rifaDate" => ["required", "bail", "min:1", new StripTags(), "max:255"],
-            "price" => ["required", "bail", "min:1", new StripTags(), "max:255"],
+            "price" => ["required", "bail", "min:0", "max:255"],
             "firstPacoteNumbers" => ["sometimes", "required", "bail", new StripTags(), "max:255"],
             "firstPacoteDiscount" => ["bail",  "max:255", "nullable"],
             "secondPacoteNumbers" => ["sometimes", "required", "bail",  new StripTags(), "max:255"],

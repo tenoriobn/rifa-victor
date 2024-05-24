@@ -6,6 +6,7 @@ import { usePay } from "../../../context/PayContext";
 export default function IsPaying(props) {
   const [qrCodeBase64, setQrCodeBase64] = useState();
   const [paymentHash, setPaymentHash] = useState();
+  const [free, setFree] = useState(false);
   const [timeLeft, setTimeLeft] = useState(30 * 60); 
   const [copied, setCopied] = useState(false);
   const payInfo = usePay();
@@ -23,9 +24,19 @@ export default function IsPaying(props) {
       if (props.packageId) {
         requestData.body.packageId = props.packageId;
       }
-      const { data } = await sendRequest(requestData);
-      setPaymentHash(data.hash);
-      setQrCodeBase64(data.qrCode);
+      const response = await sendRequest(requestData);
+      const data = response.data;
+      if (!response.success) {
+        props.closePaymentContainer();
+        alert(response.message);
+      }
+      if (data.freeRifa) {
+        setFree(true);
+      }
+      if (data.qrCode) {
+        setPaymentHash(data.hash);
+        setQrCodeBase64(data.qrCode);
+      }
     }
     generatePaymentQRCode();
   }, [props.rifaId, props.rifaNumbers, props.packageId]);
@@ -72,9 +83,13 @@ export default function IsPaying(props) {
         </i>
 
         <article className="flex flex-col gap-2">
-          <h1 className="bg-green-600 text-white font-bold text-center p-4 absolute left-0 top-0 w-full text-2xl">Aguardando Pagamento!</h1>
-          <p className="text-center text-black text-lg mt-2">Finalize o pagamento</p>
-          <p className="text-sm p-2 bg-yellow-200 text-yellow-800 font-bold rounded">Pix copia e cola: abra o aplicativo do seu banco pelo celular, selecione PIX e faça o pagamento. Ou escaneie o código com um celular.</p>
+          {free === false && (
+            <>
+              <h1 className="bg-green-600 text-white font-bold text-center p-4 absolute left-0 top-0 w-full text-2xl">Aguardando Pagamento!</h1>
+              <p className="text-center text-black text-lg mt-2">Finalize o pagamento</p>
+              <p className="text-sm p-2 bg-yellow-200 text-yellow-800 font-bold rounded">Pix copia e cola: abra o aplicativo do seu banco pelo celular, selecione PIX e faça o pagamento. Ou escaneie o código com um celular.</p>
+            </>
+          )}
 
           <form>
             <div className="flex flex-col gap-2">
@@ -104,7 +119,7 @@ export default function IsPaying(props) {
             <button type="button" onClick={ () => {
               localStorage.setItem('phone', payInfo.phone);
               window.location = '/meus-numeros'
-            } } className="text-white w-full mt-3 bg-blue-500 hover:bg-blue-600 py-2 px-3 rounded-md font-bold">JÁ PAGUEI, VER MEUS PEDIDOS</button>
+            } } className="text-white w-full mt-3 bg-blue-500 hover:bg-blue-600 py-2 px-3 rounded-md font-bold">{free ? "RIFA GRATUITA, VER MEUS PEDIDOS" : "JÁ PAGUEI, VER MEUS PEDIDOS"}</button>
             <div className="bg-yellow-200 text-yellow-800 mt-3 p-2 rounded text-center">
               <p className="text-base">O tempo para você pagar acaba em:</p>
               <p className="text-yellow-800 font-bold text-3xl">{formatTime(timeLeft)}</p>

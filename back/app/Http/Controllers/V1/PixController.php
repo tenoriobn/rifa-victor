@@ -79,7 +79,7 @@ class PixController extends Controller
             "description" => "Comprando rifas",
             "payment_method_id" => "pix",
             // "date_of_expiration" => Carbon::now()->addMinutes(30),
-            'notification_url' => 'http://test.com/api/v1/mercado-pago-payments',
+            'notification_url' => 'https://api.vitaobarbeiro.com/api/v1/mercado-pago-payments',
             "payer" => [
                 "email" => "crissmykel10@gmail.com",
             ]
@@ -116,7 +116,7 @@ class PixController extends Controller
         $totalNumbers = $this->rifaTotalNumbers($rifaId);
         if ($totalNumbers + $numbersQuant > $rifaMaxNumbers) {
             $rifaLeftNumbersQuant = $rifaMaxNumbers - $totalNumbers;
-            throw new ForbiddenRequestException("Left numbers quantity: $rifaLeftNumbersQuant");
+            throw new ForbiddenRequestException("Quantidade restante de números: $rifaLeftNumbersQuant");
         }
     }
 
@@ -138,8 +138,9 @@ class PixController extends Controller
 
     private function insertNums($nums, $rifaId, $clientId, $payment, $free) {
         $now = Carbon::now()->toDateTimeString();
+        // Log::info($payment->id);
         $data = [];
-        $cota = Cotas::create(['payment_id' => $payment->id, 'payment_status' => $free ? Cotas::FREE : Cotas::PENDING, 'price' => $free ? 0 : "$payment->transaction_amount"]);
+        $cota = Cotas::create(['payment_id' => isset($payment->id) ? $payment->id : 0, 'payment_status' => $free ? Cotas::FREE : Cotas::PENDING, 'price' => $free ? 0 : "$payment->transaction_amount"]);
         for($index = 0; $index < count($nums); $index += 1) {
             $currentNumber = $nums[$index]->nums;
             array_push($data, ['client_id' => $clientId, 'number' => $currentNumber, 'rifa_id' => $rifaId, 'cota_id' => $cota->id, 'created_at'=> $now,
@@ -160,6 +161,11 @@ class PixController extends Controller
         }
     }
 
+    private function getClientCurrentNumbersCount($rifa, $client) {
+        $count = RifaNumbers::join('clients', 'rifa_numbers.client_id', '=', 'clients.id')->join('cotas', 'rifa_numbers.cota_id', '=', 'cotas.id')->where('cotas.payment_status', '<>', 9)->where('client_id', $client->id)->where('rifa_id', $rifa->id)->count();
+        return $count;
+    }
+
     public function index(Request $request)
     {
         $this->updateOlderPayments();
@@ -169,13 +175,25 @@ class PixController extends Controller
                 if (!isset($rifa)) {
                     throw new ItemNotFoundException('Rifa not found!');
                 }
+                if ($rifa->winner_id) {
+                    return response()->json(["success" => true, "data" => [ "rifaEnded" => true]], 200);
+                }
                 $numbersQuant = $this->getNumbersQuant($rifa, $request->packageId, $request->rifaNumbers);
                 $this->validateRifaLeftNumbers($rifa, $numbersQuant);
                 $price = $this->getPrice($rifa, $request->packageId, $request->rifaNumbers);
                 $client = $this->getClient($request->phone, $request->name);
+                $clientCountNumbers = $this->getClientCurrentNumbersCount($rifa, $client);
+                if ($clientCountNumbers + $numbersQuant > $rifa->max_numbers) {
+                    $canBuy = $rifa->max_numbers - $clientCountNumbers;
+                    if ($canBuy <= 0) {
+                        throw new ForbiddenRequestException("Você não pode mais comprar números");
+                    }
+                    throw new ForbiddenRequestException("Você só pode comprar mais ". $rifa->max_numbers - $clientCountNumbers ." números");
+                }
                 $free = false;
-                if ($rifa->price === 0) {
+                if ($rifa->price == 0) {
                     $free = true;
+                    $payment = ['id' => 0];
                 } else {
                     $payment = $this->createPayment($price);
                 }
@@ -196,23 +214,16 @@ class PixController extends Controller
                 "statusCode" => $e->getApiResponse()->getStatusCode(),
                 "content" => $e->getApiResponse()->getContent()
             ]], 200);
-        } catch (BadRequestException $e) {
-            return response()->json(["success" => false, "data" => [
-                "message" => $e->getMessage(),
-            ]], 400);
+        } 
+        catch (BadRequestException $e) {
+            return response()->json(["success" => false, "message" => $e->getMessage()], 400);
         } catch (ForbiddenRequestException $e) {
-            return response()->json(["success" => false, "data" => [
-                "message" => $e->getMessage(),
-            ]], 403);
+            return response()->json(["success" => false, "message" => $e->getMessage()], 403);
         } catch (ItemNotFoundException $e) {
-            return response()->json(["success" => false, "data" => [
-                "message" => $e->getMessage(),
-            ]], 404);
+            return response()->json(["success" => false, "message" => $e->getMessage()], 404);
         } catch (\Exception $e) {
             Log::error($e);
-            return response()->json(["success" => false, "data" => [
-                "message" => "Internal Error",
-            ]], 500);
+            return response()->json(["success" => false, "message" => "Internal Error"], 500);
         }
     }
 }

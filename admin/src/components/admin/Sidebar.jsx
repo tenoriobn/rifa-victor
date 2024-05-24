@@ -87,7 +87,7 @@ export default function Sidebar(props) {
             </li>
           </ul>
         </div>
-        <button onClick={signout}>DESLOGAR</button>
+        {/* <button onClick={signout}>DESLOGAR</button> */}
       </div>
     </aside>
   );

@@ -16,8 +16,8 @@ class RifaMinNumbers implements ValidationRule
     {
         $value = strip_tags($value);
 
-        if ($value < 1) {
-            $fail("O campo $attribute tem que ser maior ou igual a 1.");
+        if ($value < 0) {
+            $fail("O campo $attribute tem que ser maior ou igual a 0.");
         }
 
 
