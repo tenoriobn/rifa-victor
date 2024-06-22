@@ -2,24 +2,24 @@ import { useState } from "react";
 import iconSair from "../../public/assets/images/iconSair.svg";
 
 import { Link, NavLink, useLocation } from "react-router-dom";
-import Footer from "./Footer";
+import Footer from "./Footer/Footer";
 import { useConfig } from "../context/ConfigContext";
 
 export default function Header() {
   const location = useLocation();
-  const config = useConfig();
+  // const config = useConfig();
   const [menuIsActive, setMenuIsActive] = useState(false);
 
   return (
-    <header className="px-8 pt-4 pb-8 bg-[#6D29E4] header-height">
-      <div className="flex items-center justify-between max-w-lg m-auto">
+    <header className=" bg-[#0a0a0a] header-height">
+      <div className="pt-4 pb-8 px-4 flex items-center justify-between max-w-[42rem] m-auto">
         <Link to="/" className="cursor-pointer">
           <picture>
-            <img
+            {/* <img
               src={config.logoUrl}
               alt="Logo do aplicativo"
               className="h-7 md:h-10"
-            />
+            /> */}
           </picture>
         </Link>
 
@@ -133,16 +133,16 @@ function MenuItemElement(props) {
 function getMenuItems() {
   return [
     {
-      id: 1,
+      id: 8,
       sendTo: "/",
-      sendTitle: "Sorteios",
-      icon: "icon-list",
+      sendTitle: "Home",
+      icon: "icon-trophy",
     },
     {
-      id: 2,
-      sendTo: "/meus-numeros",
-      sendTitle: "Meus Números",
-      icon: "icon-list-numbered",
+      id: 7,
+      sendTo: "/produtos",
+      sendTitle: "Produtos",
+      icon: "icon-trophy",
     },
     {
       id: 3,
@@ -152,9 +152,33 @@ function getMenuItems() {
     },
     {
       id: 4,
-      sendTo: "/termos-de-uso",
-      sendTitle: "Termos de Uso",
+      sendTo: "/meu-perfil",
+      sendTitle: "Meu Perfil",
       icon: "icon-book",
     },
+    {
+      id: 5,
+      sendTo: "/meus-pedidos",
+      sendTitle: "Meus Pedidos",
+      icon: "icon-book",
+    },
+    // {
+    //   id: 1,
+    //   sendTo: "/",
+    //   sendTitle: "Sorteios",
+    //   icon: "icon-list",
+    // },
+    // {
+    //   id: 2,
+    //   sendTo: "/meus-numeros",
+    //   sendTitle: "Meus Números",
+    //   icon: "icon-list-numbered",
+    // },
+    // {
+    //   id: 6,
+    //   sendTo: "/meus-pedidos",
+    //   sendTitle: "Termos de Uso",
+    //   icon: "icon-book",
+    // },
   ];
 }

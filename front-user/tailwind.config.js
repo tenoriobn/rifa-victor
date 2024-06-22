@@ -8,6 +8,14 @@ export default {
         secondary: "#00051F",
         tertiary: "#080812",
 
+
+
+        darkGray: "#171717",
+        lightGray: "#e2e8f0",
+
+
+
+
         customBlue: "#0D6EFD",
         grayBlue: "#929FB0",
         grayBlack: "#081315",

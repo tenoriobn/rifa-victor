@@ -2,7 +2,7 @@ import Cotas from "./components/Cotas";
 import Hero from "./components/Hero";
 import Informations from "./components/Information";
 import Pricing from "./components/Pricing";
-import Payment from "./components/Payment";
+// import Payment from "./components/Payment";
 
 import { sendRequest } from "../../util/util";
 import { useState, useEffect } from "react";
@@ -10,6 +10,7 @@ import HomeFooter from "./components/HomeFooter";
 import Links from "./components/Links";
 import ConfirmPhone from "./components/ConfirmPhone";
 import IsPaying from "./components/IsPaying";
+import MeuPerfil from "../MeuPerfil/MeuPerfil";
 
 export default function Home() {
   const [formData, setFormData] = useState(() => {
@@ -97,7 +98,7 @@ export default function Home() {
       <Informations rifaData={formData.data} />
       {
         paymentData.showPaymentContainer && (
-          <Payment
+          <MeuPerfil
             rifaId={formData.data.id}
             rifaNumbers={paymentData.rifaNumbers}
             price={paymentData.price}

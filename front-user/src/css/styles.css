@@ -6,7 +6,7 @@
 
 @layer components {
   body {
-    @apply bg-tertiary;
+    @apply bg-darkGray;
   }
 
   .normal-transition {
@@ -15,7 +15,7 @@
 }
 
 :root {
-  --header-height: 5.5rem;
+  --header-height: 6rem;
 }
 
 .header-height {
