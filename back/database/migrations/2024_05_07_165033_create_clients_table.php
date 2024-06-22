@@ -13,10 +13,9 @@ return new class extends Migration
     {
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
-            $table->string("phone");
-            $table->integer("numbers");
-            $table->unsignedBigInteger('rifa_id');
-            $table->foreign("rifa_id")->references("id")->on("rifas")->onDelete("cascade");
+            $table->string('name');
+            $table->string('surname');
+            $table->string("cellphone");
             $table->timestamps();
         });
     }

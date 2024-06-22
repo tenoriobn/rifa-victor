@@ -35,16 +35,19 @@ Route::middleware('auth:sanctum')->get(
 //         "password" => Hash::make("testing0000"),
 //     ]);
 // });
-
-Route::group(["prefix" => "v1", "middleware" => ["cors"]], function () {
+// Route::group(["prefix" => "v1", "middleware" => ["cors"]], function () {
     Route::group(["controller" => AuthController::class], function () {
-        Route::post("login", "login");
+        Route::post("/cadastro", "register");
+        Route::post("/login", "login");
+        Route::middleware('auth.client')->post('logout', 'logout');
+        Route::middleware('auth.client')->get('protected-route', 'someProtectedMethod');
     });
+
 
     Route::group(["prefix" => "rifas", "controller" => RifasController::class, "middleware" => "auth:sanctum"], function () {
         Route::post('/define-winner', 'defineWinner');
         Route::post('/search-order', 'searchOrder');
-        Route::get("/", "index");
+        Route::get("/", "index")->name('login');
         Route::get("/{id}", "show");
         Route::get("/latest", "latest");
         Route::post("/", "store");
@@ -63,8 +66,10 @@ Route::group(["prefix" => "v1", "middleware" => ["cors"]], function () {
         Route::post("/", "store");
     });
     Route::post("/get-numbers", [ClientController::class, "getNumbers"]);
+
     Route::get("/config", [SiteConfigController::class, "getUserSiteConfig"]);
     Route::post("/pix", [PixController::class, "index"]);
     Route::post("/pay-cota", [MercadoPagoController::class, "getQr"]);
     Route::post("/mercado-pago-payments", [MercadoPagoController::class, 'index']);
-});
+// });
+

@@ -14,6 +14,7 @@ class ClientController extends Controller
 {
     public function getNumbers(Request $request)
     {
+        dd($request);
         try {
             $client = Clients::select('id', 'phone', 'name')->where('phone', $request->phone)->first();
             if (!isset($client)) {
@@ -28,4 +29,6 @@ class ClientController extends Controller
             return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
         }
     }
+
+
 }
