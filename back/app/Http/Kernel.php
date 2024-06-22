@@ -71,5 +71,6 @@ class Kernel extends HttpKernel
         // ... (any previous middleware)
 
         'cors' => \App\Http\Middleware\Cors::class,
+        'auth.client' => \App\Http\Middleware\AuthenticateClient::class,
     ];
 }

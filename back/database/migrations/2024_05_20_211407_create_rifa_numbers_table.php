@@ -13,11 +13,16 @@ return new class extends Migration
     {
         Schema::create('rifa_numbers', function (Blueprint $table) {
             $table->id();
+            $table->integer('numbers');
             $table->unsignedBigInteger('rifa_id');
             $table->foreign("rifa_id")->references("id")->on("rifas")->onDelete("cascade");
+
             $table->unsignedBigInteger('client_id');
             $table->foreign("client_id")->references("id")->on("clients")->onDelete("cascade");
-            $table->json('numbers');
+
+            $table->unsignedBigInteger('cota_id');
+            $table->foreign("cota_id")->references("id")->on("cotas")->onDelete("cascade");
+
             $table->timestamps();
         });
     }

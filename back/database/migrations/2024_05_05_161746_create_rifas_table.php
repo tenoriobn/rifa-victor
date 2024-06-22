@@ -27,8 +27,17 @@ return new class extends Migration
             $table->string("third_pacote_discount")->default(0);
             $table->string("fourth_pacote_numbers");
             $table->string("fourth_pacote_discount")->default(0);
+
+            $table->string("fifth_pacote_numbers");
+            $table->string("fifth_pacote_discount")->default(0);
+            $table->string("sixth_pacote_numbers");
+            $table->string("sixth_pacote_discount")->default(0);
             $table->integer("rifa_numbers");
             $table->integer("rifa_numbers_remaining");
+            $table->bigInteger('max_numbers')->nullable();
+            $table->bigInteger('min_numbers')->nullable();
+            $table->bigInteger('winner_id')->nullable();
+            $table->string('winner_number')->nullable();
             $table->timestamps();
         });
     }

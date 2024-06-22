@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('cotas', function (Blueprint $table) {
             $table->id();
+            $table->string('price');
             $table->tinyInteger('payment_status');
+            $table->bigInteger('payment_id');
             $table->timestamps();
         });
     }
