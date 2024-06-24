@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Auth;
 
 class ClientAuthService
 {
-    // Em ClientAuthService.php
 public function attempt($cellphone)
 {
     $client = Clients::where('cellphone', $cellphone)->first();
@@ -16,11 +15,9 @@ public function attempt($cellphone)
         return false;
     }
 
-    // Verifique se o login está sendo chamado corretamente
     $loginResult = Auth::guard('clients')->login($client);
-    dd(Auth::guard('clients'), Auth::guard('clients')->login($client)); // Verifique o resultado do login
 
-    return true;
+    return $loginResult;
 }
 
 
