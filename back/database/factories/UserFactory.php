@@ -27,6 +27,7 @@ class UserFactory extends Factory
             'name' => fake()->name(),
             'email' => "crissmykel10@gmail.com",
             'email_verified_at' => now(),
+            'role' => "superadmin",
             'password' => Hash::make('testing0000'),
             'remember_token' => Str::random(10),
         ];

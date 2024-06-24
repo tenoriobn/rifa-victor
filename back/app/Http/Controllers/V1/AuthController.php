@@ -100,7 +100,7 @@ class AuthController extends Controller
         return response()->json(['token_absent'], $e->getStatusCode());
     }
 
-    return 'O usuário está autenticado, prossiga com a lógica';
+    return 'O usuário está autenticado';
 }
 
 }

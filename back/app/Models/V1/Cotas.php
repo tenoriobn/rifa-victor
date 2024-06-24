@@ -4,34 +4,41 @@ namespace App\Models\V1;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Cotas extends Model
 {
     use HasFactory;
-    
-    public const PENDING = 0;
-    public const APPROVED = 1;
-    public const AUTHORIZED = 2;
-    public const IN_PROCESS = 3;
-    public const IN_MEDIATION = 4;
-    public const REJECTED = 5;
-    public const CANCELLED = 6;
-    public const REFUNDED = 7;
-    public const CHARGED_BACK = 8;
-    public const LOST_RESERVATION = 9;
-    public const FREE = 10;
 
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
     protected $table = 'cotas';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = ['payment_status', 'payment_id', 'price'];
+    protected $fillable = [
+        'qntd_cota',
+        'qntd_cota_digit',
+        'value_unit',
+        'qntd_cota_max_order',
+        'qntd_cota_max_client',
+        'rifa_id',
+    ];
+
+    public function rifa(): BelongsTo
+    {
+        return $this->belongsTo(Rifas::class);
+    }
+
+    public static function cotaCreateOrUpdate($qntd_cota, $qntd_cota_digit, $value_unit, $qntd_cota_max_order, $qntd_cota_max_client, $rifa_id, $cota_id) {
+        $result  = self::updateOrCreate(
+            ['id' => $cota_id],
+            [
+                'qntd_cota' => $qntd_cota,
+                'qntd_cota_digit' => $qntd_cota_digit,
+                'value_unit' => $value_unit,
+                'qntd_cota_max_order' => $qntd_cota_max_order,
+                'qntd_cota_max_client' => $qntd_cota_max_client,
+                'rifa_id' => $rifa_id,
+
+            ]);
+
+            return $result ? true : false;
+
+    }
 }
