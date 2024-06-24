@@ -1,40 +1,47 @@
+import { RecoilRoot } from "recoil";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import AppLayout from "../layouts/AppLayout";
-import ContentLayout from "../layouts/ContentLayout";
-import Home from "./home/Home";
-import NotFound from "./notFound/NotFound";
-import Termos from "./termos/Termos";
+import AppLayout from "../common/layouts/AppLayout";
+import ContentLayout from "../common/layouts/ContentLayout";
+import NotFound from "./NotFound/NotFound";
+import Termos from "../../public/componentesAnteriores/Termos/Termos";
 import { ConfigProvider } from "../context/ConfigContext";
-import MeusNumeros from "./meusNumeros/MeusNumeros";
-import Ganhadores from "./ganhadores/Ganhadores";
+import Ganhadores from "./Ganhadores/Ganhadores";
 import { PayProvider } from "../context/PayContext";
 import MeuPerfil from "./MeuPerfil/MeuPerfil";
 import Produtos from "./Produtos/Produtos";
-import HomePage from "./HomePage/HomePage";
+import PaginaInicial from "./PaginaInicial/PaginaInicial";
+import MeusNumeros from "../../public/componentesAnteriores/meusNumeros/MeusNumeros";
+import Rifa from "./Rifa/Rifa";
+// import Home from "./home/Home";
 
 export default function App() {
   return (
-    <ConfigProvider>
-      <PayProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<AppLayout />}>
-              <Route path="/" element={<ContentLayout />}>
-                <Route index element={<HomePage />} />
-                <Route path="meus-numeros" element={<MeusNumeros />} />
-                <Route path="produtos" element={<Produtos />} />
-                <Route path="ganhadores" element={<Ganhadores />} />
-                <Route path="meu-perfil" element={<MeuPerfil />} />
-                <Route path="meus-pedidos" element={<MeuPerfil />} />
-                <Route path="termos-de-uso" element={<Termos />} />
-                <Route path="produto/:slug" element={<Home />} />
-              </Route>
+    <RecoilRoot>
+      <ConfigProvider>
+        <PayProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<AppLayout />}>
+                <Route path="/" element={<ContentLayout />}>
+                  <Route index element={<PaginaInicial />} />
+                  <Route path="produtos" element={<Produtos />} />
+                  <Route path="ganhadores" element={<Ganhadores />} />
+                  <Route path="meu-perfil" element={<MeuPerfil />} />
+                  <Route path="meus-pedidos" element={<MeuPerfil />} />
+                  <Route path="produto/:slug" element={<Rifa />} />
+                  
+                  {/* Em Desuso */}
+                  <Route path="termos-de-uso" element={<Termos />} />
+                  <Route path="meus-numeros" element={<MeusNumeros />} />
+                  {/* Em Desuso */}
+                </Route>
 
-              <Route path="*" element={<NotFound />} />
-            </Route>
-          </Routes>
-        </BrowserRouter>
-      </PayProvider>
-    </ConfigProvider>
+                <Route path="*" element={<NotFound />} />
+              </Route>
+            </Routes>
+          </BrowserRouter>
+        </PayProvider>
+      </ConfigProvider>
+    </RecoilRoot>
   );
 }

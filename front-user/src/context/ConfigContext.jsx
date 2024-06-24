@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { sendRequest } from '../util/util';
+import { sendRequest } from '../common/util/util';
 
 const ConfigContext = React.createContext(null);
 export function useConfig() {

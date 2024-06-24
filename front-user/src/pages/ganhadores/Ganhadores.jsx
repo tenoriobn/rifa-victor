@@ -1,5 +1,5 @@
 import CabecalhoSecao from '../../components/CabecalhoSecao/CabecalhoSecao';
-import CardGanhadores from './CardGanhadores/CardGanhadores';
+import CardGanhadores from '../../components/CardGanhadores/CardGanhadores';
 import EmojiFeliz from "../../assets/Icons/emoji-feliz.svg?react";
 
 export default function Ganhadores() {

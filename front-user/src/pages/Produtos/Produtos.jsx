@@ -1,6 +1,6 @@
 import { useState } from "react";
 import CabecalhoSecao from "../../components/CabecalhoSecao/CabecalhoSecao";
-import CardProdutos from "./CardProdutos/CardProdutos";
+import CardProdutos from "../../components/CardProdutos/CardProdutos";
 import Estrela from "../../assets/Icons/estrela.svg?react";
 
 export default function Produtos() {

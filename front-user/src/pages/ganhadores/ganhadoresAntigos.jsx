@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Links from "../home/components/Links";
 import trophy from "../../../public/assets/images/trophy-fill.svg";
-import { formatDate, formatPrice } from "../../util/util";
+import { formatDate, formatPrice } from "../../common/util/util";
 import { Link } from "react-router-dom";
 import IconeGanhadores from './IconeGanhadores.svg?react';
 
