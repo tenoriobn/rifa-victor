@@ -6,33 +6,70 @@ import PacotesPromocionais from "../../components/PacotesPromocionais/PacotesPro
 import CotasPremiadas from "../../components/CotasPremiadas/CotasPremiadas";
 import AccordionDescricao from "../../components/AccordionDescricao/AccordionDescricao";
 import RankingVendas from "../../components/RankingVendas/RankingVendas";
+import AcessoUsuario from "../../components/AcessoUsuario/AcessoUsuario";
+import { useRecoilValue } from "recoil";
+import { estadoProdutoSelecionado, estadoRenderizaComponenteCadastro, estadoRenderizaComponenteLogin } from "../../common/state/atom";
+import TempoEncerrado from "../../assets/Icons/tempoEncerrado.svg?react";
 
 export default function Rifa() {
+  const renderizaComponenteCadastro = useRecoilValue(estadoRenderizaComponenteCadastro);
+  const renderizaComponenteLogin = useRecoilValue(estadoRenderizaComponenteLogin);
+  const produtoSelecionado = useRecoilValue(estadoProdutoSelecionado);
+
+  const renderizaComponente = produtoSelecionado.categoria === "ativas" || produtoSelecionado.categoria === "ganhadores";
+
+  console.log('renderizeComponente', renderizaComponente)
+
   return (
     <section>
-      <div className="flex flex-col-reverse gap-1 md:flex-row items-center font-semibold text-neutral-800 mb-2">
-        <Estrela className="icon stroke-amber-500" />
-        <h2>SAVEIRO CROSS DOS SONHOS</h2>
+      <div 
+        className="flex flex-col-reverse md:flex-row items-center justify-between font-semibold text-neutral-800 mb-2"
+      >
+        <div className="flex items-center gap-x-1">
+          <Estrela className="icon stroke-amber-500" />
+          <h2>{produtoSelecionado.titulo}</h2>
+        </div>
+
+        {!renderizaComponente && (
+          <div className="text-rose-500 flex items-center gap-1 text-xs">
+            <p className="text-rose-500 flex items-center gap-1 text-xs"> Sorteio encerrado </p>
+            <TempoEncerrado />
+          </div>
+        )}
       </div>
 
       <SlidePremio />
+      
+      {!renderizaComponenteCadastro && !renderizaComponenteLogin && (
+        <>
+          <OpcoesDoEvento display={`${renderizaComponente ? "flex" : "hidden"}`} />
 
-      <OpcoesDoEvento />
+          <div className="bg-slate-100 p-2 rounded-lg">
+            <h3 className="text-neutral-700">{produtoSelecionado.descricao}</h3>
+          </div>
 
-      <div className="bg-slate-100 p-2 rounded-lg">
-        <h3 className="text-neutral-700">SAVEIRO CROSS CABINE DUPLA</h3>
-      </div>
+          {renderizaComponente && (
+            <>
+              <div className='py-4 text-neutral-700'>
+                <InputRange />
+                <PacotesPromocionais />
+              </div>
 
-      <div className='py-4 text-neutral-700'>
-        <InputRange />
-        <PacotesPromocionais />
-      </div>
+              <CotasPremiadas />
+            </>
+          )}
 
-      <CotasPremiadas />
+          <AccordionDescricao display={`${renderizaComponente ? "flex" : "hidden"}`} />
 
-      <AccordionDescricao />
+          {renderizaComponente && (
+            <RankingVendas />
+          )}
+        </>
+      )}
 
-      <RankingVendas />
+      {renderizaComponenteCadastro || renderizaComponenteLogin ? (
+        <AcessoUsuario />
+      ) : ''}
     </section>
   )
 }

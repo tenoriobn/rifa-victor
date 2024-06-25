@@ -1,7 +1,8 @@
+/* eslint-disable react/prop-types */
 import { useState } from 'react';
 import Seta from "../../assets/Icons/seta.svg?react";
 
-export default function AccordionDescricao() {
+export default function AccordionDescricao({ display }) {
   const [selecaoAtiva, setSelecaoAtiva] = useState(null);
 
   const toggleSelecao = (selecao) => {
@@ -35,7 +36,7 @@ export default function AccordionDescricao() {
         </div>
       </div>
 
-      <div className="w-full flex flex-col">
+      <div className={`w-full flex-col ${display}`}>
         <button 
           onClick={() => toggleSelecao('descricaoSorteio')}
           className='text-white font-medium rounded-md text-sm px-2.5 py-1.5 bg-sky-500 hover:bg-sky-600 outline-none inline-flex mb-1.5 w-full'
