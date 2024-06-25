@@ -14,20 +14,7 @@ class StoreRifasRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        $adminUser = Auth::user();
-
-        $isAllowed = true;
-        $isNotAllowed = false;
-
-        if (!$adminUser) {
-            return $isNotAllowed;
-        }
-
-        if (!$adminUser->tokenCan("create")) {
-            return $isNotAllowed;
-        }
-
-        return $isAllowed;
+        return true; // Adapte conforme sua lógica de autorização
     }
 
     /**
@@ -35,25 +22,45 @@ class StoreRifasRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-
     public function rules(): array
     {
         return [
-            "title" => ["required", "bail", "min:1", new StripTags(), "max:255"],
-            "description" => ["required", "bail", "min:1", new StripTags(), "max:20000"],
-            "rifaStatus" => ["required", "bail", "min:1", new StripTags(), "max:255"],
-            "rifaDate" => ["required", "bail", "min:1", new StripTags(), "max:255"],
-            "price" => ["required", "bail", "min:0", "max:255"],
-            "firstPacoteNumbers" => ["sometimes", "required", "bail", new StripTags(), "max:255"],
-            "firstPacoteDiscount" => ["bail",  "max:255", "nullable"],
-            "secondPacoteNumbers" => ["sometimes", "required", "bail",  new StripTags(), "max:255"],
-            "secondPacoteDiscount" => ["bail",  "max:255", "nullable"],
-            "thirdPacoteNumbers" => ["sometimes", "required", "bail",  new StripTags(), "max:255"],
-            "thirdPacoteDiscount" => ["bail",  "max:255", "nullable"],
-            "fourthPacoteNumbers" => ["sometimes", "required", "bail",  new StripTags(), "max:255"],
-            "fourthPacoteDiscount" => ["bail", "max:255", "nullable"],
-            "thumbnail.*" => ["required", "bail", "image", "mimes:jpeg,png,jpg,webp", "max:10000"],
-            "rifaNumbers" => ["required", "bail", "numeric", "integer", new RifaMinNumbers()],
+            "title" => ["required", "bail", "min:1", "max:255"],
+            "description_resume" => ["required", "bail", "min:1", "max:20000"],
+            "show_site" => ["required", "bail"],
+            "emphasis" => ["required", "bail"],
+            "show_top" => ["required", "bail", "max:255"],
+            "video" => ["nullable", "bail", "max:255"],
+            // "img" => ["required", "bail", "image", "mimes:jpeg,png,jpg,webp", "max:10000"],
+            "status" => ["required", "bail", "max:255"],
+            "price" => ["required", "bail", "numeric", "min:0"],
+            "description_sortition" => ["required", "bail", "min:1"],
+            "description_product" => ["required", "bail", "min:1"],
+            "description_role" => ["required", "bail", "min:1"],
+            "data_sortition" => ["nullable", "bail", "date"],
+            "initial_sale" => ["nullable", "bail", "date"],
+            "end_sale" => ["nullable", "bail", "date"],
+            "qntd_cota" => ["required", "bail", "integer", "min:0"],
+            "qntd_cota_digit" => ["required", "bail", "integer", "min:0"],
+            "value_unit" => ["required", "bail", "integer", "min:0"],
+            "qntd_cota_max_order" => ["required", "bail", "integer", "min:0"],
+            "qntd_cota_max_client" => ["required", "bail", "integer", "min:0"],
+            "time_pay" => ["required", "bail", "integer", "min:0"],
+            "type_pay" => ["required", "bail", "max:255"],
+            "service_charge" => ["nullable", "bail", "max:255"],
+            "text_service_charge" => ["nullable", "bail", "max:255"],
+            "cotas_double" => ["nullable", "bail", "max:255"],
+            "text_cotas_double" => ["nullable", "bail", "max:255"],
+            "title_cotas_awarded" => ["nullable", "bail", "max:255"],
+            "description_cotas_awarded" => ["nullable", "bail", "max:255"],
+            "title_upsell" => ["nullable", "bail", "max:255"],
+            "description_upsell" => ["nullable", "bail", "max:255"],
+            "facebook_pixel" => ["nullable", "bail", "max:255"],
+            "facebook_token" => ["nullable", "bail", "max:255"],
+            "tiktok_pixel" => ["nullable", "bail", "max:255"],
+            "whatsapp_group" => ["nullable", "bail", "max:255"],
+            "flink_ebook" => ["nullable", "bail", "max:255"],
+            "nota_fiscal" => ["nullable", "bail", "max:255"],
         ];
     }
 
@@ -63,11 +70,16 @@ class StoreRifasRequest extends FormRequest
             "required" => "O campo :attribute é obrigatório.",
             "min" => [
                 "string" => "O campo :attribute deve ter pelo menos :min caracteres.",
+                "integer" => "O campo :attribute deve ser no mínimo :min.",
             ],
             "max" => [
                 "string" => "O campo :attribute não deve ter mais que :max caracteres.",
             ],
             "image" => "O campo :attribute deve ser uma imagem.",
+            "date" => "O campo :attribute deve ser uma data válida.",
+            "numeric" => "O campo :attribute deve ser numérico.",
+            "integer" => "O campo :attribute deve ser um número inteiro.",
+            "in" => "O valor selecionado para o campo :attribute é inválido.",
         ];
     }
 
@@ -75,19 +87,41 @@ class StoreRifasRequest extends FormRequest
     {
         return [
             "title" => "Título",
-            "description" => "Descrição",
-            "thumbnail" => "Thumbnail",
-            "rifaStatus" => "Status",
-            "rifaDate" => "Data do sorteio",
+            "description_resume" => "Resumo da Descrição",
+            "show_site" => "Mostrar no Site",
+            "emphasis" => "Ênfase",
+            "show_top" => "Mostrar no Topo",
+            "video" => "Vídeo",
+            "img" => "Imagem",
+            "status" => "Status",
             "price" => "Preço do Número",
-            "firstPacoteNumbers" => "Números do primeiro pacote",
-            "firstPacoteDiscount" => "Desconto do primeiro pacote",
-            "secondPacoteNumbers" => "Números do segundo pacote",
-            "secondPacoteDiscount" => "Desconto do segundo pacote",
-            "thirdPacoteNumbers" => "Números do terceiro pacote",
-            "thirdPacoteDiscount" => "Desconto do terceiro pacote",
-            "fourthPacoteNumbers" => "Números do quarto pacote",
-            "fourthPacoteDiscount" => "Desconto do quarto pacote",
+            "description_sortition" => "Descrição do Sorteio",
+            "description_product" => "Descrição do Produto",
+            "description_role" => "Descrição das Regras",
+            "data_sortition" => "Data do Sorteio",
+            "initial_sale" => "Início das Vendas",
+            "end_sale" => "Fim das Vendas",
+            "qntd_cota" => "Quantidade de Cotas",
+            "qntd_cota_digit" => "Quantidade de Dígitos das Cotas",
+            "value_unit" => "Valor Unitário",
+            "qntd_cota_max_order" => "Quantidade Máxima de Cotas por Pedido",
+            "qntd_cota_max_client" => "Quantidade Máxima de Cotas por Cliente",
+            "time_pay" => "Tempo de Pagamento",
+            "type_pay" => "Tipo de Pagamento",
+            "service_charge" => "Taxa de Serviço",
+            "text_service_charge" => "Texto da Taxa de Serviço",
+            "cotas_double" => "Cotas Duplas",
+            "text_cotas_double" => "Texto das Cotas Duplas",
+            "title_cotas_awarded" => "Título das Cotas Premiados",
+            "description_cotas_awarded" => "Descrição das Cotas Premiados",
+            "title_upsell" => "Título do Upsell",
+            "description_upsell" => "Descrição do Upsell",
+            "facebook_pixel" => "Pixel do Facebook",
+            "facebook_token" => "Token do Facebook",
+            "tiktok_pixel" => "Pixel do TikTok",
+            "whatsapp_group" => "Grupo do WhatsApp",
+            "flink_ebook" => "Link do eBook",
+            "nota_fiscal" => "Nota Fiscal",
             "rifaNumbers" => "Quantidade de Números",
         ];
     }

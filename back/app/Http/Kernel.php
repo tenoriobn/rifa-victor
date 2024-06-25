@@ -72,5 +72,6 @@ class Kernel extends HttpKernel
 
         'cors' => \App\Http\Middleware\Cors::class,
         'auth.client' => \App\Http\Middleware\AuthenticateClient::class,
+        'checkAdmin' => \App\Http\Middleware\CheckAdmin::class,
     ];
 }

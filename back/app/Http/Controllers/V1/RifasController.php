@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\V1;
 
 use App\Models\V1\Rifas;
+use App\Services\RifaService;
 use Illuminate\Http\Request;
 use App\Http\Requests\V1\StoreRifasRequest;
 use App\Http\Requests\V1\UpdateRifasRequest;
@@ -22,9 +23,10 @@ class RifasController extends Controller
     protected $notFound = 404;
     protected $serverError = 500;
 
-    /**
-     * Display a listing of the resource.
-     */
+      public function __construct(RifaService $rifaService)
+    {
+        $this->rifaService = $rifaService;
+    }
     public function index()
     {
         try {
@@ -51,47 +53,12 @@ class RifasController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreRifasRequest $request)
-    {
+    public function storeRifa(StoreRifasRequest $request) {
         try {
-            $thumbnailUrl = [];
-            $thumbs = $request->file("thumbnail");
-            for ($index = 0; $index < count($thumbs); $index += 1) {
-                $thumbnail = $thumbs[$index];
-                $uniqueFileName = uniqid() . '.' . $thumbnail->getClientOriginalExtension();
-                $thumbnail->move(public_path("assets/images/post-images"), $uniqueFileName);
-                $relativePath = "assets/images/post-images/" . $uniqueFileName;
-                array_push($thumbnailUrl, asset($relativePath));
-            }
-            $thumbnailUrl = implode(',',$thumbnailUrl);
-            $newRifaData = Rifas::create([
-                "title" =>  strip_tags($request->get("title")),
-                "description" => $request->get("description"),
-                "rifa_status" => $request->get("rifaStatus"),
-                "rifa_date" => $request->get("rifaDate"),
-                "price" => $request->get("price"),
-                "first_pacote_numbers" => $request->get("firstPacoteNumbers"),
-                "first_pacote_discount" => $request->get("firstPacoteDiscount"),
-                "second_pacote_numbers" => $request->get("secondPacoteNumbers"),
-                "second_pacote_discount" => $request->get("secondPacoteDiscount"),
-                "third_pacote_numbers" => $request->get("thirdPacoteNumbers"),
-                "third_pacote_discount" => $request->get("thirdPacoteDiscount"),
-                "fourth_pacote_numbers" => $request->get("fourthPacoteNumbers"),
-                "fourth_pacote_discount" => $request->get("fourthPacoteDiscount"),
-                "fifth_pacote_numbers" => $request->get("fifthPacoteNumbers"),
-                "fifth_pacote_discount" => $request->get("fifthPacoteDiscount"),
-                "sixth_pacote_numbers" => $request->get("sixthPacoteNumbers"),
-                "sixth_pacote_discount" => $request->get("sixthPacoteDiscount"),
-                "thumbnail" => $thumbnailUrl,
-                "rifa_numbers" => $request->get("rifaNumbers"),
-                "min_numbers" => $request->get("minNumbers") !== "" ? $request->get("minNumbers") : null,
-                "max_numbers" => $request->get("maxNumbers") !== "" ? $request->get("maxNumbers") : null,
-                "rifa_numbers_remaining" => $request->get("rifaNumbers"),
-            ]);
-
-            return response()->json(["success" => true, "data" => new RifasResource($newRifaData)], $this->postSuccess);
+            $rifa = $this->rifaService->createRifas($request);
+            return response()->json(["success" => true, "msg" => "Rifa criada com sucesso" ], $this->success);
         } catch (Exception $e) {
-            return response()->json(["success" => false, "msg" => $e->getMessage()], $this->serverError);
+            return response()->json(["response" => false, "msg" => "Ocorreu um erro interno ao cadastrar a rifa", "error" => $e->getMessage()], $this->serverError);
         }
     }
 

@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('cotas', function (Blueprint $table) {
+        Schema::create('rifas_awardeds', function (Blueprint $table) {
             $table->id();
-            $table->integer('qntd_cota');
-            $table->integer('qntd_cota_digit');
-            $table->integer('value_unit');
-            $table->integer('qntd_cota_max_order');
-            $table->integer('qntd_cota_max_client');
+            $table->string('cotas_double')->nullable();
+            $table->string('text_cotas_double')->nullable();
+            $table->string('title_cotas_awarded')->nullable();
+            $table->string('description_cotas_awarded')->nullable();
+            $table->string('title_upsell')->nullable();
+            $table->string('description_upsell')->nullable();
 
             $table->unsignedBigInteger('rifa_id');
             $table->foreign("rifa_id")->references("id")->on("rifas");
@@ -30,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('cotas');
+        Schema::dropIfExists('rifas_awardeds');
     }
 };
