@@ -1,0 +1,51 @@
+@import url("./icons.css");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  body {
+    @apply bg-darkGray;
+  }
+
+  .normal-transition {
+    @apply transition-all duration-200;
+  }
+}
+
+:root {
+  --header-height: 6rem;
+}
+
+.header-height {
+  height: var(--header-height);
+}
+
+.min-content-height {
+  min-height: calc(100vh - var(--header-height));
+}
+
+.text-hash {
+  word-break: break-word;
+}
+
+.qrcode-btn {
+  color: black;
+  background-color: white;
+  border: 1px solid black;
+  padding: 4px;
+}
+
+.qrcode-btn:disabled {
+  color: black;
+  cursor: not-allowed;
+  background-color: #8080806b;
+  padding: 4px;
+}
+
+
+.swiper{
+ margin-left: initial !important;
+ margin-right: initial !important;
+}
