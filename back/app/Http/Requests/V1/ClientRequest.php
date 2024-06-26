@@ -9,8 +9,7 @@ class ClientRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(): bool
-    {
+    public function authorize(): bool {
         return true;
     }
 
@@ -19,8 +18,7 @@ class ClientRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
-    {
+    public function rules(): array {
         return [
             "name" => ["required", "max:255"],
             "surname" => ["required", "max:255"],
@@ -28,8 +26,7 @@ class ClientRequest extends FormRequest
         ];
     }
 
-    public function messages(): array
-    {
+    public function messages(): array {
         return [
             'name.required' => 'Nome é obrigatório',
             'surname.required' => 'Telefone é obrigatório',

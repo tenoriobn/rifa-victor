@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('rifas_payments', function (Blueprint $table) {
+        Schema::create('rifa_pays', function (Blueprint $table) {
             $table->id();
-            $table->mediumInteger('time_pay')->comment('o tempo é em minutos');
-            $table->string('type_pay');
-            $table->decimal('service_charge', 5, 2)->nullable();
-            $table->string('text_service_charge')->nullable();
+            $table->tinyInteger('status')->default(0)->comment('0 => pedente, 1 => aprovado, 2 => não aprovado');
+            $table->decimal('value');
             $table->unsignedBigInteger('rifas_id');
             $table->foreign("rifas_id")->references("id")->on("rifas");
+            $table->unsignedBigInteger('client_id');
+            $table->foreign("client_id")->references("id")->on("clients");
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('rifas_payments');
+        Schema::dropIfExists('rifa_pays');
     }
 };

@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers\V1;
 
-use App\Models\V1\Rifas;
-use App\Services\RifaService;
-use Illuminate\Http\Request;
-use App\Http\Requests\V1\StoreRifasRequest;
-use App\Http\Requests\V1\UpdateRifasRequest;
-use App\Http\Controllers\Controller;
-use App\Http\Resources\V1\RifasResource;
-use App\Http\Resources\V1\RifasCollection;
-use App\Http\Requests\V1\PaymentRequest;
+use App\Models\V1\RifaNumber;
 use \Exception;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+
+use App\Http\Requests\V1\{StoreRifasRequest, UpdateRifasRequest, PaymentRequest, OrderRifaRequest};
+use App\Http\Resources\V1\{RifasResource};
+use App\Models\V1\{Rifas, Clients, RifaPay};
+use App\Services\RifaService;
+
+
+
 
 class RifasController extends Controller
 {
@@ -27,70 +29,75 @@ class RifasController extends Controller
     {
         $this->rifaService = $rifaService;
     }
-    public function index()
-    {
+    public function index() {
         try {
-            $rifasData = Rifas::orderBy("updated_at", "desc")->get();
+            $rifasData = Rifas::getAllRifas();
 
             if ($rifasData->isEmpty()) {
                 return response()->json(["success" => false, "msg" => "rifas have not been found."], $this->notFound);
             }
 
-            return response()->json(["success" => true, "data" => new RifasCollection($rifasData)], $this->success);
+            return response()->json(["success" => true, "data" => $rifasData], $this->success);
         } catch (Exception $e) {
             return response()->json(["success" => false, "msg" => $e->getMessage()], $this->serverError);
         }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function storeRifa(StoreRifasRequest $request) {
         try {
-            $rifa = $this->rifaService->createRifas($request);
+            $this->rifaService->createRifas($request);
             return response()->json(["success" => true, "msg" => "Rifa criada com sucesso" ], $this->success);
         } catch (Exception $e) {
             return response()->json(["response" => false, "msg" => "Ocorreu um erro interno ao cadastrar a rifa", "error" => $e->getMessage()], $this->serverError);
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show($id)
-    {
+    public function show($slug, $id) {
         try {
-            $rifaData = Rifas::find($id);
+            $rifaData = Rifas::getOneRifas($id);
 
             if (!$rifaData) {
                 return response()->json(["success" => false, "msg" => "Rifa has not been found."], $this->notFound);
             }
 
-            return response()->json(["success" => true, "data" => new RifasResource($rifaData)], $this->success);
+            $ranking = RifaNumber::getRanking();
+            return response()->json(["success" => true, "data" => $rifaData, "ranking" => $ranking], $this->success);
+        } catch (Exception $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], $this->serverError);
+        }
+    }
+    public function buyRifa(OrderRifaRequest $request) {
+        try {
+            $rifaPay = RifaPay::applyRifa($request);
+            RifaNumber::applyRifa($request, $rifaPay);
         } catch (Exception $e) {
             return response()->json(["success" => false, "msg" => $e->getMessage()], $this->serverError);
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Rifas $rifas)
-    {
-        //
+    public function winners() {
+        try {
+
+            $winners = Rifas::getAllWinners();
+            dd('oi');
+        } catch (Exception $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], $this->serverError);
+        }
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+
+
+
+
+
+
+
+
+
+
+
+
+
     public function update(UpdateRifasRequest $request, $id)
     {
         try {
@@ -254,28 +261,28 @@ class RifasController extends Controller
         }
     }
 
-    public function getLatestWinner() {
-        try {
-            $rifaData = Rifas::orderBy("updated_at", "desc")->first();
+    // public function getLatestWinner() {
+    //     try {
+    //         $rifaData = Rifas::orderBy("updated_at", "desc")->first();
 
-            if (!$rifaData) {
-                return response()->json(["success" => false, "msg" => "Rifa has not been found."], $this->notFound);
-            }
-            if ($rifaData->winner_id === null) {
-                return response()->json(["success" => false, "data" => ['winner' => null]], 200);
-            }
-            Log::info($rifaData);
-            $winner = DB::select("SELECT rifas.winner_number, rifas.thumbnail,rifas.title, cotas.payment_status, cotas.price, clients.id client_id, clients.phone, clients.name, count(rifa_numbers.client_id) numbers, cotas.created_at, cotas.updated_at FROM rifa_numbers INNER JOIN clients ON rifa_numbers.client_id = clients.id INNER JOIN cotas ON cotas.id = rifa_numbers.cota_id INNER JOIN rifas ON rifa_numbers.rifa_id = rifas.id WHERE client_id = $rifaData->winner_id GROUP BY client_id LIMIT 1")[0];
-            $rifaData->biggestBuyer = isset($buyer[0]) ? $buyer[0] : null;
-            if (isset($winner->phone)) {
-                $winner->phone = preg_replace("/\d{4,5}/", '****' ,$winner->phone);
-            }
+    //         if (!$rifaData) {
+    //             return response()->json(["success" => false, "msg" => "Rifa has not been found."], $this->notFound);
+    //         }
+    //         if ($rifaData->winner_id === null) {
+    //             return response()->json(["success" => false, "data" => ['winner' => null]], 200);
+    //         }
+    //         Log::info($rifaData);
+    //         $winner = DB::select("SELECT rifas.winner_number, rifas.thumbnail,rifas.title, cotas.payment_status, cotas.price, clients.id client_id, clients.phone, clients.name, count(rifa_numbers.client_id) numbers, cotas.created_at, cotas.updated_at FROM rifa_numbers INNER JOIN clients ON rifa_numbers.client_id = clients.id INNER JOIN cotas ON cotas.id = rifa_numbers.cota_id INNER JOIN rifas ON rifa_numbers.rifa_id = rifas.id WHERE client_id = $rifaData->winner_id GROUP BY client_id LIMIT 1")[0];
+    //         $rifaData->biggestBuyer = isset($buyer[0]) ? $buyer[0] : null;
+    //         if (isset($winner->phone)) {
+    //             $winner->phone = preg_replace("/\d{4,5}/", '****' ,$winner->phone);
+    //         }
 
-            return response()->json(["success" => true, "data" => ['winner' => $winner]], $this->success);
-        } catch (Exception $e) {
-            return response()->json(["success" => false, "msg" => $e->getMessage()], $this->serverError);
-        }
-    }
+    //         return response()->json(["success" => true, "data" => ['winner' => $winner]], $this->success);
+    //     } catch (Exception $e) {
+    //         return response()->json(["success" => false, "msg" => $e->getMessage()], $this->serverError);
+    //     }
+    // }
 
     public function defineWinner(Request $request) {
         try {

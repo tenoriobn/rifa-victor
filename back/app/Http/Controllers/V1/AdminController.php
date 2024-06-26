@@ -3,10 +3,14 @@
 namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\V1\UserRequest;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+
+use App\Models\User;
+use App\Http\Requests\V1\{UserRequest};
+
+
+
 
 class AdminController extends Controller
 {
@@ -19,8 +23,7 @@ class AdminController extends Controller
         }
     }
 
-    public function login(Request $request)
-    {
+    public function login(Request $request) {
         try {
             $credentials = $request->only('email', 'password');
 
@@ -36,8 +39,7 @@ class AdminController extends Controller
         }
     }
 
-    public function logout(Request $request)
-    {
+    public function logout(Request $request) {
         try {
             $request->user()->currentAccessToken()->delete();
             return response()->json(['response' => 'Logout efetuado com sucesso'], 200);
@@ -46,8 +48,7 @@ class AdminController extends Controller
         }
     }
 
-    public function me(Request $request)
-    {
+    public function me(Request $request) {
         return response()->json($request->user());
     }
 }

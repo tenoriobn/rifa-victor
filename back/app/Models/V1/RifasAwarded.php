@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class RifasAwarded extends Model
-{
+use App\Models\V1\{Rifas};
+class RifasAwarded extends Model {
     protected $fillable = [
         'cotas_double',
         'text_cotas_double',
@@ -15,13 +15,12 @@ class RifasAwarded extends Model
         'description_cotas_awarded',
         'title_upsell',
         'description_upsell',
-        'rifa_id',
+        'rifas_id',
     ];
 
     use HasFactory;
 
-    public function rifa(): BelongsTo
-    {
+    public function rifa(): BelongsTo {
         return $this->belongsTo(Rifas::class);
     }
 
@@ -35,7 +34,7 @@ class RifasAwarded extends Model
                 'description_cotas_awarded' => $description_cotas_awarded,
                 'title_upsell' => $title_upsell,
                 'description_upsell' => $description_upsell,
-                'rifa_id' => $rifa_id,
+                'rifas_id' => $rifa_id,
 
             ]);
 

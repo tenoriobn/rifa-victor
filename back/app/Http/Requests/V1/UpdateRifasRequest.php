@@ -7,13 +7,11 @@ use Illuminate\Support\Facades\Auth;
 use App\Rules\V1\StripTags;
 use App\Rules\V1\RifaMinNumbers;
 
-class UpdateRifasRequest extends FormRequest
-{
+class UpdateRifasRequest extends FormRequest {
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(): bool
-    {
+    public function authorize(): bool {
         $adminUser = Auth::user();
 
         $isAllowed = true;
@@ -36,8 +34,7 @@ class UpdateRifasRequest extends FormRequest
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
 
-    public function rules(): array
-    {
+    public function rules(): array {
 
         $method = $this->method();
 
@@ -80,8 +77,7 @@ class UpdateRifasRequest extends FormRequest
         }
     }
 
-    public function messages()
-    {
+    public function messages() {
         return [
             "required" => "O campo :attribute é obrigatório.",
             "min" => [
@@ -94,8 +90,7 @@ class UpdateRifasRequest extends FormRequest
         ];
     }
 
-    public function attributes()
-    {
+    public function attributes() {
         return [
             "title" => "Título",
             "description" => "Descrição",

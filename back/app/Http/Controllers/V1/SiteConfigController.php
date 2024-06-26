@@ -5,13 +5,13 @@ namespace App\Http\Controllers\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\StoreSiteConfigRequest;
 use App\Http\Resources\V1\SiteConfigResource;
-use App\Models\User;
-use App\Models\V1\SiteConfig;
-use Exception;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
-use Symfony\Component\HttpFoundation\Exception\BadRequestException;
+use Exception;
 use Throwable;
+
+use App\Models\User;
+use App\Models\V1\SiteConfig;
 
 class SiteConfigController extends Controller
 {
@@ -19,7 +19,7 @@ class SiteConfigController extends Controller
         try {
             $configData = SiteConfig::select('meta_pixel', 'instagram_link', 'whatsapp_link', 'url_logo_site', 'url_favicon_site', 'site_name', 'plataform_name')->where("id", "1")->first();
             if (!$configData) {
-                return response()->json(["success" => true], 200);    
+                return response()->json(["success" => true], 200);
             }
 
             return response()->json(["success" => true, "data" => $configData], 200);
@@ -39,7 +39,7 @@ class SiteConfigController extends Controller
             }
             $parts = explode('=', $line, 2);
             $key = $parts[0];
-            if (isset($data[$key])) {    
+            if (isset($data[$key])) {
                 $line = $key . '=' . $data[$key];
                 unset($data[$key]);
             }
@@ -64,7 +64,7 @@ class SiteConfigController extends Controller
         try {
             $configData = SiteConfig::where("id", "1")->first();
             if (!$configData) {
-                return response()->json(["success" => true], 200);    
+                return response()->json(["success" => true], 200);
             }
             $configData->email = User::orderBy("updated_at", "desc")->first()->email;
             $configData->mercadoPagoAccessToken = env('MERCADO_PAGO_ACCESS_TOKEN');

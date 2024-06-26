@@ -14,3 +14,8 @@ export const estadoValorCompra = atom({
   key: 'valorCompra',
   default: '7,00',
 });
+
+export const estadoProduto = atom({
+  key: 'estadoProduto',
+  default: [],
+});

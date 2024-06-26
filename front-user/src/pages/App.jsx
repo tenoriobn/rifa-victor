@@ -2,10 +2,10 @@ import { RecoilRoot } from "recoil";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AppLayout from "../common/layouts/AppLayout";
 import ContentLayout from "../common/layouts/ContentLayout";
-import NotFound from "./NotFound/NotFound";
+import NotFound from "./notFound/NotFound";
 import Termos from "../../public/componentesAnteriores/Termos/Termos";
 import { ConfigProvider } from "../context/ConfigContext";
-import Ganhadores from "./Ganhadores/Ganhadores";
+import Ganhadores from "./ganhadores/Ganhadores";
 import { PayProvider } from "../context/PayContext";
 import MeuPerfil from "./MeuPerfil/MeuPerfil";
 import Produtos from "./Produtos/Produtos";
@@ -28,7 +28,7 @@ export default function App() {
                   <Route path="ganhadores" element={<Ganhadores />} />
                   <Route path="meu-perfil" element={<MeuPerfil />} />
                   <Route path="meus-pedidos" element={<MeuPerfil />} />
-                  <Route path="produto/:slug" element={<Rifa />} />
+                  <Route path=":slug" element={<Rifa />} />
                   
                   {/* Em Desuso */}
                   <Route path="termos-de-uso" element={<Termos />} />

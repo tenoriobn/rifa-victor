@@ -4,13 +4,7 @@ namespace App\Http\Controllers\V1;
 
 use App\Exceptions\ForbiddenRequestException;
 use App\Http\Controllers\Controller;
-use App\Models\V1\RifaNumbers;
-use App\Models\V1\Clients;
-use App\Models\V1\Cotas;
-use App\Models\V1\Rifas;
-use App\Services\PaymentStatusService;
 use Carbon\Carbon;
-use Error;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -18,11 +12,20 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ItemNotFoundException;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
+
 use MercadoPago\Client\Common\RequestOptions;
 use MercadoPago\Client\Payment\PaymentClient;
 use MercadoPago\MercadoPagoConfig;
 use MercadoPago\Exceptions\MPApiException;
-use Symfony\Component\HttpFoundation\Exception\BadRequestException;
+
+use App\Models\V1\{RifaNumbers, Clients, Cotas, Rifas};
+use App\Services\{PaymentStatusService};
+
+
+
+
+
 
 class PixController extends Controller
 {
@@ -123,11 +126,11 @@ class PixController extends Controller
     private function generateNumbersForRifa($numbersQuant) {
         $notReserved = Cotas::LOST_RESERVATION;
         $nums = DB::select(
-            "SELECT @row := @row + 1 AS nums FROM 
+            "SELECT @row := @row + 1 AS nums FROM
             (select 0 union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) t,
-            (select 0 union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) t2, 
-            (select 0 union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) t3, 
-            (select 0 union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) t4, 
+            (select 0 union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) t2,
+            (select 0 union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) t3,
+            (select 0 union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) t4,
             (SELECT @row:=0) numbers
             HAVING nums NOT IN (SELECT number FROM rifa_numbers INNER JOIN cotas ON cotas.id = rifa_numbers.cota_id WHERE cotas.payment_status NOT IN ($notReserved))
             ORDER BY RAND()
@@ -214,7 +217,7 @@ class PixController extends Controller
                 "statusCode" => $e->getApiResponse()->getStatusCode(),
                 "content" => $e->getApiResponse()->getContent()
             ]], 200);
-        } 
+        }
         catch (BadRequestException $e) {
             return response()->json(["success" => false, "message" => $e->getMessage()], 400);
         } catch (ForbiddenRequestException $e) {

@@ -3,12 +3,16 @@ namespace App\Models\V1;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+
 use App\Http\Controllers\V1\Response;
 
 
-class Clients extends Authenticatable implements JWTSubject
-{
+use App\Models\V1\{RifaNumber};
+
+
+class Clients extends Authenticatable implements JWTSubject {
     use HasFactory;
 
     /**
@@ -18,8 +22,11 @@ class Clients extends Authenticatable implements JWTSubject
      */
     protected $fillable = ['name', 'surname', 'cellphone', 'api_token'];
 
-    public static function createClient($name, $surname, $cellphone)
-    {
+    public function rifaNumbers(): HasMany {
+        return $this->hasMany(RifaNumber::class, 'client_id');
+    }
+
+    public static function createClient($name, $surname, $cellphone) {
         try {
             $client = self::firstOrCreate(
                 ['cellphone' => $cellphone],
@@ -40,13 +47,11 @@ class Clients extends Authenticatable implements JWTSubject
         return $client;
     }
 
-    public function getJWTIdentifier()
-    {
+    public function getJWTIdentifier() {
         return $this->getKey();
     }
 
-    public function getJWTCustomClaims()
-    {
+    public function getJWTCustomClaims() {
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -57,4 +62,5 @@ class Clients extends Authenticatable implements JWTSubject
             'updated_at' => $this->updated_at,
         ];
     }
+
 }

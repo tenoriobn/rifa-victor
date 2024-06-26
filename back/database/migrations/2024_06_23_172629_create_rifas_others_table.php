@@ -21,8 +21,8 @@ return new class extends Migration
             $table->string('link_ebook')->nullable();
             $table->string('nota_fiscal')->nullable();
 
-            $table->unsignedBigInteger('rifa_id');
-            $table->foreign("rifa_id")->references("id")->on("rifas");
+            $table->unsignedBigInteger('rifas_id');
+            $table->foreign("rifas_id")->references("id")->on("rifas");
             $table->timestamps();
         });
     }

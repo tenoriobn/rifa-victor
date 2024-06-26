@@ -5,15 +5,15 @@ namespace App\Http\Controllers\V1;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use \Exception;
-use App\Models\V1\Clients;
-use App\Models\V1\Cotas;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ItemNotFoundException;
 
+use App\Models\V1\{Clients};
+
+
 class ClientController extends Controller
 {
-    public function getNumbers(Request $request)
-    {
+    public function getNumbers(Request $request) {
         dd($request);
         try {
             $client = Clients::select('id', 'phone', 'name')->where('phone', $request->phone)->first();

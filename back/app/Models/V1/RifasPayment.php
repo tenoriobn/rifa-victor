@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class RifasPayment extends Model
-{
+use App\Models\V1\{Rifas};
+class RifasPayment extends Model {
     use HasFactory;
 
     protected $fillable = [
@@ -15,11 +15,10 @@ class RifasPayment extends Model
         'type_pay',
         'service_charge',
         'text_service_charge',
-        'rifa_id',
+        'rifas_id',
     ];
 
-    public function rifa(): BelongsTo
-    {
+    public function rifa(): BelongsTo {
         return $this->belongsTo(Rifas::class);
     }
 
@@ -31,11 +30,10 @@ class RifasPayment extends Model
                 'type_pay' => $type_pay,
                 'service_charge' => $service_charge,
                 'text_service_charge' => $text_service_charge,
-                'rifa_id' => $rifa_id,
+                'rifas_id' => $rifa_id,
 
             ]);
 
             return $result ? true : false;
-
     }
 }

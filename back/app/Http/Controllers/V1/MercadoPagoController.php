@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
-use App\Models\V1\Cotas;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -11,6 +10,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ItemNotFoundException;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
+use App\Models\V1\{Cotas};
 class MercadoPagoController extends Controller
 {
     private string $accessToken;
