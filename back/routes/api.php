@@ -16,27 +16,11 @@ use App\Http\Controllers\V1\{AuthController, AdminController, ClientController, 
 |
 */
 
-Route::middleware('auth:sanctum')->get(
-    '/user',
-
-    function (Request $request) {
-        return $request->user();
-    }
-);
-
-// Route::get("/", function () {
-//     User::create([
-//         "name" => "admin",
-//         "email" => "testing@gmail.com",
-//         "password" => Hash::make("testing0000"),
-//     ]);
-// });
 // Route::group(["prefix" => "v1", "middleware" => ["cors"]], function () {
     Route::post("/cadastro", [AuthController::class, "register"])->name('client.register');
     Route::post("/login", [AuthController::class, "login"])->name('client.login');
-    Route::middleware('auth.client')->post("/login", [AuthController::class, "logout"])->name('client.logout');
+    Route::middleware('auth.client')->post("/logout", [AuthController::class, "logout"])->name('client.logout');
     Route::middleware('auth.client')->get("/protected", [AuthController::class, "someProtectedMethod"])->name('client.protected');
-
 
     Route::group(['prefix' => 'admin'], function () {
         Route::post("/cadastrar/rifas", [RifasController::class, "storeRifa"])->name('admin.create.rifa');
@@ -45,6 +29,24 @@ Route::middleware('auth:sanctum')->get(
         Route::middleware('auth:sanctum')->post("/logout", [AdminController::class, "logout"])->name('admin.logout.user');
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/me", [AdminController::class, "me"])->name('admin.me.user');
     });
+    Route::group(['prefix' => 'produtos'], function () {
+        Route::get("/", [RifasController::class, "index"])->name('all.rifas');
+        Route::get("/{slug}/{id}", [RifasController::class, "show"])->where(['slug' => '[a-zA-Z0-9\-_]+', 'id' => '[0-9]+'])->name('show.one.rifa');
+        Route::middleware('auth.client')->post("/comprar-rifa", [RifasController::class, "buyRifa"])->name('buy.rifa');
+    });
+
+    Route::get("/ganhadores", [RifasController::class, "winners"])->name('all.winners');
+
+
+
+
+
+
+
+
+
+
+
     // Route::group(["prefix" => "rifas", "controller" => RifasController::class, "middleware" => "auth:sanctum"], function () {
     //     Route::post('/define-winner', 'defineWinner');
     //     Route::post('/search-order', 'searchOrder');

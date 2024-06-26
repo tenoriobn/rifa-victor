@@ -20,17 +20,20 @@ return new class extends Migration
             $table->enum('emphasis', ['sim', 'nao']);
             $table->string("show_top");
             $table->string("video");
-            $table->string("img");
+            $table->json("img");
             $table->string("status");
-            $table->integer("price");
+            $table->decimal('price', 10, 2)->nullable();
             $table->text("description_sortition");
             $table->text("description_product");
             $table->text("description_role");
             $table->dateTime('data_sortition')->nullable();
             $table->dateTime('initial_sale')->nullable();
             $table->dateTime('end_sale')->nullable();
+            $table->dateTime('end_rifa')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->foreign("user_id")->references("id")->on("users");
+            $table->unsignedBigInteger('winner_id');
+            $table->foreign("winner_id")->references("id")->on("clients");
 
             $table->timestamps();
         });

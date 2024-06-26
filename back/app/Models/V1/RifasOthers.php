@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class RifasOthers extends Model
-{
+use App\Models\V1\{Rifas};
+class RifasOthers extends Model {
 
     protected $fillable = [
         'facebook_pixel',
@@ -16,14 +16,13 @@ class RifasOthers extends Model
         'whatsapp_group',
         'link_ebook',
         'nota_fiscal',
-        'rifa_id',
+        'rifas_id',
     ];
 
     use HasFactory;
 
 
-    public function rifa(): BelongsTo
-    {
+    public function rifa(): BelongsTo {
         return $this->belongsTo(Rifas::class);
     }
 
@@ -37,11 +36,10 @@ class RifasOthers extends Model
                 'whatsapp_group' => $whatsapp_group,
                 'link_ebook' => $link_ebook,
                 'nota_fiscal' => $nota_fiscal,
-                'rifa_id' => $rifa_id,
+                'rifas_id' => $rifa_id,
 
             ]);
 
             return $result ? true : false;
-
     }
 }

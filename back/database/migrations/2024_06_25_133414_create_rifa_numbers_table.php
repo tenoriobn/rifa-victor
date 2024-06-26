@@ -13,17 +13,17 @@ return new class extends Migration
     {
         Schema::create('rifa_numbers', function (Blueprint $table) {
             $table->id();
-            $table->integer('numbers');
-            $table->unsignedBigInteger('rifa_id');
-            $table->foreign("rifa_id")->references("id")->on("rifas")->onDelete("cascade");
-
+            $table->json('numbers')->nullable();
+            $table->tinyInteger('status')->default(0)->comment('0 => pagamento pedente, 1 => pago, 2 => pagamento não aprovado');
+            $table->unsignedBigInteger('rifas_id');
+            $table->foreign("rifas_id")->references("id")->on("rifas");
+            $table->unsignedBigInteger('pay_id');
+            $table->foreign("pay_id")->references("id")->on("rifa_pays");
             $table->unsignedBigInteger('client_id');
-            $table->foreign("client_id")->references("id")->on("clients")->onDelete("cascade");
-
-            $table->unsignedBigInteger('cota_id');
-            $table->foreign("cota_id")->references("id")->on("cotas")->onDelete("cascade");
-
+            $table->foreign("client_id")->references("id")->on("clients");
             $table->timestamps();
+
+            $table->index('status');
         });
     }
 

@@ -12,8 +12,7 @@ class StoreRifasRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(): bool
-    {
+    public function authorize(): bool {
         return true; // Adapte conforme sua lógica de autorização
     }
 
@@ -22,8 +21,7 @@ class StoreRifasRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
-    {
+    public function rules(): array {
         return [
             "title" => ["required", "bail", "min:1", "max:255"],
             "description_resume" => ["required", "bail", "min:1", "max:20000"],
@@ -42,12 +40,11 @@ class StoreRifasRequest extends FormRequest
             "end_sale" => ["nullable", "bail", "date"],
             "qntd_cota" => ["required", "bail", "integer", "min:0"],
             "qntd_cota_digit" => ["required", "bail", "integer", "min:0"],
-            "value_unit" => ["required", "bail", "integer", "min:0"],
             "qntd_cota_max_order" => ["required", "bail", "integer", "min:0"],
             "qntd_cota_max_client" => ["required", "bail", "integer", "min:0"],
             "time_pay" => ["required", "bail", "integer", "min:0"],
             "type_pay" => ["required", "bail", "max:255"],
-            "service_charge" => ["nullable", "bail", "max:255"],
+            "service_charge" => ["nullable", "numeric", "bail", "max:255"],
             "text_service_charge" => ["nullable", "bail", "max:255"],
             "cotas_double" => ["nullable", "bail", "max:255"],
             "text_cotas_double" => ["nullable", "bail", "max:255"],
@@ -64,8 +61,7 @@ class StoreRifasRequest extends FormRequest
         ];
     }
 
-    public function messages()
-    {
+    public function messages() {
         return [
             "required" => "O campo :attribute é obrigatório.",
             "min" => [
@@ -83,8 +79,7 @@ class StoreRifasRequest extends FormRequest
         ];
     }
 
-    public function attributes()
-    {
+    public function attributes() {
         return [
             "title" => "Título",
             "description_resume" => "Resumo da Descrição",

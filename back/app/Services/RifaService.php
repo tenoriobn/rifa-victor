@@ -1,24 +1,24 @@
 <?php
 
 namespace App\Services;
-use App\Models\V1\{Cotas, Rifas, RifasOthers, RifasAwarded};
 
-use App\Models\V1\RifasPayment;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
+
+use App\Models\V1\{Cotas, Rifas, RifasOthers, RifasAwarded, RifasPayment};
 class RifaService
 {
     public function createRifas($datas)
     {
         $rifa_id = $datas->rifa_id ?? null;
 
-        $rifaResult = Rifas::rifaCreateOrUpdate($datas->title ?? '', Str::slug($datas->title ?? ''), $datas->description_resume ?? '', $datas->show_site ?? '', $datas->emphasis ?? '', $datas->show_top ?? '', $datas->video ?? '', $this->saveImage($datas->img), $this->status($datas->status, $datas->data_sortition), $datas->price ?? 0, $datas->description_sortition ?? '', $datas->description_product ?? '', $datas->description_role ?? '', $datas->data_sortition ?? null, $datas->initial_sale ?? null, $datas->end_sale ?? null, $datas->user_id ?? null, $rifa_id );
+        $rifaResult = Rifas::rifaCreateOrUpdate($datas->title ?? '', Str::slug($datas->title ?? ''), $datas->description_resume ?? '', $datas->show_site ?? 1, $datas->emphasis ?? '', $datas->show_top ?? '', $datas->video ?? '', $this->saveImage($datas->img), $this->status($datas->status, $datas->data_sortition), $datas->price ?? 0, $datas->description_sortition ?? '', $datas->description_product ?? '', $datas->description_role ?? '', $datas->data_sortition ?? null, $datas->initial_sale ?? null, $datas->end_sale ?? null,  $datas->end_rifa ?? null, $datas->user_id ?? null, $rifa_id );
 
         if (!$rifaResult) {
             return false;
         }
 
-        $cotaResult = Cotas::cotaCreateOrUpdate( $datas->qntd_cota ?? 0, $datas->qntd_cota_digit ?? 0, $datas->value_unit ?? 0, $datas->qntd_cota_max_order ?? 0, $datas->qntd_cota_max_client ?? 0, $rifaResult, $datas->cota_id ?? null);
+        $cotaResult = Cotas::cotaCreateOrUpdate( $datas->qntd_cota ?? 0, $datas->qntd_cota_digit ?? 0, $datas->qntd_cota_max_order ?? 0, $datas->qntd_cota_max_client ?? 0, $rifaResult, $datas->cota_id ?? null);
 
         $othersResult = RifasAwarded::rifasAwardedCreateOrUpdate( $datas->cotas_double ?? '', $datas->text_cotas_double ?? '', $datas->title_cotas_awarded ?? '', $datas->description_cotas_awarded ?? '', $datas->title_upsell ?? '', $datas->description_upsell ?? '', $rifaResult, $datas->rifas_awarded_id ?? null);
 
@@ -33,10 +33,10 @@ class RifaService
         $today = Carbon::now();
 
         if ($data_sortition->greaterThan($today)) {
-            return 'futura';
+            return 'futuras';
         }
 
-        return 'ativado';
+        return 'ativas';
     }
     public function saveImage ($img) {
         return $img;

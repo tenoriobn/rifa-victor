@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('title_upsell')->nullable();
             $table->string('description_upsell')->nullable();
 
-            $table->unsignedBigInteger('rifa_id');
-            $table->foreign("rifa_id")->references("id")->on("rifas");
+            $table->unsignedBigInteger('rifas_id');
+            $table->foreign("rifas_id")->references("id")->on("rifas");
             $table->timestamps();
         });
     }

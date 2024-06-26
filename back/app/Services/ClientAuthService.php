@@ -2,15 +2,15 @@
 
 namespace App\Services;
 
-use App\Models\V1\Clients;
 use Illuminate\Support\Facades\Auth;
+
+use App\Models\V1\{Clients};
 
 class ClientAuthService
 {
 public function attempt($cellphone)
 {
     $client = Clients::where('cellphone', $cellphone)->first();
-
     if (!$client) {
         return false;
     }

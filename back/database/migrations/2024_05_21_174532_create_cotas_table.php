@@ -15,12 +15,11 @@ return new class extends Migration
             $table->id();
             $table->integer('qntd_cota');
             $table->integer('qntd_cota_digit');
-            $table->integer('value_unit');
             $table->integer('qntd_cota_max_order');
             $table->integer('qntd_cota_max_client');
 
-            $table->unsignedBigInteger('rifa_id');
-            $table->foreign("rifa_id")->references("id")->on("rifas");
+            $table->unsignedBigInteger('rifas_id');
+            $table->foreign("rifas_id")->references("id")->on("rifas");
             $table->timestamps();
         });
     }

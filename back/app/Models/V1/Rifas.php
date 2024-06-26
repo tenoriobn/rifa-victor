@@ -2,12 +2,11 @@
 
 namespace App\Models\V1;
 
-use App\Models\RifasAwarded;
-use App\Models\RifasOthers;
-use App\Models\RifasPayment;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+
+use App\Models\V1\{RifasAwarded, RifasOthers, RifasPayment};
 
 class Rifas extends Model
 {
@@ -30,6 +29,7 @@ class Rifas extends Model
         'initial_sale',
         'end_sale',
         'user_id',
+        'winner_id',
     ];
 
 
@@ -49,7 +49,8 @@ class Rifas extends Model
         return $this->hasOne(RifasPayment::class);
     }
 
-    public static function rifaCreateOrUpdate($title, $slug, $description_resume, $show_site, $emphasis, $show_top, $video, $img, $status, $price, $description_sortition, $description_product, $description_role, $data_sortition, $initial_sale, $end_sale, $user_id, $rifa_id) {
+    public static function rifaCreateOrUpdate($title, $slug, $description_resume, $show_site, $emphasis, $show_top, $video, $img, $status, $price, $description_sortition, $description_product, $description_role, $data_sortition, $initial_sale, $end_sale, $end_rifa, $user_id, $rifa_id) {
+        $imgJson = json_encode($img);
         $result  = self::updateOrCreate(
             ['id' => $rifa_id],
             [
@@ -60,7 +61,7 @@ class Rifas extends Model
                 'emphasis' => $emphasis,
                 'show_top' => $show_top,
                 'video' => $video,
-                'img' => $img,
+                'img' => $imgJson,
                 'status' => $status,
                 'price' => $price,
                 'description_sortition' => $description_sortition,
@@ -69,6 +70,7 @@ class Rifas extends Model
                 'data_sortition' => $data_sortition,
                 'initial_sale' => $initial_sale,
                 'end_sale' => $end_sale,
+                'end_rifa' => $end_rifa,
                 'user_id' => $user_id,
             ]);
 
@@ -78,6 +80,18 @@ class Rifas extends Model
             $rifa_id = $result->id;
 
             return $is_created ? $rifa_id : false;
+    }
 
+    public static function getAllRifas() {
+        return self::with(['cota', 'rifaAwarded', 'rifaOthers', 'rifaPayment'])->orderBy("id")->get();
+    }
+    public static function getOneRifas($id) {
+        return self::with(['cota', 'rifaAwarded', 'rifaOthers', 'rifaPayment'])->where("id", $id)->first();
+    }
+    public static function getAllWinners() {
+        $w =  self::with(['cota', 'rifaAwarded', 'rifaOthers', 'rifaPayment'])->where('clients_id', '>', 0)
+        ->whereNotNull('clients_id')->get();
+
+        dd($w );
     }
 }
