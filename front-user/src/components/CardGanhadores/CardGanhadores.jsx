@@ -1,14 +1,13 @@
 import { Link } from 'react-router-dom';
 import Bilhete from "../../assets/Icons/bilhete.svg?react";
 import Calendario from "../../assets/Icons/calendario.svg?react";
-import { useRecoilValue } from 'recoil';
-import { estadoProdutos } from '../../common/state/atom';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { estadoProdutoSelecionado, estadoProdutos } from '../../common/state/atom';
 
 export default function CardGanhadores() {
   const produtos = useRecoilValue(estadoProdutos);
   const ganhadoresFiltrados = produtos.filter(produto => produto.categoria === "ganhadores");
-
-  console.log(produtos)
+  const setProdutoSelecionado = useSetRecoilState(estadoProdutoSelecionado);
 
   return (
     <>
@@ -17,7 +16,7 @@ export default function CardGanhadores() {
           <Link 
             className="flex w-auto overflow-hidden rounded-lg bg-neutral-200 hover:shadow-[4px_4px_4px_#0002] border border-solid border-neutral-400 ring-0 ring-amber-500/60 hover:ring-offset-4 hover:ring-2 transition-all"
             to={`/${ganhadores.slug}`}
-            
+            onClick={() => setProdutoSelecionado(ganhadores)}
           >
             <img 
               className="w-[80px] m-2 rounded-lg object-cover transition-all" 
