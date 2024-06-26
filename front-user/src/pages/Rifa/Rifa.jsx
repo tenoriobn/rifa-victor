@@ -16,9 +16,7 @@ export default function Rifa() {
   const renderizaComponenteLogin = useRecoilValue(estadoRenderizaComponenteLogin);
   const produtoSelecionado = useRecoilValue(estadoProdutoSelecionado);
 
-  const renderizaComponente = produtoSelecionado.categoria === "ativas" || produtoSelecionado.categoria === "ganhadores";
-
-  console.log('renderizeComponente', renderizaComponente)
+  const renderizaComponente = produtoSelecionado.categoria === "ativas";
 
   return (
     <section>
@@ -36,7 +34,7 @@ export default function Rifa() {
             <TempoEncerrado />
           </div>
         )}
-      </div>
+      </div> 
 
       <SlidePremio />
       
