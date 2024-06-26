@@ -12,6 +12,8 @@ import Produtos from "./Produtos/Produtos";
 import PaginaInicial from "./PaginaInicial/PaginaInicial";
 import MeusNumeros from "../../public/componentesAnteriores/meusNumeros/MeusNumeros";
 import Rifa from "./Rifa/Rifa";
+import Cadastro from "../components/AcessoUsuario/AcessoUsuario";
+import RifaFinalizada from "./RifaFinalizada/RifaFinalizada";
 // import Home from "./home/Home";
 
 export default function App() {
@@ -29,6 +31,8 @@ export default function App() {
                   <Route path="meu-perfil" element={<MeuPerfil />} />
                   <Route path="meus-pedidos" element={<MeuPerfil />} />
                   <Route path=":slug" element={<Rifa />} />
+                  <Route path="/finalizada" element={<RifaFinalizada />} />
+                  <Route path="cadastro" element={<Cadastro />} />
                   
                   {/* Em Desuso */}
                   <Route path="termos-de-uso" element={<Termos />} />

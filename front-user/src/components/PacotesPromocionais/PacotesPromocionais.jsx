@@ -1,12 +1,13 @@
 import Medidor from "../../assets/Icons/medidor.svg?react";
-import { useRecoilValue } from 'recoil';
-import { estadoPacoteSelecionado, estadoValorCompra, estadoValorRange } from "../../common/state/atom";
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { estadoPacoteSelecionado, estadoRenderizaComponenteCadastro, estadoValorCompra, estadoValorRange } from "../../common/state/atom";
 import useOperacoesInputRange from "../../common/state/hooks/inputRange/useOperacoesInputRange";
 
 export default function PacotesPromocionais() {
   const valorRange = useRecoilValue(estadoValorRange);
   const pacoteSelecionado = useRecoilValue(estadoPacoteSelecionado);
   const valorCompra = useRecoilValue(estadoValorCompra);
+  const renderizaComponenteCadastro = useSetRecoilState(estadoRenderizaComponenteCadastro);
   const { adicionarValorPromocional } = useOperacoesInputRange();
 
   const precoUnidade = valorRange >= 1000 ? '0,15' : valorRange >= 500 ? '0,19' : '0,20';
@@ -29,11 +30,11 @@ export default function PacotesPromocionais() {
       </h3>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 my-2">
-        {pacotes.map((pacote, index) => (
+        {pacotes.map((pacote) => (
           <button
             key={pacote.id}
-            className={`relative rounded px-2 py-1 transition-all cursor-pointer text-center border-2 border-solid border-transparent ${
-              index === 0 ? 'border-emerald-700' : ''} 
+            className={`relative rounded px-2 py-1 transition-all cursor-pointer text-center border-2 border-solid ${
+              pacote.id === 1 ? 'border-emerald-700' : 'border-transparent'} 
               ${pacoteSelecionado.id === pacote.id ? 'bg-green-200 text-neutral-700' : 'bg-slate-300 text-black'}
               ${pacoteSelecionado.id === pacote.id ? '' : 'hover:bg-slate-400'}`
             }
@@ -75,7 +76,10 @@ export default function PacotesPromocionais() {
           }
         </div>
 
-        <button className="rounded-full px-8 py-4 bg-amber-500 ring-1 ring-amber-800 ring-offset-4 hover:bg-amber-600 transition-all disabled:bg-neutral-400 text-white">
+        <button 
+          className="rounded-full px-8 py-4 bg-amber-500 ring-1 ring-amber-800 ring-offset-4 hover:bg-amber-600 transition-all disabled:bg-neutral-400 text-white"
+          onClick={() => renderizaComponenteCadastro(true)}
+        >
           Comprar por <span className="font-bold">R$&nbsp;${valorCompra}</span>
         </button>
       </div>

@@ -1,39 +1,40 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 import PerfilTitulo from "../../assets/Icons/perfil-2.svg?react";
-import Perfil from "../../assets/Icons/perfil.svg?react";
-import Telefone from "../../assets/Icons/telefone.svg?react";
-import { usePay } from "../../context/PayContext";
+import FormularioLogin from "../../components/FormularioLogin/FormularioLogin";
+// import Perfil from "../../assets/Icons/perfil.svg?react";
+// import Telefone from "../../assets/Icons/telefone.svg?react";
+// import { usePay } from "../../context/PayContext";
 
 export default function MeuPerfil(props) {
-  const [phone, setPhone] = useState("");
+  // const [phone, setPhone] = useState("");
   const [error, setError] = useState("");
-  const payInfo = usePay();
+  // const payInfo = usePay();
 
-  function formatarTelefone(telefone) {
-    telefone = telefone.replace(/\D/g, "");
-    telefone = telefone.replace(/(\d{2})(\d)/, "($1) $2");
-    telefone = telefone.replace(/(\d)(\d{4})$/, "$1-$2");
-    return telefone;
-  }
+  // function formatarTelefone(telefone) {
+  //   telefone = telefone.replace(/\D/g, "");
+  //   telefone = telefone.replace(/(\d{2})(\d)/, "($1) $2");
+  //   telefone = telefone.replace(/(\d)(\d{4})$/, "$1-$2");
+  //   return telefone;
+  // }
 
-  const handleChange = (event) => {
-    const formattedPhone = formatarTelefone(event.target.value);
-    setPhone(formattedPhone);
-    setError(""); 
-  };
+  // const handleChange = (event) => {
+  //   const formattedPhone = formatarTelefone(event.target.value);
+  //   setPhone(formattedPhone);
+  //   setError(""); 
+  // };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
 
-    const phonePattern = /^\(\d{2}\) \d{4,5}-\d{4}$/;
-    if (!phonePattern.test(phone)) {
-      setError("O telefone inválido");
-      return;
-    }
-    payInfo.setPhone(phone);
-    props.submitBtn();
-  };
+  //   const phonePattern = /^\(\d{2}\) \d{4,5}-\d{4}$/;
+  //   if (!phonePattern.test(phone)) {
+  //     setError("O telefone inválido");
+  //     return;
+  //   }
+  //   payInfo.setPhone(phone);
+  //   props.submitBtn();
+  // };
 
   return (
     <div className="text-neutral-700 flex flex-col items-center">
@@ -46,7 +47,7 @@ export default function MeuPerfil(props) {
         <p className="text-red-500">{error}</p>
       </div>}
 
-      <form className="w-full" onSubmit={handleSubmit}>
+      {/* <form className="w-full" onSubmit={handleSubmit}>
         <div className='bg-white/20 border border-solid border-white/50 rounded-lg p-4 text-xl max-w-[420px] mx-auto mb-6'>
           <div className='flex flex-col'>
             <label htmlFor="nome" className='block font-medium text-sm mb-1 w-max'>Nome</label>
@@ -85,7 +86,9 @@ export default function MeuPerfil(props) {
         </div>
 
         <button type="submit" className="text-sm font-medium rounded-md shadow-sm text-white  bg-amber-500 w-full hover:bg-amber-600 max-w-[420px] flex justify-center items-center px-3.5 py-2.5 mx-auto transition ease-in-out">Efetuar Login</button>
-      </form>
+      </form> */}
+
+      <FormularioLogin />
     </div>
   )
 }

@@ -2,33 +2,13 @@
 import { Link } from "react-router-dom";
 import Bilhete from "../../assets/Icons/bilhete.svg?react";
 import Calendario from "../../assets/Icons/calendario.svg?react";
-import { useRecoilState } from "recoil";
-import { useEffect, useState } from "react";
-import { fetchDados } from "../../common/http/http";
-import { estadoProduto } from "../../common/state/atom";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { estadoProdutoSelecionado, estadoProdutos } from "../../common/state/atom";
 
 export default function CardProdutos({ categoria }) {
-  const [produtos, setProdutos] = useRecoilState(estadoProduto);
-  const [imagemConvertida, setImagemConvertida] = useState('');
-  const produtosFiltrados = produtos.filter(produto => produto.status === categoria);
-
-  useEffect(() => {
-    const obterDados = async () => {
-      const dados = await fetchDados('/produtos');
-      setProdutos(dados.data);
-    
-    };
-    
-    obterDados();
-  }, []);
-
-  const converterImgProduto = (imgs) => {
-    let img = imgs.replace(/\\"/g, '"');
-    let imgArray = JSON.parse(img);
-    let primeiroElemento = imgArray[0];
-    return primeiroElemento; // Retornando o primeiro elemento do array
-  };
-
+  const produtos = useRecoilValue(estadoProdutos);
+  const setProdutoSelecionado = useSetRecoilState(estadoProdutoSelecionado);
+  const produtosFiltrados = produtos.filter(produto => produto.categoria === categoria);
 
   return (
     <div className="flex flex-col gap-4">
