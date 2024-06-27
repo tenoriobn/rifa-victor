@@ -1,5 +1,9 @@
 import { atom } from "recoil";
-// import listaProdutos from "../data/produtos.json"
+
+export const estadoMenuAtivo = atom({
+  key: 'menuAtivo',
+  default: false,
+})
 
 export const estadoPacoteSelecionado = atom({
   key: 'pacoteSelecionado',
@@ -59,4 +63,9 @@ export const estadoGanhadores = atom({
 export const estadoRifa = atom({
   key: 'rifa',
   default: '',
+});
+
+export const estadoEditarPerfil = atom({
+  key: 'editarPerfil',
+  default: false,
 });

@@ -26,7 +26,7 @@ export default function AcessoUsuario() {
       <TermosCondicoes />
 
       <div
-        className="flex flex-col gap-2 sm:flex-row items-center gap-2 justify-between"
+        className="flex flex-col gap-2 sm:flex-row items-center justify-between"
       >
         <button
           className="flex items-center justify-center gap-1 group text-white rounded overflow-hidden shadow-transparent shadow-md hover:shadow-black/3 0 bg-red-600 px-4 py-1 font-medium"

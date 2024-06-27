@@ -10,10 +10,7 @@ export default function FormularioCadastro() {
     <form className="space-y-4" action="">
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="w-full">
-          <label 
-            htmlFor="name" 
-            className="block mb-1 text-sm font-medium text-neutral-900"
-          >
+          <label htmlFor="name" className="block mb-1 text-sm font-medium text-neutral-900">
             Nome
           </label>
 
@@ -25,14 +22,12 @@ export default function FormularioCadastro() {
             placeholder="Nome Completo" 
             value={nome}
             onChange={(e) => setNome(e.target.value)}
-            required=""/>
+            required=""
+          />
         </div>
 
         <div className="w-full">
-          <label 
-            htmlFor="sobrenome" 
-            className="block mb-1 text-sm font-medium text-neutral-900"
-          >
+          <label htmlFor="sobrenome" className="block mb-1 text-sm font-medium text-neutral-900">
             Sobrenome
           </label>
 
@@ -44,7 +39,8 @@ export default function FormularioCadastro() {
             placeholder="Nome Completo" 
             value={sobrenome}
             onChange={(e) => setSobrenome(e.target.value)}
-            required=""/>
+            required=""
+          />
         </div>
       </div>
 

@@ -14,6 +14,7 @@ import MeusNumeros from "../../public/componentesAnteriores/meusNumeros/MeusNume
 import Rifa from "./Rifa/Rifa";
 import Cadastro from "../components/AcessoUsuario/AcessoUsuario";
 import RifaFinalizada from "./RifaFinalizada/RifaFinalizada";
+import Usuario from "./Usuario/Usuario";
 // import Home from "./home/Home";
 
 export default function App() {
@@ -33,6 +34,7 @@ export default function App() {
                   <Route path=":slug/:id" element={<Rifa />} />
                   <Route path="/finalizada" element={<RifaFinalizada />} />
                   <Route path="cadastro" element={<Cadastro />} />
+                  <Route path="usuario" element={<Usuario />} />
                   
                   {/* Em Desuso */}
                   <Route path="termos-de-uso" element={<Termos />} />

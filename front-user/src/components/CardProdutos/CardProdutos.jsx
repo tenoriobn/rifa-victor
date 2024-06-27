@@ -4,22 +4,29 @@ import Bilhete from "../../assets/Icons/bilhete.svg?react";
 import Calendario from "../../assets/Icons/calendario.svg?react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { estadoProdutoSelecionado, estadoProdutos } from "../../common/state/atom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { fetchDados } from "../../common/http/http";
 
 export default function CardProdutos({ categoria }) {
   const [produtos, setProdutos] = useRecoilState(estadoProdutos);
   const setProdutoSelecionado = useSetRecoilState(estadoProdutoSelecionado);
   const produtosFiltrados = produtos.filter(produto => produto.status === categoria);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const obterDados = async () => {
       const dados = await fetchDados('/produtos');
       setProdutos(dados.data);
+      setLoading(false); 
     };
     
     obterDados();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  if (loading) {
+    return <div>Carregando...</div>; 
+  }
 
   const converterImgProduto = (imgs) => {
     let img = imgs.replace(/\\"/g, '"');
