@@ -82,16 +82,14 @@ class Rifas extends Model
             return $is_created ? $rifa_id : false;
     }
 
+    public static function getAllRifasActivas() {
+        return self::with(['cota', 'rifaAwarded', 'rifaOthers', 'rifaPayment'])->where('winner_id', 0)->latest()->get();
+    }
     public static function getAllRifas() {
-        return self::with(['cota', 'rifaAwarded', 'rifaOthers', 'rifaPayment'])->orderBy("id")->get();
+        return self::with(['cota', 'rifaAwarded', 'rifaOthers', 'rifaPayment'])->latest()->get();
     }
     public static function getOneRifas($id) {
         return self::with(['cota', 'rifaAwarded', 'rifaOthers', 'rifaPayment'])->where("id", $id)->first();
     }
-    public static function getAllWinners() {
-        $w =  self::with(['cota', 'rifaAwarded', 'rifaOthers', 'rifaPayment'])->where('clients_id', '>', 0)
-        ->whereNotNull('clients_id')->get();
 
-        dd($w );
-    }
 }

@@ -40,6 +40,7 @@ class StoreRifasRequest extends FormRequest
             "end_sale" => ["nullable", "bail", "date"],
             "qntd_cota" => ["required", "bail", "integer", "min:0"],
             "qntd_cota_digit" => ["required", "bail", "integer", "min:0"],
+            "qntd_cota_min_order" => ["required", "bail", "integer", "min:0"],
             "qntd_cota_max_order" => ["required", "bail", "integer", "min:0"],
             "qntd_cota_max_client" => ["required", "bail", "integer", "min:0"],
             "time_pay" => ["required", "bail", "integer", "min:0"],

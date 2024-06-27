@@ -1,9 +1,12 @@
 /* eslint-disable react/prop-types */
 import { useState } from 'react';
 import Seta from "../../assets/Icons/seta.svg?react";
+import { estadoRifa } from '../../common/state/atom';
+import { useRecoilValue } from 'recoil';
 
 export default function AccordionDescricao({ display }) {
   const [selecaoAtiva, setSelecaoAtiva] = useState(null);
+  const rifa = useRecoilValue(estadoRifa)
 
   const toggleSelecao = (selecao) => {
     setSelecaoAtiva(selecaoAtiva === selecao ? null : selecao);
@@ -25,14 +28,8 @@ export default function AccordionDescricao({ display }) {
         <div 
           className={`text-sm text-gray-500 dark:text-gray-400  bg-slate-100  rounded-lg  overflow-hidden transition-max-height duration-500 ease-in-out px-2 ${selecaoAtiva === 'descricaoProduto' ? 'max-h-96 pt-1.5 pb-3 mt-1.5 mb-3' : 'max-h-0'}`}
         >
-          <p className="text-gray-500">por apenas 0,19 centavos o bilhete promocional,&nbsp;</p>
-          <p className="text-gray-500">você concorre a essa linda</p>
-          <p className="text-gray-500">Saveiro Cross dos SONHOS ou 50 K no pix</p>
-          <p className="text-gray-500">&nbsp;</p>
-          <p className="text-gray-500">cabine dupla, preta, ano 2015</p>
-          <p className="text-gray-500">rodas originais&nbsp;</p>
-          <p className="text-gray-500">PERFEITA, pra você levar a família toda !</p>
-          <p className="text-gray-500">ou, caso você prefira, 50 Mil no seu pix&nbsp;</p>
+          <p className="text-gray-500">{rifa.description_product}</p>
+        
         </div>
       </div>
 
@@ -50,10 +47,8 @@ export default function AccordionDescricao({ display }) {
         <div 
           className={`text-sm text-gray-500 dark:text-gray-400 bg-slate-100 rounded-lg overflow-hidden transition-max-height duration-500 ease-in-out px-2 ${selecaoAtiva === 'descricaoSorteio' ? 'max-h-96 pt-1.5 pb-3 mt-1.5 mb-3' : 'max-h-0'}`}
         >
-          <p className="text-gray-500">Sorteio será realizado pela loteria federal, assim que se esgotarem todas as cotas,&nbsp;</p>
-          <p className="text-gray-500">além do prêmio principal</p>
-          <p className="text-gray-500">são 30 bilhetes premiados&nbsp;</p>
-          <p className="text-gray-500">e 3.000,00 pro maior comprador&nbsp;</p>
+          <p className="text-gray-500">{rifa.description_sortition}</p>
+         
         </div>
       </div>
     </div>

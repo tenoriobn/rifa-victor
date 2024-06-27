@@ -4,7 +4,7 @@ const useCompartilharRifa = () => {
       await navigator.share({
         title: 'Título do compartilhamento',
         text: 'Texto do compartilhamento',
-        url: `${window.location.origin}/produtos`,
+        url: `${window.location.href}`,
       });
     } catch (error) {
       alert(`Erro ao compartilhar, tente novamente!`);

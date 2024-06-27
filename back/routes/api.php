@@ -23,19 +23,20 @@ use App\Http\Controllers\V1\{AuthController, AdminController, ClientController, 
     Route::middleware('auth.client')->get("/protected", [AuthController::class, "someProtectedMethod"])->name('client.protected');
 
     Route::group(['prefix' => 'admin'], function () {
-        Route::post("/cadastrar/rifas", [RifasController::class, "storeRifa"])->name('admin.create.rifa');
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/cadastrar/rifas", [RifasController::class, "storeRifa"])->name('admin.create.rifa');
         Route::post("/cadastrar/usuario", [AdminController::class, "storeUser"])->name('admin.create.user');
         Route::post("/login", [AdminController::class, "login"])->name('admin.login.user');
         Route::middleware('auth:sanctum')->post("/logout", [AdminController::class, "logout"])->name('admin.logout.user');
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/me", [AdminController::class, "me"])->name('admin.me.user');
     });
     Route::group(['prefix' => 'produtos'], function () {
-        Route::get("/", [RifasController::class, "index"])->name('all.rifas');
+        Route::get("/", [RifasController::class, "allRifas"])->name('all.rifas');
         Route::get("/{slug}/{id}", [RifasController::class, "show"])->where(['slug' => '[a-zA-Z0-9\-_]+', 'id' => '[0-9]+'])->name('show.one.rifa');
         Route::middleware('auth.client')->post("/comprar-rifa", [RifasController::class, "buyRifa"])->name('buy.rifa');
     });
-
+    Route::get("/index", [RifasController::class, "index"])->name('index');
     Route::get("/ganhadores", [RifasController::class, "winners"])->name('all.winners');
+    Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/define-ganhador", [RifasController::class, "defineWinners"])->name('define.winners');
 
 
 

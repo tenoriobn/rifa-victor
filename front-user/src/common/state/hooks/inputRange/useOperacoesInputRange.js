@@ -1,27 +1,27 @@
-import { useRecoilState, useSetRecoilState } from "recoil";
-import { estadoPacoteSelecionado, estadoValorRange } from "../../atom";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { estadoPacoteSelecionado, estadoRifa, estadoValorRange } from "../../atom";
 import useValorCompra from "../pacotesPromocionais/useValorCompra";
 
 const useOperacoesInputRange = () => {
   const [valorRange, setValorRange] = useRecoilState(estadoValorRange);
   const setPacoteSelecionado = useSetRecoilState(estadoPacoteSelecionado);
+  const rifa = useRecoilValue(estadoRifa)
 
-  const calcularPorcentagem = (valor) => {
-    const valorMaximo = 10000;
-    return (valor / valorMaximo) * 100;
+  const calcularPorcentagem = (valor, min, max) => {
+    return ((valor - min) / (max - min)) * 100;
   };
 
   const decrementarValor = (quantidade) => {
     setValorRange((valorAnterior) => {
       const novoValor = Number(valorAnterior) - quantidade;
-      return novoValor >= 35 ? novoValor : 35;
+      return novoValor >= `${rifa.cota.qntd_cota_min_order}` ? novoValor : `${rifa.cota.qntd_cota_min_order}`;
     });
   };
 
   const incrementarValor = (quantidade) => {
     setValorRange((valorAnterior) => {
       const novoValor = Number(valorAnterior) + quantidade;
-      return novoValor <= 10000 ? novoValor : 10000;
+      return novoValor <= `${rifa.cota.qntd_cota_max_order}` ? novoValor : `${rifa.cota.qntd_cota_max_order}`;
     });
   };
 

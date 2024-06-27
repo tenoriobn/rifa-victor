@@ -9,9 +9,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-use App\Http\Requests\V1\{StoreRifasRequest, UpdateRifasRequest, PaymentRequest, OrderRifaRequest};
+use App\Http\Requests\V1\{StoreRifasRequest, UpdateRifasRequest, PaymentRequest, OrderRifaRequest, WinnerRequest};
 use App\Http\Resources\V1\{RifasResource};
-use App\Models\V1\{Rifas, Clients, RifaPay};
+use App\Models\V1\{Rifas, RifaWinner, RifaPay};
 use App\Services\RifaService;
 
 
@@ -30,6 +30,16 @@ class RifasController extends Controller
         $this->rifaService = $rifaService;
     }
     public function index() {
+        try {
+            $rifasData = Rifas::getAllRifasActivas()->where('emphasis', 'sim')->first();
+            // $winners = Rifas::getAllWinners();
+
+            return response()->json(["success" => true, "data" => $rifasData], $this->success);
+        } catch (Exception $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], $this->serverError);
+        }
+    }
+    public function allRifas() {
         try {
             $rifasData = Rifas::getAllRifas();
 
@@ -70,6 +80,7 @@ class RifasController extends Controller
         try {
             $rifaPay = RifaPay::applyRifa($request);
             RifaNumber::applyRifa($request, $rifaPay);
+            return response()->json(["success" => true, "msg"=> "Rifa Comprada com sucesso"], $this->success);
         } catch (Exception $e) {
             return response()->json(["success" => false, "msg" => $e->getMessage()], $this->serverError);
         }
@@ -78,8 +89,21 @@ class RifasController extends Controller
     public function winners() {
         try {
 
-            $winners = Rifas::getAllWinners();
-            dd('oi');
+            $winners = RifaWinner::getAllWinners();
+            return response()->json(["success" => true, "data" => $winners], $this->success);
+
+        } catch (Exception $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], $this->serverError);
+        }
+    }
+
+    public function defineWinners(WinnerRequest $request) {
+        try {
+
+            $winners = RifaWinner::defineWinner($request);
+
+            return response()->json(["success" => true, "data" => $winners], $this->success);
+
         } catch (Exception $e) {
             return response()->json(["success" => false, "msg" => $e->getMessage()], $this->serverError);
         }

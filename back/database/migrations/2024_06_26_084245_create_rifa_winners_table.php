@@ -11,16 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('cotas', function (Blueprint $table) {
+        Schema::create('rifa_winners', function (Blueprint $table) {
             $table->id();
-            $table->integer('qntd_cota');
-            $table->integer('qntd_cota_digit');
-            $table->integer('qntd_cota_min_order');
-            $table->integer('qntd_cota_max_order');
-            $table->integer('qntd_cota_max_client');
-
+            $table->integer('ticket');
+            $table->dateTime('draw_day');
+            $table->string('img');
             $table->unsignedBigInteger('rifas_id');
             $table->foreign("rifas_id")->references("id")->on("rifas");
+            $table->unsignedBigInteger('client_id');
+            $table->foreign("client_id")->references("id")->on("clients");
             $table->timestamps();
         });
     }
@@ -30,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('cotas');
+        Schema::dropIfExists('rifa_winners');
     }
 };

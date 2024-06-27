@@ -18,7 +18,7 @@ class RifaService
             return false;
         }
 
-        $cotaResult = Cotas::cotaCreateOrUpdate( $datas->qntd_cota ?? 0, $datas->qntd_cota_digit ?? 0, $datas->qntd_cota_max_order ?? 0, $datas->qntd_cota_max_client ?? 0, $rifaResult, $datas->cota_id ?? null);
+        $cotaResult = Cotas::cotaCreateOrUpdate( $datas->qntd_cota ?? 0, $datas->qntd_cota_digit ?? 0,$datas->qntd_cota_min_order ?? 0, $datas->qntd_cota_max_order ?? 0, $datas->qntd_cota_max_client ?? 0, $rifaResult, $datas->cota_id ?? null);
 
         $othersResult = RifasAwarded::rifasAwardedCreateOrUpdate( $datas->cotas_double ?? '', $datas->text_cotas_double ?? '', $datas->title_cotas_awarded ?? '', $datas->description_cotas_awarded ?? '', $datas->title_upsell ?? '', $datas->description_upsell ?? '', $rifaResult, $datas->rifas_awarded_id ?? null);
 

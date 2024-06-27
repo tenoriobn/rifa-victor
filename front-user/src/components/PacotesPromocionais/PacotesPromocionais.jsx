@@ -1,6 +1,6 @@
 import Medidor from "../../assets/Icons/medidor.svg?react";
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { estadoPacoteSelecionado, estadoRenderizaComponenteCadastro, estadoValorCompra, estadoValorRange } from "../../common/state/atom";
+import { estadoPacoteSelecionado, estadoRenderizaComponenteCadastro, estadoRifa, estadoValorCompra, estadoValorRange } from "../../common/state/atom";
 import useOperacoesInputRange from "../../common/state/hooks/inputRange/useOperacoesInputRange";
 
 export default function PacotesPromocionais() {
@@ -9,7 +9,7 @@ export default function PacotesPromocionais() {
   const valorCompra = useRecoilValue(estadoValorCompra);
   const renderizaComponenteCadastro = useSetRecoilState(estadoRenderizaComponenteCadastro);
   const { adicionarValorPromocional } = useOperacoesInputRange();
-
+  const rifa = useRecoilValue(estadoRifa)
   const precoUnidade = valorRange >= 1000 ? '0,15' : valorRange >= 500 ? '0,19' : '0,20';
 
   console.log(valorCompra)
@@ -62,7 +62,7 @@ export default function PacotesPromocionais() {
             className={`font-bold transition-all ${valorRange >= 500 ? 'text-sm line-through text-neutral-400' : 'text-xl'}`}>
             Preço Unit:
 
-            <span className="font-normal"> R$&nbsp;0,20</span>
+            <span className="font-normal"> R$&nbsp;{rifa.price}</span>
           </p>
 
           {
