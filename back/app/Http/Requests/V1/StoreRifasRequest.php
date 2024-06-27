@@ -57,8 +57,9 @@ class StoreRifasRequest extends FormRequest
             "facebook_token" => ["nullable", "bail", "max:255"],
             "tiktok_pixel" => ["nullable", "bail", "max:255"],
             "whatsapp_group" => ["nullable", "bail", "max:255"],
-            "flink_ebook" => ["nullable", "bail", "max:255"],
+            "link_ebook" => ["nullable", "bail", "max:255"],
             "nota_fiscal" => ["nullable", "bail", "max:255"],
+            'package_awarded_number' => ['nullable', 'array', "bail"],
         ];
     }
 
