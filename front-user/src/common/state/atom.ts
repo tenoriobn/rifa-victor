@@ -1,5 +1,5 @@
 import { atom } from "recoil";
-import listaProdutos from "../data/produtos.json"
+// import listaProdutos from "../data/produtos.json"
 
 export const estadoPacoteSelecionado = atom({
   key: 'pacoteSelecionado',
@@ -8,7 +8,7 @@ export const estadoPacoteSelecionado = atom({
 
 export const estadoValorRange = atom({
   key: 'valorRange',
-  default: 35,
+  default: 0,
 });
 
 export const estadoValorCompra = atom({
@@ -38,10 +38,25 @@ export const estadoRenderizaComponenteLogin = atom({
 
 export const estadoProdutos = atom({
   key: 'produtos',
-  default: listaProdutos,
+  default: [],
 })
 
 export const estadoProdutoSelecionado = atom({
   key: 'produtoSelecionado',
   default: {},
+});
+
+export const estadoRegulamento = atom({
+  key: 'regulamento',
+  default: {},
+});
+
+export const estadoGanhadores = atom({
+  key: 'ganhadores',
+  default: {},
+});
+
+export const estadoRifa = atom({
+  key: 'rifa',
+  default: '',
 });
