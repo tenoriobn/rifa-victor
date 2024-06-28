@@ -69,3 +69,22 @@ export const estadoEditarPerfil = atom({
   key: 'editarPerfil',
   default: false,
 });
+
+export const estadoFinalizarPedido = atom({
+  key: 'estadoFinalizarPedido',
+  default: false,
+});
+
+export const estadoCadastro = atom({
+  key: 'estadoCadastro',
+  default: {
+    nome: '',
+    sobrenome: '',
+    telefone: '',
+  },
+});
+
+export const estadoUsuario = atom({
+  key: 'estadoUsuario',
+  default: null,
+});

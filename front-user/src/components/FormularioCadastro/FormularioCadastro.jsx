@@ -1,10 +1,42 @@
-import { useState } from "react";
-import useValidarFormulario from "../../common/state/hooks/FormularioCadastro/useValidarFormulario";
+import { useState } from 'react';
+import { useRecoilState} from 'recoil';
+import useValidarFormulario from '../../common/state/hooks/FormularioCadastro/useValidarFormulario';
+import { estadoFinalizarPedido } from '../../common/state/atom';
+import { postDados } from '../../common/http/http';
 
 export default function FormularioCadastro() {
-  const [nome, setNome] = useState("");
-  const [sobrenome, setSobrenome] = useState("");
-  const { telefone, formatarTelefone } = useValidarFormulario(nome, sobrenome);
+  const [nome, setNome] = useState('');
+  const [sobrenome, setSobrenome] = useState('');
+  const {telefone, formatarTelefone } = useValidarFormulario(nome, sobrenome);
+
+  const [finalizarPedido, setFinalizarPedido] = useRecoilState(estadoFinalizarPedido);
+
+  const cadastrarUsuario = async (dadosUsuario) => {
+    try {
+      const dadosParaEnviar = {
+        name: dadosUsuario.name,
+        surname: dadosUsuario.surname,
+        cellphone: dadosUsuario.cellphone,
+      };
+
+      const dados = await postDados('/cadastro', dadosParaEnviar);
+      setFinalizarPedido(false);
+      
+      console.log('Dados do cadastro:', dados);
+    } catch (error) {
+      console.error('Erro ao cadastrar usuário:', error);
+    }
+  };
+
+  if (finalizarPedido) {
+    cadastrarUsuario(
+      {
+        name: nome,
+        surname: sobrenome,
+        cellphone: telefone,
+      }
+    );
+  }
 
   return (
     <form className="space-y-4" action="">
@@ -13,7 +45,6 @@ export default function FormularioCadastro() {
           <label htmlFor="name" className="block mb-1 text-sm font-medium text-neutral-900">
             Nome
           </label>
-
           <input 
             type="text" 
             name="name" 
@@ -30,10 +61,9 @@ export default function FormularioCadastro() {
           <label htmlFor="sobrenome" className="block mb-1 text-sm font-medium text-neutral-900">
             Sobrenome
           </label>
-
           <input 
             type="text" 
-            name="sobrenome" 
+            name="surname" 
             id="sobrenome" 
             className="border text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full block px-2 py-1 bg-gray-100 border-gray-500 placeholder-gray-400 text-neutral-900" 
             placeholder="Nome Completo" 
@@ -45,19 +75,19 @@ export default function FormularioCadastro() {
       </div>
 
       <div>
-          <label htmlFor="phone" className="block mb-1 text-sm font-medium text-neutral-900">
-            Seu telefone
-          </label>
-
-          <input 
-            id="phone" 
-            className="border text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full px-2 py-1 bg-gray-100 border-gray-500 placeholder-gray-400 text-neutral-900" 
-            placeholder="N. Telefone" 
-            value={telefone}
-            onChange={formatarTelefone}
-            required="" 
-          />
-        </div>
+        <label htmlFor="phone" className="block mb-1 text-sm font-medium text-neutral-900">
+          Seu telefone
+        </label>
+        <input 
+          id="phone" 
+          className="border text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full px-2 py-1 bg-gray-100 border-gray-500 placeholder-gray-400 text-neutral-900" 
+          placeholder="N. Telefone" 
+          name="cellphone"
+          value={telefone}
+          onChange={formatarTelefone}
+          required="" 
+        />
+      </div>
     </form>
-  )
+  );
 }

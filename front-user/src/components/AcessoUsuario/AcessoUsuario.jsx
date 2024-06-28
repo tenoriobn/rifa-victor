@@ -1,8 +1,8 @@
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import SetaEsquerda from "../../assets/Icons/seta.svg?react";
 import Verificado from "../../assets/Icons/verificado.svg?react"
 import TermosCondicoes from "./TermosCondicoes/TermosCondicoes";
-import { estadoFormularioPreenchido, estadoTermosAceito, estadoValorCompra } from "../../common/state/atom";
+import { estadoFormularioPreenchido, estadoTermosAceito, estadoValorCompra, estadoFinalizarPedido } from "../../common/state/atom";
 import FormulariosAcesso from "./FormulariosAcesso/FormulariosAcesso";
 import useAlternarFormularios from "../../common/state/hooks/FormulariosAcesso/useAlternarFormularios";
 
@@ -11,6 +11,7 @@ export default function AcessoUsuario() {
   const termosAceito = useRecoilValue(estadoTermosAceito);
   const camposPreenchidos = useRecoilValue(estadoFormularioPreenchido);
   const { voltarParaRifa } = useAlternarFormularios();
+  const setFinalizarPedido = useSetRecoilState(estadoFinalizarPedido);
 
   return (
     <>
@@ -39,6 +40,7 @@ export default function AcessoUsuario() {
         <button 
           className="text-white rounded overflow-hidden shadow-transparent shadow-md hover:shadow-black/3 0 bg-emerald-600 disabled:bg-slate-300 px-4 py-1 flex items-center justify-center gap-1"
           disabled={!termosAceito || !camposPreenchidos}
+          onClick={() => setFinalizarPedido(true)}
         >
           Finalizar Pedido 
           <Verificado className="icon" />
