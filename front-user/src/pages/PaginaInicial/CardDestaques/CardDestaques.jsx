@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useRecoilState, useSetRecoilState } from "recoil";
 import Bilhete from "../../../assets/Icons/bilhete.svg?react";
 import { estadoProdutoSelecionado, estadoProdutos } from "../../../common/state/atom";
@@ -8,7 +9,6 @@ import { fetchDados } from "../../../common/http/http";
 export default function CardDestaques() {
   const [loading, setLoading] = useState(true);
   const [produto, setProdutos] = useRecoilState(estadoProdutos);
-  // const produtosFiltrados = produtos.filter(produto => produto.id === 1);
   const setProdutoSelecionado = useSetRecoilState(estadoProdutoSelecionado);
 
   useEffect(() => {
@@ -55,7 +55,9 @@ export default function CardDestaques() {
             <div className="flex justify-between mt-2">
               <div className='flex items-center gap-2'>
                 <Bilhete className="icon text-emerald-500 w-[18px] h-[18px]" />
-                <p className="font-bold text-lg leading-4 text-neutral-600 text-left truncate">{produto.price}</p>
+                <p className="font-bold text-lg leading-5 text-neutral-600 text-left truncate">
+                  R$ {Number(produto.price).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                </p>
               </div>
 
               <button className="bg-amber-500 rounded px-4 py-1">Comprar</button>

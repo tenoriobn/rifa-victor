@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Estrela from "../../assets/Icons/estrela.svg?react";
@@ -17,7 +18,6 @@ import { fetchDados } from "../../common/http/http";
 export default function Rifa() {
   const renderizaComponenteCadastro = useRecoilValue(estadoRenderizaComponenteCadastro);
   const renderizaComponenteLogin = useRecoilValue(estadoRenderizaComponenteLogin);
-
 
   const [produto, setProduto] = useState();
   const [loading, setLoading] = useState(true);

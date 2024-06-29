@@ -36,8 +36,8 @@ export default function Menu() {
     { to: "/", icon: Inicio, label: "Home" },
     { to: "/produtos", icon: Carrinho, label: "Produtos" },
     { to: "/ganhadores", icon: Trofeu, label: "Ganhadores" },
-    { to: "/meu-perfil", icon: Perfil, label: "Meu Perfil" },
-    { to: "/meus-pedidos", icon: Pedidos, label: "Meus Pedidos" },
+    { to: "/usuario/meu-perfil", icon: Perfil, label: "Meu Perfil" },
+    { to: "/usuario/meus-pedidos", icon: Pedidos, label: "Meus Pedidos" },
   ];
 
   return (

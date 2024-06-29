@@ -4,11 +4,13 @@ import Perfil from "../../../assets/Icons/perfil-2.svg?react";
 import Telefone from "../../../assets/Icons/telefone.svg?react";
 import Whatsapp from "../../../assets/Icons/whatsapp.svg?react";
 import { useRecoilValue } from "recoil";
-import { estadoEditarPerfil } from "../../../common/state/atom";
+import { estadoEditarPerfil, estadoUsuario } from "../../../common/state/atom";
 
 export default function FormularioEdicaoDados() {
   const editarPerfil = useRecoilValue(estadoEditarPerfil);
-  const { telefone, formatarTelefone } = useFormatadorTelefone();
+  const { formatarTelefone } = useFormatadorTelefone();
+  const usuario = useRecoilValue(estadoUsuario);
+  console.log(usuario)
 
   return (
     <form action="" className="flex flex-col justify-between text-sm px-4 py-5 sm:px-6 gap-4">
@@ -27,7 +29,7 @@ export default function FormularioEdicaoDados() {
             disabled
             type="text" 
             className="w-full disabled:cursor-not-allowed disabled:opacity-75 focus:outline-none border-0 form-input rounded-md placeholder-gray-400 dark:placeholder-gray-500 text-sm px-2.5 py-1.5 shadow-sm bg-white ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-amber-500 ps-9 text-gray-700"
-            placeholder="Nome"
+            placeholder={usuario.name}
           />
 
           <span className="absolute inset-y-0 start-0 flex items-center pointer-events-none px-2.5">
@@ -51,7 +53,7 @@ export default function FormularioEdicaoDados() {
             disabled
             type="text" 
             className="w-full disabled:cursor-not-allowed disabled:opacity-75 focus:outline-none border-0 form-input rounded-md placeholder-gray-400 dark:placeholder-gray-500 text-sm px-2.5 py-1.5 shadow-sm bg-white ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-amber-500 ps-9 text-gray-700"
-            placeholder="Sobrenome"
+            placeholder={usuario.surname}
           />
 
           <span className="absolute inset-y-0 start-0 flex items-center pointer-events-none px-2.5">
@@ -74,7 +76,7 @@ export default function FormularioEdicaoDados() {
             className="w-full disabled:cursor-not-allowed disabled:opacity-75 focus:outline-none border-0 form-input rounded-md placeholder-gray-400 dark:placeholder-gray-500 text-sm px-2.5 py-1.5 shadow-sm bg-white ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-amber-500 ps-9 text-gray-700"
             maxLength={15}
             onChange={formatarTelefone}
-            value={telefone}
+            value={usuario.cellphone}
           />
 
           <span className="absolute inset-y-0 start-0 flex items-center pointer-events-none px-2.5">

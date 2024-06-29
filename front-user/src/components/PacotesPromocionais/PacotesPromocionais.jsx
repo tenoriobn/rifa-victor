@@ -7,7 +7,7 @@ export default function PacotesPromocionais() {
   const valorRange = useRecoilValue(estadoValorRange);
   const pacoteSelecionado = useRecoilValue(estadoPacoteSelecionado);
   const valorCompra = useRecoilValue(estadoValorCompra);
-  const renderizaComponenteCadastro = useSetRecoilState(estadoRenderizaComponenteCadastro);
+  const setRenderizaComponenteCadastro = useSetRecoilState(estadoRenderizaComponenteCadastro);
   const { adicionarValorPromocional } = useOperacoesInputRange();
   const rifa = useRecoilValue(estadoRifa)
   const precoUnidade = valorRange >= 1000 ? '0,15' : valorRange >= 500 ? '0,19' : '0,20';
@@ -49,9 +49,13 @@ export default function PacotesPromocionais() {
             )}
             <p className="font-bold">{pacote.valor}</p>
             {pacote.precoAntigo && (
-              <p className="text-xs text-red-600 line-through">R$&nbsp;{pacote.precoAntigo.toFixed(2)}</p>
+              <p className="text-xs text-red-600 line-through">
+                R$&nbsp;{Number(pacote.precoAntigo.toFixed(2)).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </p>
             )}
-            <p className={`text-sm ${pacote.maisPopular ? 'text-green-700' : 'text-black'}`}>R$&nbsp;{pacote.precoNovo.toFixed(2)}</p>
+            <p className={`text-sm ${pacote.maisPopular ? 'text-green-700' : 'text-black'}`}>
+              {Number(pacote.precoNovo.toFixed(2)).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            </p>
           </button>
         ))}
       </div>
@@ -61,8 +65,10 @@ export default function PacotesPromocionais() {
           <p 
             className={`font-bold transition-all ${valorRange >= 500 ? 'text-sm line-through text-neutral-400' : 'text-xl'}`}>
             Preço Unit:
-
-            <span className="font-normal"> R$&nbsp;{rifa.price}</span>
+            
+            <span className="font-normal">
+              &nbsp;R$ {Number(rifa.price).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            </span>
           </p>
 
           {
@@ -78,7 +84,7 @@ export default function PacotesPromocionais() {
 
         <button 
           className="rounded-full px-8 py-4 bg-amber-500 ring-1 ring-amber-800 ring-offset-4 hover:bg-amber-600 transition-all disabled:bg-neutral-400 text-white"
-          onClick={() => renderizaComponenteCadastro(true)}
+          onClick={() => setRenderizaComponenteCadastro(true)}
         >
           Comprar por <span className="font-bold">R$&nbsp;${valorCompra}</span>
         </button>

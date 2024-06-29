@@ -1,12 +1,13 @@
-import { useRecoilState } from "recoil";
 import Telefone from "../../assets/Icons/telefone.svg?react";
 import useFormatadorTelefone from "../../common/state/hooks/FormularioCadastro/useFormatadorTelefone";
-import { estadoUsuario } from "../../common/state/atom";
 import { postDados } from "../../common/http/http";
 import {jwtDecode} from 'jwt-decode';
+import { useRecoilState } from "recoil";
+import { estadoUsuario } from "../../common/state/atom";
+
 export default function FormularioLogin() {
   const { telefone, formatarTelefone } = useFormatadorTelefone();
-  const [usuario, setUsuario] = useRecoilState(estadoUsuario);
+  const [, setUsuario] = useRecoilState(estadoUsuario);
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -17,17 +18,11 @@ export default function FormularioLogin() {
       localStorage.setItem('access_token', response.access_token);
 
       const decoded = jwtDecode(response.access_token);
-      console.log('Decoded JWT:', decoded);
+      setUsuario(decoded);
+      
 
-      setUsuario(decoded.user); // Supondo que o payload do token tenha um campo 'user'
-
-      console.log('usuario: ', usuario)
-
-      // Redirecionar para a página principal ou dashboard
-      // window.location.href = '/dashboard';
     } catch (error) {
       console.error('Erro ao fazer login:', error);
-      // Tratar o erro de login conforme necessário
     }
   };
 

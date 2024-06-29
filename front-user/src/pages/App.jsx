@@ -7,14 +7,15 @@ import Termos from "../../public/componentesAnteriores/Termos/Termos";
 import { ConfigProvider } from "../context/ConfigContext";
 import Ganhadores from "./Ganhadores/Ganhadores";
 import { PayProvider } from "../context/PayContext";
-import MeuPerfil from "./MeuPerfil/MeuPerfil";
 import Produtos from "./Produtos/Produtos";
 import PaginaInicial from "./PaginaInicial/PaginaInicial";
 import MeusNumeros from "../../public/componentesAnteriores/meusNumeros/MeusNumeros";
 import Rifa from "./Rifa/Rifa";
 import Cadastro from "../components/AcessoUsuario/AcessoUsuario";
-import RifaFinalizada from "./RifaFinalizada/RifaFinalizada";
 import Usuario from "./Usuario/Usuario";
+import ProtectedRoute from "../components/ProtectedRoute/ProtectedRoute";
+import MeusPedidos from "../components/MeusPedidos/MeusPedidos";
+import MeusDados from "../components/MeusDados/MeusDados";
 // import Home from "./home/Home";
 
 export default function App() {
@@ -29,12 +30,14 @@ export default function App() {
                   <Route index element={<PaginaInicial />} />
                   <Route path="produtos" element={<Produtos />} />
                   <Route path="ganhadores" element={<Ganhadores />} />
-                  <Route path="meu-perfil" element={<MeuPerfil />} />
-                  <Route path="meus-pedidos" element={<MeuPerfil />} />
                   <Route path=":slug/:id" element={<Rifa />} />
-                  <Route path="/finalizada" element={<RifaFinalizada />} />
                   <Route path="cadastro" element={<Cadastro />} />
-                  <Route path="usuario" element={<Usuario />} />
+
+                  <Route path="usuario" element={<ProtectedRoute element={<Usuario />} />}>
+                    <Route index element={<MeusDados />} />
+                    <Route path="meu-perfil" element={<MeusDados />} />
+                    <Route path="meus-pedidos" element={<MeusPedidos />} />
+                  </Route>
                   
                   {/* Em Desuso */}
                   <Route path="termos-de-uso" element={<Termos />} />
