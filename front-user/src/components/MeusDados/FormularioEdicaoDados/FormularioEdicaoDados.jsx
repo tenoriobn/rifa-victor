@@ -10,7 +10,6 @@ export default function FormularioEdicaoDados() {
   const editarPerfil = useRecoilValue(estadoEditarPerfil);
   const { formatarTelefone } = useFormatadorTelefone();
   const usuario = useRecoilValue(estadoUsuario);
-  console.log(usuario)
 
   return (
     <form action="" className="flex flex-col justify-between text-sm px-4 py-5 sm:px-6 gap-4">

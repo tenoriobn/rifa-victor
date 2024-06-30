@@ -10,16 +10,17 @@ import CotasPremiadas from "../../components/CotasPremiadas/CotasPremiadas";
 import AccordionDescricao from "../../components/AccordionDescricao/AccordionDescricao";
 import RankingVendas from "../../components/RankingVendas/RankingVendas";
 import AcessoUsuario from "../../components/AcessoUsuario/AcessoUsuario";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import {  estadoRenderizaComponenteCadastro, estadoRenderizaComponenteLogin, estadoRifa } from "../../common/state/atom";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import {  estadoProdutos, estadoRenderizaComponenteCadastro, estadoRenderizaComponenteLogin, estadoRenderizaInfoUsuario, estadoRifa } from "../../common/state/atom";
 import TempoEncerrado from "../../assets/Icons/tempoEncerrado.svg?react";
 import { fetchDados } from "../../common/http/http";
 
 export default function Rifa() {
   const renderizaComponenteCadastro = useRecoilValue(estadoRenderizaComponenteCadastro);
   const renderizaComponenteLogin = useRecoilValue(estadoRenderizaComponenteLogin);
+  const renderizaInfoUsuario = useRecoilValue(estadoRenderizaInfoUsuario);
 
-  const [produto, setProduto] = useState();
+  const [produto, setProduto] = useRecoilState(estadoProdutos);
   const [loading, setLoading] = useState(true);
   const setRifa = useSetRecoilState(estadoRifa)
   const { slug, id } = useParams();
@@ -61,7 +62,7 @@ export default function Rifa() {
 
       <SlidePremio />
       
-      {!renderizaComponenteCadastro && !renderizaComponenteLogin && (
+      {!renderizaComponenteCadastro && !renderizaComponenteLogin && !renderizaInfoUsuario && (
         <>
           <OpcoesDoEvento display={`${renderizaComponente ? "flex" : "hidden"}`} />
 
@@ -88,9 +89,7 @@ export default function Rifa() {
         </>
       )}
 
-      {renderizaComponenteCadastro || renderizaComponenteLogin ? (
-        <AcessoUsuario />
-      ) : ''}
+      {(renderizaComponenteCadastro || renderizaComponenteLogin || renderizaInfoUsuario ? <AcessoUsuario /> : null)}
     </section>
   )
 }

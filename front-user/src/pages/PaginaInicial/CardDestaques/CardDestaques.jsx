@@ -38,7 +38,7 @@ export default function CardDestaques() {
           key={produto.id} 
           to={`/${produto.slug}/${produto.id}`}
           onClick={() => setProdutoSelecionado(produto)}
-          className="flex w-auto overflow-hidden rounded-lg bg-neutral-200 hover:shadow-[4px_4px_4px_#0002] border border-solid border-neutral-400 ring-0 ring-amber-500/60 hover:ring-offset-4 hover:ring-2 transition-all flex-col mb-6 cursor-pointer"
+          className="flex w-auto overflow-hidden rounded-lg bg-neutral-200 hover:shadow-[4px_4px_4px_#0002] border border-solid border-neutral-400 ring-0 ring-amber-500/60 hover:ring-offset-4 hover:ring-2 transition-all duration-300 flex-col mb-6 cursor-pointer"
         >
           <img src= {converterImgProduto(produto.img)}
             alt="Foto do Prêmio" 
@@ -60,7 +60,15 @@ export default function CardDestaques() {
                 </p>
               </div>
 
-              <button className="bg-amber-500 rounded px-4 py-1">Comprar</button>
+              <button 
+                className="relative inline-block group bg-amber-500 text-white rounded overflow-hidden shadow-transparent shadow-md hover:shadow-black/30"
+              >
+                <div className="absolute left-0 top-0 bg-amber-600 w-0 group-hover:w-full transition-all duration-300 h-1/2"></div>
+                <div className="absolute right-0 bottom-0 bg-amber-600 w-0 group-hover:w-full transition-all duration-300 h-1/2"></div>
+                <div className="relative px-4 py-1 transition-all">
+                  Comprar
+                </div>
+              </button>
             </div>
           </div>
         </Link>

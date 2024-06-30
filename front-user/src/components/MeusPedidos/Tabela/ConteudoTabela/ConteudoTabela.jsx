@@ -21,8 +21,8 @@ export default function ConteudoTabela() {
         <td className="px-2">
           <a href="/checkout/667482c2f0a36-92ede" className="">
             <button className="relative inline-block group text-white rounded overflow-hidden shadow-transparent shadow-md hover:shadow-black/3 0 text-xs bg-blue-400">
-              <div className="absolute left-0 top-0 bg-black w-0 group-hover:w-full transition-all h-1/2"></div>
-              <div className="absolute right-0 bottom-0 bg-black w-0 group-hover:w-full transition-all h-1/2"></div>
+              <div className="absolute left-0 top-0 bg-blue-500 w-0 group-hover:w-full transition-all duration-300 h-1/2"></div>
+              <div className="absolute right-0 bottom-0 bg-blue-500 w-0 group-hover:w-full transition-all duration-300 h-1/2"></div>
               <div className="relative px-4 py-1 transition-all flex items-center justify-center gap-1"> Ver </div>
             </button>
           </a>

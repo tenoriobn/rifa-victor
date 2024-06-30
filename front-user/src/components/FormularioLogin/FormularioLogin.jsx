@@ -2,12 +2,15 @@ import Telefone from "../../assets/Icons/telefone.svg?react";
 import useFormatadorTelefone from "../../common/state/hooks/FormularioCadastro/useFormatadorTelefone";
 import { postDados } from "../../common/http/http";
 import {jwtDecode} from 'jwt-decode';
-import { useRecoilState } from "recoil";
-import { estadoUsuario } from "../../common/state/atom";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { estadoErro, estadoRenderizaComponenteLogin, estadoRenderizaInfoUsuario, estadoUsuario } from "../../common/state/atom";
 
 export default function FormularioLogin() {
   const { telefone, formatarTelefone } = useFormatadorTelefone();
   const [, setUsuario] = useRecoilState(estadoUsuario);
+  const setRenderizaComponenteLogin = useSetRecoilState(estadoRenderizaComponenteLogin);
+  const setRenderizaInfoUsuario = useSetRecoilState(estadoRenderizaInfoUsuario);
+  const setErro = useSetRecoilState(estadoErro);
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -18,11 +21,13 @@ export default function FormularioLogin() {
       localStorage.setItem('access_token', response.access_token);
 
       const decoded = jwtDecode(response.access_token);
-      setUsuario(decoded);
-      
+      setUsuario(decoded);   
+      setRenderizaInfoUsuario(true);
+      setRenderizaComponenteLogin(false)
+      setErro(null)
 
     } catch (error) {
-      console.error('Erro ao fazer login:', error);
+      setErro(error)
     }
   };
 
@@ -50,7 +55,12 @@ export default function FormularioLogin() {
         </div>
       </div>
 
-      <button type="submit" className="text-sm font-medium rounded-md shadow-sm text-white  bg-amber-500 w-full hover:bg-amber-600 max-w-[420px] flex justify-center items-center px-3.5 py-2.5 mx-auto transition ease-in-out">Efetuar Login</button>
+      <button 
+        type="submit" 
+        className="text-sm font-medium rounded-md shadow-sm text-white  bg-amber-500 w-full hover:bg-amber-600 max-w-[420px] flex justify-center items-center px-3.5 py-2.5 mx-auto transition duration-300"
+      >
+        Efetuar Login
+      </button>
     </form>
   )
 }

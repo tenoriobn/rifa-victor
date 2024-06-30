@@ -25,10 +25,14 @@ export default function ModalRegulamento() {
     <>
       <button 
         onClick={() => setIsOpen(!isOpen)} 
-        className="flex gap-1 text-white rounded text-xs bg-sky-500 py-1 px-4"
+        className="relative inline-block group text-white rounded overflow-hidden shadow-transparent shadow-md hover:shadow-black/3 0 text-xs bg-sky-500"
       >
-        <Documento />
-        Ver Regulamento
+        <div className="absolute left-0 top-0 bg-sky-600 w-0 group-hover:w-full transition-all duration-300 h-1/2"></div>
+        <div className="absolute right-0 bottom-0 bg-sky-600 w-0 group-hover:w-full transition-all duration-300 h-1/2"></div>
+        <div className="relative px-4 py-1 transition-all duration-300 flex items-center justify-center gap-1">
+          <Documento />
+          Ver Regulamento
+        </div>
       </button>
 
       {isOpen && (
@@ -45,10 +49,14 @@ export default function ModalRegulamento() {
 
             <div className="text-right">
               <button 
-                className="relative inline-block group text-white rounded overflow-hidden shadow-transparent shadow-md hover:shadow-black/30 bg-sky-300 px-4 py-1"
+                className="relative inline-block group text-white rounded overflow-hidden shadow-transparent shadow-md hover:shadow-black/3 0 bg-sky-300"
                 onClick={() => setIsOpen(!isOpen)}
               >
-                Fechar
+                <div className="absolute left-0 top-0 bg-sky-400 w-0 group-hover:w-full transition-all duration-300 h-1/2"></div>
+                <div className="absolute right-0 bottom-0 bg-sky-400 w-0 group-hover:w-full transition-all duration-300 h-1/2"></div>
+                <div className="relative px-4 py-1 transition-all duration-300 flex items-center justify-center gap-1">
+                  Fechar
+                </div>
               </button>
             </div>
           </div>

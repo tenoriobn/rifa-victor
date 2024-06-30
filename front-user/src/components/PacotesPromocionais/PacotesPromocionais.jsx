@@ -1,6 +1,6 @@
 import Medidor from "../../assets/Icons/medidor.svg?react";
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { estadoPacoteSelecionado, estadoRenderizaComponenteCadastro, estadoRifa, estadoValorCompra, estadoValorRange } from "../../common/state/atom";
+import { estadoPacoteSelecionado, estadoRenderizaComponenteCadastro, estadoRenderizaInfoUsuario, estadoRifa, estadoUsuario, estadoValorCompra, estadoValorRange } from "../../common/state/atom";
 import useOperacoesInputRange from "../../common/state/hooks/inputRange/useOperacoesInputRange";
 
 export default function PacotesPromocionais() {
@@ -8,11 +8,11 @@ export default function PacotesPromocionais() {
   const pacoteSelecionado = useRecoilValue(estadoPacoteSelecionado);
   const valorCompra = useRecoilValue(estadoValorCompra);
   const setRenderizaComponenteCadastro = useSetRecoilState(estadoRenderizaComponenteCadastro);
+  const setRenderizaInfoUsuario = useSetRecoilState(estadoRenderizaInfoUsuario);
   const { adicionarValorPromocional } = useOperacoesInputRange();
   const rifa = useRecoilValue(estadoRifa)
   const precoUnidade = valorRange >= 1000 ? '0,15' : valorRange >= 500 ? '0,19' : '0,20';
-
-  console.log(valorCompra)
+  const usuario = useRecoilValue(estadoUsuario)
 
 
   const pacotes = [
@@ -21,6 +21,14 @@ export default function PacotesPromocionais() {
     { id: 3, valor: 1000, precoAntigo: 200.00, precoNovo: 150.00, maisPopular: false },
     { id: 4, valor: 2000, precoAntigo: 400.00, precoNovo: 300.00, maisPopular: false }
   ];
+
+  const handleClick = () => {
+    if (usuario) {
+      setRenderizaInfoUsuario(true)
+    } else {
+      setRenderizaComponenteCadastro(true)
+    }
+  }
 
   return (
     <>    
@@ -33,7 +41,7 @@ export default function PacotesPromocionais() {
         {pacotes.map((pacote) => (
           <button
             key={pacote.id}
-            className={`relative rounded px-2 py-1 transition-all cursor-pointer text-center border-2 border-solid ${
+            className={`relative rounded px-2 py-1 transition-all duration-300 cursor-pointer text-center border-2 border-solid ${
               pacote.id === 1 ? 'border-emerald-700' : 'border-transparent'} 
               ${pacoteSelecionado.id === pacote.id ? 'bg-green-200 text-neutral-700' : 'bg-slate-300 text-black'}
               ${pacoteSelecionado.id === pacote.id ? '' : 'hover:bg-slate-400'}`
@@ -53,8 +61,8 @@ export default function PacotesPromocionais() {
                 R$&nbsp;{Number(pacote.precoAntigo.toFixed(2)).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </p>
             )}
-            <p className={`text-sm ${pacote.maisPopular ? 'text-green-700' : 'text-black'}`}>
-              {Number(pacote.precoNovo.toFixed(2)).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            <p className={`text-sm ${pacote.maisPopular ? 'text-neutral-700' : 'text-green-700'}`}>
+              R$ {Number(pacote.precoNovo.toFixed(2)).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </p>
           </button>
         ))}
@@ -63,7 +71,7 @@ export default function PacotesPromocionais() {
       <div className='flex flex-col md:flex-row gap-4 items-center justify-between mt-6'>
         <div>
           <p 
-            className={`font-bold transition-all ${valorRange >= 500 ? 'text-sm line-through text-neutral-400' : 'text-xl'}`}>
+            className={`font-bold transition-all duration-300 ${valorRange >= 500 ? 'text-sm line-through text-neutral-400' : 'text-xl'}`}>
             Preço Unit:
             
             <span className="font-normal">
@@ -73,20 +81,20 @@ export default function PacotesPromocionais() {
 
           {
             valorRange >= 500 && (
-              <p className='text-xl text-emerald-600 transition-all font-bold'>
+              <p className='text-xl text-emerald-600 transition-all duration-300 font-bold'>
                 Preço Promocional:
     
-                <span className="font-normal"> R$&nbsp;${precoUnidade}</span>
+                <span className="font-normal"> R$&nbsp;{precoUnidade}</span>
               </p>
             )
           }
         </div>
 
         <button 
-          className="rounded-full px-8 py-4 bg-amber-500 ring-1 ring-amber-800 ring-offset-4 hover:bg-amber-600 transition-all disabled:bg-neutral-400 text-white"
-          onClick={() => setRenderizaComponenteCadastro(true)}
+          className="rounded-full px-8 py-4 bg-amber-500 ring-1 ring-amber-800 ring-offset-4 hover:bg-amber-600 transition-all duration-300 disabled:bg-neutral-400 text-white"
+          onClick={handleClick}
         >
-          Comprar por <span className="font-bold">R$&nbsp;${valorCompra}</span>
+          Comprar por <span className="font-bold">R$&nbsp;{valorCompra}</span>
         </button>
       </div>
     </>

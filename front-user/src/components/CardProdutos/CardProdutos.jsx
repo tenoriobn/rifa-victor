@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Bilhete from "../../assets/Icons/bilhete.svg?react";
 import Calendario from "../../assets/Icons/calendario.svg?react";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { estadoProdutoSelecionado, estadoProdutos } from "../../common/state/atom";
+import { estadoProdutoSelecionado, estadoProdutos, estadoRenderizaComponenteCadastro, estadoRenderizaComponenteLogin, estadoRenderizaInfoUsuario } from "../../common/state/atom";
 import { useEffect, useState } from "react";
 import { fetchDados } from "../../common/http/http";
 
@@ -11,6 +11,9 @@ export default function CardProdutos({ categoria }) {
   const [produtos, setProdutos] = useRecoilState(estadoProdutos);
   const setProdutoSelecionado = useSetRecoilState(estadoProdutoSelecionado);
   const produtosFiltrados = Array.isArray(produtos) ? produtos.filter(produto => produto.status === categoria) : [];
+  const setRenderizaInfoUsuario = useSetRecoilState(estadoRenderizaInfoUsuario);
+  const setRenderizaComponenteCadastro = useSetRecoilState(estadoRenderizaComponenteCadastro);
+  const setRenderizaComponenteLogin = useSetRecoilState(estadoRenderizaComponenteLogin);
 
   const [loading, setLoading] = useState(true);
 
@@ -50,16 +53,22 @@ export default function CardProdutos({ categoria }) {
   
     return `${dia}/${mes}/${ano} - (-${diasPassados} Dias)`;
   };
-  
 
+  const handleClick = (produto) => () => {
+    setProdutoSelecionado(produto);
+    setRenderizaInfoUsuario(false);
+    setRenderizaComponenteCadastro(false);
+    setRenderizaComponenteLogin(false);
+  };
+  
   return (
     <div className="flex flex-col gap-4">
       {produtosFiltrados.map(produto => (
         <Link 
           key={produto.id} 
           to={`/${produto.slug}/${produto.id}`}
-          onClick={() => setProdutoSelecionado(produto)}
-          className="flex w-auto overflow-hidden rounded-lg bg-neutral-200 hover:shadow-[4px_4px_4px_#0002] border border-solid border-neutral-400 ring-0 ring-amber-500/60 hover:ring-offset-4 hover:ring-2 transition-all"
+          onClick={handleClick(produto)}
+          className="flex w-auto overflow-hidden rounded-lg bg-neutral-200 hover:shadow-[4px_4px_4px_#0002] border border-solid border-neutral-400 ring-0 ring-amber-500/60 hover:ring-offset-4 hover:ring-2 transition-all duration-300"
         >
           <img 
             className="w-[80px] m-2 rounded-lg object-cover transition-all" 
@@ -93,8 +102,14 @@ export default function CardProdutos({ categoria }) {
                 </div>
               </div>
 
-              <button className="bg-amber-500 hover:bg-black rounded px-4 py-1 transition-all">
-                {categoria === "ativas" ? "Comprar" : "Ver"}
+              <button 
+                className="relative inline-block group bg-amber-500 text-white rounded overflow-hidden shadow-transparent shadow-md hover:shadow-black/30"
+              >
+                <div className="absolute left-0 top-0 bg-amber-600 w-0 group-hover:w-full transition-all duration-300 h-1/2"></div>
+                <div className="absolute right-0 bottom-0 bg-amber-600 w-0 group-hover:w-full transition-all duration-300 h-1/2"></div>
+                <div className="relative px-4 py-1 transition-all duration-300">
+                  {categoria === "ativas" ? "Comprar" : "Ver"}
+                </div>
               </button>
             </div>
           </div>

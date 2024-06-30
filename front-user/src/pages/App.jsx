@@ -16,6 +16,7 @@ import Usuario from "./Usuario/Usuario";
 import ProtectedRoute from "../components/ProtectedRoute/ProtectedRoute";
 import MeusPedidos from "../components/MeusPedidos/MeusPedidos";
 import MeusDados from "../components/MeusDados/MeusDados";
+import DetalhesPedido from "../components/DetalhesPedido/DetalhesPedido";
 // import Home from "./home/Home";
 
 export default function App() {
@@ -38,6 +39,8 @@ export default function App() {
                     <Route path="meu-perfil" element={<MeusDados />} />
                     <Route path="meus-pedidos" element={<MeusPedidos />} />
                   </Route>
+
+                  <Route path="checkout" element={<ProtectedRoute element={<DetalhesPedido />} />} />
                   
                   {/* Em Desuso */}
                   <Route path="termos-de-uso" element={<Termos />} />

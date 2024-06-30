@@ -15,11 +15,15 @@ export default function MeusDados() {
           <h3 className="text-neutral-700">Meus dados</h3>
 
           <button
-            className="flex gap-1 group text-white rounded overflow-hidden shadow-transparent shadow-md hover:shadow-black/3 0 text-xs bg-sky-500 px-4 py-1"
+            className="relative inline-block group text-white rounded overflow-hidden shadow-transparent shadow-md hover:shadow-black/3 0 text-xs bg-sky-500"
             onClick={() => setEditarPerfil(!editarPerfil)}
           >
-            <Editar />
-            Editar
+            <div className="absolute left-0 top-0 bg-sky-600 w-0 group-hover:w-full transition-all duration-300 h-1/2"></div>
+            <div className="absolute right-0 bottom-0 bg-sky-600 w-0 group-hover:w-full transition-all duration-300 h-1/2"></div>
+            <div className="relative px-4 py-1 transition-all duration-300 flex items-center justify-center gap-1">
+              <Editar />
+              Editar
+            </div>
           </button>
         </div>
 

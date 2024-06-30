@@ -20,7 +20,7 @@ export default function Cabecalho() {
               <Link 
                 aria-current="page" 
                 to="/usuario/meu-perfil" 
-                className="router-link-active router-link-exact-active flex flex-row-reverse items-center gap-2 p-2 hover:bg-amber-300/20 transition-all rounded-lg"
+                className="router-link-active router-link-exact-active flex flex-row-reverse items-center gap-2 p-2 hover:bg-amber-300/20 transition-all duration-300 rounded-lg"
               >
                 <div 
                   className="bg-slate-700 h-8 w-8 rounded-full inline-flex items-center justify-center ring-offset-2"
@@ -33,7 +33,7 @@ export default function Cabecalho() {
               :
 
               <Link 
-                className="p-2 hover:bg-amber-300/10 transition-all rounded-lg"
+                className="p-2 hover:bg-amber-300/10 transition-all duration-300 rounded-lg"
                 to="/usuario/meu-perfil"
               >
                 <Perfil className="fill-neutral-200 w-7 h-7"  />
@@ -41,7 +41,7 @@ export default function Cabecalho() {
             }
 
             <button 
-              className="p-2 hover:bg-amber-300/20 transition-all rounded-lg"
+              className="p-2 hover:bg-amber-300/20 transition-all duration-300 rounded-lg"
               onClick={() => setMenuAtivo(!menuAtivo)}
             >
               <MenuIcon />

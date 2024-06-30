@@ -40,6 +40,11 @@ export const estadoRenderizaComponenteLogin = atom({
   default: false,
 });
 
+export const estadoRenderizaInfoUsuario = atom({
+  key: 'renderizaInfoUsuario',
+  default: false,
+});
+
 export const estadoProdutos = atom({
   key: 'produtos',
   default: [],
@@ -88,3 +93,13 @@ export const estadoUsuario = atom({
   key: 'estadoUsuario',
   default: null,
 });
+
+export const estadoErro = atom({
+  key: 'estadoErro',
+  default: null,
+})
+
+export const estadoErroCadastro = atom({
+  key: 'estadoErroCadastro',
+  default: null,
+})
