@@ -28,6 +28,11 @@ export default function InfoPedidos() {
           <p className="text-amber-500">Finalizado</p>
         </div>
 
+        <div className="mt-4 flex gap-2 text-neutral-700">
+          <p className="font-bold">❌ Status:</p>
+          <p className="text-red-500">Cancelado</p>
+        </div>
+
         <div className="flex gap-2 text-neutral-700">
           <div className="font-bold">🗓 Pago em:</div>
           <div>20/06/24, 16:28</div>

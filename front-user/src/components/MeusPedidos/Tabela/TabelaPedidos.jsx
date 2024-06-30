@@ -10,7 +10,6 @@ export default function TabelaPedidos() {
         <CabecalhoTabela />
 
         <ConteudoTabela />
-        <ConteudoTabela />
       </table>
     </div>
   )
