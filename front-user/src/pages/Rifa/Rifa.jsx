@@ -14,6 +14,8 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {  estadoProdutos, estadoRenderizaComponenteCadastro, estadoRenderizaComponenteLogin, estadoRenderizaInfoUsuario, estadoRifa } from "../../common/state/atom";
 import TempoEncerrado from "../../assets/Icons/tempoEncerrado.svg?react";
 import { fetchDados } from "../../common/http/http";
+import { motion } from 'framer-motion';
+import { transicaoAnimada } from "../../common/util/transicaoAnimada";
 
 export default function Rifa() {
   const renderizaComponenteCadastro = useRecoilValue(estadoRenderizaComponenteCadastro);
@@ -41,10 +43,12 @@ export default function Rifa() {
     return <div>Carregando...</div>; 
   }
   const renderizaComponente = produto.status === "ativas";
+  const animacao = transicaoAnimada();
 
   return (
     <section>
-      <div 
+      <motion.div 
+        {...animacao}
         className="flex flex-col-reverse md:flex-row items-center justify-between font-semibold text-neutral-800 mb-2"
       >
         <div className="flex items-center gap-x-1">
@@ -58,12 +62,14 @@ export default function Rifa() {
             <TempoEncerrado />
           </div>
         )}
-      </div> 
+      </motion.div> 
 
       <SlidePremio />
       
       {!renderizaComponenteCadastro && !renderizaComponenteLogin && !renderizaInfoUsuario && (
-        <>
+        <motion.div
+          {...animacao}
+        >
           <OpcoesDoEvento display={`${renderizaComponente ? "flex" : "hidden"}`} />
 
           <div className="bg-slate-100 p-2 rounded-lg">
@@ -86,7 +92,7 @@ export default function Rifa() {
           {renderizaComponente && (
             <RankingVendas />
           )}
-        </>
+        </motion.div>
       )}
 
       {(renderizaComponenteCadastro || renderizaComponenteLogin || renderizaInfoUsuario ? <AcessoUsuario /> : null)}

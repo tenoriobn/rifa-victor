@@ -4,6 +4,8 @@ import { postDados } from "../../common/http/http";
 import {jwtDecode} from 'jwt-decode';
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { estadoErro, estadoRenderizaComponenteLogin, estadoRenderizaInfoUsuario, estadoUsuario } from "../../common/state/atom";
+import { motion } from "framer-motion";
+import { transicaoAnimada } from "../../common/util/transicaoAnimada";
 
 export default function FormularioLogin() {
   const { telefone, formatarTelefone } = useFormatadorTelefone();
@@ -30,9 +32,11 @@ export default function FormularioLogin() {
       setErro(error)
     }
   };
+  
+  const animacao = transicaoAnimada();
 
   return (
-    <form className="w-full" onSubmit={handleLogin}>
+    <motion.form className="w-full" onSubmit={handleLogin} {...animacao}>
       <div className='bg-white/20 border border-solid border-white/50 rounded-lg p-4 text-xl max-w-[420px] mx-auto mb-6'>
         <div className='flex flex-col mt-2'>
           <label htmlFor="telefone" className='block font-medium text-sm mb-1 w-max text-gray-700'>Celular</label>
@@ -61,6 +65,6 @@ export default function FormularioLogin() {
       >
         Efetuar Login
       </button>
-    </form>
+    </motion.form>
   )
 }

@@ -5,6 +5,8 @@ import FormularioCadastro from "../../FormularioCadastro/FormularioCadastro";
 import FormularioLogin from "../../FormularioLogin/FormularioLogin";
 import useAlternarFormularios from "../../../common/state/hooks/FormulariosAcesso/useAlternarFormularios";
 import DadosUsuario from "../../DadosUsuario/DadosUsuario";
+import { motion } from "framer-motion";
+import { transicaoAnimada } from "../../../common/util/transicaoAnimada";
 
 export default function FormulariosAcesso() {
   const renderizaComponenteCadastro = useRecoilValue(estadoRenderizaComponenteCadastro);
@@ -20,11 +22,16 @@ export default function FormulariosAcesso() {
     setUsuario(null);
   };
 
+  const animacao = transicaoAnimada();
+
   return (
-    <div className="bg-slate-100 p-4 rounded-lg mb-4">
+    <motion.div 
+      {...animacao}
+      className="bg-slate-100 p-4 rounded-lg mb-4"
+    >
       <div className="flex flex-wrap justify-between border-b border-solid border-b-slate-300 mb-4  pb-2">
         {renderizaComponenteLogin &&
-          <>
+          <motion.div className="flex items-center justify-between w-full" {...animacao}>
             <h3 className="text-lg text-neutral-700 font-semibold"> Fazer login </h3>
 
             <button
@@ -37,11 +44,11 @@ export default function FormulariosAcesso() {
                 Quero me registrar
               </div>
             </button>
-          </>
+          </motion.div>
         }
 
         {renderizaComponenteCadastro &&
-          <> 
+          <motion.div className="flex items-center justify-between w-full" {...animacao}> 
             <h3 className="text-lg text-neutral-700 font-semibold"> Registrar Conta </h3>       
             <button
               className="relative inline-block group text-white rounded overflow-hidden shadow-transparent shadow-md hover:shadow-black/3 0 bg-sky-500 text-sm"
@@ -53,11 +60,11 @@ export default function FormulariosAcesso() {
                 Já sou cliente! 
               </div>
             </button>
-          </>
+          </motion.div>
         }
 
         {renderizaInfoUsuario &&
-          <> 
+          <motion.div className="flex items-center justify-between w-full" {...animacao}> 
             <h3 className="text-lg text-neutral-700 font-semibold"> Usar dados de: </h3>       
             <button
               className="relative inline-block group text-white rounded overflow-hidden shadow-transparent shadow-md hover:shadow-black/3 0 bg-sky-500 text-sm"
@@ -69,7 +76,7 @@ export default function FormulariosAcesso() {
                 Esse não sou eu 
               </div>
             </button>
-          </>
+          </motion.div>
         }
       </div>
       
@@ -77,6 +84,6 @@ export default function FormulariosAcesso() {
       {renderizaComponenteLogin && <FormularioLogin />}
       {renderizaInfoUsuario && <DadosUsuario />}
 
-    </div>
+    </motion.div>
   )
 }

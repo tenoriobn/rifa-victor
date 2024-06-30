@@ -6,6 +6,8 @@ import TermosCondicoes from "./TermosCondicoes/TermosCondicoes";
 import SetaEsquerda from "../../assets/Icons/seta.svg?react";
 import Verificado from "../../assets/Icons/verificado.svg?react"
 import MensagemErro from "../MensagemErro/MensagemErro";
+import { transicaoAnimada } from "../../common/util/transicaoAnimada";
+import { motion } from 'framer-motion';
 
 export default function AcessoUsuario() {
   const renderizaComponenteCadastro = useRecoilValue(estadoRenderizaComponenteCadastro);
@@ -16,13 +18,16 @@ export default function AcessoUsuario() {
   const { voltarParaRifa } = useAlternarFormularios();
   const usuario = useRecoilValue(estadoUsuario);
   const erroCadastro = useRecoilValue(estadoErroCadastro);
+  const animacao = transicaoAnimada();
 
   const handleClick = () => {
     setFinalizarPedido(true);
   }
 
   return (
-    <>
+    <motion.div
+      {...animacao}
+    >
       {erroCadastro && <MensagemErro />}
       <FormulariosAcesso />
 
@@ -63,6 +68,6 @@ export default function AcessoUsuario() {
           </div>
         </button>
       </div>
-    </>
+    </motion.div>
   )
 }

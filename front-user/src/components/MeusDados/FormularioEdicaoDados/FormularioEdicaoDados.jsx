@@ -5,11 +5,14 @@ import Telefone from "../../../assets/Icons/telefone.svg?react";
 import Whatsapp from "../../../assets/Icons/whatsapp.svg?react";
 import { useRecoilValue } from "recoil";
 import { estadoEditarPerfil, estadoUsuario } from "../../../common/state/atom";
+import { transicaoAnimada } from "../../../common/util/transicaoAnimada";
+import { motion } from "framer-motion";
 
 export default function FormularioEdicaoDados() {
   const editarPerfil = useRecoilValue(estadoEditarPerfil);
   const { formatarTelefone } = useFormatadorTelefone();
   const usuario = useRecoilValue(estadoUsuario);
+  const animacao = transicaoAnimada();
 
   return (
     <form action="" className="flex flex-col justify-between text-sm px-4 py-5 sm:px-6 gap-4">
@@ -85,17 +88,19 @@ export default function FormularioEdicaoDados() {
       </div>
 
       {editarPerfil && (
-        <h4 className="text-gray-700 w-full flex items-center  gap-2 font-medium">
-          Para alterar dados, contate o suporte via WhatsApp:
-          <a 
-            href="https://wa.me/11999999999"
-            className="flex gap-1 text-white rounded text-xs bg-green-500 py-1 px-4 cursor-pointer"
-            target="_blank"
-          >
-            <Whatsapp />
-            Suporte
-          </a>
-        </h4>
+        <motion.div {...animacao}>
+          <h4 className="text-gray-700 w-full flex items-center  gap-2 font-medium">
+            Para alterar dados, contate o suporte via WhatsApp:
+            <a 
+              href="https://wa.me/11999999999"
+              className="flex gap-1 text-white rounded text-xs bg-green-500 py-1 px-4 cursor-pointer"
+              target="_blank"
+            >
+              <Whatsapp />
+              Suporte
+            </a>
+          </h4>
+        </motion.div>
       )}
     </form>
   )

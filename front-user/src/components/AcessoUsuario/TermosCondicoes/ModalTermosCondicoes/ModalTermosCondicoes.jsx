@@ -29,7 +29,11 @@ export default function ModalTermosCondicoes() {
       </button>
 
       {isOpen && (
-        <div id="default-modal" aria-hidden="true" className="fixed top-0 left-0 w-full h-full flex flex-wrap justify-center items-center bg-black/40 backdrop-blur-sm p-4 overflow-auto z-[1000]">
+        <div 
+          id="default-modal" 
+          aria-hidden="true" 
+          className="fixed top-0 left-0 w-full h-full flex flex-wrap justify-center items-center bg-black/40 backdrop-blur-sm p-4 overflow-auto z-[1000]"
+        >
           <div className='absolute inset-0'></div>
           <div className='relative max-w-xl mx-4 p-4 bg-white text-neutral-800 border rounded-lg overflow-auto'>
             <h1 className="text-xl border-b border-b-slate-400"> Temos e Condições </h1>

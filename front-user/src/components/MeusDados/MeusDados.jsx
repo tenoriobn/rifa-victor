@@ -2,12 +2,15 @@ import Editar from "../../assets/Icons/editar.svg?react"
 import FormularioEdicaoDados from "./FormularioEdicaoDados/FormularioEdicaoDados"
 import { useRecoilState } from "recoil"
 import { estadoEditarPerfil } from "../../common/state/atom"
+import { transicaoAnimada } from "../../common/util/transicaoAnimada"
+import { motion } from "framer-motion"
 
 export default function MeusDados() {
   const [editarPerfil, setEditarPerfil] = useRecoilState(estadoEditarPerfil)
+  const animacao = transicaoAnimada();
 
   return (
-    <div 
+    <motion.div {...animacao}
       className="rounded-lg divide-y divide-gray-200 dark:divide-gray-800 ring-1 ring-gray-200  shadow bg-white w-full mt-4 mb-8"
     >
       <div className="divide-y divide-gray-200">
@@ -29,6 +32,6 @@ export default function MeusDados() {
 
         <FormularioEdicaoDados />
       </div>
-    </div>
+    </motion.div>
   )
 }

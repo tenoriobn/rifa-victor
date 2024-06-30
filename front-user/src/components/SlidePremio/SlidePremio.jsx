@@ -1,6 +1,8 @@
 import { useRecoilValue } from 'recoil';
 import { estadoProdutos, estadoRenderizaComponenteCadastro, estadoRenderizaComponenteLogin, estadoRenderizaInfoUsuario, estadoRifa } from '../../common/state/atom';
 import useSlideImages from '../../common/state/hooks/ImagemPremio/ImagemPremio';
+import { motion } from 'framer-motion';
+import { transicaoAnimada } from '../../common/util/transicaoAnimada';
 
 export default function SlidePremio() {
   const renderizaComponenteCadastro = useRecoilValue(estadoRenderizaComponenteCadastro);
@@ -11,9 +13,12 @@ export default function SlidePremio() {
   const renderizaComponente = produto.status === "ativas";
 
   const { imgPremioSlide, setImgPremioSlide } = useSlideImages(rifa);
+  const animacao = transicaoAnimada();
 
   return (
-    <>
+    <motion.div
+      {...animacao}
+    >
       <div className="aspect-[16/9] mb-4">
         {imgPremioSlide && (
           <img 
@@ -37,6 +42,6 @@ export default function SlidePremio() {
           ))}
         </div>
       )}
-    </>
+    </motion.div>
   );
 }
