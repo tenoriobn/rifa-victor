@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Fechamento from "../../../assets/Icons/fechamento.svg?react";
 import Inicio from "../../../assets/Icons/inicio.svg?react";
 import Carrinho from "../../../assets/Icons/carrinho.svg?react";
@@ -11,8 +11,9 @@ import { motion } from 'framer-motion';
 import { transicaoAnimadaMenu } from '../../../common/util/transicaoAnimada';
 
 export default function Menu() {
-  const { menuAtivo, setMenuAtivo, menuRef } = useAtivarMenu();
   const [esmaecendoFechar, setEsmaecendoFechar] = useState(false);
+  const { menuAtivo, setMenuAtivo, menuRef } = useAtivarMenu(setEsmaecendoFechar);
+  const location = useLocation();
 
   useEffect(() => {
     if (!menuAtivo && esmaecendoFechar) {
@@ -64,7 +65,9 @@ export default function Menu() {
                     setEsmaecendoFechar(true);
                     setTimeout(() => setMenuAtivo(false), 290);
                   }}
-                  className="flex items-center gap-4 hover:text-neutral-100 transition-all duration-300 stroke-neutral-400 hover:stroke-neutral-100"
+                  className={`flex items-center gap-4 hover:text-neutral-100 transition-all duration-300 stroke-neutral-400 hover:stroke-neutral-100 ${
+                    location.pathname === to ? 'text-neutral-100' : ''
+                  }`}
                 >
                   <Icon />
                   {label}
