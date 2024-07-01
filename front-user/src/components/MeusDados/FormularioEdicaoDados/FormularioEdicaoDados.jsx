@@ -4,11 +4,15 @@ import Perfil from "../../../assets/Icons/perfil-2.svg?react";
 import Telefone from "../../../assets/Icons/telefone.svg?react";
 import Whatsapp from "../../../assets/Icons/whatsapp.svg?react";
 import { useRecoilValue } from "recoil";
-import { estadoEditarPerfil } from "../../../common/state/atom";
+import { estadoEditarPerfil, estadoUsuario } from "../../../common/state/atom";
+import { transicaoAnimada } from "../../../common/util/transicaoAnimada";
+import { motion } from "framer-motion";
 
 export default function FormularioEdicaoDados() {
   const editarPerfil = useRecoilValue(estadoEditarPerfil);
-  const { telefone, formatarTelefone } = useFormatadorTelefone();
+  const { formatarTelefone } = useFormatadorTelefone();
+  const usuario = useRecoilValue(estadoUsuario);
+  const animacao = transicaoAnimada();
 
   return (
     <form action="" className="flex flex-col justify-between text-sm px-4 py-5 sm:px-6 gap-4">
@@ -27,7 +31,7 @@ export default function FormularioEdicaoDados() {
             disabled
             type="text" 
             className="w-full disabled:cursor-not-allowed disabled:opacity-75 focus:outline-none border-0 form-input rounded-md placeholder-gray-400 dark:placeholder-gray-500 text-sm px-2.5 py-1.5 shadow-sm bg-white ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-amber-500 ps-9 text-gray-700"
-            placeholder="Nome"
+            placeholder={usuario.name}
           />
 
           <span className="absolute inset-y-0 start-0 flex items-center pointer-events-none px-2.5">
@@ -51,7 +55,7 @@ export default function FormularioEdicaoDados() {
             disabled
             type="text" 
             className="w-full disabled:cursor-not-allowed disabled:opacity-75 focus:outline-none border-0 form-input rounded-md placeholder-gray-400 dark:placeholder-gray-500 text-sm px-2.5 py-1.5 shadow-sm bg-white ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-amber-500 ps-9 text-gray-700"
-            placeholder="Sobrenome"
+            placeholder={usuario.surname}
           />
 
           <span className="absolute inset-y-0 start-0 flex items-center pointer-events-none px-2.5">
@@ -74,7 +78,7 @@ export default function FormularioEdicaoDados() {
             className="w-full disabled:cursor-not-allowed disabled:opacity-75 focus:outline-none border-0 form-input rounded-md placeholder-gray-400 dark:placeholder-gray-500 text-sm px-2.5 py-1.5 shadow-sm bg-white ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-amber-500 ps-9 text-gray-700"
             maxLength={15}
             onChange={formatarTelefone}
-            value={telefone}
+            value={usuario.cellphone}
           />
 
           <span className="absolute inset-y-0 start-0 flex items-center pointer-events-none px-2.5">
@@ -84,17 +88,19 @@ export default function FormularioEdicaoDados() {
       </div>
 
       {editarPerfil && (
-        <h4 className="text-gray-700 w-full flex items-center  gap-2 font-medium">
-          Para alterar dados, contate o suporte via WhatsApp:
-          <a 
-            href="https://wa.me/11999999999"
-            className="flex gap-1 text-white rounded text-xs bg-green-500 py-1 px-4 cursor-pointer"
-            target="_blank"
-          >
-            <Whatsapp />
-            Suporte
-          </a>
-        </h4>
+        <motion.div {...animacao}>
+          <h4 className="text-gray-700 w-full flex items-center  gap-2 font-medium">
+            Para alterar dados, contate o suporte via WhatsApp:
+            <a 
+              href="https://wa.me/11999999999"
+              className="flex gap-1 text-white rounded text-xs bg-green-500 py-1 px-4 cursor-pointer"
+              target="_blank"
+            >
+              <Whatsapp />
+              Suporte
+            </a>
+          </h4>
+        </motion.div>
       )}
     </form>
   )

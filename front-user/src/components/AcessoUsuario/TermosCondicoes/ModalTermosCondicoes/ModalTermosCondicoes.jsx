@@ -19,13 +19,21 @@ export default function ModalTermosCondicoes() {
     <>
       <button
         onClick={() => setIsOpen(!isOpen)} 
-        className="relative inline-block group text-white rounded overflow-hidden shadow-transparent shadow-md hover:shadow-black/3 0 text-xs bg-blue-500 px-4 py-1"
+        className="relative inline-block group text-white rounded overflow-hidden shadow-transparent shadow-md hover:shadow-black/3 0 text-xs bg-blue-500"
       >
-        Ver Termos e Condições
+        <div className="absolute left-0 top-0 bg-blue-600 w-0 group-hover:w-full transition-all duration-300 h-1/2"></div>
+        <div className="absolute right-0 bottom-0 bg-blue-600 w-0 group-hover:w-full transition-all duration-300 h-1/2"></div>
+        <div className='relative px-4 py-1 transition-all duration-300 flex items-center justify-center gap-1'>
+          Ver Termos e Condições
+        </div>
       </button>
 
       {isOpen && (
-        <div id="default-modal" aria-hidden="true" className="fixed top-0 left-0 w-full h-full flex flex-wrap justify-center items-center bg-black/40 backdrop-blur-sm p-4 overflow-auto z-[1000]">
+        <div 
+          id="default-modal" 
+          aria-hidden="true" 
+          className="fixed top-0 left-0 w-full h-full flex flex-wrap justify-center items-center bg-black/40 backdrop-blur-sm p-4 overflow-auto z-[1000]"
+        >
           <div className='absolute inset-0'></div>
           <div className='relative max-w-xl mx-4 p-4 bg-white text-neutral-800 border rounded-lg overflow-auto'>
             <h1 className="text-xl border-b border-b-slate-400"> Temos e Condições </h1>
@@ -90,10 +98,14 @@ export default function ModalTermosCondicoes() {
 
             <div className="text-right">
               <button 
-                className="relative inline-block group text-white rounded overflow-hidden shadow-transparent shadow-md hover:shadow-black/30 bg-sky-300 px-4 py-1"
+                className="relative inline-block group text-white rounded overflow-hidden shadow-transparent shadow-md hover:shadow-black/3 0 bg-sky-300"
                 onClick={() => setIsOpen(!isOpen)}
               >
-                Fechar
+                <div className="absolute left-0 top-0 bg-sky-400 w-0 group-hover:w-full transition-all duration-300 h-1/2"></div>
+                <div className="absolute right-0 bottom-0 bg-sky-400 w-0 group-hover:w-full transition-all duration-300 h-1/2"></div>
+                <div className="relative px-4 py-1 transition-all duration-300 flex items-center justify-center gap-1">
+                  Fechar
+                </div>
               </button>
             </div>
           </div>

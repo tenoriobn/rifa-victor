@@ -1,14 +1,23 @@
 import { useState } from 'react';
 import CardCotasAtivas from './CardCotasAtivas/CardCotasAtivas';
 import CardCotasResgatadas from './CardCotasResgatadas/CardCotasResgatadas';
+import '../../css/efeitoSlideBotao.css';
 
 export default function CotasPremiadas() {
   const [botaoSelecionado, setBotaoSelecionado] = useState('ativas');
+  const [animacao, setAnimacao] = useState('');
 
   const botoes = [
     { id: 'ativas', label: 'Cotas Ativas' },
     { id: 'resgatadas', label: 'Cotas Resgatadas' }
   ];
+
+  const handleClick = (id) => {
+    if (botaoSelecionado !== id) {
+      setAnimacao(botaoSelecionado === 'ativas' ? 'slide-right' : 'slide-left');
+      setBotaoSelecionado(id);
+    }
+  };
 
   return (
     <div className="bg-slate-300 p-2 rounded-lg mt-4 mb-4">
@@ -21,17 +30,17 @@ export default function CotasPremiadas() {
           <button
             key={botao.id}
             className={`outline-none disabled:cursor-not-allowed h-8 px-3 text-sm font-medium rounded-md transition-colors ${
-              botaoSelecionado === botao.id ? 'bg-white text-gray-900' : 'text-gray-500'
+              botaoSelecionado === botao.id ? `bg-white text-gray-900 ${animacao}` : 'text-gray-500'
             }`}
             type="button"
-            onClick={() => setBotaoSelecionado(botao.id)}
+            onClick={() => handleClick(botao.id)}
           >
             {botao.label}
           </button>
         ))}
       </div>
 
-      {botaoSelecionado === "ativas" ? <CardCotasAtivas /> : <CardCotasResgatadas />}
+      {botaoSelecionado === 'ativas' ? <CardCotasAtivas /> : <CardCotasResgatadas />}
     </div>
   );
 }

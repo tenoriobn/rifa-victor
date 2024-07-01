@@ -10,7 +10,7 @@ import HomeFooter from "./components/HomeFooter";
 import Links from "./components/Links";
 import ConfirmPhone from "./components/ConfirmPhone";
 import IsPaying from "./components/IsPaying";
-import MeuPerfil from "../../../src/pages/MeuPerfil/MeuPerfil";
+import MeuPerfil from "../../../src/pages/Acesso/Acesso";
 
 export default function Home() {
   const [formData, setFormData] = useState(() => {

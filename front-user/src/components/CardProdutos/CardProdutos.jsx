@@ -3,14 +3,18 @@ import { Link } from "react-router-dom";
 import Bilhete from "../../assets/Icons/bilhete.svg?react";
 import Calendario from "../../assets/Icons/calendario.svg?react";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { estadoProdutoSelecionado, estadoProdutos } from "../../common/state/atom";
+import { estadoProdutoSelecionado, estadoProdutos, estadoRenderizaComponenteCadastro, estadoRenderizaComponenteLogin, estadoRenderizaInfoUsuario } from "../../common/state/atom";
 import { useEffect, useState } from "react";
 import { fetchDados } from "../../common/http/http";
 
 export default function CardProdutos({ categoria }) {
   const [produtos, setProdutos] = useRecoilState(estadoProdutos);
   const setProdutoSelecionado = useSetRecoilState(estadoProdutoSelecionado);
-  const produtosFiltrados = produtos.filter(produto => produto.status === categoria);
+  const produtosFiltrados = Array.isArray(produtos) ? produtos.filter(produto => produto.status === categoria) : [];
+  const setRenderizaInfoUsuario = useSetRecoilState(estadoRenderizaInfoUsuario);
+  const setRenderizaComponenteCadastro = useSetRecoilState(estadoRenderizaComponenteCadastro);
+  const setRenderizaComponenteLogin = useSetRecoilState(estadoRenderizaComponenteLogin);
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -35,14 +39,36 @@ export default function CardProdutos({ categoria }) {
     return primeiroElemento; 
   };
 
+  const formatarData = (dataString) => {
+    const data = new Date(dataString);
+    const dia = data.getDate().toString().padStart(2, '0');
+    const mes = (data.getMonth() + 1).toString().padStart(2, '0'); // Os meses começam do zero, por isso soma-se 1
+    const ano = data.getFullYear().toString(); // Obter o ano completo
+    
+    // Calcular a diferença em milissegundos entre as duas datas
+    const diferenca = new Date() - data;
+    
+    // Converter a diferença de milissegundos para dias
+    const diasPassados = Math.floor(diferenca / (1000 * 60 * 60 * 24));
+  
+    return `${dia}/${mes}/${ano} - (-${diasPassados} Dias)`;
+  };
+
+  const handleClick = (produto) => () => {
+    setProdutoSelecionado(produto);
+    setRenderizaInfoUsuario(false);
+    setRenderizaComponenteCadastro(false);
+    setRenderizaComponenteLogin(false);
+  };
+  
   return (
     <div className="flex flex-col gap-4">
       {produtosFiltrados.map(produto => (
         <Link 
           key={produto.id} 
           to={`/${produto.slug}/${produto.id}`}
-          onClick={() => setProdutoSelecionado(produto)}
-          className="flex w-auto overflow-hidden rounded-lg bg-neutral-200 hover:shadow-[4px_4px_4px_#0002] border border-solid border-neutral-400 ring-0 ring-amber-500/60 hover:ring-offset-4 hover:ring-2 transition-all"
+          onClick={handleClick(produto)}
+          className="flex w-auto overflow-hidden rounded-lg bg-neutral-200 hover:shadow-[4px_4px_4px_#0002] border border-solid border-neutral-400 ring-0 ring-amber-500/60 hover:ring-offset-4 hover:ring-2 transition-all duration-300"
         >
           <img 
             className="w-[80px] m-2 rounded-lg object-cover transition-all" 
@@ -59,23 +85,31 @@ export default function CardProdutos({ categoria }) {
               {produto.description_resume}
             </p>
             
-            <div className="flex items-end justify-between mt-2">
-              <div className="flex flex-col gap-2">
+            <div className="flex items-center flex-wrap justify-between mt-2">
+              <div className="flex flex-col">
                 {categoria === "finalizadas" && (
                   <div className='flex items-center gap-2'>
                     <Calendario className="icon text-amber-500" />
-                    <p className="text-sm font-semibold text-zinc-700">{produto.end_rifa} - <span>(-69 Dias)</span></p>
+                    <p className="text-sm font-semibold text-zinc-700">{formatarData(produto.end_rifa)}</p>
                   </div>
                 )}
 
                 <div className="flex items-center gap-2">
                   <Bilhete className="icon text-emerald-500 w-[18px] h-[18px]" />
-                  <p className="font-bold text-lg leading-4 text-neutral-600 text-left truncate">{produto.price}</p>
+                  <p className="font-bold text-lg text-neutral-600 text-left truncate">
+                    R$ {Number(produto.price).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  </p>
                 </div>
               </div>
 
-              <button className="bg-amber-500 hover:bg-black rounded px-4 py-1 transition-all">
-                {categoria === "ativas" ? "Comprar" : "Ver"}
+              <button 
+                className="relative inline-block group bg-amber-500 text-white rounded overflow-hidden shadow-transparent shadow-md hover:shadow-black/30"
+              >
+                <div className="absolute left-0 top-0 bg-amber-600 w-0 group-hover:w-full transition-all duration-300 h-1/2"></div>
+                <div className="absolute right-0 bottom-0 bg-amber-600 w-0 group-hover:w-full transition-all duration-300 h-1/2"></div>
+                <div className="relative px-4 py-1 transition-all duration-300">
+                  {categoria === "ativas" ? "Comprar" : "Ver"}
+                </div>
               </button>
             </div>
           </div>

@@ -2,12 +2,15 @@ import SetaTermos from "../../../assets/Icons/setaTermos.svg?react";
 import { useRecoilState } from "recoil";
 import { estadoTermosAceito } from "../../../common/state/atom";
 import ModalTermosCondicoes from "./ModalTermosCondicoes/ModalTermosCondicoes";
+import { transicaoAnimada } from "../../../common/util/transicaoAnimada";
+import { motion } from "framer-motion";
 
 export default function TermosCondicoes() {
   const [termosAceito, setTermosAceito] = useRecoilState(estadoTermosAceito);
+  const animacao = transicaoAnimada(); 
 
   return (
-    <>
+    <motion.div {...animacao}>
       <div 
         className={`mb-4 p-2 rounded-lg flex flex-col-reverse sm:flex-row items-center justify-between border border-solid  ${ termosAceito ? "bg-emerald-100 text-emerald-600 border-emerald-500/40" : "bg-yellow-50 text-yellow-600 border-yellow-500/40"}`}
       >
@@ -29,15 +32,15 @@ export default function TermosCondicoes() {
       </div>
 
       {!termosAceito && (
-        <div
+        <motion.div {...animacao}
           className="mb-4 p-2 rounded-lg bg-red-200 text-red-500 border border-solid border-red-500/10"
         >
           <p>
             Para prosseguir você deve aceitar 
             <span className="font-semibold"> Termos e Condições</span>
           </p>
-        </div>
+        </motion.div>
       )}
-    </>
+    </motion.div>
   )
 }

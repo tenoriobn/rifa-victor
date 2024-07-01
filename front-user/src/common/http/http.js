@@ -22,7 +22,20 @@ export const postDados = async (rota, dados) => {
     const response = await apiClient.post(rota, dados);
     return response.data;
   } catch (error) {
-    console.error('Erro ao fazer POST', error);
+    if (error.response) {
+      // O servidor respondeu com um código de status fora da faixa 2xx
+      console.error('Erro ao fazer POST:', {
+        data: error.response.data,
+        status: error.response.status,
+        headers: error.response.headers,
+      });
+    } else if (error.request) {
+      // A solicitação foi feita, mas nenhuma resposta foi recebida
+      console.error('Erro ao fazer POST (sem resposta):', error.request);
+    } else {
+      // Algo aconteceu ao configurar a solicitação que acionou um erro
+      console.error('Erro ao fazer POST (configuração):', error.message);
+    }
     throw error;
   }
-}
+};

@@ -1,15 +1,21 @@
-import { useState } from 'react';
-import { useRecoilState} from 'recoil';
+import { useState, useEffect } from 'react';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import useValidarFormulario from '../../common/state/hooks/FormularioCadastro/useValidarFormulario';
-import { estadoFinalizarPedido } from '../../common/state/atom';
+import { estadoErroCadastro, estadoFinalizarPedido } from '../../common/state/atom';
 import { postDados } from '../../common/http/http';
+import { useNavigate } from 'react-router-dom';
+import useLogin from '../../common/state/hooks/FormulariosAcesso/useLogarUsuario';
+import { motion } from 'framer-motion';
+import { transicaoAnimada } from '../../common/util/transicaoAnimada';
 
 export default function FormularioCadastro() {
   const [nome, setNome] = useState('');
   const [sobrenome, setSobrenome] = useState('');
-  const {telefone, formatarTelefone } = useValidarFormulario(nome, sobrenome);
-
+  const { telefone, formatarTelefone } = useValidarFormulario(nome, sobrenome);
+  const navigate = useNavigate();
+  const login = useLogin();
   const [finalizarPedido, setFinalizarPedido] = useRecoilState(estadoFinalizarPedido);
+  const setErroCadastro = useSetRecoilState(estadoErroCadastro);
 
   const cadastrarUsuario = async (dadosUsuario) => {
     try {
@@ -20,26 +26,38 @@ export default function FormularioCadastro() {
       };
 
       const dados = await postDados('/cadastro', dadosParaEnviar);
+      console.log('dados:', dados);
+
+      const loginSuccess = await login(dadosParaEnviar.cellphone);
+
+      if (loginSuccess) {
+        navigate('/checkout');
+      }
+
+      setErroCadastro(false)
       setFinalizarPedido(false);
-      
-      console.log('Dados do cadastro:', dados);
     } catch (error) {
-      console.error('Erro ao cadastrar usuário:', error);
+      setFinalizarPedido(false);
+      setErroCadastro(true);
+      console.error('Erro no cadastro:', error.response || error.message || error);
     }
   };
 
-  if (finalizarPedido) {
-    cadastrarUsuario(
-      {
+  useEffect(() => {
+    if (finalizarPedido) {
+      cadastrarUsuario({
         name: nome,
         surname: sobrenome,
         cellphone: telefone,
-      }
-    );
-  }
+      });
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [finalizarPedido, nome, sobrenome, telefone]);
+
+  const animacao = transicaoAnimada();
 
   return (
-    <form className="space-y-4" action="">
+    <motion.form className="space-y-4" action="" {...animacao}>
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="w-full">
           <label htmlFor="name" className="block mb-1 text-sm font-medium text-neutral-900">
@@ -88,6 +106,6 @@ export default function FormularioCadastro() {
           required="" 
         />
       </div>
-    </form>
+    </motion.form>
   );
 }

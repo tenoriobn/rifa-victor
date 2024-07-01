@@ -17,18 +17,27 @@ export default function OpcoesDoEvento({ display }) {
 
       <button 
         onClick={compartilharRifa}
-        className="flex gap-1 text-white rounded text-xs bg-emerald-500 py-1 px-4">
-        <Compartilhar />
-        Compartilhar
+        className="relative inline-block group text-white rounded overflow-hidden shadow-transparent shadow-md hover:shadow-black/3 0 text-xs bg-emerald-500"
+      >
+        <div className="absolute left-0 top-0 bg-emerald-600 w-0 group-hover:w-full transition-all duration-300 h-1/2"></div>
+        <div className="absolute right-0 bottom-0 bg-emerald-600 w-0 group-hover:w-full transition-all duration-300 h-1/2"></div>
+        <div className="relative px-4 py-1 transition-all duration-300 flex items-center justify-center gap-1">
+          <Compartilhar />
+          Compartilhar
+        </div>
       </button>
 
       <a 
         href={rifa.rifa_others.whatsapp_group}
-        className={`gap-1 text-white rounded text-xs bg-green-500 py-1 px-4 cursor-pointer ${display}`}
+        className={`relative inline-block group text-white rounded overflow-hidden shadow-transparent shadow-md hover:shadow-black/3 0 text-xs bg-green-500 ${display}`}
         target="_blank"
       >
-        <Whatsapp />
-        Grupo Whatsapp
+        <div className="absolute left-0 top-0 bg-green-600 w-0 group-hover:w-full transition-all h-1/2"></div>
+        <div className="absolute right-0 bottom-0 bg-green-600 w-0 group-hover:w-full transition-all h-1/2"></div>
+        <div className="relative px-4 py-1 transition-all duration-300 flex items-center justify-center gap-1">
+          <Whatsapp />
+          Grupo Whatsapp
+        </div>
       </a>
     </div>
   )

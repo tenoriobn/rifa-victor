@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Estrela from "../../assets/Icons/estrela.svg?react";
@@ -9,17 +10,19 @@ import CotasPremiadas from "../../components/CotasPremiadas/CotasPremiadas";
 import AccordionDescricao from "../../components/AccordionDescricao/AccordionDescricao";
 import RankingVendas from "../../components/RankingVendas/RankingVendas";
 import AcessoUsuario from "../../components/AcessoUsuario/AcessoUsuario";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import {  estadoRenderizaComponenteCadastro, estadoRenderizaComponenteLogin, estadoRifa } from "../../common/state/atom";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import {  estadoProdutos, estadoRenderizaComponenteCadastro, estadoRenderizaComponenteLogin, estadoRenderizaInfoUsuario, estadoRifa } from "../../common/state/atom";
 import TempoEncerrado from "../../assets/Icons/tempoEncerrado.svg?react";
 import { fetchDados } from "../../common/http/http";
+import { motion } from 'framer-motion';
+import { transicaoAnimada } from "../../common/util/transicaoAnimada";
 
 export default function Rifa() {
   const renderizaComponenteCadastro = useRecoilValue(estadoRenderizaComponenteCadastro);
   const renderizaComponenteLogin = useRecoilValue(estadoRenderizaComponenteLogin);
+  const renderizaInfoUsuario = useRecoilValue(estadoRenderizaInfoUsuario);
 
-
-  const [produto, setProduto] = useState();
+  const [produto, setProduto] = useRecoilState(estadoProdutos);
   const [loading, setLoading] = useState(true);
   const setRifa = useSetRecoilState(estadoRifa)
   const { slug, id } = useParams();
@@ -40,10 +43,12 @@ export default function Rifa() {
     return <div>Carregando...</div>; 
   }
   const renderizaComponente = produto.status === "ativas";
+  const animacao = transicaoAnimada();
 
   return (
     <section>
-      <div 
+      <motion.div 
+        {...animacao}
         className="flex flex-col-reverse md:flex-row items-center justify-between font-semibold text-neutral-800 mb-2"
       >
         <div className="flex items-center gap-x-1">
@@ -57,12 +62,14 @@ export default function Rifa() {
             <TempoEncerrado />
           </div>
         )}
-      </div> 
+      </motion.div> 
 
       <SlidePremio />
       
-      {!renderizaComponenteCadastro && !renderizaComponenteLogin && (
-        <>
+      {!renderizaComponenteCadastro && !renderizaComponenteLogin && !renderizaInfoUsuario && (
+        <motion.div
+          {...animacao}
+        >
           <OpcoesDoEvento display={`${renderizaComponente ? "flex" : "hidden"}`} />
 
           <div className="bg-slate-100 p-2 rounded-lg">
@@ -85,12 +92,10 @@ export default function Rifa() {
           {renderizaComponente && (
             <RankingVendas />
           )}
-        </>
+        </motion.div>
       )}
 
-      {renderizaComponenteCadastro || renderizaComponenteLogin ? (
-        <AcessoUsuario />
-      ) : ''}
+      {(renderizaComponenteCadastro || renderizaComponenteLogin || renderizaInfoUsuario ? <AcessoUsuario /> : null)}
     </section>
   )
 }

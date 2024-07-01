@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import SinalMenos from "../../assets/Icons/sinalMenos.svg?react";
 import SinalMais from "../../assets/Icons/sinalMais.svg?react";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -25,14 +26,14 @@ export default function InputRange() {
         className="w-full border border-solid border-neutral-900/80 p-2 inline-flex items-center rounded-full gap-x-2 mb-6"
       >
         <button 
-          className="inline-flex items-center h-10 w-10 text-xl shrink-0 justify-center text-white font-bold rounded-full bg-amber-500 hover:bg-amber-600 transition-all disabled:bg-neutral-400 active:scale-110"
+          className="inline-flex items-center h-10 w-10 text-xl shrink-0 justify-center text-white font-bold rounded-full bg-amber-500 hover:bg-amber-600 transition-all duration-300 disabled:bg-neutral-400 active:scale-110"
           onClick={() => decrementarValor(5)}
         > 
           -5 
         </button>
 
         <button 
-          className="inline-flex items-center justify-center text-white rounded-full bg-amber-500 hover:bg-amber-600 transition-all disabled:bg-neutral-400 active:scale-110"
+          className="inline-flex items-center justify-center text-white rounded-full bg-amber-500 hover:bg-amber-600 transition-all duration-300 disabled:bg-neutral-400 active:scale-110"
           onClick={() => decrementarValor(1)}
         >
             <SinalMenos />
@@ -45,14 +46,14 @@ export default function InputRange() {
         />
 
         <button 
-          className="inline-flex items-center justify-center text-white rounded-full bg-amber-500 hover:bg-amber-600 transition-all disabled:bg-neutral-400 active:scale-110"
+          className="inline-flex items-center justify-center text-white rounded-full bg-amber-500 hover:bg-amber-600 transition-all duration-300 disabled:bg-neutral-400 active:scale-110"
           onClick={() => incrementarValor(1)}
         >
           <SinalMais />
         </button>
 
         <button 
-          className="inline-flex items-center h-10 w-10 text-xl shrink-0 justify-center text-white font-bold rounded-full bg-amber-500 hover:bg-amber-600 transition-all disabled:bg-neutral-400 active:scale-110 "
+          className="inline-flex items-center h-10 w-10 text-xl shrink-0 justify-center text-white font-bold rounded-full bg-amber-500 hover:bg-amber-600 transition-all duration-300 disabled:bg-neutral-400 active:scale-110 "
           onClick={() => incrementarValor(5)}
         > 
             +5 
