@@ -60,6 +60,8 @@ class StoreRifasRequest extends FormRequest
             "link_ebook" => ["nullable", "bail", "max:255"],
             "nota_fiscal" => ["nullable", "bail", "max:255"],
             'package_awarded_number' => ['nullable', 'array', "bail"],
+            'qntd_number' => ['nullable', 'integer', "bail"],
+            'price_packet' => ['nullable', "bail"],
         ];
     }
 

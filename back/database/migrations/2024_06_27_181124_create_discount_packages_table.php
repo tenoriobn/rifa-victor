@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('discount_packages', function (Blueprint $table) {
             $table->id();
             $table->integer('qntd_number')->nullable();
-            $table->decimal('price')->nullable();
+            $table->decimal('price_packet')->nullable();
             $table->unsignedBigInteger('rifas_id')->nullable();
             $table->foreign("rifas_id")->references("id")->on("rifas");
             $table->timestamps();
