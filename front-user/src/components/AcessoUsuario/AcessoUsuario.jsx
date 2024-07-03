@@ -1,15 +1,19 @@
+import {  useEffect } from "react";
+import { useParams } from 'react-router-dom';
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { estadoErroCadastro, estadoFinalizarPedido, estadoFormularioPreenchido, estadoRenderizaComponenteCadastro, estadoTermosAceito, estadoUsuario, estadoValorCompra } from "../../common/state/atom";
 import useAlternarFormularios from "../../common/state/hooks/FormulariosAcesso/useAlternarFormularios";
 import FormulariosAcesso from "./FormulariosAcesso/FormulariosAcesso";
 import TermosCondicoes from "./TermosCondicoes/TermosCondicoes";
 import SetaEsquerda from "../../assets/Icons/seta.svg?react";
-import Verificado from "../../assets/Icons/verificado.svg?react"
+import Verificado from "../../assets/Icons/verificado.svg?react";
 import MensagemErro from "../MensagemErro/MensagemErro";
 import { transicaoAnimada } from "../../common/util/transicaoAnimada";
 import { motion } from 'framer-motion';
+import { postDados } from '../../common/http/http';
 
 export default function AcessoUsuario() {
+  const { id } = useParams();
   const renderizaComponenteCadastro = useRecoilValue(estadoRenderizaComponenteCadastro);
   const setFinalizarPedido = useSetRecoilState(estadoFinalizarPedido);
   const valorCompra = useRecoilValue(estadoValorCompra);
@@ -20,14 +24,29 @@ export default function AcessoUsuario() {
   const erroCadastro = useRecoilValue(estadoErroCadastro);
   const animacao = transicaoAnimada();
 
-  const handleClick = () => {
-    setFinalizarPedido(true);
-  }
+  useEffect(() => {
+    console.log('ID da URL:', id);
+  }, [id]);
+
+  const handleClick = async () => {
+    const dadosParaEnviar = {
+      value: parseFloat(valorCompra.replace(',', '.')),
+      client_id: usuario.id,
+      qntd_number: 400,
+      rifas_id: id 
+    };
+
+    try {
+      const dados = await postDados('produtos/comprar-rifa', dadosParaEnviar, true); // Passando 'true' para incluir o token
+      console.log('dados:', dados);
+      setFinalizarPedido(true);
+    } catch (error) {
+      console.error('Erro ao finalizar pedido:', error);
+    }
+  };
 
   return (
-    <motion.div
-      {...animacao}
-    >
+    <motion.div {...animacao}>
       {erroCadastro && <MensagemErro />}
       <FormulariosAcesso />
 
@@ -40,9 +59,7 @@ export default function AcessoUsuario() {
 
       <TermosCondicoes />
 
-      <div
-        className="flex flex-col gap-2 sm:flex-row items-center justify-between"
-      >
+      <div className="flex flex-col gap-2 sm:flex-row items-center justify-between">
         <button
           className="relative inline-block group text-white rounded overflow-hidden shadow-transparent shadow-md hover:shadow-black/3 0 bg-red-600"
           onClick={voltarParaRifa}
@@ -69,5 +86,5 @@ export default function AcessoUsuario() {
         </button>
       </div>
     </motion.div>
-  )
+  );
 }

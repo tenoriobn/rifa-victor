@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->integer('awarded_number');
             $table->decimal('price_awarded_quota');
+            $table->unsignedBigInteger('awarded_quotas_id');
+            $table->foreign("awarded_quotas_id")->references("id")->on("awarded_quotas");
             $table->unsignedBigInteger('client_id');
             $table->foreign("client_id")->references("id")->on("clients");
             $table->unsignedBigInteger('rifas_id');

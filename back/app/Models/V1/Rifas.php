@@ -4,7 +4,7 @@ namespace App\Models\V1;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\{HasOne, hasMany};
 
 use App\Models\V1\{RifasAwarded, RifasOthers, RifasPayment, awardedQuota, awardedQuotaClient};
 
@@ -51,8 +51,8 @@ class Rifas extends Model
     public function awardedQuota(): HasOne {
         return $this->hasOne(AwardedQuota::class);
     }
-    public function awardedQuotaClient(): HasOne {
-        return $this->hasOne(AwardedQuotaClient::class);
+    public function awardedQuotaClient(): hasMany {
+        return $this->hasMany(AwardedQuotaClient::class);
     }
 
     public static function rifaCreateOrUpdate($title, $slug, $description_resume, $show_site, $emphasis, $show_top, $video, $img, $status, $price, $description_sortition, $description_product, $description_role, $data_sortition, $initial_sale, $end_sale, $end_rifa, $user_id, $rifa_id) {
@@ -89,13 +89,13 @@ class Rifas extends Model
     }
 
     public static function getAllRifasActivas() {
-        return self::with(['cota', 'rifaAwarded', 'rifaOthers', 'rifaPayment', 'awardedQuota', 'awardedQuotaClient'])->where('winner_id', 0)->latest()->get();
+        return self::with(['cota', 'rifaAwarded', 'rifaOthers', 'rifaPayment', 'awardedQuota', 'awardedQuotaClient.client'])->where('winner_id', 0)->latest()->get();
     }
     public static function getAllRifas() {
-        return self::with(['cota', 'rifaAwarded', 'rifaOthers', 'rifaPayment', 'awardedQuota', 'awardedQuotaClient'])->latest()->get();
+        return self::with(['cota', 'rifaAwarded', 'rifaOthers', 'rifaPayment', 'awardedQuota', 'awardedQuotaClient.client'])->latest()->get();
     }
     public static function getOneRifas($id) {
-        return self::with(['cota', 'rifaAwarded', 'rifaOthers', 'rifaPayment', 'awardedQuota', 'awardedQuotaClient'])->where("id", $id)->first();
+        return self::with(['cota', 'rifaAwarded', 'rifaOthers', 'rifaPayment', 'awardedQuota', 'awardedQuotaClient.client'])->where("id", $id)->first();
     }
 
 }

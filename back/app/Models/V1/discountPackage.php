@@ -23,7 +23,7 @@ class DiscountPackage extends Model
         $result  = self::updateOrCreate(
             [
                 'qntd_number' => $qntd_number,
-                'price_packet' => $price,
+                'discount' => $price,
                 'rifas_id' => $rifa_id,
 
             ]);

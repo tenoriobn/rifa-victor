@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('cotas', function (Blueprint $table) {
             $table->id();
             $table->integer('qntd_cota');
-            $table->integer('qntd_cota_digit');
             $table->integer('qntd_cota_min_order');
             $table->integer('qntd_cota_max_order');
             $table->integer('qntd_cota_max_client');

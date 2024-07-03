@@ -102,4 +102,9 @@ export const estadoErro = atom({
 export const estadoErroCadastro = atom({
   key: 'estadoErroCadastro',
   default: null,
-})
+});
+
+export const estadoRanking = atom({
+  key: 'estadoRanking',
+  default: [],
+});
