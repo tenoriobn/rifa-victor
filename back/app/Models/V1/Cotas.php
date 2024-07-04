@@ -14,7 +14,7 @@ class Cotas extends Model {
 
     protected $fillable = [
         'qntd_cota',
-        'qntd_cota_digit',
+        'qntd_cota_min_order',
         'qntd_cota_max_order',
         'qntd_cota_max_client',
         'rifas_id',

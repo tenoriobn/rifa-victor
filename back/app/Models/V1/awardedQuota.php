@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 use App\Models\V1\{Rifas};
-class awardedQuota extends Model
+class AwardedQuota extends Model
 {
     use HasFactory;
 

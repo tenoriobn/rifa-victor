@@ -1,14 +1,10 @@
 import Ranking from "../../assets/Icons/ranking.svg?react";
 import Medalha from "../../assets/Icons/medalha.svg?react";
+import { estadoRanking } from "../../common/state/atom";
+import { useRecoilValue } from "recoil";
 
 export default function RankingVendas() {
-  const rankingUsuarios = [
-    { id: 1, nome: 'Fermino Camargo', qtdNumeros: '15776'},
-    { id: 2, nome: 'Rodrigo Moraes', qtdNumeros: '11399'},
-    { id: 3, nome: 'Marielle', qtdNumeros: '6667'},
-    { id: 4, nome: 'Lourenço', qtdNumeros: '4000'},
-    { id: 5, nome: 'Sandra Santos', qtdNumeros: '4000'},
-  ];
+  const rankingUsuarios = useRecoilValue(estadoRanking);
 
   return (
     <div className="mt-4">
@@ -19,17 +15,19 @@ export default function RankingVendas() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {rankingUsuarios.map((usuario) => (
+           usuario && usuario.client ? (
           <div 
-            key={usuario.id}
+            key={usuario.client_id}
             className="bg-slate-300 rounded-lg p-4 flex items-center gap-x-2 text-neutral-700"
           >
             <Medalha />
   
             <div>
-              <p className="font-medium leading-4 mb-1">{usuario.nome}</p>
-              <p className="text-sm">Qtd. Números: <strong>{usuario.qtdNumeros}</strong></p>
+              <p className="font-medium leading-4 mb-1">{usuario.client.name}</p>
+              <p className="text-sm">Qtd. Números: <strong>{usuario.total_numbers}</strong></p>
             </div>
           </div>
+            ) : null
         ))}
       </div>
     </div>

@@ -11,7 +11,7 @@ import AccordionDescricao from "../../components/AccordionDescricao/AccordionDes
 import RankingVendas from "../../components/RankingVendas/RankingVendas";
 import AcessoUsuario from "../../components/AcessoUsuario/AcessoUsuario";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import {  estadoProdutos, estadoRenderizaComponenteCadastro, estadoRenderizaComponenteLogin, estadoRenderizaInfoUsuario, estadoRifa } from "../../common/state/atom";
+import {  estadoProdutos, estadoRanking, estadoRenderizaComponenteCadastro, estadoRenderizaComponenteLogin, estadoRenderizaInfoUsuario, estadoRifa } from "../../common/state/atom";
 import TempoEncerrado from "../../assets/Icons/tempoEncerrado.svg?react";
 import { fetchDados } from "../../common/http/http";
 import { motion } from 'framer-motion';
@@ -22,20 +22,23 @@ export default function Rifa() {
   const renderizaComponenteLogin = useRecoilValue(estadoRenderizaComponenteLogin);
   const renderizaInfoUsuario = useRecoilValue(estadoRenderizaInfoUsuario);
 
+
   const [produto, setProduto] = useRecoilState(estadoProdutos);
   const [loading, setLoading] = useState(true);
   const setRifa = useSetRecoilState(estadoRifa)
+  const setRanking = useSetRecoilState(estadoRanking)
   const { slug, id } = useParams();
   
   useEffect(() => {
     const obterDados = async () => {
       const dados = await fetchDados(`/produtos/${slug}/${id}`);
-      setProduto(dados.data);
+      setProduto(dados.data.rifa);
       setLoading(false); 
-      setRifa(dados.data)
-    
+      setRifa(dados.data.rifa)
+      setRanking(dados.data.ranking);
+      console.log(dados.data.rifa)
     };
-    
+
     obterDados();
   }, [slug, id]);
 

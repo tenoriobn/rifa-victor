@@ -69,9 +69,13 @@ class RifasController extends Controller
             if (!$rifaData) {
                 return response()->json(["success" => false, "msg" => "Rifa has not been found."], $this->notFound);
             }
-
             $ranking = RifaNumber::getRanking();
-            return response()->json(["success" => true, "data" => $rifaData, "ranking" => $ranking], $this->success);
+            $data = [
+                'rifa' => $rifaData,
+                'ranking' => $ranking,
+            ];
+
+            return response()->json(["success" => true, "data" => $data], $this->success);
         } catch (Exception $e) {
             return response()->json(["success" => false, "msg" => $e->getMessage()], $this->serverError);
         }

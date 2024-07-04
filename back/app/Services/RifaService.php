@@ -5,7 +5,7 @@ namespace App\Services;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 
-use App\Models\V1\{Cotas, Rifas, RifasOthers, RifasAwarded, RifasPayment, awardedQuota};
+use App\Models\V1\{Cotas, Rifas, RifasOthers, RifasAwarded, RifasPayment, AwardedQuota, DiscountPackage};
 class RifaService
 {
     public function createRifas($datas)
@@ -26,7 +26,8 @@ class RifaService
 
         $othersResult = RifasPayment::rifasPaymentCreateOrUpdate( $datas->time_pay ?? '', $datas->type_pay ?? '', $datas->service_charge ?? '', $datas->text_service_charge ?? '',  $rifaResult, $datas->rifas_payment_id ?? null);
 
-        $othersResult = awardedQuota::createAwardedQuota( $datas->package_awarded_number ?? null, $rifaResult);
+        $othersResult = AwardedQuota::createAwardedQuota( $datas->package_awarded_number ?? null, $rifaResult);
+        $othersResult = DiscountPackage::createDiscountPackage( $datas->qntd_number ?? null, $datas->price_packet ?? null, $rifaResult);
 
     }
 
