@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import styled from "styled-components"
 
 const Title = styled.h2`
@@ -8,8 +9,8 @@ const Title = styled.h2`
   margin: 1rem 0rem;
 `;
 
-export default function Titulo() {
+export default function Titulo({titulo}) {
   return (
-    <Title>Filtros de Busca</Title>
+    <Title>{titulo}</Title>
   )
 }
