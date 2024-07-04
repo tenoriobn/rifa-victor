@@ -1,7 +1,8 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import styled from "styled-components";
-import { useRecoilValue } from "recoil"
+import { useRecoilState } from "recoil"
 import { stateMenuActive } from "../../../common/states/atom";
+import links from "./links.json";
 
 const ContainerSidebar = styled.div`
   background: #20202a;
@@ -16,8 +17,17 @@ const ContainerSidebar = styled.div`
   transition: .5s;
   width: 300px;
 
+  span {
+    float: right;
+    padding: 8px;
+  }
+
   @media (min-width: 992px) {
     left: 0px;
+
+    span {
+      display: none;
+    }
   }
 `;
 
@@ -72,22 +82,13 @@ const MenuBody = styled.div`
   }
 `;
 
-const links = [
-  { href: "/", iconClass: "fa-solid fa-gauge", text: "Vendas", active: true },
-  { href: "/rifas", iconClass: "fa-solid fa-dice", text: "Sorteios" },
-  { href: "/pedidos", iconClass: "fa-solid fa-receipt", text: "Pedidos" },
-  { href: "/clientes", iconClass: "fa-solid fa-users", text: "Clientes" },
-  { href: "/ranqueamento", iconClass: "fa-solid fa-ranking-star", text: "Ranking" },
-  { href: "/ganhadores", iconClass: "fa-solid fa-trophy", text: "Ganhadores" },
-  { href: "/afiliados", ionIcon: "accessibility-sharp", text: "Afiliados" },
-  { href: "/configuracoes", iconClass: "fas fa-cogs", text: "Configurações" },
-];
-
 export default function Sidebar() {
-  const menuActive = useRecoilValue(stateMenuActive)
+  const [menuActive, setMenuActive ]= useRecoilState(stateMenuActive)
 
   return (
     <ContainerSidebar $menuActive={menuActive}>
+      <span onClick={() => setMenuActive(!menuActive)}>X</span>
+
       <MenuHeader>
         <button>
           <i className="fas fa-external-link-alt" aria-hidden="true"></i> Sair
@@ -103,15 +104,14 @@ export default function Sidebar() {
         <ul>
           {links.map((link, index) => (
             <li key={index}>
-              {link.ionIcon ? (
-                <Link to={link.href}>
-                  <ion-icon name={link.ionIcon} role="img" class="md hydrated"></ion-icon> {link.text}
-                </Link>
-              ) : (
-                <Link to={link.href} className={link.active ? "active" : ""}>
-                  <i className={link.iconClass}></i> {link.text}
-                </Link>
-              )}
+              <NavLink to={link.href} end onClick={() => setMenuActive(!menuActive)}>
+                {link.ionIcon ? (
+                  <ion-icon name={link.ionIcon} role="img" class="md hydrated"></ion-icon>
+                ) : (
+                  <i className={link.iconClass}></i>
+                )}{" "}
+                {link.text}
+              </NavLink>
             </li>
           ))}
         </ul>

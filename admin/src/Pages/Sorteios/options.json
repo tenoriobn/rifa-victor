@@ -1,0 +1,6 @@
+[
+  { "value": "", "label": "" },
+  { "value": "A", "label": "Ativo" },
+  { "value": "F", "label": "Finalizado" },
+  { "value": "I", "label": "Inativo" }
+]

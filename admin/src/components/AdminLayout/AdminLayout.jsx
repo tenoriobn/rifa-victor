@@ -4,7 +4,7 @@ import Header from "../Header/Header";
 import { Outlet } from "react-router-dom";
 
 const MainContainer = styled.main`
-  @media (min-width: 1280px) {
+  @media (min-width: 992px) {
     margin-left: 300px;
   }
 `;

@@ -12,6 +12,7 @@ import Ranking from "./Pages/Ranking/Ranking";
 import Ganhadores from "./Pages/Ganhadores/Ganhadores";
 import Afiliados from "./Pages/Afiliados/Afiliados";
 import Configuracoes from "./Pages/Configuracoes/Configuracoes";
+import Login from "./components/Autenticacao/Login/Login";
 
 function App() {
   return (
@@ -19,15 +20,17 @@ function App() {
       <RecoilRoot>
         <Router>
           <Routes>
-            <Route path="/" element={<AdminLayout />}>
+            <Route path="/" element={<Login />} />
+            
+            <Route path="/dashboard" element={<AdminLayout />}>
               <Route index element={<Vendas />} />
-              <Route path='/rifas' element={<Sorteios />} />
-              <Route path='/pedidos' element={<Pedidos />} />
-              <Route path='/clientes' element={<Clientes />} />
-              <Route path='/ranqueamento' element={<Ranking />} />
-              <Route path='/ganhadores' element={<Ganhadores />} />
-              <Route path='/afiliados' element={<Afiliados />} />
-              <Route path='/configuracoes' element={<Configuracoes />} />
+              <Route path='rifas' element={<Sorteios />} />
+              <Route path='pedidos' element={<Pedidos />} />
+              <Route path='clientes' element={<Clientes />} />
+              <Route path='ranqueamento' element={<Ranking />} />
+              <Route path='ganhadores' element={<Ganhadores />} />
+              <Route path='afiliados' element={<Afiliados />} />
+              <Route path='configuracoes' element={<Configuracoes />} />
             </Route>
           </Routes>
         </Router>

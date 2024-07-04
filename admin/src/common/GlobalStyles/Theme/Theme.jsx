@@ -8,6 +8,7 @@ const Theme = {
   },
   font: {
     montserrat: 'Montserrat, sans-serif',
+    poppins: 'Poppins, sans-serif',
   }
 };
 
