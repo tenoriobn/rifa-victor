@@ -14,6 +14,7 @@ import Afiliados from "./Pages/Afiliados/Afiliados";
 import Configuracoes from "./Pages/Configuracoes/Configuracoes";
 import Login from "./components/Autenticacao/Login/Login";
 import ProtectedRoute from "./components/Autenticacao/ProtectedRoute/ProtectedRoute";
+import AdicionarRifa from "./Pages/Sorteios/AdicionarRifa/CriarRifa";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             <Route path="/dashboard/*" element={<ProtectedRoute element={<AdminLayout />} />}>
               <Route index element={<Vendas />} />
               <Route path="rifas" element={<Sorteios />} />
+              <Route path="rifas/adicionar" element={<AdicionarRifa />} />
               <Route path="pedidos" element={<Pedidos />} />
               <Route path="clientes" element={<Clientes />} />
               <Route path="ranqueamento" element={<Ranking />} />

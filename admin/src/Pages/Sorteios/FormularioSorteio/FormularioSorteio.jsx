@@ -5,10 +5,14 @@ import options from "./options.json"
 const FilterItemRow = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: flex-end;
   gap: .625rem;
   padding: .625rem 0;
+
+  @media (min-width: 922px) {
+    justify-content: flex-start;
+  }
 `;
 
 const FilterInputContainer = styled.div`
