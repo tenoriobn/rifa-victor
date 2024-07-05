@@ -1,5 +1,10 @@
-import styled from "styled-components"
+import { useState } from 'react';
+import styled from "styled-components";
 import Theme from "../../../common/GlobalStyles/Theme/Theme";
+import { stateUserLogin } from "../../../common/states/atom";
+import { useSetRecoilState } from "recoil";
+import { postDados, salvarToken } from '../../../common/http/http';
+import { useNavigate } from 'react-router-dom';
 
 const Section = styled.section`
   font-family: ${Theme.font.poppins}!important;
@@ -31,7 +36,7 @@ const RightSide = styled.div`
   background-color: #fff!important;
 `;
 
-const FormContainer = styled.form`
+const FormContainer = styled.div`
   flex: 1;
   padding: 30px;
 
@@ -97,6 +102,44 @@ const Form = styled.form`
 `;
 
 export default function Login() {
+  const setUserLogin = useSetRecoilState(stateUserLogin);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [erro, setErro] = useState(null);
+  const navigate = useNavigate();
+
+  const handleEmailChange = (event) => {
+    setEmail(event.target.value);
+  };
+
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
+  };
+
+  const handleLogin = async (event) => {
+    event.preventDefault();
+
+    try {
+      const dadosLogin = {
+          email,
+          password,
+      };
+
+      const response = await postDados('/admin/login', dadosLogin);
+
+      if (response && response.token) {
+        salvarToken(response.token); 
+        setUserLogin(response.token); 
+        navigate('/dashboard');
+      } else {
+        throw new Error('Token não encontrado na resposta.');
+      }
+
+    } catch (error) {
+      setErro(error);
+    }
+  };
+
   return (
     <Section>
       <LeftSide>
@@ -107,21 +150,33 @@ export default function Login() {
         <FormContainer>
           <center><h1>Rei do Pix Prêmios</h1></center>
 
-          <Form action="https://dash.alimaprojetos.com/login" method="post">
+          <Form onSubmit={handleLogin}>
             <label htmlFor="email">
               Email
-              <input type="email" name="email" />
+              <input
+                type="email"
+                name="email"
+                value={email}
+                onChange={handleEmailChange}
+              />
             </label>
             
-            <label htmlFor="">
+            <label htmlFor="password">
               Senha
-              <input type="password" name="password" />
+              <input
+                type="password"
+                name="password"
+                value={password}
+                onChange={handlePasswordChange}
+              />
             </label>
 
-            <button type="submit" value="Acessar">Acessar</button>
+            <button type="submit">Acessar</button>
           </Form>
+
+          {erro && <p>Ocorreu um erro ao fazer login: {erro.message}</p>}
         </FormContainer>
       </RightSide>
     </Section>
-  )
+  );
 }
