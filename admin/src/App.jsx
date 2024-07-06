@@ -21,6 +21,10 @@ import Pacotes from "./Pages/Sorteios/Pacotes/Pacotes";
 import ConsultaCota from "./Pages/Sorteios/ConsultaCota/ConsultaCota";
 import SorteioSearch from "./Pages/Sorteios/SorteioSearch/SorteioSearch";
 import Upsell from "./Pages/Sorteios/Upsell/Upsell";
+import Usuarios from "./Pages/Configuracoes/Usuarios/Usuarios";
+import SiteConfig from "./Pages/Configuracoes/SiteConfig/SiteConfig";
+import MeusDados from "./Pages/Configuracoes/MeusDados/MeusDados";
+import ConfigPagamentos from "./Pages/Configuracoes/ConfigPagamentos/ConfigPagamentos";
 
 function App() {
   return (
@@ -47,7 +51,12 @@ function App() {
               <Route path="ranqueamento" element={<Ranking />} />
               <Route path="ganhadores" element={<Ganhadores />} />
               <Route path="afiliados" element={<Afiliados />} />
+
               <Route path="configuracoes" element={<Configuracoes />} />
+              <Route path="users" element={<Usuarios />} />
+              <Route path="config/site" element={<SiteConfig />} />
+              <Route path="payments" element={<ConfigPagamentos />} />
+              <Route path="clients/edit" element={<MeusDados />} />
             </Route>
           </Routes>
         </Router>

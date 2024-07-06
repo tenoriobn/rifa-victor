@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
-import { useRecoilState } from "recoil"
+import { useRecoilState } from "recoil";
 import { stateMenuActive } from "../../../common/states/atom";
 import links from "./links.json";
+import linksConfiguracoes from "./linksConfiguracoes.json";
 
 const ContainerSidebar = styled.div`
   background: #20202a;
@@ -80,10 +82,15 @@ const MenuBody = styled.div`
     border-right: .4375rem solid #4eac3a!important;
     border: none;
   }
+
+  .dropdown > ul {
+    display: ${(props) => (props.$submenuActive ? "block" : "none")};
+  }
 `;
 
 export default function Sidebar() {
-  const [menuActive, setMenuActive ]= useRecoilState(stateMenuActive)
+  const [menuActive, setMenuActive] = useRecoilState(stateMenuActive);
+  const [submenuActive, setSubmenuActive] = useState(false);
 
   return (
     <ContainerSidebar $menuActive={menuActive}>
@@ -100,13 +107,13 @@ export default function Sidebar() {
         </div>
       </MenuHeader>
 
-      <MenuBody>
+      <MenuBody $submenuActive={submenuActive}>
         <ul>
           {links.map((link, index) => (
             <li key={index}>
               <NavLink to={link.href} end onClick={() => setMenuActive(!menuActive)}>
                 {link.ionIcon ? (
-                  <ion-icon name={link.ionIcon} role="img" class="md hydrated"></ion-icon>
+                  <ion-icon name={link.ionIcon} role="img" className="md hydrated"></ion-icon>
                 ) : (
                   <i className={link.iconClass}></i>
                 )}{" "}
@@ -114,6 +121,21 @@ export default function Sidebar() {
               </NavLink>
             </li>
           ))}
+
+          <li className="dropdown">
+            <a href="#" onClick={() => setSubmenuActive(!submenuActive)}>
+              <i className="fas fa-cogs"></i> CONFIGURAÇÕES
+            </a>
+            <ul>
+              {linksConfiguracoes.map((link, index) => (
+                <li key={index}>
+                  <NavLink to={link.href} end onClick={() => setMenuActive(!menuActive)}>
+                    <i className={link.iconClass}></i> {link.text}
+                  </NavLink>
+                </li>
+              ))}
+            </ul>
+          </li>
         </ul>
       </MenuBody>
     </ContainerSidebar>

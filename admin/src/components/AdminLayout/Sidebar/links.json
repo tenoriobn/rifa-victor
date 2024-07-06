@@ -5,6 +5,5 @@
   { "href": "/dashboard/clientes", "iconClass": "fa-solid fa-users", "text": "Clientes" },
   { "href": "/dashboard/ranqueamento", "iconClass": "fa-solid fa-ranking-star", "text": "Ranking" },
   { "href": "/dashboard/ganhadores", "iconClass": "fa-solid fa-trophy", "text": "Ganhadores" },
-  { "href": "/dashboard/afiliados", "ionIcon": "accessibility-sharp", "text": "Afiliados" },
-  { "href": "/dashboard/configuracoes", "iconClass": "fas fa-cogs", "text": "Configurações" }
+  { "href": "/dashboard/afiliados", "ionIcon": "accessibility-sharp", "text": "Afiliados" }
 ]

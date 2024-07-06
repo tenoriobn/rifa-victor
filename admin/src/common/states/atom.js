@@ -50,3 +50,33 @@ export const stateOpenModalEditarUpsell = atom({
   key: 'stateOpenModalEditarUpsell',
   default: false,
 });
+
+export const stateOpenModalAdicionarUsuario = atom({
+  key: 'stateOpenModalAdicionarUsuario',
+  default: false,
+});
+
+export const stateOpenModalEditarUsuario = atom({
+  key: 'stateOpenModalEditarUsuario',
+  default: false,
+});
+
+export const stateOpenModalAdicionarConfPagamento = atom({
+  key: 'stateOpenModalAdicionarConfPagamento',
+  default: false,
+});
+
+export const stateOpenModalEditarConfPagamento = atom({
+  key: 'stateOpenModalEditarConfPagament',
+  default: false,
+});
+
+export const stateOpenModalNovoGanhador = atom({
+  key: 'stateOpenModalAdicionarGanhador',
+  default: false,
+});
+
+export const stateOpenModalEditarGanhador = atom({
+  key: 'stateOpenModalEditarGanhador',
+  default: false,
+});
