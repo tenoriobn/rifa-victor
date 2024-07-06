@@ -15,9 +15,9 @@ export default function Outros() {
 
       <label htmlFor="emit_nf">
         Emite Nota Fiscal
-        <select id="emit_nf" name="emit_nf" required="">
-            <option value="Y">SIM</option>
-            <option value="N" selected="">NÃO</option>
+        <select id="emit_nf" name="emit_nf" required>
+            <option defaultValue="Y">SIM</option>
+            <option defaultValue="N">NÃO</option>
         </select>
       </label>
     </div>

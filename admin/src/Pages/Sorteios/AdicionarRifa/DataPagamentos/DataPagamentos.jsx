@@ -20,12 +20,12 @@ export default function DataPagamento() {
 
       <label htmlFor="">
         Tempo Pagto (Minutos)
-        <input type="phone" className="expires_time" name="expires_time" value="30" required="" />
+        <input type="phone" className="expires_time" name="expires_time" defaultValue="30" required />
       </label>
 
       <label htmlFor="">
         Taxa de Serviço
-        <input type="text" className="tax" name="tax" id="tax" value="0,00%" />
+        <input type="text" className="tax" name="tax" id="tax" defaultValue="0,00%" />
       </label>
 
       <label htmlFor="">

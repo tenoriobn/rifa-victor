@@ -15,6 +15,12 @@ import Configuracoes from "./Pages/Configuracoes/Configuracoes";
 import Login from "./components/Autenticacao/Login/Login";
 import ProtectedRoute from "./components/Autenticacao/ProtectedRoute/ProtectedRoute";
 import AdicionarRifa from "./Pages/Sorteios/AdicionarRifa/CriarRifa";
+import ImagensRifa from "./Pages/Sorteios/AcoesSorteioModal/ImagensRifa/ImagensRifa";
+import RifasCotas from "./Pages/Sorteios/AcoesSorteioModal/Cotas/Cotas";
+import Pacotes from "./Pages/Sorteios/Pacotes/Pacotes";
+import ConsultaCota from "./Pages/Sorteios/ConsultaCota/ConsultaCota";
+import SorteioSearch from "./Pages/Sorteios/SorteioSearch/SorteioSearch";
+import Upsell from "./Pages/Sorteios/Upsell/Upsell";
 
 function App() {
   return (
@@ -25,8 +31,17 @@ function App() {
             <Route path="/" element={<Login />} />
             <Route path="/dashboard/*" element={<ProtectedRoute element={<AdminLayout />} />}>
               <Route index element={<Vendas />} />
+
               <Route path="rifas" element={<Sorteios />} />
               <Route path="rifas/adicionar" element={<AdicionarRifa />} />
+              <Route path="rifas/editar" element={<AdicionarRifa />} />
+              <Route path="rifas/imagens" element={<ImagensRifa />} />
+              <Route path="rifas/cotas" element={<RifasCotas />} />
+              <Route path="rifas/packs" element={<Pacotes />} />
+              <Route path="rifas/upsell" element={<Upsell />} />
+              <Route path="consultaCota" element={<ConsultaCota />} />
+              <Route path="sorteio" element={<SorteioSearch />} />
+
               <Route path="pedidos" element={<Pedidos />} />
               <Route path="clientes" element={<Clientes />} />
               <Route path="ranqueamento" element={<Ranking />} />

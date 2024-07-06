@@ -9,6 +9,8 @@ import DescricaoProduto from "./DescricaoProduto/DescricaoProduto";
 import DescricaoSorteio from "./DescricaoSorteio/DescricaoSorteio";
 import Regulamento from "./Regulamento/Regulamento";
 import PedidoAprovado from "./PedidoAprovado/PedidoAprovado";
+import { Main } from "../../../components/AdminLayout/AdminLayout";
+import Header from "../../../components/Header/Header";
 
 const CategoryContainer = styled.div`
   display: flex;
@@ -90,27 +92,35 @@ const CategoryContainer = styled.div`
 
 export default function AdicionarRifa() {
   return (
-    <form action="https://dash.alimaprojetos.com/dashboard/rifas/add" id="frmRaffle" className="dropzone" method="POST">
-      <CategoryContainer className="category-container">
-        <Geral />
-        <Cotas />
-        <DataPagamento />
-        <Promocoes />
-        <Campanhas />
-        <Outros />
-        <DescricaoProduto />
-        <DescricaoSorteio />
-        <Regulamento />
-        <PedidoAprovado />
+    <>
+      <Header>
+        <h2><i className="fa-solid fa-dice"></i> NOVO SORTEIO</h2>
+      </Header>
 
-        <button 
-          type="submit" 
-          className="success" 
-          id="btnSend" 
-        >
-          ADICIONAR
-        </button>
-      </CategoryContainer>
-    </form>
+      <Main>
+        <form action="https://dash.alimaprojetos.com/dashboard/rifas/add" id="frmRaffle" className="dropzone" method="POST">
+          <CategoryContainer className="category-container">
+            <Geral />
+            <Cotas />
+            <DataPagamento />
+            <Promocoes />
+            <Campanhas />
+            <Outros />
+            <DescricaoProduto />
+            <DescricaoSorteio />
+            <Regulamento />
+            <PedidoAprovado />
+
+            <button 
+              type="submit" 
+              className="success" 
+              id="btnSend" 
+            >
+              ADICIONAR
+            </button>
+          </CategoryContainer>
+        </form>
+      </Main>
+    </>
   )
 }

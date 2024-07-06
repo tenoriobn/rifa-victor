@@ -6,6 +6,7 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import { estadoProdutoSelecionado, estadoProdutos, estadoRenderizaComponenteCadastro, estadoRenderizaComponenteLogin, estadoRenderizaInfoUsuario } from "../../common/state/atom";
 import { useEffect, useState } from "react";
 import { fetchDados } from "../../common/http/http";
+import CardAviso from "../CardAviso/CardAviso";
 
 export default function CardProdutos({ categoria }) {
   const [produtos, setProdutos] = useRecoilState(estadoProdutos);
@@ -63,58 +64,66 @@ export default function CardProdutos({ categoria }) {
   
   return (
     <div className="flex flex-col gap-4">
-      {produtosFiltrados.map(produto => (
-        <Link 
-          key={produto.id} 
-          to={`/${produto.slug}/${produto.id}`}
-          onClick={handleClick(produto)}
-          className="flex w-auto overflow-hidden rounded-lg bg-neutral-200 hover:shadow-[4px_4px_4px_#0002] border border-solid border-neutral-400 ring-0 ring-amber-500/60 hover:ring-offset-4 hover:ring-2 transition-all duration-300"
-        >
-          <img 
-            className="w-[80px] m-2 rounded-lg object-cover transition-all" 
-            src={converterImgProduto(produto.img)} 
-            alt={`Imagem do ${produto.title}`}
-          />
+      {produtosFiltrados.length > 0 ? (
+        produtosFiltrados.map(produto => (
+          <Link 
+            key={produto.id} 
+            to={`/${produto.slug}/${produto.id}`}
+            onClick={handleClick(produto)}
+            className="flex w-auto overflow-hidden rounded-lg bg-neutral-200 hover:shadow-[4px_4px_4px_#0002] border border-solid border-neutral-400 ring-0 ring-amber-500/60 hover:ring-offset-4 hover:ring-2 transition-all duration-300"
+          >
+            <img 
+              className="w-[80px] m-2 rounded-lg object-cover transition-all" 
+              src={converterImgProduto(produto.img)} 
+              alt={`Imagem do ${produto.title}`}
+            />
 
-          <div className="flex grow flex-col bg-neutral-100 overflow-hidden p-2">
-            <p className="text-lg w-full font-semibold text-neutral-900 text-left truncate">
-              {produto.title}
-            </p>
+            <div className="flex grow flex-col bg-neutral-100 overflow-hidden p-2">
+              <p className="text-lg w-full font-semibold text-neutral-900 text-left truncate">
+                {produto.title}
+              </p>
 
-            <p className="text-sm w-full text-neutral-600 text-left truncate">
-              {produto.description_resume}
-            </p>
-            
-            <div className="flex items-center flex-wrap justify-between mt-2">
-              <div className="flex flex-col">
-                {categoria === "finalizadas" && (
-                  <div className='flex items-center gap-2'>
-                    <Calendario className="icon text-amber-500" />
-                    <p className="text-sm font-semibold text-zinc-700">{formatarData(produto.end_rifa)}</p>
+              <p className="text-sm w-full text-neutral-600 text-left truncate">
+                {produto.description_resume}
+              </p>
+              
+              <div className="flex items-center flex-wrap justify-between mt-2">
+                <div className="flex flex-col">
+                  {categoria === "finalizadas" && (
+                    <div className='flex items-center gap-2'>
+                      <Calendario className="icon text-amber-500" />
+                      <p className="text-sm font-semibold text-zinc-700">{formatarData(produto.end_rifa)}</p>
+                    </div>
+                  )}
+
+                  <div className="flex items-center gap-2">
+                    <Bilhete className="icon text-emerald-500 w-[18px] h-[18px]" />
+                    <p className="font-bold text-lg text-neutral-600 text-left truncate">
+                      R$ {Number(produto.price).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    </p>
                   </div>
-                )}
-
-                <div className="flex items-center gap-2">
-                  <Bilhete className="icon text-emerald-500 w-[18px] h-[18px]" />
-                  <p className="font-bold text-lg text-neutral-600 text-left truncate">
-                    R$ {Number(produto.price).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                  </p>
                 </div>
+
+                <button 
+                  className="relative inline-block group bg-amber-500 text-white rounded overflow-hidden shadow-transparent shadow-md hover:shadow-black/30"
+                >
+                  <div className="absolute left-0 top-0 bg-amber-600 w-0 group-hover:w-full transition-all duration-300 h-1/2"></div>
+                  <div className="absolute right-0 bottom-0 bg-amber-600 w-0 group-hover:w-full transition-all duration-300 h-1/2"></div>
+                  <div className="relative px-4 py-1 transition-all duration-300">
+                    {categoria === "ativas" ? "Comprar" : "Ver"}
+                  </div>
+                </button>
               </div>
-
-              <button 
-                className="relative inline-block group bg-amber-500 text-white rounded overflow-hidden shadow-transparent shadow-md hover:shadow-black/30"
-              >
-                <div className="absolute left-0 top-0 bg-amber-600 w-0 group-hover:w-full transition-all duration-300 h-1/2"></div>
-                <div className="absolute right-0 bottom-0 bg-amber-600 w-0 group-hover:w-full transition-all duration-300 h-1/2"></div>
-                <div className="relative px-4 py-1 transition-all duration-300">
-                  {categoria === "ativas" ? "Comprar" : "Ver"}
-                </div>
-              </button>
             </div>
-          </div>
-        </Link>
-      ))}
+          </Link>
+        ))
+      ) : (
+        <CardAviso 
+          classes="border-yellow-600 bg-yellow-100 text-yellow-700"
+          subtitulo="Nada aqui..."
+          mensagem="Parece que estamos sem ofertas disponíveis no momento, mas não se preocupe, em breve teremos novidades! Fique ligado!"
+        />
+      )}
     </div>
   );
 }

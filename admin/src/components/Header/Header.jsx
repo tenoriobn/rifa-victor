@@ -1,7 +1,9 @@
+/* eslint-disable react/prop-types */
 import styled from "styled-components"
 import Theme from "../../common/GlobalStyles/Theme/Theme";
 import { useRecoilState } from "recoil"
 import { stateMenuActive } from "../../common/states/atom";
+import { Link } from "react-router-dom";
 
 const HeaderContainer = styled.header`
   display: flex;
@@ -42,7 +44,24 @@ const HeaderContainer = styled.header`
   }
 `;
 
-export default function Header() {
+export const LinkItem = styled(Link)`
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all .3s ease-in-out;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+`;
+
+export default function Header({ children }) {
   const [menuActive, setMenuActive] = useRecoilState(stateMenuActive)
 
   return (
@@ -51,7 +70,7 @@ export default function Header() {
         <i className="fa-solid fa-bars"></i>
       </button>
 
-      <h2><i className="fa-solid fa-gauge"></i> Vendas</h2>
+      {children}
     </HeaderContainer>
   )
 }

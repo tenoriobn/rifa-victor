@@ -5,38 +5,38 @@ export default function Geral() {
 
       <label htmlFor="title">
         Título
-        <input type="text" name="title" required="" />
+        <input type="text" name="title" required />
       </label>
 
       <label>
           Descrição resumida
-          <input id="description" name="description" required=""/>
+          <input id="description" name="description" required/>
       </label>
 
       <label htmlFor="">
         Mostrar no Site
-        <select id="hide" name="hide" required="">
-          <option value="N" selected="">SIM</option>
-          <option value="Y">NÃO</option>
+        <select id="hide" name="hide" required>
+          <option defaultValue="N" selected>SIM</option>
+          <option defaultValue="Y">NÃO</option>
         </select>
       </label>
 
       <label htmlFor="">
           Destaque
-          <select id="highlighted" name="highlighted" required="">
-              <option value="">SELECIONE</option>
-              <option value="Y">SIM</option>
-              <option value="N">NÃO</option>
+          <select id="highlighted" name="highlighted" required>
+              <option defaultValue="">SELECIONE</option>
+              <option defaultValue="Y">SIM</option>
+              <option defaultValue="N">NÃO</option>
           </select>
       </label>
 
       <label htmlFor="">
         Mostrar TOP 5 Compradores
-        <select id="ranking" name="ranking" required="">
-            <option value="N" selected="">NÃO</option>
-            <option value="Y">Geral</option>
-            <option value="D">Diário</option>
-            <option value="D">Semanal</option>
+        <select id="ranking" name="ranking" required>
+            <option defaultValue="N" selected>NÃO</option>
+            <option defaultValue="Y">Geral</option>
+            <option defaultValue="D">Diário</option>
+            <option defaultValue="D">Semanal</option>
         </select>
       </label>
 

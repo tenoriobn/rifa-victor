@@ -5,6 +5,7 @@ import { useRecoilState,  useSetRecoilState } from 'recoil';
 import { estadoGanhadores, estadoProdutoSelecionado } from '../../common/state/atom';
 import { useEffect, useState } from 'react';
 import { fetchDados } from '../../common/http/http';
+import CardAviso from '../CardAviso/CardAviso';
 
 export default function CardGanhadores() {
   const [ganhadores, setGanhadores] = useRecoilState(estadoGanhadores);
@@ -65,6 +66,12 @@ export default function CardGanhadores() {
           </Link>
         </div>
       ))}
+
+      <CardAviso
+        classes="border-sky-400 bg-sky-100 text-sky-400"
+        subtitulo="Nenhum ainda!"
+        mensagem=" Significa que você pode ser o primeiro!"
+      />
     </>
   );
 }
