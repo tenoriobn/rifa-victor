@@ -124,7 +124,7 @@ export default function GanhadoresTable() {
                 <a href="#" className="button-edit" onClick={() => setOpenModalEditarGanhador(!openModalEditarGanhador)}>
                   <i className="fas fa-edit"></i> Editar
                 </a>
-                <a className="button-delete" href="https://dash.alimaprojetos.com/dashboard/ganhadores/excluir/49">
+                <a className="button-delete" href="">
                   <i className="fas fa-trash-alt"></i> Excluir
                 </a>
               </div>

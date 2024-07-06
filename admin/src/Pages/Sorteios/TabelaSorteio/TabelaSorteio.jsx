@@ -136,7 +136,7 @@ export default function TabelaSorteio() {
             </td>
             <td>#174</td>
             <td>
-              <a href="https://alimaprojetos.com/saveiro-cross-dos-sonhos-27" target="_blank">
+              <a href="" target="_blank">
                 <i className="fa-solid fa-link"></i>
               </a> 
               <b>SAVEIRO CROSS DOS SONHOS</b>
@@ -154,7 +154,7 @@ export default function TabelaSorteio() {
             <td>
               <div className="button-group">
                 <a className="button-delete" 
-                  href="https://dash.alimaprojetos.com/dashboard/toggle-raffle/174">
+                  href="">
                   <i className="fa-solid fa-toggle-on"></i> Finalizar
                 </a>
                 <Link className="button-dashboard" to="/dashboard/rifas/dashboard/174">
@@ -179,7 +179,7 @@ export default function TabelaSorteio() {
             </td>
             <td>#174</td>
             <td>
-              <a href="https://alimaprojetos.com/saveiro-cross-dos-sonhos-27" target="_blank">
+              <a href="" target="_blank">
                 <i className="fa-solid fa-link"></i>
               </a> 
               <b>SAVEIRO CROSS DOS SONHOS</b>
@@ -197,7 +197,7 @@ export default function TabelaSorteio() {
             <td>
               <div className="button-group">
                 <a className="button-delete" 
-                  href="https://dash.alimaprojetos.com/dashboard/toggle-raffle/174">
+                  href="">
                   <i className="fa-solid fa-toggle-on"></i> Finalizar
                 </a>
                 <Link className="button-dashboard" to="/dashboard/rifas/dashboard/174">

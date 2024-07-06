@@ -98,7 +98,7 @@ export default function AdicionarRifa() {
       </Header>
 
       <Main>
-        <form action="https://dash.alimaprojetos.com/dashboard/rifas/add" id="frmRaffle" className="dropzone" method="POST">
+        <form action="" id="frmRaffle" className="dropzone" method="POST">
           <CategoryContainer className="category-container">
             <Geral />
             <Cotas />
