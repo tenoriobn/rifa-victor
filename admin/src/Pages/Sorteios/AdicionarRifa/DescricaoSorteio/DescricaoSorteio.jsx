@@ -22,7 +22,7 @@ export default function DescricaoSorteio() {
           ],
           ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
         }}
-        initialValue={formState.description_sortition} // Use o valor do estado atual como valor inicial
+        value={formState.description_sortition} // Use o valor do estado atual como valor inicial
         onEditorChange={(content) => handleChange({ target: { name: 'description_sortition', value: content } })} // Atualiza o estado usando handleChange
       />
     </div>

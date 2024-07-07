@@ -22,7 +22,7 @@ export default function DescricaoProduto() {
           ],
           ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
         }}
-        initialValue={formState.description_product} // Use o valor do estado atual como valor inicial
+        value={formState.description_product} // Use o valor do estado atual como valor
         onEditorChange={(content) => handleChange({ target: { name: 'description_product', value: content } })} // Atualiza o estado usando handleChange
       />
     </div>
