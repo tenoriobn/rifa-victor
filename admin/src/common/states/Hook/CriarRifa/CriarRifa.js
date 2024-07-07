@@ -1,4 +1,3 @@
-// useFormState.js
 import { useRecoilState } from 'recoil';
 import { stateInfoRifaForm } from '../../atom';
 

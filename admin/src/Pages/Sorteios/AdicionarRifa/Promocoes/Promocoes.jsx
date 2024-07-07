@@ -12,7 +12,7 @@ export default function Promocoes() {
         <input
           type="text"
           name="title_cotas_awarded"
-          value={formState.title_cotas_awarded || ''}
+          value={formState.title_cotas_awarded}
           onChange={handleChange}
           maxLength="50"
         />
@@ -23,7 +23,7 @@ export default function Promocoes() {
         <input
           type="text"
           name="description_cotas_awarded"
-          value={formState.description_cotas_awarded || ''}
+          value={formState.description_cotas_awarded}
           onChange={handleChange}
           maxLength="500"
         />
@@ -34,7 +34,7 @@ export default function Promocoes() {
         <input
           type="text"
           name="title_upsell"
-          value={formState.title_upsell || ''}
+          value={formState.title_upsell}
           onChange={handleChange}
           maxLength="50"
         />
@@ -45,7 +45,7 @@ export default function Promocoes() {
         <input
           type="text"
           name="description_upsell"
-          value={formState.description_upsell || ''}
+          value={formState.description_upsell}
           onChange={handleChange}
           maxLength="500"
         />

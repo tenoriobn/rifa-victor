@@ -1,7 +1,22 @@
 import useFormState from '../../../../common/states/Hook/CriarRifa/CriarRifa';
+import usePercentageInput from '../../../../common/states/Hook/CriarRifa/usePercentageMask';
 
 export default function DataPagamento() {
-  const { formState, handleChange } = useFormState();
+  const { formState, handleChange: handleChangeFormState } = useFormState();
+
+  const updateFormState = (name, formattedValue) => {
+    handleChangeFormState({
+      target: {
+        name,
+        value: formattedValue,
+      }
+    });
+  };
+
+  const { value: formattedServiceCharge, handleChange: handleServiceChargeChange } = usePercentageInput(
+    formState.service_charge,
+    (formattedValue) => updateFormState('service_charge', formattedValue)
+  );
 
   return (
     <div className="category">
@@ -12,8 +27,8 @@ export default function DataPagamento() {
         <input
           type="datetime-local"
           name="data_sortition"
-          value={formState.data_sortition || ''}
-          onChange={handleChange}
+          value={formState.data_sortition}
+          onChange={handleChangeFormState}
         />
       </label>
 
@@ -22,8 +37,8 @@ export default function DataPagamento() {
         <input
           type="datetime-local"
           name="initial_sale"
-          value={formState.initial_sale || ''}
-          onChange={handleChange}
+          value={formState.initial_sale}
+          onChange={handleChangeFormState}
         />
       </label>
 
@@ -32,8 +47,8 @@ export default function DataPagamento() {
         <input
           type="datetime-local"
           name="end_sale"
-          value={formState.end_sale || ''}
-          onChange={handleChange}
+          value={formState.end_sale}
+          onChange={handleChangeFormState}
         />
       </label>
 
@@ -43,18 +58,19 @@ export default function DataPagamento() {
           type="number"
           className="expires_time"
           name="time_pay"
-          value={formState.time_pay || '30'}
-          onChange={handleChange}
+          value={formState.time_pay}
+          onChange={handleChangeFormState}
           required
         />
       </label>
 
-      <label>
+      <label htmlFor='gateway'>
         Gateway de pagamento
         <select
+          id="gateway"
           name="gateway"
-          value={formState.gateway || 'mercadopago'}
-          onChange={handleChange}
+          value={formState.gateway}
+          onChange={handleChangeFormState}
           required
         >
           <option value="mercadopago">MercadoPago</option>
@@ -68,8 +84,8 @@ export default function DataPagamento() {
           className="tax"
           name="service_charge"
           id="tax"
-          value={formState.service_charge || '0,00%'}
-          onChange={handleChange}
+          value={formattedServiceCharge}
+          onChange={handleServiceChargeChange}
         />
       </label>
 
@@ -79,8 +95,8 @@ export default function DataPagamento() {
           type="text"
           name="text_service_charge"
           maxLength="20"
-          value={formState.text_service_charge || ''}
-          onChange={handleChange}
+          value={formState.text_service_charge}
+          onChange={handleChangeFormState}
         />
       </label>
     </div>

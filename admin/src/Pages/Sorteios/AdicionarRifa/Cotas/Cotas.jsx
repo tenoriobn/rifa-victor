@@ -1,36 +1,114 @@
 import useFormState from "../../../../common/states/Hook/CriarRifa/CriarRifa";
+import useCurrencyInput from "../../../../common/states/Hook/CriarRifa/useCurrencyInput";
+import useThousandSeparator from "../../../../common/states/Hook/CriarRifa/useThousandSeparator";
 
 export default function Cotas() {
-  const { formState, handleChange } = useFormState();
+  const { formState, handleChange: handleChangeFormState } = useFormState();
+
+  const updateFormState = (name, formattedValue) => {
+    handleChangeFormState({
+      target: {
+        name,
+        value: formattedValue,
+      }
+    });
+  };
+
+  const { value: qntdCota, handleChange: handleQntdCotaChange } = useThousandSeparator(
+    formState.qntd_cota,
+    (formattedValue) => updateFormState('qntd_cota', formattedValue)
+  );
+
+  const { value: qntdCotaMinOrder, handleChange: handleQntdCotaMinOrderChange } = useThousandSeparator(
+    formState.qntd_cota_min_order,
+    (formattedValue) => updateFormState('qntd_cota_min_order', formattedValue)
+  );
+
+  const { value: qntdCotaMaxOrder, handleChange: handleQntdCotaMaxOrderChange } = useThousandSeparator(
+    formState.qntd_cota_max_order,
+    (formattedValue) => updateFormState('qntd_cota_max_order', formattedValue)
+  );
+
+  const { value: qntdCotaMaxClient, handleChange: handleQntdCotaMaxClientChange } = useThousandSeparator(
+    formState.qntd_cota_max_client,
+    (formattedValue) => updateFormState('qntd_cota_max_client', formattedValue)
+  );
+
+  // Função handleChange para useCurrencyInput
+  const handleChangePrice = (formattedValue) => {
+    updateFormState('price', formattedValue); // Atualiza diretamente formState.price
+  };
+
+  // Hook useCurrencyInput para o input de preço
+  const { value: formattedPrice, handleChange: handlePriceChange, handleBlur: handlePriceBlur } = useCurrencyInput(formState.price, handleChangePrice);
 
   return (
     <div className="category">
       <h3>Cotas</h3>
 
       <label htmlFor="number_of_numbers">
-          Qtd de números
-          <input className="qtd" id="number_of_numbers" value={formState.qntd_cota || ''} onChange={handleChange} name="qntd_cota" maxLength="10" required />
+        Qtd de números
+        <input
+          className="qtd"
+          id="number_of_numbers"
+          value={qntdCota}
+          onChange={handleQntdCotaChange}
+          name="qntd_cota"
+          maxLength="10"
+          required
+        />
       </label>
 
       <label htmlFor="price">
-          Valor unitário R$
-          <input maxLength="22" id="price" value={formState.price || ''} onChange={handleChange} name="price" className="money" required />
+        Valor unitário R$
+        <input
+          maxLength="22"
+          id="price"
+          value={formattedPrice}
+          onChange={handlePriceChange}
+          onBlur={handlePriceBlur}
+          name="price"
+          className="money"
+          required
+        />
       </label>
 
       <label htmlFor="">
-          Qtd cotas minima por pedido
-          <input className="qtd_max" value={formState.qntd_cota_min_order || 1} onChange={handleChange} name="qntd_cota_min_order" minLength="1" maxLength="6" />
+          Qtd cotas mínima por pedido
+          <input
+            className="qtd_max"
+            value={qntdCotaMinOrder}
+            onChange={handleQntdCotaMinOrderChange}
+            name="qntd_cota_min_order"
+            minLength="1"
+            maxLength="6"
+          />
       </label>
 
       <label htmlFor="">
           Qtd cotas máxima por Pedido
-          <input className="qtd_max" name="qntd_cota_max_order" value={formState.qntd_cota_max_order || ''} onChange={handleChange} id="qntd_cota_max_order" maxLength="6" minLength="1" defaultValue="1.000" />
+          <input
+            className="qtd_max"
+            name="qntd_cota_max_order"
+            value={qntdCotaMaxOrder}
+            onChange={handleQntdCotaMaxOrderChange}
+            id="qntd_cota_max_order"
+            maxLength="6"
+            minLength="1"
+          />
       </label>
 
       <label htmlFor="">
           Qtd cotas máxima por cliente
-          <input className="qtd" name="qntd_cota_max_client" value={formState.qntd_cota_max_client || ''} onChange={handleChange} maxLength="10"  minLength="1" defaultValue="20.000" />
+          <input
+            className="qtd"
+            name="qntd_cota_max_client"
+            value={qntdCotaMaxClient}
+            onChange={handleQntdCotaMaxClientChange}
+            maxLength="10"
+            minLength="1"
+          />
       </label>
     </div>
-  )
+  );
 }
