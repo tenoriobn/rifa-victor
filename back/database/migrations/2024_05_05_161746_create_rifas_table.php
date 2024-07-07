@@ -20,12 +20,12 @@ return new class extends Migration
             $table->enum('emphasis', ['sim', 'nao']);
             $table->string("show_top");
             $table->string("video");
-            $table->json("img");
             $table->string("status");
             $table->decimal('price', 10, 2)->nullable();
             $table->text("description_sortition");
             $table->text("description_product");
             $table->text("description_role");
+            $table->text("description_order_approve");
             $table->dateTime('data_sortition')->nullable();
             $table->dateTime('initial_sale')->nullable();
             $table->dateTime('end_sale')->nullable();

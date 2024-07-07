@@ -33,12 +33,12 @@ export default function CardProdutos({ categoria }) {
     return <div>Carregando...</div>; 
   }
 
-  const converterImgProduto = (imgs) => {
-    let img = imgs.replace(/\\"/g, '"');
-    let imgArray = JSON.parse(img);
-    let primeiroElemento = imgArray[0];
-    return primeiroElemento; 
-  };
+  // const converterImgProduto = (imgs) => {
+  //   let img = imgs.replace(/\\"/g, '"');
+  //   let imgArray = JSON.parse(img);
+  //   let primeiroElemento = imgArray[0];
+  //   return primeiroElemento; 
+  // };};
 
   const formatarData = (dataString) => {
     const data = new Date(dataString);
@@ -74,7 +74,7 @@ export default function CardProdutos({ categoria }) {
           >
             <img 
               className="w-[80px] m-2 rounded-lg object-cover transition-all" 
-              src={converterImgProduto(produto.img)} 
+              src={"https://img.freepik.com/fotos-gratis/carro-luxuoso-estacionado-na-estrada-com-um-farol-iluminado-ao-por-do-sol_181624-60607.jpg?size=626&ext=jpg&ga=GA1.1.672697106.1717632000&semt=ais_user"} 
               alt={`Imagem do ${produto.title}`}
             />
 

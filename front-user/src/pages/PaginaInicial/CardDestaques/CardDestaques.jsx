@@ -24,12 +24,12 @@ export default function CardDestaques() {
   if (loading) {
     return <div>Carregando...</div>; 
   }
-  const converterImgProduto = (imgs) => {
-    let img = imgs.replace(/\\"/g, '"');
-    let imgArray = JSON.parse(img);
-    let primeiroElemento = imgArray[0];
-    return primeiroElemento; 
-  };
+  // const converterImgProduto = (imgs) => {
+  //   let img = imgs.replace(/\\"/g, '"');
+  //   let imgArray = JSON.parse(img);
+  //   let primeiroElemento = imgArray[0];
+  //   return primeiroElemento; 
+  // };
 
   return (
     <>
@@ -40,7 +40,7 @@ export default function CardDestaques() {
           onClick={() => setProdutoSelecionado(produto)}
           className="flex w-auto overflow-hidden rounded-lg bg-neutral-200 hover:shadow-[4px_4px_4px_#0002] border border-solid border-neutral-400 ring-0 ring-amber-500/60 hover:ring-offset-4 hover:ring-2 transition-all duration-300 flex-col mb-6 cursor-pointer"
         >
-          <img src= {converterImgProduto(produto.img)}
+          <img src= {"https://img.freepik.com/fotos-gratis/carro-luxuoso-estacionado-na-estrada-com-um-farol-iluminado-ao-por-do-sol_181624-60607.jpg?size=626&ext=jpg&ga=GA1.1.672697106.1717632000&semt=ais_user"}
             alt="Foto do Prêmio" 
             className="aspect-[16/9] w-full max-h-[200px] object-cover transition-all"
           />

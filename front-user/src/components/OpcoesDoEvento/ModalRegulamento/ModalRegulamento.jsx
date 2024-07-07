@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Documento from "../../../assets/Icons/documento.svg?react";
 import { useRecoilValue } from 'recoil';
 import {  estadoRifa } from '../../../common/state/atom';
+import DOMPurify from 'dompurify';
 
 export default function ModalRegulamento() {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,6 +20,10 @@ export default function ModalRegulamento() {
       document.body.style.overflow = 'auto';
     };
   }, [isOpen]);
+
+  const limparHTML = (htmlString) => {
+    return { __html: DOMPurify.sanitize(htmlString) };
+  };
 
 
   return (
@@ -43,7 +48,7 @@ export default function ModalRegulamento() {
 
             <div className='p-8'>
               <div>
-                {rifa.description_role}
+                <div dangerouslySetInnerHTML={limparHTML(rifa.description_role)} />
               </div>
             </div>
 

@@ -54,6 +54,7 @@ class RifasController extends Controller
     }
 
     public function storeRifa(StoreRifasRequest $request) {
+
         try {
             $this->rifaService->createRifas($request);
             return response()->json(["success" => true, "msg" => "Rifa criada com sucesso" ], $this->success);

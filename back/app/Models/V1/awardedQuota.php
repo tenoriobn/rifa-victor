@@ -11,17 +11,19 @@ class AwardedQuota extends Model
 {
     use HasFactory;
 
-    protected $fillable = [ 'package_awarded_number', 'rifas_id' ];
+    protected $fillable = [ 'qntd_cota', 'award',  'show_site',  'status',  'rifas_id' ];
 
     public function rifa(): BelongsTo {
         return $this->belongsTo(Rifas::class);
     }
 
-    public static function createAwardedQuota($package_awarded_number, $rifa_id) {
-        $package_awarded_number_json = json_encode($package_awarded_number);
+    public static function createAwardedQuota($qntd_cota, $award, $show_site, $status, $rifa_id) {
         $result  = self::updateOrCreate(
             [
-                'package_awarded_number' => $package_awarded_number_json,
+                'qntd_cota' => $qntd_cota,
+                'award' => $award,
+                'show_site' => $show_site,
+                'status' => $status,
                 'rifas_id' => $rifa_id,
 
             ]);

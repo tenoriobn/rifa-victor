@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('rifas_payments', function (Blueprint $table) {
             $table->id();
             $table->mediumInteger('time_pay')->comment('o tempo é em minutos');
-            $table->string('type_pay');
+            $table->string('gateway');
             $table->decimal('service_charge', 5, 2)->nullable();
             $table->string('text_service_charge')->nullable();
             $table->unsignedBigInteger('rifas_id');

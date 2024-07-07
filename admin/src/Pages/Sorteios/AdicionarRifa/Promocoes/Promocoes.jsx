@@ -1,27 +1,56 @@
+import useFormState from "../../../../common/states/Hook/CriarRifa/CriarRifa";
+
 export default function Promocoes() {
+  const { formState, handleChange } = useFormState();
+
   return (
     <div className="category">
       <h3>PROMOÇÕES</h3>
 
       <label id="promotion_title">
-          Titulo Cotas Premiadas
-          <input type="text" name="promotion_title" maxLength="50" />
+        Título Cotas Premiadas
+        <input
+          type="text"
+          name="title_cotas_awarded"
+          value={formState.title_cotas_awarded || ''}
+          onChange={handleChange}
+          maxLength="50"
+        />
       </label>
 
       <label id="promotion_description">
-          Descrição Cotas Premiadas
-          <input type="text" name="promotion_description" maxLength="500" />
+        Descrição Cotas Premiadas
+        <input
+          type="text"
+          name="description_cotas_awarded"
+          value={formState.description_cotas_awarded || ''}
+          onChange={handleChange}
+          maxLength="500"
+        />
       </label>
 
       <label id="upsell_title">
-          Titulo Upsell (Checkout)
-          <input type="text" name="upsell_title" maxLength="50" />
+        Título Upsell (Checkout)
+        <input
+          type="text"
+          name="title_upsell"
+          value={formState.title_upsell || ''}
+          onChange={handleChange}
+          maxLength="50"
+        />
       </label>
 
       <label id="upsell_description">
-          Descrição Upsell (Checkout)
-          <input type="text" name="upsell_description" maxLength="500" />
+        Descrição Upsell (Checkout)
+        <input
+          type="text"
+          name="description_upsell"
+          value={formState.description_upsell || ''}
+          onChange={handleChange}
+          maxLength="500"
+        />
       </label>
     </div>
-  )
+  );
 }
+

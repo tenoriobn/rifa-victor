@@ -34,7 +34,7 @@ export default function SlidePremio() {
           {rifa && rifa.img && JSON.parse(rifa.img).map((url, index) => (
             <img 
               key={index}
-              src={url}
+              src={"https://img.freepik.com/fotos-gratis/carro-luxuoso-estacionado-na-estrada-com-um-farol-iluminado-ao-por-do-sol_181624-60607.jpg?size=626&ext=jpg&ga=GA1.1.672697106.1717632000&semt=ais_user"}
               className={`w-16 h-16 object-cover rounded-lg mb-4 transition-all duration-300 cursor-pointer ${imgPremioSlide !== url ? 'hover:scale-110' : ''}`}
               alt={`Miniatura ${index}`}
               onClick={() => setImgPremioSlide(url)}

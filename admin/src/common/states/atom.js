@@ -80,3 +80,8 @@ export const stateOpenModalEditarGanhador = atom({
   key: 'stateOpenModalEditarGanhador',
   default: false,
 });
+
+export const stateInfoRifaForm = atom({
+  key: 'stateInfoRifaForm',
+  default: {},
+});

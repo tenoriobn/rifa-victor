@@ -12,7 +12,7 @@ class RifasPayment extends Model {
 
     protected $fillable = [
         'time_pay',
-        'type_pay',
+        'gateway',
         'service_charge',
         'text_service_charge',
         'rifas_id',
@@ -22,12 +22,12 @@ class RifasPayment extends Model {
         return $this->belongsTo(Rifas::class);
     }
 
-    public static function rifasPaymentCreateOrUpdate($time_pay, $type_pay, $service_charge, $text_service_charge, $rifa_id, $rifas_payment_id) {
+    public static function rifasPaymentCreateOrUpdate($time_pay, $gateway, $service_charge, $text_service_charge, $rifa_id, $rifas_payment_id) {
         $result  = self::updateOrCreate(
             ['id' => $rifas_payment_id],
             [
                 'time_pay' => $time_pay,
-                'type_pay' => $type_pay,
+                'gateway' => $gateway,
                 'service_charge' => $service_charge,
                 'text_service_charge' => $text_service_charge,
                 'rifas_id' => $rifa_id,

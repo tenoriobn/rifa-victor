@@ -3,13 +3,18 @@ import { useState } from 'react';
 import Seta from "../../assets/Icons/seta.svg?react";
 import { estadoRifa } from '../../common/state/atom';
 import { useRecoilValue } from 'recoil';
+import DOMPurify from 'dompurify';
 
 export default function AccordionDescricao({ display }) {
   const [selecaoAtiva, setSelecaoAtiva] = useState(null);
-  const rifa = useRecoilValue(estadoRifa)
+  const rifa = useRecoilValue(estadoRifa);
 
   const toggleSelecao = (selecao) => {
     setSelecaoAtiva(selecaoAtiva === selecao ? null : selecao);
+  };
+
+  const limparHTML = (htmlString) => {
+    return { __html: DOMPurify.sanitize(htmlString) };
   };
 
   return (
@@ -26,10 +31,9 @@ export default function AccordionDescricao({ display }) {
         </button>
 
         <div 
-          className={`text-sm text-gray-500 dark:text-gray-400  bg-slate-100  rounded-lg  overflow-hidden transition-max-height duration-200 px-2 ${selecaoAtiva === 'descricaoProduto' ? 'max-h-96 pt-1.5 pb-3 mt-1.5 mb-3' : 'max-h-0'}`}
+          className={`text-sm text-gray-500 dark:text-gray-400 bg-slate-100 rounded-lg overflow-hidden transition-max-height duration-200 px-2 ${selecaoAtiva === 'descricaoProduto' ? 'max-h-96 pt-1.5 pb-3 mt-1.5 mb-3' : 'max-h-0'}`}
         >
-          <p className="text-gray-500">{rifa.description_product}</p>
-        
+          <div dangerouslySetInnerHTML={limparHTML(rifa.description_product)} />
         </div>
       </div>
 
@@ -47,7 +51,7 @@ export default function AccordionDescricao({ display }) {
         <div 
           className={`text-sm text-gray-500 dark:text-gray-400 bg-slate-100 rounded-lg overflow-hidden transition-max-height duration-200 ease-in-out px-2 ${selecaoAtiva === 'descricaoSorteio' ? 'max-h-96 pt-1.5 pb-3 mt-1.5 mb-3' : 'max-h-0'}`}
         >
-          <p className="text-gray-500">{rifa.description_sortition}</p>
+          <div dangerouslySetInnerHTML={limparHTML(rifa.description_sortition)} />
         </div>
       </div>
     </div>

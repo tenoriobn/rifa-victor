@@ -1,4 +1,5 @@
-import styled from "styled-components"
+import styled from "styled-components";
+import { useState } from "react";
 import Geral from "./Geral/Geral";
 import Cotas from "./Cotas/Cotas";
 import DataPagamento from "./DataPagamentos/DataPagamentos";
@@ -11,6 +12,9 @@ import Regulamento from "./Regulamento/Regulamento";
 import PedidoAprovado from "./PedidoAprovado/PedidoAprovado";
 import { Main } from "../../../components/AdminLayout/AdminLayout";
 import Header from "../../../components/Header/Header";
+import { useRecoilValue } from "recoil";
+import { stateInfoRifaForm, stateUserLogin } from "../../../common/states/atom";
+import { postDados } from "../../../common/http/http";
 
 const CategoryContainer = styled.div`
   display: flex;
@@ -91,6 +95,27 @@ const CategoryContainer = styled.div`
 `;
 
 export default function AdicionarRifa() {
+  const formState = useRecoilValue(stateInfoRifaForm);
+  const userLogin = useRecoilValue(stateUserLogin);
+  const [submitting, setSubmitting] = useState(false);
+  const [postError, setPostError] = useState(null);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSubmitting(true);
+
+    try {
+      const response = await postDados('/admin/cadastrar/rifas', formState, userLogin);
+      console.log('response:', response);
+      // Lógica adicional após o sucesso do envio
+    } catch (error) {
+      console.error('Erro ao fazer POST:', error);
+      setPostError(error.message || 'Erro ao enviar os dados.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+  
   return (
     <>
       <Header>
@@ -98,7 +123,7 @@ export default function AdicionarRifa() {
       </Header>
 
       <Main>
-        <form action="" id="frmRaffle" className="dropzone" method="POST">
+        <form action="" id="frmRaffle" className="dropzone" method="POST" onSubmit={handleSubmit}>
           <CategoryContainer className="category-container">
             <Geral />
             <Cotas />
@@ -111,13 +136,17 @@ export default function AdicionarRifa() {
             <Regulamento />
             <PedidoAprovado />
 
+            <input hidden id="" />
+
             <button 
               type="submit" 
               className="success" 
               id="btnSend" 
+              disabled={submitting}
             >
-              ADICIONAR
+              {submitting ? 'Enviando...' : 'ADICIONAR'}
             </button>
+            {postError && <p style={{ color: 'red' }}>{postError}</p>}
           </CategoryContainer>
         </form>
       </Main>

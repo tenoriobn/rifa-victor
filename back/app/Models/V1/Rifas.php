@@ -25,6 +25,7 @@ class Rifas extends Model
         'description_sortition',
         'description_product',
         'description_role',
+        'description_order_approve',
         'data_sortition',
         'initial_sale',
         'end_sale',
@@ -55,8 +56,7 @@ class Rifas extends Model
         return $this->hasMany(AwardedQuotaClient::class);
     }
 
-    public static function rifaCreateOrUpdate($title, $slug, $description_resume, $show_site, $emphasis, $show_top, $video, $img, $status, $price, $description_sortition, $description_product, $description_role, $data_sortition, $initial_sale, $end_sale, $end_rifa, $user_id, $rifa_id) {
-        $imgJson = json_encode($img);
+    public static function rifaCreateOrUpdate($title, $slug, $description_resume, $show_site, $emphasis, $show_top, $video, $status, $price, $description_sortition, $description_product, $description_role, $description_order_approve, $data_sortition, $initial_sale, $end_sale, $end_rifa, $user_id, $rifa_id) {
         $result  = self::updateOrCreate(
             ['id' => $rifa_id],
             [
@@ -67,12 +67,12 @@ class Rifas extends Model
                 'emphasis' => $emphasis,
                 'show_top' => $show_top,
                 'video' => $video,
-                'img' => $imgJson,
                 'status' => $status,
                 'price' => $price,
                 'description_sortition' => $description_sortition,
                 'description_product' => $description_product,
                 'description_role' => $description_role,
+                'description_order_approve' => $description_order_approve,
                 'data_sortition' => $data_sortition,
                 'initial_sale' => $initial_sale,
                 'end_sale' => $end_sale,
