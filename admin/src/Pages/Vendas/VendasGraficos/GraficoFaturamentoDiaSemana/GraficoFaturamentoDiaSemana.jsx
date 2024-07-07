@@ -19,20 +19,13 @@ export default function GraficoFaturamentoDiario() {
       chartRef.current = new Chart(ctx, {
         type: 'bar', // ou 'line', 'pie', etc.
         data: {
-          labels: ['10', '11', '16'],
+          labels: ['Sábado', 'Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta'],
           datasets: [
             {
               label: 'Faturamento',
-              data: [12, 19, 3],
-              backgroundColor: '#f9a826',
-              borderColor: '#f9a826',
-              borderWidth: 1,
-            },
-            {
-              label: 'Pedidos',
-              data: [8, 14, 7],
-              backgroundColor: '#1bc47d',
-              borderColor: '#1bc47d',
+              data: [12, 19, 3, 5, 2, 3, 10],
+              backgroundColor: '#00b4d8',
+              borderColor: '#00b4d8',
               borderWidth: 1,
             },
           ],
@@ -59,7 +52,7 @@ export default function GraficoFaturamentoDiario() {
 
   return (
     <ContainerCharts className="container-charts">
-      <div className="chart-title"><h3>Faturamento - Hora do Dia</h3></div>
+      <div className="chart-title"><h3>Faturamento - Dia da Semana</h3></div>
       <canvas ref={canvasRef}></canvas>
     </ContainerCharts>
   );

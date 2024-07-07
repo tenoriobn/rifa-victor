@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import Chart from 'chart.js/auto';
 import { ContainerCharts } from '../VendasGraficos';
 
-export default function GraficoFaturamentoDiario() {
+export default function GraficoFaturamentoAcumulado() {
   const canvasRef = useRef(null);
   const chartRef = useRef(null);
 
@@ -24,15 +24,15 @@ export default function GraficoFaturamentoDiario() {
             {
               label: 'Faturamento',
               data: [12, 19, 3],
-              backgroundColor: '#f9a826',
-              borderColor: '#f9a826',
+              backgroundColor: '#e63946',
+              borderColor: '#e63946',
               borderWidth: 1,
             },
             {
               label: 'Pedidos',
               data: [8, 14, 7],
-              backgroundColor: '#1bc47d',
-              borderColor: '#1bc47d',
+              backgroundColor: '#457b9d',
+              borderColor: '#457b9d',
               borderWidth: 1,
             },
           ],

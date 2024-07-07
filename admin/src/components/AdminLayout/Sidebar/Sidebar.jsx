@@ -18,6 +18,7 @@ const ContainerSidebar = styled.div`
   overflow-x: auto;
   transition: .5s;
   width: 300px;
+  z-index: 99;
 
   span {
     float: right;

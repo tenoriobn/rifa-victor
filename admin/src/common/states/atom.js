@@ -91,6 +91,11 @@ export const stateOpenModalVerCota = atom({
   default: false,
 });
 
+export const stateOpenModalVerInfoCliente = atom({
+  key: 'stateOpenModalVerInfoCliente',
+  default: false,
+});
+
 export const stateInfoRifaForm = atom({
   key: 'stateInfoRifaForm',
   default: {

@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import Chart from 'chart.js/auto';
 import { ContainerCharts } from '../VendasGraficos';
 
-export default function GraficoFaturamentoDiario() {
+export default function GraficoFaturamentoHora() {
   const canvasRef = useRef(null);
   const chartRef = useRef(null);
 
@@ -19,20 +19,13 @@ export default function GraficoFaturamentoDiario() {
       chartRef.current = new Chart(ctx, {
         type: 'bar', // ou 'line', 'pie', etc.
         data: {
-          labels: ['10', '11', '16'],
+          labels: ['10', '11', '16', '17', '19', '9', '23', '22', '21', '20', '15', '14', '13', '7', '8', '12', '5', '1', '0', '6'],
           datasets: [
             {
               label: 'Faturamento',
-              data: [12, 19, 3],
-              backgroundColor: '#f9a826',
-              borderColor: '#f9a826',
-              borderWidth: 1,
-            },
-            {
-              label: 'Pedidos',
-              data: [8, 14, 7],
-              backgroundColor: '#1bc47d',
-              borderColor: '#1bc47d',
+              data: [12, 19, 3, 5, 2, 3, 10, 12, 19, 3, 5, 2, 3, 10, 12, 19, 3, 5, 2, 6],
+              backgroundColor: '#b5179e',
+              borderColor: '#b5179e',
               borderWidth: 1,
             },
           ],
