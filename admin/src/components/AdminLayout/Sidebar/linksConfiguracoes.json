@@ -2,5 +2,6 @@
   { "href": "/dashboard/users", "iconClass": "fa-solid fa-user", "text": "Usuários" },
   { "href": "/dashboard/config/site", "iconClass": "fa-solid fa-desktop", "text": "Site" },
   { "href": "/dashboard/payments", "iconClass": "fa-solid fa-money-check-dollar", "text": "Conf. Pagamentos" },
-  { "href": "/dashboard/clients/edit", "iconClass": "fa-solid fa-money-check-dollar", "text": "Meus Dados" }
+  { "href": "/dashboard/clients/edit", "iconClass": "fa-solid fa-money-check-dollar", "text": "Meus Dados" },
+  { "href": "/dashboard/superadmin", "iconClass": "fa-solid fa-user", "text": "superadmin" }
 ]

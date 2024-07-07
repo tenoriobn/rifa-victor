@@ -15,7 +15,7 @@ export default function Usuarios() {
   const [openModalEditarUsuario, setOpenModalEditarUsuario] = useRecoilState(stateOpenModalEditarUsuario);
 
   return (
-    <div>
+    <section>
       <Header>
         <h2><i className="fa-solid fa-user"></i> Usuários</h2>
         <LinkItem className="button-new" onClick={() => setOpenModalAdicionarUsuario(!openModalAdicionarUsuario)}>
@@ -37,6 +37,6 @@ export default function Usuarios() {
       <Modal title="EDITAR USUÁRIO" openState={openModalEditarUsuario} setOpenState={setOpenModalEditarUsuario}>
         <ModalEditarUsuario />
       </Modal>
-    </div>
+    </section>
   )
 }

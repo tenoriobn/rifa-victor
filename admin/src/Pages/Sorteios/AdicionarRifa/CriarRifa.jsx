@@ -114,7 +114,7 @@ export default function AdicionarRifa() {
 
     } catch (error) {
       console.error('Erro ao fazer POST:', error);
-      setPostError(error.message || 'Erro ao enviar os dados.');
+      setPostError('Erro ao enviar os dados.');
     } finally {
       setSubmitting(false);
     }

@@ -25,6 +25,7 @@ import Usuarios from "./Pages/Configuracoes/Usuarios/Usuarios";
 import SiteConfig from "./Pages/Configuracoes/SiteConfig/SiteConfig";
 import MeusDados from "./Pages/Configuracoes/MeusDados/MeusDados";
 import ConfigPagamentos from "./Pages/Configuracoes/ConfigPagamentos/ConfigPagamentos";
+import SuperAdmin from "./Pages/SuperAdmin/SuperAdmin";
 
 function App() {
   return (
@@ -57,6 +58,7 @@ function App() {
               <Route path="config/site" element={<SiteConfig />} />
               <Route path="payments" element={<ConfigPagamentos />} />
               <Route path="clients/edit" element={<MeusDados />} />
+              <Route path="superadmin" element={<SuperAdmin />} />
             </Route>
           </Routes>
         </Router>

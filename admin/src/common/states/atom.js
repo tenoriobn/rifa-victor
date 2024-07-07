@@ -81,6 +81,16 @@ export const stateOpenModalEditarGanhador = atom({
   default: false,
 });
 
+export const stateOpenModalTrocarBilhete = atom({
+  key: 'stateOpenModalTrocarBilhete',
+  default: false,
+});
+
+export const stateOpenModalVerCota = atom({
+  key: 'stateOpenModalVerCota',
+  default: false,
+});
+
 export const stateInfoRifaForm = atom({
   key: 'stateInfoRifaForm',
   default: {
