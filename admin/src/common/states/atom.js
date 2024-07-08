@@ -157,3 +157,32 @@ export const stateSiteConfig = atom({
   key: 'stateSiteConfig',
   default: {},
 })
+
+export const stateNovoGanhador = atom({
+  key: 'stateNovoGanhador',
+  default: {},
+})
+
+export const stateVisibilidadeColunaTabelaRanking = atom({
+  key: 'stateVisibilidadeColunaTabelaRanking',
+  default: {
+    posicao: true,
+    cliente: true,
+    telefone: true,
+    cidade: true,
+    sorteio: true,
+    quantidade: true,
+    total: true,
+    acoes: true,
+  },
+});
+
+export const stateNovoUsuario = atom({
+  key: 'stateNovoUsuario',
+  default: {},
+})
+
+export const stateFiltroSorteio = atom({
+  key: 'stateFiltroSorteio',
+  default: {},
+})

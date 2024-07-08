@@ -92,6 +92,24 @@ const Table = styled.table`
   }
 `;
 
+const ganhadoresData = [
+  {
+    imagem: "https://imagedelivery.net/TuyDlh37fwpu3jSKwZ3-9g/06f43084-aa29-480e-c4d9-36dfaaab8f00/thumb",
+    name: "Juliano Oliveira Amaral",
+    raffle: "F250 OU 50K NO PIX",
+    number: "007149",
+    date: "17/04/2024"
+  },
+  {
+    imagem: "https://imagedelivery.net/TuyDlh37fwpu3jSKwZ3-9g/06f43084-aa29-480e-c4d9-36dfaaab8f00/thumb",
+    name: "Fernanda Silva",
+    raffle: "SAVEIRO CROSS DOS SONHOS",
+    number: "005432",
+    date: "18/04/2024"
+  },
+  // Adicione mais objetos conforme necessário
+];
+
 export default function GanhadoresTable() {  
   const [openModalEditarGanhador, setOpenModalEditarGanhador] = useRecoilState(stateOpenModalEditarGanhador);
 
@@ -110,26 +128,27 @@ export default function GanhadoresTable() {
         </thead>
 
         <tbody>
-          <tr className="raffle-item">
-            <td>
-              <img src="https://imagedelivery.net/TuyDlh37fwpu3jSKwZ3-9g/06f43084-aa29-480e-c4d9-36dfaaab8f00/thumb" />
-            </td>
-            
-            <td>Juliano Oliveira Amaral </td>
-            <td>F250 OU 50K NO PIX</td>
-            <td>007149</td>
-            <td>17/04/2024 </td>
-            <td>
-              <div className="button-group">
-                <a href="#" className="button-edit" onClick={() => setOpenModalEditarGanhador(!openModalEditarGanhador)}>
-                  <i className="fas fa-edit"></i> Editar
-                </a>
-                <a className="button-delete" href="">
-                  <i className="fas fa-trash-alt"></i> Excluir
-                </a>
-              </div>
-            </td>
-          </tr>
+          {ganhadoresData.map((ganhador, index) => (
+            <tr key={index} className="raffle-item">
+              <td>
+                <img src={ganhador.imagem} alt={ganhador.name} />
+              </td>
+              <td>{ganhador.name}</td>
+              <td>{ganhador.raffle}</td>
+              <td>{ganhador.number}</td>
+              <td>{ganhador.date}</td>
+              <td>
+                <div className="button-group">
+                  <a href="#" className="button-edit" onClick={() => setOpenModalEditarGanhador(!openModalEditarGanhador)}>
+                    <i className="fas fa-edit"></i> Editar
+                  </a>
+                  <a className="button-delete" href="">
+                    <i className="fas fa-trash-alt"></i> Excluir
+                  </a>
+                </div>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </Table>
     </div>

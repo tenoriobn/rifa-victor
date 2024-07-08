@@ -1,4 +1,6 @@
 import styled from "styled-components"
+import { stateNovoGanhador } from "../../../../common/states/atom";
+import { useRecoilState } from "recoil";
 
 const Form = styled.form`
   font-size: .9rem;
@@ -57,21 +59,66 @@ const Form = styled.form`
 `;
 
 export default function ModalEditarGanhador() {
+  const [novoGanhador, setNovoGanhador] = useRecoilState(stateNovoGanhador);
+
+  console.log('novo ganhador:', novoGanhador);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setNovoGanhador((prevConfig) => ({
+      ...prevConfig,
+      [name]: value
+    }));
+  };
+
+  const handleSaveChanges = async (event) => {
+    event.preventDefault();
+
+    try {
+
+      // const response = await postDados("http://seu-backend.com/api/site/config", siteConfig);
+      // setSiteConfig(response.data)
+      // console.log("Dados enviados com sucesso:", response.data);
+
+    } catch (error) {
+      console.error("Erro ao enviar dados:", error);
+    }
+  };
+
   return (
-    <Form action="" id="frmAddPack" method="POST">
+    <Form action="" id="frmAddPack" method="POST" onSubmit={handleSaveChanges}>
       <label htmlFor="">
         Foto
-        <input type="file" name="imagem" id="imagem" accept="image/*" />
+        <input 
+          type="file" 
+          name="imagem" 
+          id="imagem" 
+          accept="image/*"
+          defaultValue={novoGanhador.imagem || ""}  
+          onChange={handleChange}  
+        />
       </label>
 
       <label htmlFor="">
         Nome
-        <input type="text" name="name" id="name" />
+        <input 
+          type="text" 
+          name="name" 
+          id="name" 
+          defaultValue={novoGanhador.name || ""}  
+          onChange={handleChange} 
+        />
       </label>
 
       <label htmlFor="">
         Cota
-        <input type="text" name="number" id="number" />
+        <input 
+          type="text" 
+          name="number" 
+          id="number" 
+          defaultValue={novoGanhador.number || ""}  
+          onChange={handleChange} 
+        />
       </label>
 
       <input id="sendEditPack" type="submit" defaultValue="Enviar" />

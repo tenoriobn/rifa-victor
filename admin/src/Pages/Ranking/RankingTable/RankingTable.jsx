@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { stateOpenModalVerInfoCliente } from "../../../common/states/atom";
+import { stateVisibilidadeColunaTabelaRanking } from "../../../common/states/atom";
 
 export const Table = styled.table`
   width: 100%;
@@ -62,45 +62,73 @@ export const Table = styled.table`
 `;
 
 export default function RankingTable() {
-  const [openModalVerInfoCliente, setOpenModalVerInfoCliente] = useRecoilState(stateOpenModalVerInfoCliente);
+  const isibilidadeColunaTabelaRanking = useRecoilValue(stateVisibilidadeColunaTabelaRanking);
 
   return (
     <div>
       <Table>
         <thead>
           <tr>
-            <th className="posicao">Posição</th>
-            <th className="cliente">Cliente</th>
-            <th className="telefone">Telefone</th>
-            <th className="cidade">Cidade</th>
-            <th className="sorteio">Sorteio</th>
-            <th className="quantidade">Quantidade.</th>
-            <th className="total">Total</th>
-            <th className="acoes">Ações</th>
+            {isibilidadeColunaTabelaRanking.posicao && <th className="posicao">Posição</th>}
+            {isibilidadeColunaTabelaRanking.cliente && <th className="cliente">Cliente</th>}
+            {isibilidadeColunaTabelaRanking.telefone && <th className="telefone">Telefone</th>}
+            {isibilidadeColunaTabelaRanking.cidade && <th className="cidade">Cidade</th>}
+            {isibilidadeColunaTabelaRanking.sorteio && <th className="sorteio">Sorteio</th>}
+            {isibilidadeColunaTabelaRanking.quantidade && <th className="quantidade">Quantidade</th>}
+            {isibilidadeColunaTabelaRanking.total && <th className="total">Total</th>}
+            {isibilidadeColunaTabelaRanking.acoes && <th className="acoes">Ações</th>}
           </tr>
         </thead>
 
         <tbody>
-        <tr>
-          <td align="center" className="posicao">
-              <b>1º</b>
-          </td>
-          <td align="center" className="cliente">
-            <a href="https://dash.alimaprojetos.com/dashboard/pedidos?id_customer=265287" target="_blank">Rafaela Souza</a>
-          </td>
-          <td align="center" className="telefone">(43) 996XX-XX19</td>
-          <td align="center" className="cidade">Quatiguá/Paraná</td>
-          <td align="center" className="sorteio">SAVEIRO CROSS DOS SONHOS</td>
-          <td align="center" className="quantidade">170</td>
-          <td align="center" className="total"><b>R$ 17,00</b></td>
-          <td align="center" className="acoes">
-            <button className="button-view" onClick={() => setOpenModalVerInfoCliente(!openModalVerInfoCliente)}>
-              <i className="fas fa-eye"></i> VER
-            </button>
-          </td>
-        </tr>
+          <tr>
+            {isibilidadeColunaTabelaRanking.posicao && (
+              <td align="center" className="posicao">
+                <b>1º</b>
+              </td>
+            )}
+            {isibilidadeColunaTabelaRanking.cliente && (
+              <td align="center" className="cliente">
+                <a href="https://dash.alimaprojetos.com/dashboard/pedidos?id_customer=265287" target="_blank">
+                  Rafaela Souza
+                </a>
+              </td>
+            )}
+            {isibilidadeColunaTabelaRanking.telefone && (
+              <td align="center" className="telefone">
+                (43) 996XX-XX19
+              </td>
+            )}
+            {isibilidadeColunaTabelaRanking.cidade && (
+              <td align="center" className="cidade">
+                Quatiguá/Paraná
+              </td>
+            )}
+            {isibilidadeColunaTabelaRanking.sorteio && (
+              <td align="center" className="sorteio">
+                SAVEIRO CROSS DOS SONHOS
+              </td>
+            )}
+            {isibilidadeColunaTabelaRanking.quantidade && (
+              <td align="center" className="quantidade">
+                170
+              </td>
+            )}
+            {isibilidadeColunaTabelaRanking.total && (
+              <td align="center" className="total">
+                <b>R$ 17,00</b>
+              </td>
+            )}
+            {isibilidadeColunaTabelaRanking.acoes && (
+              <td align="center" className="acoes">
+                <button className="button-view">
+                  <i className="fas fa-eye"></i> VER
+                </button>
+              </td>
+            )}
+          </tr>
         </tbody>
       </Table>
     </div>
-  )
+  );
 }

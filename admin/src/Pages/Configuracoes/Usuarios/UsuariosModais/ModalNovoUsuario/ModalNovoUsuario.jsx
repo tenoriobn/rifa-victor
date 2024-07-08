@@ -1,4 +1,6 @@
+import { useRecoilState } from "recoil";
 import styled from "styled-components"
+import { stateNovoUsuario } from "../../../../../common/states/atom";
 
 const Form = styled.form`
   font-size: .9rem;
@@ -57,30 +59,66 @@ const Form = styled.form`
 `;
 
 export default function ModalNovoUsuario() {
+  const [novoUsuario, setNovoUsuario] = useRecoilState(stateNovoUsuario);
+
+  console.log(novoUsuario)
+
+  // Função para atualizar o estado do formulário ao digitar nos inputs
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setNovoUsuario((prevFormState) => ({
+      ...prevFormState,
+      [name]: value,
+    }));
+  };
+
+  // Função para lidar com o envio do formulário
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Aqui você pode enviar os dados para o backend, utilizar o novoUsuario
+    console.log('Dados do formulário:', novoUsuario);
+    // Lógica para enviar para o backend aqui
+  };
+
   return (
-    <Form action="" id="frmAddPack" method="POST">
-      <label htmlFor="">
+    <Form action="" id="frmAddPack" method="POST" onSubmit={handleSubmit}>
+      <label htmlFor="name">
         Nome
-        <input type="text" name="name" required />
+        <input type="text" name="name" onChange={handleChange} required />
       </label>
 
-      <label htmlFor="">
+      <label htmlFor="phone">
         Telefone
-        <input type="text" id="phone" name="phone" maxLength="15" required="" />
+        <input
+          type="text"
+          id="phone"
+          name="phone"
+          maxLength="15"
+          onChange={handleChange}
+          required
+        />
       </label>
-      <label htmlFor="">
+
+      <label htmlFor="email">
         E-Mail
-        <input type="text" name="email" required="" />
+        <input type="text" name="email" onChange={handleChange} required />
       </label>
 
-      <label htmlFor="">
+      <label htmlFor="password">
         Senha
-        <input type="password" name="password" minLength="8" maxLength="20" required />
+        <input
+          type="password"
+          name="password"
+          minLength="8"
+          maxLength="20"
+          onChange={handleChange}
+          required
+        />
       </label>
 
-      <label htmlFor="">
+      <label htmlFor="access_level">
         Perfil de acesso
-        <select name="access_level" id="access_level">
+        <select name="access_level" id="access_level" onChange={handleChange}>
           <option value="admin">Administrador</option>
           <option value="user">Usuário</option>
           <option value="support">Suporte</option>
@@ -90,5 +128,5 @@ export default function ModalNovoUsuario() {
 
       <input id="sendEditPack" type="submit" value="Adicionar" />
     </Form>
-  )
+  );
 }

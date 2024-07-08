@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import seta from "../../../assets/icons/seta.svg";
 import { useState } from "react";
+import { stateVisibilidadeColunaTabelaRanking } from "../../../common/states/atom";
+import { useRecoilState } from "recoil";
 
 const Form = styled.form`
   display: flex;
@@ -102,6 +104,15 @@ const Form = styled.form`
 
 export default function RankingForm() {
   const [showFilters, setShowFilters] = useState(false);
+  const [visibilidadeColunaTabelaRanking, setVisibilidadeColunaTabelaRanking] = useRecoilState(stateVisibilidadeColunaTabelaRanking);
+  
+  const handleCheckboxChange = (columnName) => {
+    setVisibilidadeColunaTabelaRanking((prevVisibility) => ({
+      ...prevVisibility,
+      [columnName]: !prevVisibility[columnName],
+    }));
+  };
+
 
   return (
     <Form method="POST" action="/dashboard/rifas/cotas/174">
@@ -172,35 +183,67 @@ export default function RankingForm() {
           <div className="filter-item-row filtro" id="filtro-colunas" style={{display: "flex"}}>
             <div className="column-controls">
               <label>
-                <input type="checkbox" /> Posição
+                <input type="checkbox" 
+                  checked={visibilidadeColunaTabelaRanking.posicao}
+                  onChange={() => handleCheckboxChange('posicao')}
+                /> 
+                Posição
               </label>
 
               <label>
-                <input type="checkbox" /> Cliente
+                <input 
+                  type="checkbox" 
+                  checked={visibilidadeColunaTabelaRanking.cliente}
+                  onChange={() => handleCheckboxChange('cliente')}
+                /> Cliente
               </label>
 
               <label>
-                <input type="checkbox" /> Telefone
+                <input 
+                  type="checkbox" 
+                  checked={visibilidadeColunaTabelaRanking.telefone}
+                  onChange={() => handleCheckboxChange('telefone')}
+                /> Telefone
               </label>
 
               <label>
-                <input type="checkbox" /> Cidade
+                <input 
+                  type="checkbox" 
+                  checked={visibilidadeColunaTabelaRanking.cidade}
+                  onChange={() => handleCheckboxChange('cidade')}
+                /> Cidade
               </label>
 
               <label>
-                <input type="checkbox" /> Sorteio
+                <input 
+                  type="checkbox" 
+                  checked={visibilidadeColunaTabelaRanking.sorteio}
+                  onChange={() => handleCheckboxChange('sorteio')}
+                /> Sorteio
               </label>
 
               <label>
-                <input type="checkbox" /> Quantidade
+                <input 
+                  type="checkbox" 
+                  checked={visibilidadeColunaTabelaRanking.quantidade}
+                  onChange={() => handleCheckboxChange('quantidade')}
+                /> Quantidade
               </label>
 
               <label>
-                <input type="checkbox" /> Total
+                <input 
+                  type="checkbox" 
+                  checked={visibilidadeColunaTabelaRanking.total}
+                  onChange={() => handleCheckboxChange('total')}
+                /> Total
               </label>
 
               <label>
-                <input type="checkbox" /> Ações
+                <input 
+                  type="checkbox" 
+                  checked={visibilidadeColunaTabelaRanking.acoes}
+                  onChange={() => handleCheckboxChange('acoes')}
+                /> Ações
               </label>
             </div>
           </div>

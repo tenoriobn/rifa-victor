@@ -1,6 +1,8 @@
 import seta from "../../../assets/icons/seta.svg"
 import styled from "styled-components";
 import options from "./options.json"
+import { stateFiltroSorteio } from "../../../common/states/atom";
+import { useRecoilState } from "recoil";
 
 const FilterItemRow = styled.div`
   display: flex;
@@ -83,18 +85,47 @@ const Button = styled.button`
 `;
 
 export default function FormularioSorteio() {
+  const [filtroSorteio, setFiltroSorteio] = useRecoilState(stateFiltroSorteio);
+
+  console.log(filtroSorteio)
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFiltroSorteio((prevFiltro) => ({
+      ...prevFiltro,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Lógica para usar o filtroSorteio, por exemplo, enviar para o backend
+    console.log('Filtro aplicado:', filtroSorteio);
+  };
+
   return (
-    <form method="post">
+    <form method="post" onSubmit={handleSubmit}>
       <FilterItemRow>
         <FilterInputContainer>
           <Label htmlFor="nome">Nome:</Label>
-          <input type="text" id="nome" name="nome" placeholder="Nome" />
+          <input
+            type="text"
+            id="nome"
+            name="nome"
+            placeholder="Nome"
+            onChange={handleChange}
+            defaultValue={filtroSorteio.nome || ''}
+          />
         </FilterInputContainer>
 
         <FilterSelectContainer>
           <Label htmlFor="status">Status:</Label>
-
-          <select id="status" name="status" defaultValue="A">
+          <select
+            id="status"
+            name="status"
+            onChange={handleChange}
+            defaultValue={filtroSorteio.status || 'A'}
+          >
             {options.map((option, index) => (
               <option key={index} value={option.value}>
                 {option.label}
@@ -108,5 +139,5 @@ export default function FormularioSorteio() {
         </Button>
       </FilterItemRow>
     </form>
-  )
+  );
 }

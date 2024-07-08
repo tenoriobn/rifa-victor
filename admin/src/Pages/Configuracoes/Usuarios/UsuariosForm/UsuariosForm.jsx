@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styled from "styled-components";
 
 const FilterItemRow = styled.div`
@@ -55,12 +56,32 @@ const Button = styled.button`
 `;
 
 export default function UsuariosForm() {
+  const [searchValue, setSearchValue] = useState('');
+
+  console.log(searchValue)
+
+  const handleChange = (e) => {
+    setSearchValue(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log('Valor de pesquisa:', searchValue);
+    // Lógica para enviar o valor para o backend aqui
+  };
+
   return (
-    <form method="post">
+    <form onSubmit={handleSubmit}>
       <FilterItemRow>
         <FilterInputContainer>
-          <Label htmlFor="id">Nome ou E-mail:</Label>
-          <input type="text" name="search" defaultValue="" placeholder="Pesquise pelo nome ou e-mail"></input>
+          <Label htmlFor="search">Nome ou E-mail:</Label>
+          <input
+            type="text"
+            name="search"
+            value={searchValue}
+            onChange={handleChange}
+            placeholder="Pesquise pelo nome ou e-mail"
+          />
         </FilterInputContainer>
 
         <Button type="submit">
@@ -68,5 +89,5 @@ export default function UsuariosForm() {
         </Button>
       </FilterItemRow>
     </form>
-  )
+  );
 }
