@@ -13,8 +13,12 @@ return new class extends Migration
     {
         Schema::create('discount_packages', function (Blueprint $table) {
             $table->id();
-            $table->integer('qntd_number')->nullable();
-            $table->decimal('discount')->nullable();
+            $table->integer('qntd_cota')->nullable();
+            $table->decimal('value_cota')->nullable();
+            $table->decimal('valor_total')->nullable();
+            $table->string('popular')->nullable();
+            $table->string('status')->nullable();
+            $table->string('cod_promo')->nullable();
             $table->unsignedBigInteger('rifas_id')->nullable();
             $table->foreign("rifas_id")->references("id")->on("rifas");
             $table->timestamps();

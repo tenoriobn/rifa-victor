@@ -13,18 +13,22 @@ class DiscountPackage extends Model
     use HasFactory;
 
 
-    protected $fillable = [ 'qntd_number', 'price_packet', 'rifas_id' ];
+    protected $fillable = [ 'qntd_cota', 'value_cota', 'valor_total', 'popular', 'status', 'cod_promo', 'rifas_id' ];
 
     public function rifa(): BelongsTo {
         return $this->belongsTo(Rifas::class);
     }
 
-    public static function createDiscountPackage($qntd_number, $price, $rifa_id) {
+    public static function createDiscountPackage($qntdCota, $valueCota, $valorTotal, $popular, $codPromo, $rifaId) {
         $result  = self::updateOrCreate(
             [
-                'qntd_number' => $qntd_number,
-                'discount' => $price,
-                'rifas_id' => $rifa_id,
+                'qntd_cota' => $qntdCota,
+                'value_cota' => $valueCota,
+                'valor_total' => $valorTotal,
+                'popular' => $popular,
+                'status' => 'ativo',
+                'cod_promo' => $codPromo,
+                'rifas_id' => $rifaId,
 
             ]);
 

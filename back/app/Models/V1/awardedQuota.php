@@ -5,29 +5,62 @@ namespace App\Models\V1;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Collection;
 
-use App\Models\V1\{Rifas};
 class AwardedQuota extends Model
 {
     use HasFactory;
 
-    protected $fillable = [ 'qntd_cota', 'award',  'show_site',  'status',  'rifas_id' ];
+    protected $fillable = ['number_cota', 'award', 'show_site', 'status', 'rifas_id'];
 
     public function rifa(): BelongsTo {
         return $this->belongsTo(Rifas::class);
     }
 
-    public static function createAwardedQuota($qntd_cota, $award, $show_site, $status, $rifa_id) {
-        $result  = self::updateOrCreate(
-            [
-                'qntd_cota' => $qntd_cota,
+    public static function createAwardedQuota($qntdCota, $award, $show_site, $status, $rifaId) {
+
+        $rifa = Rifas::with(['cota'])->find($rifaId);
+        $randomNumbers = self::makeRandomNumberCota($qntdCota, $rifa);
+
+        $quotas = [];
+
+        foreach ($randomNumbers as $number) {
+            $quotas[] = [
+                'number_cota' => $number,
                 'award' => $award,
                 'show_site' => $show_site,
                 'status' => $status,
-                'rifas_id' => $rifa_id,
+                'rifas_id' => $rifaId,
+                'created_at' => now(),
+                'updated_at' => now()
+            ];
+        }
 
-            ]);
+        $result = self::insert($quotas);
 
-            return $result ? true : false;
+        return $result ? true : false;
+    }
+
+    private static function makeRandomNumberCota($qntdCota, $rifa) {
+        $maxNumbers = $rifa->cota->qntd_cota;
+
+        $generatedNumbers = [];
+
+        while (count($generatedNumbers) < $qntdCota) {
+            $randomNumber = rand(1, $maxNumbers);
+            if (!self::numberExists($randomNumber, $rifa->id) && !in_array($randomNumber, $generatedNumbers)) {
+                $generatedNumbers[] = $randomNumber;
+            }
+        }
+
+        return $generatedNumbers;
+    }
+
+    private static function numberExists($number, $rifaId) {
+        return self::where('number_cota', $number)->where('rifas_id', $rifaId)->exists();
+    }
+
+    public static function getAllRifaCotaPremiadas($rifaId) {
+        return self::where('rifas_id', $rifaId)->get();
     }
 }

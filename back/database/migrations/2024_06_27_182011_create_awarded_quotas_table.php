@@ -13,12 +13,14 @@ return new class extends Migration
     {
         Schema::create('awarded_quotas', function (Blueprint $table) {
             $table->id();
-            $table->integer('qntd_cota')->nullable();
+            $table->integer('number_cota')->nullable();
             $table->string('award')->nullable();
             $table->string('show_site')->nullable();
             $table->string('status')->nullable();
             $table->unsignedBigInteger('rifas_id')->nullable();
             $table->foreign("rifas_id")->references("id")->on("rifas");
+            $table->unsignedBigInteger('client_id')->nullable();
+            $table->foreign("client_id")->references("id")->on("clients");
             $table->timestamps();
         });
     }

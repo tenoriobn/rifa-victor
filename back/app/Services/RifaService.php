@@ -10,10 +10,9 @@ class RifaService
 {
     public function createRifas($datas)
     {
-        $rifa_id = $datas->rifa_id ?? null;
+        $rifasId = $datas->rifas_id ?? null;
         $datas->user_id = Auth::user()->id ?? null;
-
-        $rifaResult = Rifas::rifaCreateOrUpdate($datas->title ?? '', Str::slug($datas->title ?? ''), $datas->description_resume ?? '', $datas->show_site ?? 1, $datas->emphasis ?? '', $datas->show_top ?? '', $datas->video ?? '', $this->status($datas->status, $datas->data_sortition), $datas->price ?? 0, $datas->description_sortition ?? '', $datas->description_product ?? '', $datas->description_role ?? '', $datas->description_order_approve ?? '', $datas->data_sortition ?? null, $datas->initial_sale ?? null, $datas->end_sale ?? null,  $datas->end_rifa ?? null, $datas->user_id ?? null, $rifa_id );
+        $rifaResult = Rifas::rifaCreateOrUpdate($datas->title ?? '', Str::slug($datas->title ?? ''), $datas->description_resume ?? '', $datas->show_site ?? 1, $datas->emphasis ?? '', $datas->show_top ?? '', $datas->video ?? '', $this->status($datas->status, $datas->data_sortition), $datas->price ?? 0, $datas->description_sortition ?? '', $datas->description_product ?? '', $datas->description_role ?? '', $datas->description_order_approve ?? '', $datas->data_sortition ?? null, $datas->initial_sale ?? null, $datas->end_sale ?? null,  $datas->end_rifa ?? null, $datas->user_id ?? null, $rifasId );
 
         if (!$rifaResult) {
             return false;
@@ -27,8 +26,8 @@ class RifaService
 
         $othersResult = RifasPayment::rifasPaymentCreateOrUpdate( $datas->time_pay ?? '', $datas->gateway ?? '',  $datas->service_charge ?? '', $datas->text_service_charge ?? '',  $rifaResult, $datas->rifas_payment_id ?? null);
 
-        $othersResult = AwardedQuota::createAwardedQuota($qntd_cota, $award, $show_site, $status, $rifa_id);
-        $othersResult = DiscountPackage::createDiscountPackage( $datas->qntd_number ?? null, $datas->price_packet ?? null, $rifaResult);
+
+
 
     }
 

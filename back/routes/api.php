@@ -23,12 +23,26 @@ use App\Http\Controllers\V1\{AuthController, AdminController, ClientController, 
     Route::middleware('auth.client')->get("/protected", [AuthController::class, "someProtectedMethod"])->name('client.protected');
 
     Route::group(['prefix' => 'admin'], function () {
-        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/cadastrar/rifas", [RifasController::class, "storeRifa"])->name('admin.create.rifa');
         Route::post("/cadastrar/usuario", [AdminController::class, "storeUser"])->name('admin.create.user');
         Route::post("/login", [AdminController::class, "login"])->name('admin.login.user');
         Route::middleware('auth:sanctum')->post("/logout", [AdminController::class, "logout"])->name('admin.logout.user');
+
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/cadastrar/rifas", [RifasController::class, "storeRifa"])->name('admin.create.rifa');
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/editar/rifa/{id}", [RifasController::class, "getOneRifa"])->name('admin.get.edit.rifa');
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->put("/editar/rifa/{id}", [RifasController::class, "editRifa"])->name('admin.edit.rifa');
+
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/cadastrar/rifas/cota", [RifasController::class, "storeCota"])->name('admin.create.rifa.cota');
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/editar/rifa/cota/{id}", [RifasController::class, "getAllCotaPremiadaRifa"])->name('admin.get.rifa.cota');
+
+
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/cadastrar/rifas/pacotes", [RifasController::class, "storePacote"])->name('admin.create.rifa.pacote');
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/cadastrar/rifas/upsell", [RifasController::class, "storeUpsell"])->name('admin.create.rifa.upsell');
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/cadastrar/rifas/imagem", [RifasController::class, "storeImagem"])->name('admin.create.rifa.imagem');
+
+
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/me", [AdminController::class, "me"])->name('admin.me.user');
     });
+
     Route::group(['prefix' => 'produtos'], function () {
         Route::get("/", [RifasController::class, "allRifas"])->name('all.rifas');
         Route::get("/{slug}/{id}", [RifasController::class, "show"])->where(['slug' => '[a-zA-Z0-9\-_]+', 'id' => '[0-9]+'])->name('show.one.rifa');
