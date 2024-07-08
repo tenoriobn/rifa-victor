@@ -10,12 +10,10 @@ export default function GraficoFaturamentoHora() {
     if (canvasRef.current) {
       const ctx = canvasRef.current.getContext('2d');
 
-      // Destrua a instância anterior do gráfico se ela existir
       if (chartRef.current) {
         chartRef.current.destroy();
       }
 
-      // Crie um novo gráfico e armazene a instância na ref
       chartRef.current = new Chart(ctx, {
         type: 'bar', // ou 'line', 'pie', etc.
         data: {
@@ -42,7 +40,6 @@ export default function GraficoFaturamentoHora() {
       });
     }
 
-    // Limpeza para destruir o gráfico quando o componente for desmontado
     return () => {
       if (chartRef.current) {
         chartRef.current.destroy();

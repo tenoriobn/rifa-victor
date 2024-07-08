@@ -1,8 +1,9 @@
+/* eslint-disable react/prop-types */
 import useFormState from "../../../../common/states/Hook/CriarRifa/CriarRifa";
 import useCurrencyInput from "../../../../common/states/Hook/CriarRifa/useCurrencyInput";
 import useThousandSeparator from "../../../../common/states/Hook/CriarRifa/useThousandSeparator";
 
-export default function Cotas() {
+export default function Cotas({ mostrarCampo, mostrarQtdNumeros }) {
   const { formState, handleChange: handleChangeFormState } = useFormState();
 
   const updateFormState = (name, formattedValue) => {
@@ -34,30 +35,65 @@ export default function Cotas() {
     (formattedValue) => updateFormState('qntd_cota_max_client', formattedValue)
   );
 
-  // Função handleChange para useCurrencyInput
+  const { value: qtdCotasGeral, handleChange: handleQtdCotasGeral } = useThousandSeparator(
+    formState.qtd_cotas_geral,
+    (formattedValue) => updateFormState('qtd_cotas_geral', formattedValue)
+  );
+
+  const { value: qtdDigitCotas, handleChange: handleQtdDigitCotas } = useThousandSeparator(
+    formState.qtd_digit_cotas,
+    (formattedValue) => updateFormState('qtd_digit_cotas', formattedValue)
+  );
+
   const handleChangePrice = (formattedValue) => {
-    updateFormState('price', formattedValue); // Atualiza diretamente formState.price
+    updateFormState('price', formattedValue);
   };
 
-  // Hook useCurrencyInput para o input de preço
   const { value: formattedPrice, handleChange: handlePriceChange, handleBlur: handlePriceBlur } = useCurrencyInput(formState.price, handleChangePrice);
 
   return (
     <div className="category">
       <h3>Cotas</h3>
 
-      <label htmlFor="number_of_numbers">
-        Qtd de números
-        <input
-          className="qtd"
-          id="number_of_numbers"
-          value={qntdCota}
-          onChange={handleQntdCotaChange}
-          name="qntd_cota"
-          maxLength="10"
-          required
-        />
-      </label>
+      {/* Somente no editar sorteio */}
+      {mostrarCampo && (
+        <>
+          <label htmlFor="qtd_cotas_geral">
+            Qtd de cotas
+            <input className="qtd" id="qtd_cotas_geral" name="qtd_cotas_geral" maxLength="10"  
+              value={qtdCotasGeral}
+              onChange={handleQtdCotasGeral}
+            />
+          </label>
+
+          <label htmlFor="number_of_numbers">
+            Qtd de digitos das cotas
+            <input id="digits" name="qtd_digit_cotas" maxLength="1" 
+              value={qtdDigitCotas}
+              onChange={handleQtdDigitCotas}
+            />
+          </label>
+        </>
+      )}
+      {/* Somente no editar sorteio */}
+
+
+      {/* Somente no ADICIONAR sorteio */}
+      {mostrarQtdNumeros && (
+        <label htmlFor="number_of_numbers">
+          Qtd de números
+          <input
+            className="qtd"
+            id="number_of_numbers"
+            value={qntdCota}
+            onChange={handleQntdCotaChange}
+            name="qntd_cota"
+            maxLength="10"
+            required
+          />
+        </label>
+      )}
+      {/* Somente no ADICIONAR sorteio */}
 
       <label htmlFor="price">
         Valor unitário R$

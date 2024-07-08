@@ -106,6 +106,10 @@ export const stateInfoRifaForm = atom({
     show_top: "sim",
     video: "",
     
+    // SomenteEditar
+    qtd_cotas_geral: "",
+    qtd_digit_cotas: "",
+    // SomenteEditar
     qntd_cota: "",
     price: "",
     qntd_cota_min_order: "",
@@ -120,6 +124,10 @@ export const stateInfoRifaForm = atom({
     service_charge: "", 
     text_service_charge: "",
 
+    // SomenteEditar
+    double_quota: "nao",
+    double_quota_text: "",
+    // SomenteEditar
     title_cotas_awarded: "",
     description_cotas_awarded: "",
     title_upsell: "",

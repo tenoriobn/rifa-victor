@@ -10,14 +10,12 @@ export default function GraficoFaturamentoAcumulado() {
     if (canvasRef.current) {
       const ctx = canvasRef.current.getContext('2d');
 
-      // Destrua a instância anterior do gráfico se ela existir
       if (chartRef.current) {
         chartRef.current.destroy();
       }
 
-      // Crie um novo gráfico e armazene a instância na ref
       chartRef.current = new Chart(ctx, {
-        type: 'bar', // ou 'line', 'pie', etc.
+        type: 'bar',
         data: {
           labels: ['10', '11', '16'],
           datasets: [
@@ -49,7 +47,6 @@ export default function GraficoFaturamentoAcumulado() {
       });
     }
 
-    // Limpeza para destruir o gráfico quando o componente for desmontado
     return () => {
       if (chartRef.current) {
         chartRef.current.destroy();

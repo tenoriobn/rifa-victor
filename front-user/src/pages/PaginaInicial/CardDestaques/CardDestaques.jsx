@@ -5,6 +5,7 @@ import { estadoProdutoSelecionado, estadoProdutos } from "../../../common/state/
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { fetchDados } from "../../../common/http/http";
+import CardAviso from "../../../components/CardAviso/CardAviso";
 
 export default function CardDestaques() {
   const [loading, setLoading] = useState(true);
@@ -73,7 +74,11 @@ export default function CardDestaques() {
           </div>
         </Link>
       )  : (
-        <p>Não tem!</p>
+        <CardAviso
+          classes="border-yellow-600 bg-yellow-100 text-yellow-700"
+          subtitulo="Nada aqui..."
+          mensagem="Parece que estamos sem ofertas disponíveis no momento, mas não se preocupe, em breve teremos novidades! Fique ligado!"
+        />
       )}
     </>
   )

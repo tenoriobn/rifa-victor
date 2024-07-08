@@ -16,7 +16,7 @@ import { useRecoilValue } from "recoil";
 import { stateInfoRifaForm, stateUserLogin } from "../../../common/states/atom";
 import { postDados } from "../../../common/http/http";
 
-const CategoryContainer = styled.div`
+export const CategoryContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -130,9 +130,9 @@ export default function AdicionarRifa() {
         <form action="" id="frmRaffle" className="dropzone" method="POST" onSubmit={handleSubmit}>
           <CategoryContainer className="category-container">
             <Geral />
-            <Cotas />
+            <Cotas mostrarCampo={false} mostrarQtdNumeros={true} />
             <DataPagamento />
-            <Promocoes />
+            <Promocoes mostrarCampo={false} />
             <Campanhas />
             <Outros />
             <DescricaoProduto />

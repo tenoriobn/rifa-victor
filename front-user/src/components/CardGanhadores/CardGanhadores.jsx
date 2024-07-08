@@ -27,6 +27,7 @@ export default function CardGanhadores() {
   if (loading) {
     return <div>Carregando...</div>; 
   }
+  
   const ganhadoresFiltrados = ganhadores.filter(produto => produto.winner_id !== 0);
 
   return (

@@ -26,6 +26,7 @@ import SiteConfig from "./Pages/Configuracoes/SiteConfig/SiteConfig";
 import MeusDados from "./Pages/Configuracoes/MeusDados/MeusDados";
 import ConfigPagamentos from "./Pages/Configuracoes/ConfigPagamentos/ConfigPagamentos";
 import SuperAdmin from "./Pages/SuperAdmin/SuperAdmin";
+import EditarRifa from "./Pages/Sorteios/EditarRifa/EditarRifa";
 
 function App() {
   return (
@@ -39,7 +40,7 @@ function App() {
 
               <Route path="rifas" element={<Sorteios />} />
               <Route path="rifas/adicionar" element={<AdicionarRifa />} />
-              <Route path="rifas/editar" element={<AdicionarRifa />} />
+              <Route path="rifas/editar" element={<EditarRifa />} />
               <Route path="rifas/imagens" element={<ImagensRifa />} />
               <Route path="rifas/cotas" element={<RifasCotas />} />
               <Route path="rifas/packs" element={<Pacotes />} />
