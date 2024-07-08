@@ -1,7 +1,10 @@
-import styled from "styled-components"
+import { useState } from "react";
+import styled from "styled-components";
 import ConfiguracoesInputs from "./ConfiguracoesInputs/ConfiguracoesInputs";
 import SiteConfigSeo from "./SiteConfigSeo/SiteConfigSeo";
 import SuporteContato from "./SuporteContato/SuporteContato";
+import { useRecoilState } from "recoil";
+import { stateSiteConfig } from "../../../../common/states/atom";
 
 const CategoryContainer = styled.div`
   display: flex;
@@ -35,7 +38,8 @@ const CategoryContainer = styled.div`
     margin-bottom: 10px;
   }
 
-  .category input, .category textarea {
+  .category input,
+  .category textarea {
     display: block;
     height: 40px;
     margin-right: 5px;
@@ -67,8 +71,30 @@ const CategoryContainer = styled.div`
 `;
 
 export default function SiteConfigForm() {
+  const [siteConfig, setSiteConfig] = useRecoilState(stateSiteConfig);
+  const [loading, setLoading] = useState(false);
+
+  console.log(siteConfig)
+
+  const handleSaveChanges = async (event) => {
+    event.preventDefault();
+
+    try {
+      setLoading(true);
+
+      // const response = await postDados("http://seu-backend.com/api/site/config", siteConfig);
+      // setSiteConfig(response.data)
+      // console.log("Dados enviados com sucesso:", response.data);
+
+    } catch (error) {
+      console.error("Erro ao enviar dados:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <form action="http://127.0.0.1:5173/dashboard/rifas/add" id="frmRaffle" className="dropzone" method="POST">
+    <form onSubmit={handleSaveChanges} action="http://127.0.0.1:5173/dashboard/rifas/add" id="frmRaffle" className="dropzone" method="POST">
       <CategoryContainer className="category-container">
         <ConfiguracoesInputs />
         <SiteConfigSeo />
@@ -77,11 +103,12 @@ export default function SiteConfigForm() {
         <button 
           type="submit" 
           className="success" 
-          id="btnSend" 
+          id="btnSend"
+          disabled={loading} // Desabilita o botão durante o envio
         >
-          ADICIONAR
+          {loading ? "Salvando..." : "ADICIONAR"}
         </button>
       </CategoryContainer>
     </form>
-  )
+  );
 }

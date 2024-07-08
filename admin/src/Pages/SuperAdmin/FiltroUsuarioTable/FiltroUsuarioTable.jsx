@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components"
-import { stateOpenModalTrocarBilhete } from "../../../common/states/atom";
+import { stateFiltroUsuarioTable, stateOpenModalTrocarBilhete } from "../../../common/states/atom";
 
 const Table = styled.table`
   width: 100%;
@@ -92,8 +92,11 @@ const Table = styled.table`
   }
 `;
 
+
+
 export default function FiltroUsuarioTable() {  
   const [openModalTrocarBilhete, setOpenModalTrocarBilhete] = useRecoilState(stateOpenModalTrocarBilhete);
+  const filtroUsuarioTable = useRecoilValue(stateFiltroUsuarioTable)
 
   return (
     <div className="">
@@ -109,19 +112,27 @@ export default function FiltroUsuarioTable() {
         </thead>
 
         <tbody>
-          <tr className="raffle-item">
-            <td>Juliano Oliveira Amaral </td>
-            <td>F250 OU 50K NO PIX</td>
-            <td>007149</td>
-            <td>17/04/2024 </td>
-            <td>
-              <div className="button-group">
-                <a href="#" className="button-edit" onClick={() => setOpenModalTrocarBilhete(!openModalTrocarBilhete)}>
-                  <i className="fas fa-edit"></i> Editar
-                </a>
-              </div>
-            </td>
-          </tr>
+          {filtroUsuarioTable.length > 0 ? (
+            filtroUsuarioTable.map((usuario, index) => (
+              <tr key={index} className="raffle-item">
+                <td>{usuario.nome}</td>
+                <td>{usuario.rifa}</td>
+                <td>{usuario.cota}</td>
+                <td>{usuario.data}</td>
+                <td>
+                  <div className="button-group">
+                    <a
+                      href="#"
+                      className="button-edit"
+                      onClick={() => setOpenModalTrocarBilhete(!openModalTrocarBilhete)}
+                    >
+                      <i className="fas fa-edit"></i> Editar
+                    </a>
+                  </div>
+                </td>
+              </tr>
+            ))
+          ) : null}
         </tbody>
       </Table>
     </div>

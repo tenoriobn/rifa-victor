@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styled from "styled-components";
 
 const CategoryContainer = styled.div`
@@ -64,41 +65,96 @@ const CategoryContainer = styled.div`
 `;
 
 export default function MeusDadosForm() {
+  const [formDadosUsuario, setFormDadosUsuarios] = useState({
+    name: "Ana Lima",
+    email: "anaplima2001@gmail.com",
+    phone: "43996403859",
+    document: "01219599964"
+  });
+
+  console.log(formDadosUsuario)
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormDadosUsuarios((prevData) => ({
+      ...prevData,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      // const response = await postDados("http://127.0.0.1:5173/dashboard/clients/save/27", formDadosUsuario);
+      // console.log("Dados atualizados com sucesso:", response.data);
+    } catch (error) {
+      console.error("Erro ao atualizar dados:", error);
+    }
+  };
+
   return (
-    <form action="http://127.0.0.1:5173/dashboard/clients/save/27" id="frmRaffle" className="dropzone" method="POST">
+    <form onSubmit={handleSubmit} id="frmRaffle" className="dropzone" method="POST">
       <CategoryContainer className="category-container">
         <div className="category">
           <h3>MEUS DADOS</h3>
 
           <label htmlFor="name">
             Nome
-            <input type="text" name="name" defaultValue="Ana Lima" required />
+            <input 
+              type="text" 
+              name="name" 
+              value={formDadosUsuario.name} 
+              onChange={handleChange} 
+              required 
+            />
           </label>
 
           <label htmlFor="email">
             Email
-            <input type="text" name="email" defaultValue="anaplima2001@gmail.com" required />
+            <input 
+              type="text" 
+              name="email" 
+              value={formDadosUsuario.email} 
+              onChange={handleChange} 
+              required 
+            />
           </label>
 
           <label htmlFor="phone">
             Telefone
-            <input type="text" maxLength="15" id="phone" name="phone" defaultValue="43996403859" required />
+            <input 
+              type="text" 
+              maxLength="15" 
+              id="phone" 
+              name="phone" 
+              value={formDadosUsuario.phone} 
+              onChange={handleChange} 
+              required 
+            />
           </label>
 
           <label htmlFor="document">
             CPF
-            <input type="text" maxLength="14" id="document" name="document" defaultValue="01219599964" required />
+            <input 
+              type="text" 
+              maxLength="14" 
+              id="document" 
+              name="document" 
+              value={formDadosUsuario.document} 
+              onChange={handleChange} 
+              required 
+            />
           </label>
         </div>
 
         <button 
           type="submit" 
           className="success" 
-          id="btnSend" 
+          id="btnSend"
         >
           ATUALIZAR
         </button>
       </CategoryContainer>
     </form>
-  )
+  );
 }

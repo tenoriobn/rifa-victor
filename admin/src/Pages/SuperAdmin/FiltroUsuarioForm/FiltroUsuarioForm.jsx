@@ -1,4 +1,7 @@
 import styled from "styled-components";
+import { useState } from "react";
+import { useSetRecoilState } from "recoil";
+import { stateFiltroUsuarioTable } from "../../../common/states/atom";
 
 const FilterItemRow = styled.div`
   display: flex;
@@ -54,13 +57,42 @@ const Button = styled.button`
   }
 `;
 
+const usuarioFiltrado = [
+  {
+    nome: "Juliano Oliveira Amaral",
+    rifa: "F250 OU 50K NO PIX",
+    cota: "007149",
+    data: "17/04/2024",
+  },
+];
+
 export default function FiltroUsuarioForm() {
+  const [search, setSearch] = useState('');
+  const setFiltroUsuarioTable = useSetRecoilState(stateFiltroUsuarioTable)
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      // const response = await postDados.post('/api/search', { search });
+      // setFiltroUsuarioTable(response.data)
+      setFiltroUsuarioTable(usuarioFiltrado)
+    } catch (error) {
+      console.error("There was an error fetching the data!", error);
+    }
+  };
+
   return (
-    <form method="post">
+    <form onSubmit={handleSubmit}>
       <FilterItemRow>
         <FilterInputContainer>
           <Label htmlFor="id">Bilhete Premiado:</Label>
-          <input type="text" name="search" defaultValue="" placeholder="Pesquise pelo bilhete premiado"></input>
+          <input
+            type="text"
+            name="search"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Pesquise pelo bilhete premiado"
+          />
         </FilterInputContainer>
 
         <Button type="submit">
@@ -68,5 +100,5 @@ export default function FiltroUsuarioForm() {
         </Button>
       </FilterItemRow>
     </form>
-  )
+  );
 }

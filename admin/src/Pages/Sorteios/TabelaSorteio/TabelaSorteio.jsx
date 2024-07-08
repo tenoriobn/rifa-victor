@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import styled from "styled-components"
+import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { stateOpenModalAcoesSorteio } from "../../../common/states/atom";
@@ -107,6 +107,36 @@ const Table = styled.table`
   }
 `;
 
+const sorteios = [
+  {
+    id: "174",
+    nome: "SAVEIRO CROSS DOS SONHOS",
+    dataSorteio: "-",
+    faturamentoTotal: "R$ 48.946,31",
+    faturamentoHoje: "R$ 458,40",
+    cotasVendidas: "254.279",
+    percentualVendidas: "25.43%",
+    cotasReservadas: "330",
+    status: "Ativa",
+    imgSrc: "https://imagedelivery.net/TuyDlh37fwpu3jSKwZ3-9g/2a6e9600-32e1-44d2-8fff-801b4abe3e00/thumb",
+    dashboardLink: "/dashboard/rifas/dashboard/174"
+  },
+  {
+    id: "175",
+    nome: "SAVEIRO CROSS DOS SONHOS",
+    dataSorteio: "-",
+    faturamentoTotal: "R$ 48.946,31",
+    faturamentoHoje: "R$ 458,40",
+    cotasVendidas: "254.279",
+    percentualVendidas: "25.43%",
+    cotasReservadas: "330",
+    status: "Ativa",
+    imgSrc: "https://imagedelivery.net/TuyDlh37fwpu3jSKwZ3-9g/2a6e9600-32e1-44d2-8fff-801b4abe3e00/thumb",
+    dashboardLink: "/dashboard/rifas/dashboard/174"
+  },
+  // Adicione mais objetos de sorteios conforme necessário
+];
+
 export default function TabelaSorteio() {
   const [openModalAcoesSorteio, setOpenModalAcoesSorteio] = useRecoilState(stateOpenModalAcoesSorteio);
 
@@ -130,90 +160,47 @@ export default function TabelaSorteio() {
         </thead>
 
         <tbody>
-          <tr>
-            <td className="spacing">
-              <img src="https://imagedelivery.net/TuyDlh37fwpu3jSKwZ3-9g/2a6e9600-32e1-44d2-8fff-801b4abe3e00/thumb" alt="#" />
-            </td>
-            <td>#174</td>
-            <td>
-              <a href="" target="_blank">
-                <i className="fa-solid fa-link"></i>
-              </a> 
-              <b>SAVEIRO CROSS DOS SONHOS</b>
-            </td>
-            <td> - </td>
-            <td>R$ 48.946,31</td>
-            <td>R$ 458,40</td>
-            <td>254.279</td>
-            <td><b>25.43%</b></td>
-            <td>330</td>
-            <td>
-              <span className="status-tag status-pago">Ativa</span>                        
-            </td>
-
-            <td>
-              <div className="button-group">
-                <a className="button-delete" 
-                  href="">
-                  <i className="fa-solid fa-toggle-on"></i> Finalizar
+          {sorteios.map((sorteio, index) => (
+            <tr key={index}>
+              <td className="spacing">
+                <img src={sorteio.imgSrc} alt="#" />
+              </td>
+              <td>{sorteio.id}</td>
+              <td>
+                <a href="" target="_blank">
+                  <i className="fa-solid fa-link"></i>
                 </a>
-                <Link className="button-dashboard" to="/dashboard/rifas/dashboard/174">
-                  <ion-icon name="stats-chart" role="img" className="md hydrated"></ion-icon> Dashboard
-                </Link>
-                <button 
-                  className="button-edit" 
-                  onClick={() => setOpenModalAcoesSorteio(!openModalAcoesSorteio)}
-                >
-                  <i className="fas fa-bars"></i> Ações
-                </button>
-              </div>
-            </td>
-          </tr>
-
-
-          
-
-          <tr>
-            <td className="spacing">
-              <img src="https://imagedelivery.net/TuyDlh37fwpu3jSKwZ3-9g/2a6e9600-32e1-44d2-8fff-801b4abe3e00/thumb" alt="#" />
-            </td>
-            <td>#174</td>
-            <td>
-              <a href="" target="_blank">
-                <i className="fa-solid fa-link"></i>
-              </a> 
-              <b>SAVEIRO CROSS DOS SONHOS</b>
-            </td>
-            <td> - </td>
-            <td>R$ 48.946,31</td>
-            <td>R$ 458,40</td>
-            <td>254.279</td>
-            <td><b>25.43%</b></td>
-            <td>330</td>
-            <td>
-              <span className="status-tag status-pago">Ativa</span>                        
-            </td>
-
-            <td>
-              <div className="button-group">
-                <a className="button-delete" 
-                  href="">
-                  <i className="fa-solid fa-toggle-on"></i> Finalizar
-                </a>
-                <Link className="button-dashboard" to="/dashboard/rifas/dashboard/174">
-                  <ion-icon name="stats-chart" role="img" className="md hydrated"></ion-icon> Dashboard
-                </Link>
-                <button 
-                  className="button-edit" 
-                  onClick={() => setOpenModalAcoesSorteio(true)}
-                >
-                  <i className="fas fa-bars"></i> Ações
-                </button>
-              </div>
-            </td>
-          </tr>
+                <b>{sorteio.nome}</b>
+              </td>
+              <td>{sorteio.dataSorteio}</td>
+              <td>{sorteio.faturamentoTotal}</td>
+              <td>{sorteio.faturamentoHoje}</td>
+              <td>{sorteio.cotasVendidas}</td>
+              <td><b>{sorteio.percentualVendidas}</b></td>
+              <td>{sorteio.cotasReservadas}</td>
+              <td>
+                <span className="status-tag status-pago">{sorteio.status}</span>
+              </td>
+              <td>
+                <div className="button-group">
+                  <a className="button-delete" href="">
+                    <i className="fa-solid fa-toggle-on"></i> Finalizar
+                  </a>
+                  <Link className="button-dashboard" to={sorteio.dashboardLink}>
+                    <ion-icon name="stats-chart" role="img" className="md hydrated"></ion-icon> Dashboard
+                  </Link>
+                  <button 
+                    className="button-edit" 
+                    onClick={() => setOpenModalAcoesSorteio(!openModalAcoesSorteio)}
+                  >
+                    <i className="fas fa-bars"></i> Ações
+                  </button>
+                </div>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </Table>
     </div>
-  )
+  );
 }

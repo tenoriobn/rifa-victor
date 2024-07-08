@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styled from "styled-components"
 
 const Form = styled.form`
@@ -57,19 +58,48 @@ const Form = styled.form`
 `;
 
 export default function ModalTrocarBilhete() {
+  const [cota, setCota] = useState("");
+  const [number, setNumber] = useState("");
+
+  console.log('cota: ', cota);
+  console.log('number: ', number);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      // const response = await postDados.post("/api/trocar-bilhete", { cota, number });
+      // console.log("Troca realizada com sucesso:", response.data);
+    } catch (error) {
+      console.error("Erro ao trocar bilhete:", error);
+    }
+  };
+
   return (
-    <Form action="" id="frmAddPack" method="POST">
-      <label htmlFor="">
+    <Form onSubmit={handleSubmit}>
+      <label htmlFor="cota">
         Cota Selecionada para Troca
-        <input type="text" name="cota" id="cota" />
+        <input
+          type="text"
+          name="cota"
+          id="cota"
+          value={cota}
+          onChange={(e) => setCota(e.target.value)}
+        />
       </label>
 
-      <label htmlFor="">
+      <label htmlFor="number">
         Destinatário da Cota
-        <input type="text" name="number" id="number" />
+        <input
+          type="text"
+          name="number"
+          id="number"
+          value={number}
+          onChange={(e) => setNumber(e.target.value)}
+        />
       </label>
 
       <input id="sendEditPack" type="submit" value="Efetuar Troca" />
     </Form>
-  )
+  );
 }

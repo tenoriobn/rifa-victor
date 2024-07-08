@@ -147,3 +147,13 @@ export const stateInfoRifaForm = atom({
     description_order_approve: "",
   },
 });
+
+export const stateFiltroUsuarioTable = atom({
+  key: 'stateFiltroUsuarioTable',
+  default: {},
+})
+
+export const stateSiteConfig = atom({
+  key: 'stateSiteConfig',
+  default: {},
+})
