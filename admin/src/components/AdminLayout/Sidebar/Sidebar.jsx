@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useRecoilState } from "recoil";
 import { stateMenuActive } from "../../../common/states/atom";
 import links from "./links.json";
 import linksConfiguracoes from "./linksConfiguracoes.json";
+import { removerToken } from "../../../common/http/http";
 
 const ContainerSidebar = styled.div`
   background: #20202a;
@@ -92,13 +93,19 @@ const MenuBody = styled.div`
 export default function Sidebar() {
   const [menuActive, setMenuActive] = useRecoilState(stateMenuActive);
   const [submenuActive, setSubmenuActive] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    removerToken();
+    navigate('/');
+  }
 
   return (
     <ContainerSidebar $menuActive={menuActive}>
       <span onClick={() => setMenuActive(!menuActive)}>X</span>
 
       <MenuHeader>
-        <button>
+        <button onClick={handleLogout}>
           <i className="fas fa-external-link-alt" aria-hidden="true"></i> Sair
         </button>
         <div>
