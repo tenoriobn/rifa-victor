@@ -1,3 +1,4 @@
+import CardNotificacaoErroPedidos from "../CardNotificacaoErroPedidos/CardNotificacaoErroPedidos";
 import Paginacao from "./Paginacao/Paginacao";
 import TabelaPedidos from "./Tabela/TabelaPedidos";
 
@@ -11,6 +12,8 @@ export default function MeusPedidos() {
       <TabelaPedidos />
 
       <Paginacao />
+
+      <CardNotificacaoErroPedidos />
     </div>
   )
 }

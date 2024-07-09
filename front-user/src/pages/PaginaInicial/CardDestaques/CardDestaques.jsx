@@ -6,25 +6,55 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { fetchDados } from "../../../common/http/http";
 import CardAviso from "../../../components/CardAviso/CardAviso";
+import AvisoCarregando from "../../../components/AvisoCarregando/AvisoCarregando";
 
 export default function CardDestaques() {
   const [loading, setLoading] = useState(true);
   const [produto, setProdutos] = useRecoilState(estadoProdutos);
   const setProdutoSelecionado = useSetRecoilState(estadoProdutoSelecionado);
+  const [erroConexao, setErroConexao] = useState(false);
 
-  useEffect(() => {
-    const obterDados = async () => {
+  const obterDados = async () => {
+    try {
       const dados = await fetchDados('/index');
       setProdutos(dados.data);
-      setLoading(false); 
-    };
-    
+      setLoading(false);
+    } catch (error) {
+      setErroConexao(true); // Marca erro de conexão ao falhar o fetch
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     obterDados();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (loading) {
-    return <div>Carregando...</div>; 
+    return <AvisoCarregando />; 
   }
+
+  if (erroConexao) {
+    return (
+      <CardAviso
+        classes="border-rose-800 bg-rose-100 text-rose-800 flex flex-col items-start	"
+        subtitulo="Ops!"
+        mensagem=" Encontramos um problema ao processar as ofertas. Pedimos desculpas pelo inconveniente. Por favor, tente novamente em alguns minutos."
+      >
+        <button 
+          onClick={obterDados}
+          className="relative inline-block group text-white rounded overflow-hidden shadow-transparent shadow-md hover:shadow-black/3 0 bg-rose-600 duration-300"
+        >
+          <div className="absolute left-0 top-0 bg-rose-700 w-0 group-hover:w-full transition-all h-1/2 duration-300"></div>
+          <div className="absolute right-0 bottom-0 bg-rose-700 w-0 group-hover:w-full transition-all h-1/2 duration-300" ></div>
+          <div className="relative px-4 py-1 transition-all flex items-center justify-center gap-1 duration-300"> 
+            Tentar novamente 
+          </div>
+        </button>
+      </CardAviso>
+    );
+  }
+
   // const converterImgProduto = (imgs) => {
   //   let img = imgs.replace(/\\"/g, '"');
   //   let imgArray = JSON.parse(img);

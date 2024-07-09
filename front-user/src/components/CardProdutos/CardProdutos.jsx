@@ -7,6 +7,7 @@ import { estadoProdutoSelecionado, estadoProdutos, estadoRenderizaComponenteCada
 import { useEffect, useState } from "react";
 import { fetchDados } from "../../common/http/http";
 import CardAviso from "../CardAviso/CardAviso";
+import AvisoCarregando from "../AvisoCarregando/AvisoCarregando";
 
 export default function CardProdutos({ categoria }) {
   const [produtos, setProdutos] = useRecoilState(estadoProdutos);
@@ -17,22 +18,38 @@ export default function CardProdutos({ categoria }) {
   const setRenderizaInfoUsuario = useSetRecoilState(estadoRenderizaInfoUsuario);
   const setRenderizaComponenteCadastro = useSetRecoilState(estadoRenderizaComponenteCadastro);
   const setRenderizaComponenteLogin = useSetRecoilState(estadoRenderizaComponenteLogin);
+  const [erroConexao, setErroConexao] = useState(false);
 
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const obterDados = async () => {
-      const dados = await fetchDados('/produtos');
-      setProdutos(dados.data);
-      setLoading(false); 
+      try {
+        const dados = await fetchDados('/produtos');
+        setProdutos(dados.data);
+        setLoading(false); 
+      } catch (error) {
+        setErroConexao(true);
+        setLoading(false);
+      }
     };
     
     obterDados();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  if (erroConexao) {
+    return (
+      <CardAviso
+        classes="border-rose-800 bg-rose-100 text-rose-800"
+        subtitulo="Ops!"
+        mensagem="Encontramos um problema ao processar as ofertas. Pedimos desculpas pelo inconveniente. Por favor, tente novamente em alguns minutos."
+      />
+    );
+  }
+
   if (loading) {
-    return <div>Carregando...</div>; 
+    return <AvisoCarregando />; 
   }
 
   // const converterImgProduto = (imgs) => {

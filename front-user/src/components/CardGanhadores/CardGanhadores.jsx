@@ -6,26 +6,43 @@ import { estadoGanhadores, estadoProdutoSelecionado } from '../../common/state/a
 import { useEffect, useState } from 'react';
 import { fetchDados } from '../../common/http/http';
 import CardAviso from '../CardAviso/CardAviso';
+import AvisoCarregando from '../AvisoCarregando/AvisoCarregando';
 
 export default function CardGanhadores() {
   const [ganhadores, setGanhadores] = useRecoilState(estadoGanhadores);
   const [loading, setLoading] = useState(true);
+  const [erroConexao, setErroConexao] = useState(false);
 
   const setProdutoSelecionado = useSetRecoilState(estadoProdutoSelecionado);
 
   useEffect(() => {
     const obterDados = async () => {
-      const dados = await fetchDados('/ganhadores');
-      setGanhadores(dados.data);
-      setLoading(false); 
+      try {
+        const dados = await fetchDados('/ganhadores');
+        setGanhadores(dados.data);
+        setLoading(false);
+      } catch (error) {
+        setErroConexao(true);
+        setLoading(false);
+      }
     };
     obterDados();
-  
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  if (erroConexao) {
+    return (
+      <CardAviso
+        classes="border-rose-800 bg-rose-100 text-rose-800"
+        subtitulo="Ixe!!"
+        mensagem="Parece que não conseguimos processar os vencedores. Tente de novo em alguns instantes."
+      />
+    );
+  }
+
   if (loading) {
-    return <div>Carregando...</div>; 
+    return <AvisoCarregando /> 
   }
   
   const ganhadoresFiltrados = ganhadores.filter(produto => produto.winner_id !== 0);
