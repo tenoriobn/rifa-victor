@@ -39,6 +39,19 @@ class RifasController extends Controller
             return response()->json(["success" => false, "msg" => $e->getMessage()], $this->serverError);
         }
     }
+    public function getAllRifasAdmin() {
+        try {
+            $rifasData = Rifas::getAllRifas()->select(['id','title', 'status', 'data_sortition']);
+
+            if (!$rifasData) {
+                return response()->json(["success" => false, "msg" => "rifas não foi encontrada."], $this->notFound);
+            }
+
+            return response()->json(["success" => true, "data" => $rifasData], $this->success);
+        } catch (Exception $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], $this->serverError);
+        }
+    }
     public function allRifas() {
         try {
             $rifasData = Rifas::getAllRifas();
@@ -210,7 +223,7 @@ class RifasController extends Controller
                 }
                 return response()->json(["response" => true, "msg" => "Imagens adicionadas com sucesso."], 200);
             }
-            return response()->json(["response" => true, "msg" => "Nenhuma imagem encontrada no request."], 500);
+            return response()->json(["response" => true, "msg" => "Nenhuma imagem encontrada no request."], 404);
         } catch (\Exception $e) {
             return response()->json(["response" => true, "msg" => "Erro ao processar as imagens:", "error" => $e->getMessage()], 500);
         }
@@ -231,6 +244,16 @@ class RifasController extends Controller
         // }
         dd(substr($base64, strpos($base64, ',') + 1) );
         return false;
+    }
+    public function finalizarRifa($id)
+    {
+        $rifa = Rifas::where('id',$id);
+        if (!$rifa ) {
+            return response()->json(["response" => true, "msg" => "Nenhuma rifa encontrada."], 404);
+        }
+
+        $rifa->update(['status' => 'finalizadas']);
+        return response()->json(["response" => true, "msg" => "Rifa finalizada com sucesso."]);
     }
 
 

@@ -27,6 +27,8 @@ use App\Http\Controllers\V1\{AuthController, AdminController, ClientController, 
         Route::post("/login", [AdminController::class, "login"])->name('admin.login.user');
         Route::middleware('auth:sanctum')->post("/logout", [AdminController::class, "logout"])->name('admin.logout.user');
 
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/rifas", [RifasController::class, "getAllRifasAdmin"])->name('admin.all.rifas');
+
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/cadastrar/rifas", [RifasController::class, "storeRifa"])->name('admin.create.rifa');
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/editar/rifa/{id}", [RifasController::class, "getOneRifa"])->name('admin.get.edit.rifa');
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->put("/editar/rifa/{id}", [RifasController::class, "editRifa"])->name('admin.edit.rifa');
@@ -38,6 +40,8 @@ use App\Http\Controllers\V1\{AuthController, AdminController, ClientController, 
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/cadastrar/rifas/pacotes", [RifasController::class, "storePacote"])->name('admin.create.rifa.pacote');
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/cadastrar/rifas/upsell", [RifasController::class, "storeUpsell"])->name('admin.create.rifa.upsell');
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/cadastrar/rifas/imagem", [RifasController::class, "storeImagem"])->name('admin.create.rifa.imagem');
+
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->put("/finalizar/rifas/{id}", [RifasController::class, "finalizarRifa"])->name('admin.finalizar.rifa');
 
 
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/me", [AdminController::class, "me"])->name('admin.me.user');

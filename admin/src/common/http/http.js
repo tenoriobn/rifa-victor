@@ -16,8 +16,21 @@ apiClient.interceptors.request.use((config) => {
   return config;
 });
 
-export const fetchDados = async (rota) => {
-  const response = await apiClient.get(rota);
+export const fetchDados = async (rota, token) => {
+  const response = await apiClient.get(rota, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};
+
+export const putDados = async (rota, token) => {
+  const response = await apiClient.put(rota, {}, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return response.data;
 };
 

@@ -1,8 +1,10 @@
 /* eslint-disable react/prop-types */
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { useRecoilState } from "recoil";
-import { stateOpenModalAcoesSorteio } from "../../../common/states/atom";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { stateIdModalAcoesSorteio, stateOpenModalAcoesSorteio, stateUserLogin } from "../../../common/states/atom";
+import { useEffect, useState } from "react";
+import { fetchDados, putDados } from "../../../common/http/http";
 
 const Table = styled.table`
   width: 100%;
@@ -107,38 +109,79 @@ const Table = styled.table`
   }
 `;
 
-const sorteios = [
-  {
-    id: "174",
-    nome: "SAVEIRO CROSS DOS SONHOS",
-    dataSorteio: "-",
-    faturamentoTotal: "R$ 48.946,31",
-    faturamentoHoje: "R$ 458,40",
-    cotasVendidas: "254.279",
-    percentualVendidas: "25.43%",
-    cotasReservadas: "330",
-    status: "Ativa",
-    imgSrc: "https://imagedelivery.net/TuyDlh37fwpu3jSKwZ3-9g/2a6e9600-32e1-44d2-8fff-801b4abe3e00/thumb",
-    dashboardLink: "/dashboard/rifas/dashboard/174"
-  },
-  {
-    id: "175",
-    nome: "SAVEIRO CROSS DOS SONHOS",
-    dataSorteio: "-",
-    faturamentoTotal: "R$ 48.946,31",
-    faturamentoHoje: "R$ 458,40",
-    cotasVendidas: "254.279",
-    percentualVendidas: "25.43%",
-    cotasReservadas: "330",
-    status: "Ativa",
-    imgSrc: "https://imagedelivery.net/TuyDlh37fwpu3jSKwZ3-9g/2a6e9600-32e1-44d2-8fff-801b4abe3e00/thumb",
-    dashboardLink: "/dashboard/rifas/dashboard/174"
-  },
-  // Adicione mais objetos de sorteios conforme necessário
-];
+// const sorteios = [
+//   {
+//     id: "174",
+//     nome: "SAVEIRO CROSS DOS SONHOS",
+//     dataSorteio: "-",
+//     faturamentoTotal: "R$ 48.946,31",
+//     faturamentoHoje: "R$ 458,40",
+//     cotasVendidas: "254.279",
+//     percentualVendidas: "25.43%",
+//     cotasReservadas: "330",
+//     status: "Ativa",
+//     imgSrc: "https://imagedelivery.net/TuyDlh37fwpu3jSKwZ3-9g/2a6e9600-32e1-44d2-8fff-801b4abe3e00/thumb",
+//     dashboardLink: "/dashboard/rifas/dashboard/174"
+//   },
+//   {
+//     id: "175",
+//     nome: "SAVEIRO CROSS DOS SONHOS",
+//     dataSorteio: "-",
+//     faturamentoTotal: "R$ 48.946,31",
+//     faturamentoHoje: "R$ 458,40",
+//     cotasVendidas: "254.279",
+//     percentualVendidas: "25.43%",
+//     cotasReservadas: "330",
+//     status: "Ativa",
+//     imgSrc: "https://imagedelivery.net/TuyDlh37fwpu3jSKwZ3-9g/2a6e9600-32e1-44d2-8fff-801b4abe3e00/thumb",
+//     dashboardLink: "/dashboard/rifas/dashboard/174"
+//   },
+//   // Adicione mais objetos de sorteios conforme necessário
+// ];
 
 export default function TabelaSorteio() {
   const [openModalAcoesSorteio, setOpenModalAcoesSorteio] = useRecoilState(stateOpenModalAcoesSorteio);
+  const setIdModalAcoesSorteio = useSetRecoilState(stateIdModalAcoesSorteio);
+  const [sorteios, setSorteios] = useState([]);
+  const userLogin = useRecoilValue(stateUserLogin)
+
+  console.log(userLogin)
+
+  useEffect(() => {
+    const obterDados = async () => {
+      try {
+        const response = await fetchDados('/admin/dashboard/rifas', userLogin);
+        console.log('response:', response);
+  
+        setSorteios(response.data)
+      } catch (error) {
+        console.error('Erro ao fazer POST:', error);
+      }
+    };
+    
+    obterDados();
+  }, []);
+
+  const handleFinalizar = async (id) => {
+    const confirmacao = window.confirm('Tem certeza que deseja finalizar esta rifa?');
+    if (confirmacao) {
+      try {
+        await putDados(`admin/finalizar/rifas/${id}`, userLogin);
+        setSorteios((prevSorteios) => prevSorteios.filter(sorteio => sorteio.id !== id));
+        alert('Rifa finalizada com sucesso!');
+      } catch (error) {
+        console.error('Erro ao finalizar a rifa:', error);
+        alert('Erro ao finalizar a rifa. Tente novamente.');
+      }
+    }
+  };
+
+  const handlePegaIdModal = (id) => {
+    setOpenModalAcoesSorteio(!openModalAcoesSorteio);
+    setIdModalAcoesSorteio(id);
+
+    console.log('id modal: ', id)
+  }
 
   return (
     <div className="">
@@ -165,14 +208,15 @@ export default function TabelaSorteio() {
               <td className="spacing">
                 <img src={sorteio.imgSrc} alt="#" />
               </td>
-              <td>{sorteio.id}</td>
+              <td>#{sorteio.id}</td>
               <td>
                 <a href="" target="_blank">
                   <i className="fa-solid fa-link"></i>
                 </a>
-                <b>{sorteio.nome}</b>
+                <b>{sorteio.title
+                }</b>
               </td>
-              <td>{sorteio.dataSorteio}</td>
+              <td>{sorteio.data_sortition}</td>
               <td>{sorteio.faturamentoTotal}</td>
               <td>{sorteio.faturamentoHoje}</td>
               <td>{sorteio.cotasVendidas}</td>
@@ -183,7 +227,7 @@ export default function TabelaSorteio() {
               </td>
               <td>
                 <div className="button-group">
-                  <a className="button-delete" href="">
+                  <a className="button-delete" href="#" onClick={() => handleFinalizar(sorteio.id)} >
                     <i className="fa-solid fa-toggle-on"></i> Finalizar
                   </a>
                   <Link className="button-dashboard" to={sorteio.dashboardLink}>
@@ -191,7 +235,7 @@ export default function TabelaSorteio() {
                   </Link>
                   <button 
                     className="button-edit" 
-                    onClick={() => setOpenModalAcoesSorteio(!openModalAcoesSorteio)}
+                    onClick={() => handlePegaIdModal(sorteio.id)}
                   >
                     <i className="fas fa-bars"></i> Ações
                   </button>

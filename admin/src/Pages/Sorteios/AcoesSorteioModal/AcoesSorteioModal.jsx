@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
+import { useSetRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { stateOpenModalAcoesSorteio } from "../../../common/states/atom";
+import { stateOpenModalAcoesSorteio, stateIdModalAcoesSorteio } from "../../../common/states/atom";
 
 const StyledLink = styled(Link)`
   color: white;
@@ -113,6 +113,7 @@ const linksData = [
 
 export default function AcoesSorteioModal() {
   const setOpenModalAcoesSorteio = useSetRecoilState(stateOpenModalAcoesSorteio);
+  const idModalAcoesSorteio = useRecoilValue(stateIdModalAcoesSorteio);
 
   return (
     <>
@@ -121,7 +122,7 @@ export default function AcoesSorteioModal() {
           key={link.id}
           id={link.id}
           className={link.className}
-          to={link.to}
+          to={`${link.to}${idModalAcoesSorteio}`}
           onClick={() => setOpenModalAcoesSorteio(false)}
         >
           <i className={link.iconClass}></i> {link.text}

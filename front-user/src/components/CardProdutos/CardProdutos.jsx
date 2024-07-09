@@ -10,6 +10,8 @@ import CardAviso from "../CardAviso/CardAviso";
 
 export default function CardProdutos({ categoria }) {
   const [produtos, setProdutos] = useRecoilState(estadoProdutos);
+
+
   const setProdutoSelecionado = useSetRecoilState(estadoProdutoSelecionado);
   const produtosFiltrados = Array.isArray(produtos) ? produtos.filter(produto => produto.status === categoria) : [];
   const setRenderizaInfoUsuario = useSetRecoilState(estadoRenderizaInfoUsuario);

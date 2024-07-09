@@ -186,3 +186,8 @@ export const stateFiltroSorteio = atom({
   key: 'stateFiltroSorteio',
   default: {},
 })
+
+export const stateIdModalAcoesSorteio = atom({
+  key: 'stateIdModalAcoesSorteio',
+  default: '',
+})
