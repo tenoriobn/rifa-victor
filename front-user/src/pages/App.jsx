@@ -15,7 +15,7 @@ import MeusDados from "../components/MeusDados/MeusDados";
 import DetalhesPedido from "../components/DetalhesPedido/DetalhesPedido";
 
 export default function App() {
-  const location = useLocation()
+  const location = useLocation();
 
   return (
     <AnimatePresence mode="wait">
