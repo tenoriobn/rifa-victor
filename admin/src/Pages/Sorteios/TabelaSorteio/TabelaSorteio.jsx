@@ -51,13 +51,24 @@ const Table = styled.table`
   }
 
   .status-tag {
-    background-color: #28a745;
     padding: .3125rem .625rem;
     border-radius: .3125rem;
     color: white;
     font-weight: bold;
     text-align: center;
     display: inline-block;
+  }
+
+  .status-pago {
+    background-color: #28a745;
+  }
+
+  .status-cancelado {
+    background-color: #dc3545;
+  }
+
+  .status-inactive {
+    background-color: #b24848
   }
 
   .button-group {
@@ -145,8 +156,6 @@ export default function TabelaSorteio() {
   const [sorteios, setSorteios] = useState([]);
   const userLogin = useRecoilValue(stateUserLogin)
 
-  
-
   useEffect(() => {
     const obterDados = async () => {
       try {
@@ -159,6 +168,7 @@ export default function TabelaSorteio() {
     };
     
     obterDados();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleFinalizar = async (id) => {
@@ -178,8 +188,6 @@ export default function TabelaSorteio() {
   const handlePegaIdModal = (id) => {
     setOpenModalAcoesSorteio(!openModalAcoesSorteio);
     setIdModalAcoesSorteio(id);
-
-
   }
 
   return (
@@ -222,7 +230,16 @@ export default function TabelaSorteio() {
               <td><b>{sorteio.percentualVendidas}</b></td>
               <td>{sorteio.cotasReservadas}</td>
               <td>
-                <span className="status-tag status-pago">{sorteio.status}</span>
+                <span
+                  className={`status-tag ${
+                    sorteio.status === 'finalizadas' ? 'status-cancelado' :
+                    sorteio.status === 'ativas' ? 'status-pago' :
+                    sorteio.status === 'inativos' ? 'status-inactive' :
+                    ''
+                  }`}
+                >
+                  {sorteio.status}
+                </span>
               </td>
               <td>
                 <div className="button-group">
