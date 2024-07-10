@@ -25,8 +25,8 @@ export const fetchDados = async (rota, token) => {
   return response.data;
 };
 
-export const putDados = async (rota, token) => {
-  const response = await apiClient.put(rota, {}, {
+export const putDados = async (rota, dados, token) => {
+  const response = await apiClient.put(rota, dados, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

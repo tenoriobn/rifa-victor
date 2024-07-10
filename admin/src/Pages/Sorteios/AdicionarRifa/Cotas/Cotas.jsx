@@ -35,11 +35,6 @@ export default function Cotas({ mostrarCampo, mostrarQtdNumeros }) {
     (formattedValue) => updateFormState('qntd_cota_max_client', formattedValue)
   );
 
-  const { value: qtdCotasGeral, handleChange: handleQtdCotasGeral } = useThousandSeparator(
-    formState.qtd_cotas_geral,
-    (formattedValue) => updateFormState('qtd_cotas_geral', formattedValue)
-  );
-
   const { value: qtdDigitCotas, handleChange: handleQtdDigitCotas } = useThousandSeparator(
     formState.qtd_digit_cotas,
     (formattedValue) => updateFormState('qtd_digit_cotas', formattedValue)
@@ -55,45 +50,36 @@ export default function Cotas({ mostrarCampo, mostrarQtdNumeros }) {
     <div className="category">
       <h3>Cotas</h3>
 
-      {/* Somente no editar sorteio */}
-      {mostrarCampo && (
-        <>
-          <label htmlFor="qtd_cotas_geral">
-            Qtd de cotas
-            <input className="qtd" id="qtd_cotas_geral" name="qtd_cotas_geral" maxLength="10"  
-              value={qtdCotasGeral}
-              onChange={handleQtdCotasGeral}
-            />
-          </label>
-
-          <label htmlFor="number_of_numbers">
-            Qtd de digitos das cotas
-            <input id="digits" name="qtd_digit_cotas" maxLength="1" 
-              value={qtdDigitCotas}
-              onChange={handleQtdDigitCotas}
-            />
-          </label>
-        </>
-      )}
-      {/* Somente no editar sorteio */}
+      <label htmlFor="number_of_numbers">
+        {mostrarCampo ? 'Qtd de números' : 'Qtd de números'}  
+        <input
+          className="qtd"
+          id="number_of_numbers"
+          value={qntdCota}
+          onChange={handleQntdCotaChange}
+          name="qntd_cota"
+          maxLength="10"
+          disabled={mostrarQtdNumeros}
+          required
+        />
+      </label>
 
 
-      {/* Somente no ADICIONAR sorteio */}
-      {mostrarQtdNumeros && (
-        <label htmlFor="number_of_numbers">
-          Qtd de números
-          <input
-            className="qtd"
-            id="number_of_numbers"
-            value={qntdCota}
-            onChange={handleQntdCotaChange}
-            name="qntd_cota"
-            maxLength="10"
-            required
-          />
-        </label>
-      )}
-      {/* Somente no ADICIONAR sorteio */}
+        {/* Somente no editar sorteio */}
+        {mostrarCampo && (
+          <>
+            <label htmlFor="number_of_numbers">
+              Qtd de digitos das cotas
+              <input id="digits" name="qtd_digit_cotas" maxLength="1" 
+                value={qtdDigitCotas}
+                onChange={handleQtdDigitCotas}
+              />
+            </label>
+          </>
+        )}
+        {/* Somente no editar sorteio */}
+
+
 
       <label htmlFor="price">
         Valor unitário R$

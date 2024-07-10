@@ -1,7 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const usePercentageInput = (initialValue = '', onChangeCallback) => {
   const [value, setValue] = useState(initialValue);
+  
+  useEffect(() => {
+    setValue(initialValue);
+  }, [initialValue]);
 
   const handleChange = (event) => {
     if (!event || !event.target || !event.target.value) {

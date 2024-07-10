@@ -1,7 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-const useThousandSeparator = (initialValue = '', onChangeCallback) => {
+const useCurrencyInput = (initialValue, onChangeCallback) => {
   const [value, setValue] = useState(initialValue);
+
+  useEffect(() => {
+    setValue(initialValue);
+  }, [initialValue]);
 
   const handleChange = (event) => {
     const inputValue = event.target.value;
@@ -9,19 +13,20 @@ const useThousandSeparator = (initialValue = '', onChangeCallback) => {
     const numericValue = inputValue.replace(/[^\d]/g, '');
     const formattedValue = numericValue.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
-    // Atualiza o estado apenas se o valor formatado mudar
-    if (formattedValue !== value) {
-      setValue(formattedValue);
-      if (onChangeCallback) {
-        onChangeCallback(formattedValue);
-      }
+    setValue(formattedValue);
+    if (onChangeCallback) {
+      onChangeCallback(formattedValue);
     }
+  };
+
+  const handleBlur = () => {
   };
 
   return {
     value,
     handleChange,
+    handleBlur,
   };
 };
 
-export default useThousandSeparator;
+export default useCurrencyInput;

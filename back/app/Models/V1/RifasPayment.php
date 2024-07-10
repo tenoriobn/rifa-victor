@@ -22,15 +22,15 @@ class RifasPayment extends Model {
         return $this->belongsTo(Rifas::class);
     }
 
-    public static function rifasPaymentCreateOrUpdate($time_pay, $gateway, $service_charge, $text_service_charge, $rifa_id, $rifas_payment_id) {
+    public static function rifasPaymentCreateOrUpdate($time_pay, $gateway, $service_charge, $text_service_charge, $rifaId, $rifaPaymentId) {
         $result  = self::updateOrCreate(
-            ['id' => $rifas_payment_id],
+            ['id' => $rifaPaymentId],
             [
                 'time_pay' => $time_pay,
                 'gateway' => $gateway,
                 'service_charge' => $service_charge,
                 'text_service_charge' => $text_service_charge,
-                'rifas_id' => $rifa_id,
+                'rifas_id' => $rifaId,
 
             ]);
 

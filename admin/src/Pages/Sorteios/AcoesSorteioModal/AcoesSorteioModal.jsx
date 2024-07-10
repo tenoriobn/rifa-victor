@@ -114,6 +114,7 @@ const linksData = [
 export default function AcoesSorteioModal() {
   const setOpenModalAcoesSorteio = useSetRecoilState(stateOpenModalAcoesSorteio);
   const idModalAcoesSorteio = useRecoilValue(stateIdModalAcoesSorteio);
+  
 
   return (
     <>

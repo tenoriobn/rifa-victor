@@ -91,7 +91,7 @@ class RifasController extends Controller
     }
     public function editRifa($id, Request $request) {
         try {
-            $rifasData = Rifas::getOneRifas( $id);
+            $rifasData = Rifas::getOneRifa( $id);
             if (!$rifasData) {
                 return response()->json(["success" => false, "msg" => "Rifa não encontrada" ], 404);
             }
@@ -202,7 +202,6 @@ class RifasController extends Controller
             // Verifica se há uma imagem no request e se é base64
             if ($request->has('path') && is_array($request->path)) {
                 foreach ($request->path as $index => $base64Image) {
-                   dd( $this->isValidBase64Image($base64Image));
                     // if ($this->isValidBase64Image($base64Image)) {
                     //     // Decodifica a imagem base64
                     //     $imageData = base64_decode($base64Image);
@@ -242,7 +241,6 @@ class RifasController extends Controller
 
         //     return base64_decode($base64, true) !== false;
         // }
-        dd(substr($base64, strpos($base64, ',') + 1) );
         return false;
     }
     public function finalizarRifa($id)

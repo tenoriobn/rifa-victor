@@ -15,9 +15,9 @@ export default function Promocoes({ mostrarCampo }) {
             Cotas Dobradas
             <select 
               id="highlighted" 
-              name="double_quota" 
+              name="cotas_double" 
               required
-              value={formState.double_quota}
+              value={formState.cotas_double}
               onChange={handleChange}
             >
               <option value="sim">SIM</option>
@@ -29,9 +29,9 @@ export default function Promocoes({ mostrarCampo }) {
             Texto Cotas Dobradas
             <input 
               type="text" 
-              name="double_quota_text" 
+              name="text_cotas_double" 
               maxLength="500"
-              value={formState.double_quota_text}
+              value={formState.text_cotas_double}
               onChange={handleChange}
             />
           </label>

@@ -130,9 +130,9 @@ export default function AdicionarRifa() {
         <form action="" id="frmRaffle" className="dropzone" method="POST" onSubmit={handleSubmit}>
           <CategoryContainer className="category-container">
             <Geral />
-            <Cotas mostrarCampo={false} mostrarQtdNumeros={true} />
+            <Cotas mostrarCampo={false} />
             <DataPagamento />
-            <Promocoes mostrarCampo={false} />
+            <Promocoes mostrarCampo={false} mostrarQtdNumeros={false} />
             <Campanhas />
             <Outros />
             <DescricaoProduto />

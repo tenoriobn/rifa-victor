@@ -24,9 +24,9 @@ class RifasAwarded extends Model {
         return $this->belongsTo(Rifas::class);
     }
 
-    public static function rifasAwardedCreateOrUpdate($cotas_double, $text_cotas_double, $title_cotas_awarded, $description_cotas_awarded, $title_upsell, $description_upsell,$rifa_id, $rifas_awarded_id) {
+    public static function rifasAwardedCreateOrUpdate($cotas_double, $text_cotas_double, $title_cotas_awarded, $description_cotas_awarded, $title_upsell, $description_upsell, $rifaId, $rifaAwardedId) {
         $result  = self::updateOrCreate(
-            ['id' => $rifas_awarded_id],
+            ['id' => $rifaAwardedId],
             [
                 'cotas_double' => $cotas_double,
                 'text_cotas_double' => $text_cotas_double,
@@ -34,7 +34,7 @@ class RifasAwarded extends Model {
                 'description_cotas_awarded' => $description_cotas_awarded,
                 'title_upsell' => $title_upsell,
                 'description_upsell' => $description_upsell,
-                'rifas_id' => $rifa_id,
+                'rifas_id' => $rifaId,
 
             ]);
 

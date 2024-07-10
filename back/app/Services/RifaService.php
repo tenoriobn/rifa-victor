@@ -17,14 +17,13 @@ class RifaService
         if (!$rifaResult) {
             return false;
         }
+        $cotaResult = Cotas::cotaCreateOrUpdate( $datas->qntd_cota ?? 0, $datas->qntd_cota_digit ?? 0,$datas->qntd_cota_min_order ?? 0, $datas->qntd_cota_max_order ?? 0, $datas->qntd_cota_max_client ?? 0, $rifaResult ?? $rifasId, $datas->cota_id ?? null);
 
-        $cotaResult = Cotas::cotaCreateOrUpdate( $datas->qntd_cota ?? 0, $datas->qntd_cota_digit ?? 0,$datas->qntd_cota_min_order ?? 0, $datas->qntd_cota_max_order ?? 0, $datas->qntd_cota_max_client ?? 0, $rifaResult, $datas->cota_id ?? null);
+        $othersResult = RifasAwarded::rifasAwardedCreateOrUpdate( $datas->cotas_double ?? '', $datas->text_cotas_double ?? '', $datas->title_cotas_awarded ?? '', $datas->description_cotas_awarded ?? '', $datas->title_upsell ?? '', $datas->description_upsell ?? '', $rifaResult ?? $rifasId, $datas->rifas_awarded_id ?? null);
 
-        $othersResult = RifasAwarded::rifasAwardedCreateOrUpdate( $datas->cotas_double ?? '', $datas->text_cotas_double ?? '', $datas->title_cotas_awarded ?? '', $datas->description_cotas_awarded ?? '', $datas->title_upsell ?? '', $datas->description_upsell ?? '', $rifaResult, $datas->rifas_awarded_id ?? null);
+        $othersResult = RifasOthers::rifasOthersCreateOrUpdate( $datas->facebook_pixel ?? '', $datas->facebook_token ?? '', $datas->tiktok_pixel ?? '', $datas->whatsapp_group ?? '', $datas->link_ebook ?? '', $datas->nota_fiscal ?? '', $rifaResult ?? $rifasId, $datas->rifas_other_id ?? null);
 
-        $othersResult = RifasOthers::rifasOthersCreateOrUpdate( $datas->facebook_pixel ?? '', $datas->facebook_token ?? '', $datas->tiktok_pixel ?? '', $datas->whatsapp_group ?? '', $datas->link_ebook ?? '', $datas->nota_fiscal ?? '', $rifaResult, $datas->rifas_other_id ?? null);
-
-        $othersResult = RifasPayment::rifasPaymentCreateOrUpdate( $datas->time_pay ?? '', $datas->gateway ?? '',  $datas->service_charge ?? '', $datas->text_service_charge ?? '',  $rifaResult, $datas->rifas_payment_id ?? null);
+        $othersResult = RifasPayment::rifasPaymentCreateOrUpdate( $datas->time_pay ?? '', $datas->gateway ?? '',  $datas->service_charge ?? '', $datas->text_service_charge ?? '',  $rifaResult ?? $rifasId, $datas->rifas_payment_id ?? null);
 
 
 
