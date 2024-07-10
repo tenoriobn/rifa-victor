@@ -105,7 +105,7 @@ export default function Config() {
         window.alert(`Houve um erro no servidor ${error}`);
       }
     } else {
-      console.log("Não enviar");
+
     }
   }
 

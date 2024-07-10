@@ -61,7 +61,7 @@ const Form = styled.form`
 export default function ModalNovoGanhador() {
   const [novoGanhador, setNovoGanhador] = useRecoilState(stateNovoGanhador);
 
-  console.log('novo ganhador:', novoGanhador);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -78,7 +78,7 @@ export default function ModalNovoGanhador() {
 
       // const response = await postDados("http://seu-backend.com/api/site/config", siteConfig);
       // setSiteConfig(response.data)
-      // console.log("Dados enviados com sucesso:", response.data);
+
 
     } catch (error) {
       console.error("Erro ao enviar dados:", error);

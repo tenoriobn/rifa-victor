@@ -58,7 +58,6 @@ const Button = styled.button`
 export default function UsuariosForm() {
   const [searchValue, setSearchValue] = useState('');
 
-  console.log(searchValue)
 
   const handleChange = (e) => {
     setSearchValue(e.target.value);
@@ -66,7 +65,6 @@ export default function UsuariosForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Valor de pesquisa:', searchValue);
     // Lógica para enviar o valor para o backend aqui
   };
 

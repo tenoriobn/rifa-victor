@@ -1,5 +1,5 @@
 export default function Informations(props) {
-  console.log(props);
+
   return (
     <section className="py-5">
       <div className="flex flex-col gap-4">

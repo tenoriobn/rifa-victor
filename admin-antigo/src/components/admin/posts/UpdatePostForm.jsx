@@ -780,7 +780,7 @@ async function handleRequest(formData, setFormData, setIsLoading, postId) {
   if (formData.data.thumbnail) {
     if (formData.data.thumbnail.notImage) {
     } else {
-      console.log(formData.data.thumbnail);
+
       for (let index = 0; index < formData.data.thumbnail.length; index += 1) {
         formDataToSend.append("thumbnail[]", formData.data.thumbnail[index]);
       }
@@ -797,7 +797,7 @@ async function handleRequest(formData, setFormData, setIsLoading, postId) {
   try {
     const response = await sendRequest(requestData);
 
-    console.log(response);
+
 
     if (!response.success) {
       setFormData((prevFormData) => {

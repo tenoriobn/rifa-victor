@@ -617,7 +617,7 @@ function handleOnSubmit(event, formData, setFormData, setIsLoading) {
 
 async function handleRequest(formData, setFormData, setIsLoading) {
   const formDataToSend = new FormData();
-  console.log(formData.data.price)
+
   formDataToSend.append("title", formData.data.title);
   formDataToSend.append("description", formData.data.description);
   formDataToSend.append("rifaStatus", formData.data.rifaStatus);

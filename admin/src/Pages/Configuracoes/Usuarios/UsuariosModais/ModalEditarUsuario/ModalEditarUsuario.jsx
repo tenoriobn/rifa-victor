@@ -61,7 +61,6 @@ const Form = styled.form`
 export default function ModalEditarUsuario() {
   const [novoUsuario, setNovoUsuario] = useRecoilState(stateNovoUsuario);
 
-  console.log(novoUsuario)
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -75,7 +74,6 @@ export default function ModalEditarUsuario() {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Aqui você pode enviar os dados para o backend, utilizando novoUsuario
-    console.log('Dados do formulário:', novoUsuario);
     // Lógica para enviar para o backend aqui
   };
 

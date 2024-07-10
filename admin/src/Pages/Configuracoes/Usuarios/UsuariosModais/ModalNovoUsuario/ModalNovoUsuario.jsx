@@ -61,7 +61,6 @@ const Form = styled.form`
 export default function ModalNovoUsuario() {
   const [novoUsuario, setNovoUsuario] = useRecoilState(stateNovoUsuario);
 
-  console.log(novoUsuario)
 
   // Função para atualizar o estado do formulário ao digitar nos inputs
   const handleChange = (e) => {
@@ -76,7 +75,6 @@ export default function ModalNovoUsuario() {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Aqui você pode enviar os dados para o backend, utilizar o novoUsuario
-    console.log('Dados do formulário:', novoUsuario);
     // Lógica para enviar para o backend aqui
   };
 

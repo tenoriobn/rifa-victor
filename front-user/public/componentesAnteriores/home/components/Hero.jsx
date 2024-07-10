@@ -15,7 +15,7 @@ import "swiper/css/autoplay";
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 
 export default function Hero(props) {
-  console.log(props.rifaData);
+
   return (
     <section>
       <div className="flex flex-col gap-6">

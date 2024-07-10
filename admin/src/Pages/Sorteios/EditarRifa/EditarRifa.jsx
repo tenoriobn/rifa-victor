@@ -43,13 +43,11 @@ export default function EditarRifa() {
   useEffect(() => {
     const obterDados = async () => {
       const response = await fetchDados(`/admin/editar/rifa/${id}`, userLogin);
-      console.log('response:', response);
+   
 
       const flattenedData = flattenObject(response.data);
       setFormState(flattenedData);
 
-      console.log('response data:', response.data);
-      console.log('flattened data:', flattenedData);
     };
     
     if (id) {
@@ -61,11 +59,11 @@ export default function EditarRifa() {
     e.preventDefault();
     setSubmitting(true);
 
-    console.log(formState);
+
 
     try {
       const response = await putDados(`/admin/editar/rifa/${id}`, formState, userLogin);
-      console.log('response:', response);
+     
 
     } catch (error) {
       console.error('Erro ao fazer POST:', error);

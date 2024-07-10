@@ -5,7 +5,7 @@ import { estadoRifa } from "../../../common/state/atom";
 export default function CardCotasResgatadas() {
   const rifa = useRecoilValue(estadoRifa);
   const cotasResgatadas = rifa.awarded_quota_client;
-  console.log('cotasResgatadas',cotasResgatadas);
+
 
   // const cotasResgatadas = [
   //   { id: '1', nome: 'Maria Romanisio', valor: '500,00', numeroPremiado: '054524' },

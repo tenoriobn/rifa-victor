@@ -36,7 +36,7 @@ export default function Rifa() {
       setLoading(false); 
       setRifa(dados.data.rifa)
       setRanking(dados.data.ranking);
-      console.log(dados.data.rifa)
+
     };
 
     obterDados();

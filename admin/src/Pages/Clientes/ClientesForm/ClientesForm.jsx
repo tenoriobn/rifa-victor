@@ -52,7 +52,6 @@ export default function ClientesForm() {
     email: "",
   });
 
-  console.log('filtro:', filtro)
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -65,7 +64,6 @@ export default function ClientesForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log("Filtro enviado:", filtro);
     // Por exemplo:
     // fetch("/api/filtrar-clientes", {
     //   method: "POST",

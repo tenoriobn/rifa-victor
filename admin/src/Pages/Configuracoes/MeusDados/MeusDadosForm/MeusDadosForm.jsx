@@ -72,7 +72,6 @@ export default function MeusDadosForm() {
     document: "01219599964"
   });
 
-  console.log(formDadosUsuario)
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -86,7 +85,6 @@ export default function MeusDadosForm() {
     e.preventDefault();
     try {
       // const response = await postDados("http://127.0.0.1:5173/dashboard/clients/save/27", formDadosUsuario);
-      // console.log("Dados atualizados com sucesso:", response.data);
     } catch (error) {
       console.error("Erro ao atualizar dados:", error);
     }

@@ -55,7 +55,7 @@ function activeMenu(setMenuIsActive) {
 }
 
 function hideMenu(setMenuIsActive) {
-  console.log(setMenuIsActive);
+
   setMenuIsActive(() => false);
 }
 

@@ -75,7 +75,7 @@ export default function Home() {
       <Pricing
         rifaData={formData.data}
         openPaymentContainer={(rifaNumbers, price, packageId) => {
-          // console.log(price);
+
           setCotasData((prevCotasData) => {
             return {
               ...prevCotasData,

@@ -70,7 +70,7 @@ class RifasController extends Controller
     public function storeRifa(StoreRifasRequest $request) {
 
         try {
-            $this->rifaService->createRifas($request);
+            return $this->rifaService->createRifas($request);
             return response()->json(["success" => true, "msg" => "Rifa criada com sucesso" ], $this->success);
         } catch (Exception $e) {
             return response()->json(["response" => false, "msg" => "Ocorreu um erro interno ao cadastrar a rifa", "error" => $e->getMessage()], $this->serverError);

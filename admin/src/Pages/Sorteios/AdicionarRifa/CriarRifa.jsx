@@ -100,17 +100,17 @@ export default function AdicionarRifa() {
   const [submitting, setSubmitting] = useState(false);
   const [postError, setPostError] = useState(null);
 
-  console.log(formState)
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
 
-    console.log(formState)
+
 
     try {
       const response = await postDados('/admin/cadastrar/rifas', formState, userLogin);
-      console.log('response:', response);
+
 
     } catch (error) {
       console.error('Erro ao fazer POST:', error);

@@ -55,7 +55,6 @@ const ContainerImages = styled.div`
 
 export default function ImagensRifa() {
   const [images, setImages] = useState([]);
-  console.log(images)
 
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);

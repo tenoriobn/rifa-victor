@@ -9,7 +9,7 @@ export default function Paying(props) {
   useEffect(() => {
     if (timeLeft === 0) {
       // Trigger any action when timer ends
-      console.log("Time is up!");
+
       return;
     }
 

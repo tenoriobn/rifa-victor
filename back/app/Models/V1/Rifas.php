@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\{HasOne, hasMany};
 
+use App\Services\FuncaoService;
 use App\Models\V1\{RifasAwarded, RifasOthers, RifasPayment, awardedQuota, awardedQuotaClient};
 
 class Rifas extends Model
@@ -57,6 +58,8 @@ class Rifas extends Model
     }
 
     public static function rifaCreateOrUpdate($title, $slug, $description_resume, $show_site, $emphasis, $show_top, $video, $status, $price, $description_sortition, $description_product, $description_role, $description_order_approve, $data_sortition, $initial_sale, $end_sale, $end_rifa, $user_id, $rifa_id) {
+        $rifaService = new FuncaoService();
+        $price = $rifaService->convertToDecimal($price);
         $result  = self::updateOrCreate(
             ['id' => $rifa_id],
             [
@@ -79,7 +82,6 @@ class Rifas extends Model
                 'end_rifa' => $end_rifa,
                 'user_id' => $user_id,
             ]);
-
             $is_created = $result->wasRecentlyCreated || $result->wasChanged();
 
 

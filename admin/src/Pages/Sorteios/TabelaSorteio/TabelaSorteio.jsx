@@ -145,14 +145,13 @@ export default function TabelaSorteio() {
   const [sorteios, setSorteios] = useState([]);
   const userLogin = useRecoilValue(stateUserLogin)
 
-  console.log(userLogin)
+  
 
   useEffect(() => {
     const obterDados = async () => {
       try {
         const response = await fetchDados('/admin/dashboard/rifas', userLogin);
-        console.log('response:', response);
-  
+
         setSorteios(response.data)
       } catch (error) {
         console.error('Erro ao fazer POST:', error);
@@ -180,7 +179,7 @@ export default function TabelaSorteio() {
     setOpenModalAcoesSorteio(!openModalAcoesSorteio);
     setIdModalAcoesSorteio(id);
 
-    console.log('id modal: ', id)
+
   }
 
   return (

@@ -167,7 +167,7 @@ export default function Posts() {
 function handleSearchingFor(event, searchData) {
   event.preventDefault();
 
-  console.log(searchData.data);
+
 }
 
 async function getPosts(setPostsData, setIsLoading) {

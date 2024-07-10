@@ -25,7 +25,7 @@ export default function AcessoUsuario() {
   const animacao = transicaoAnimada();
 
   useEffect(() => {
-    console.log('ID da URL:', id);
+
   }, [id]);
 
   const handleClick = async () => {
@@ -38,10 +38,10 @@ export default function AcessoUsuario() {
 
     try {
       const dados = await postDados('produtos/comprar-rifa', dadosParaEnviar, true); // Passando 'true' para incluir o token
-      console.log('dados:', dados);
+
       setFinalizarPedido(true);
     } catch (error) {
-      console.error('Erro ao finalizar pedido:', error);
+    
     }
   };
 

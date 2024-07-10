@@ -61,15 +61,13 @@ export default function ModalTrocarBilhete() {
   const [cota, setCota] = useState("");
   const [number, setNumber] = useState("");
 
-  console.log('cota: ', cota);
-  console.log('number: ', number);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       // const response = await postDados.post("/api/trocar-bilhete", { cota, number });
-      // console.log("Troca realizada com sucesso:", response.data);
+
     } catch (error) {
       console.error("Erro ao trocar bilhete:", error);
     }

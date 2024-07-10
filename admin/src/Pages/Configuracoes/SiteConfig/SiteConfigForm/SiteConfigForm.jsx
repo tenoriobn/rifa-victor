@@ -74,7 +74,6 @@ export default function SiteConfigForm() {
   const [siteConfig, setSiteConfig] = useRecoilState(stateSiteConfig);
   const [loading, setLoading] = useState(false);
 
-  console.log(siteConfig)
 
   const handleSaveChanges = async (event) => {
     event.preventDefault();
@@ -84,7 +83,6 @@ export default function SiteConfigForm() {
 
       // const response = await postDados("http://seu-backend.com/api/site/config", siteConfig);
       // setSiteConfig(response.data)
-      // console.log("Dados enviados com sucesso:", response.data);
 
     } catch (error) {
       console.error("Erro ao enviar dados:", error);

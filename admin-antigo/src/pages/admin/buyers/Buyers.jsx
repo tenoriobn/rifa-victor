@@ -52,11 +52,11 @@ export default function Buyers() {
       }
 
       const responseData = response.data;
-      // console.log(responseData)
+
       // setRifaInfo(responseData.rifa);
       setModalInfo(true);
       setBuyerInfo(responseData.buyer);
-      // console.log(responseData);
+
 
 
     } catch (error) {
@@ -81,7 +81,7 @@ export default function Buyers() {
       const responseData = response.data;
       setRifaInfo(responseData.rifa);
       setBuyers(responseData.buyers);
-      console.log(responseData);
+
 
 
     } catch (error) {

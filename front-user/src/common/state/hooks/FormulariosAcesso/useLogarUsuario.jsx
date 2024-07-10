@@ -16,7 +16,7 @@ export default function useLogin() {
         const decoded = jwtDecode(response.access_token);
         setUsuario(decoded);
 
-        console.log('cheguei aqui')
+
         return true;
       } else {
         console.error('Resposta de login inválida:', response);

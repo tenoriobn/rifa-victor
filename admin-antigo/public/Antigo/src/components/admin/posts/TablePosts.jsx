@@ -76,7 +76,7 @@ function PostInfoRow(props) {
 
   function hideNum(phone) {
     if (phone.length > 4) {
-      console.log()
+
       return phone.slice(0, 4) + phone.slice(4).replaceAll(/\d{4,5}/g, '****');
     }
     return phone;

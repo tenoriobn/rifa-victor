@@ -87,7 +87,7 @@ const Button = styled.button`
 export default function FormularioSorteio() {
   const [filtroSorteio, setFiltroSorteio] = useRecoilState(stateFiltroSorteio);
 
-  console.log(filtroSorteio)
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -100,7 +100,7 @@ export default function FormularioSorteio() {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Lógica para usar o filtroSorteio, por exemplo, enviar para o backend
-    console.log('Filtro aplicado:', filtroSorteio);
+  
   };
 
   return (
