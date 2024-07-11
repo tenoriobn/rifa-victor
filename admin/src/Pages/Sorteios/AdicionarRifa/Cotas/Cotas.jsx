@@ -5,7 +5,7 @@ import useThousandSeparator from "../../../../common/states/Hook/CriarRifa/useTh
 
 export default function Cotas({ mostrarCampo, mostrarQtdNumeros }) {
   const { formState, handleChange: handleChangeFormState } = useFormState();
-
+  
   const updateFormState = (name, formattedValue) => {
     handleChangeFormState({
       target: {

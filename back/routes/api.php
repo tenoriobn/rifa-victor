@@ -51,7 +51,7 @@ use App\Http\Controllers\V1\{AuthController, AdminController, ClientController, 
     Route::group(['prefix' => 'produtos'], function () {
         Route::get("/", [RifasController::class, "allRifas"])->name('all.rifas');
         Route::get("/{slug}/{id}", [RifasController::class, "show"])->where(['slug' => '[a-zA-Z0-9\-_]+', 'id' => '[0-9]+'])->name('show.one.rifa');
-        Route::middleware('auth.client')->post("/comprar-rifa", [RifasController::class, "buyRifa"])->name('buy.rifa');
+        Route::post("/comprar-rifa", [RifasController::class, "buyRifa"])->name('buy.rifa');
     });
     Route::get("/index", [RifasController::class, "index"])->name('index');
     Route::get("/ganhadores", [RifasController::class, "winners"])->name('all.winners');

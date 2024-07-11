@@ -55,8 +55,8 @@ export default function CotasForm() {
         <label htmlFor="init_date">Mostrar no site:</label>
         <select name="visible">
           <option defaultValue="" >- Todos -</option>
-          <option defaultValue="Y">Sim</option>
-          <option defaultValue="N">Não</option>
+          <option defaultValue="sim">Sim</option>
+          <option defaultValue="nao">Não</option>
         </select>
       </div>
 
@@ -64,11 +64,11 @@ export default function CotasForm() {
         <label htmlFor="init_date">Státus:</label>
         <select name="st" id="frm_st">
           <option defaultValue="" >- Todos -</option>
-          <option defaultValue="available">Disponivel</option>
-          <option defaultValue="reserved">Bloqueada</option>
-          <option defaultValue="immediate">Imediato</option>
-          <option defaultValue="confirmed">Confirmada</option>
-          <option defaultValue="rescued">Resgatada</option>
+          <option defaultValue="disponivel">Disponivel</option>
+          <option defaultValue="bloqueada">Bloqueada</option>
+          <option defaultValue="imediato">Imediato</option>
+          <option defaultValue="confirmada">Confirmada</option>
+          <option defaultValue="resgatada">Resgatada</option>
         </select>
       </div>
 

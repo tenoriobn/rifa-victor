@@ -26,11 +26,12 @@ export default function RifasCotas() {
       const response = await fetchDados(`/admin/editar/rifa/cota/${id}`, userLogin);
    
       setTabelaCotasInfo(response.data);
-    };
     
+    };
     if (id) {
       obterDados();
     }
+    // console.log('response ',response.data);
   }, []);
 
   return (

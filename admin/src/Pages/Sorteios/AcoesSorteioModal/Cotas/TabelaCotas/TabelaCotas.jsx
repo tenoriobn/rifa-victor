@@ -124,7 +124,7 @@ export default function TabelaCotas() {
             <th>#</th>
             <th>ID</th>
             <th>Cota</th>
-            <th>Prêmio</th>
+            <th>Prêmioaa</th>
             <th>Status</th>
             <th>Mostrar</th>
             <th>Criado em</th>
@@ -138,7 +138,7 @@ export default function TabelaCotas() {
             <tr key={cota.id} className="raffle-cota">
               <td>#{index + 1}</td>
               <td>{cota.id}</td>
-              <td><b>{cota.qntd_cota}</b></td>
+              <td><b>{cota.number_cota}</b></td>
               <td>{cota.award}</td>
               <td>
                 <span className={`status-tag ${cota.status === 'resgatada' ? 'status-rescued' : cota.status === 'reservada' ? 'status-reserved' : 'status-available'}`}>

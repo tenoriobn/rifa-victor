@@ -72,8 +72,8 @@ export default function ModalEditarCotaPremiada() {
         <label htmlFor="visible">
           Mostrar no site
           <select name="visible" id="visible">
-            <option value="Y">SIM</option>
-            <option value="N">NÃO</option>
+            <option value="sim">SIM</option>
+            <option value="nao">NÃO</option>
           </select>
         </label>
 

@@ -31,7 +31,7 @@ export default function AcessoUsuario() {
   const handleClick = async () => {
     const dadosParaEnviar = {
       value: parseFloat(valorCompra.replace(',', '.')),
-      client_id: usuario.id,
+      client_id: usuario?.id ?? null,
       qntd_number: 400,
       rifas_id: id 
     };

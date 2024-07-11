@@ -126,8 +126,8 @@ export default function AdicionarCota() {
           value={formValues.show_site || ''}
           onChange={handleChange}
         >
-          <option value="Y">SIM</option>
-          <option value="N">NÃO</option>
+          <option value="sim">SIM</option>
+          <option value="nao">NÃO</option>
         </select>
       </label>
 
@@ -139,9 +139,9 @@ export default function AdicionarCota() {
           value={formValues.status || ''}
           onChange={handleChange}
         >
-          <option value="available">Disponível</option>
-          <option value="reserved">Bloqueada</option>
-          <option value="immediate">Imediato</option>
+          <option value="disponivel">Disponível</option>
+          <option value="bloqueada">Bloqueada</option>
+          <option value="imediato">Imediato</option>
         </select>
       </label>
 

@@ -72,8 +72,8 @@ export default function FormPacotes() {
         <label htmlFor="init_date">Mais Popular:</label>
         <select name="most_popular">
           <option defaultValue="">- Todos -</option>
-          <option defaultValue="Y">Sim</option>
-          <option defaultValue="N">Não</option>
+          <option defaultValue="sim">Sim</option>
+          <option defaultValue="nao">Não</option>
         </select>
       </div>
 

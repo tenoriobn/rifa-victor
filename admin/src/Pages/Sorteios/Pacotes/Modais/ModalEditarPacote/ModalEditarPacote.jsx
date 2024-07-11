@@ -77,8 +77,8 @@ export default function ModalEditarPacote() {
       <label htmlFor="">
         Mais Popular
         <select name="most_popular" id="frm_most_popular">
-          <option defaultValue="Y">Sim</option>
-          <option defaultValue="N">Não</option>
+          <option defaultValue="sim">Sim</option>
+          <option defaultValue="nao">Não</option>
         </select>
       </label>
 

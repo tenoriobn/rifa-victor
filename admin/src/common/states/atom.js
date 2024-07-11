@@ -204,7 +204,7 @@ export const stateTabelaCotasInfo = atom({
 
 export const stateCotasPremiadas = atom({
   key: 'stateCotasPremiadas',
-  default: {qntd_cota: '', award: '', show_site: 'Y', status: 'available'},
+  default: {qntd_cota: '', award: '', show_site: 'sim', status: 'disponivel'},
 });
 
 
