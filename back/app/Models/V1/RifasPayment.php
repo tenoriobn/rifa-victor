@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 use App\Models\V1\{Rifas};
+
+use App\Services\FuncaoService;
 class RifasPayment extends Model {
     use HasFactory;
 
@@ -22,14 +24,19 @@ class RifasPayment extends Model {
         return $this->belongsTo(Rifas::class);
     }
 
-    public static function rifasPaymentCreateOrUpdate($time_pay, $gateway, $service_charge, $text_service_charge, $rifaId, $rifaPaymentId) {
+    public static function rifasPaymentCreateOrUpdate($timePay, $gateway, $serviceCharge, $textServiceCharge, $rifaId) {
+        $rifa = new FuncaoService();
+
+        $timePay = $rifa->convertToDecimal($timePay);
+        $serviceCharge = $rifa->convertToDecimal($serviceCharge);
+
         $result  = self::updateOrCreate(
-            ['id' => $rifaPaymentId],
+            ['rifas_id' => $rifaId],
             [
-                'time_pay' => $time_pay,
+                'time_pay' => $timePay,
                 'gateway' => $gateway,
-                'service_charge' => $service_charge,
-                'text_service_charge' => $text_service_charge,
+                'service_charge' => $serviceCharge,
+                'text_service_charge' => $textServiceCharge,
                 'rifas_id' => $rifaId,
 
             ]);

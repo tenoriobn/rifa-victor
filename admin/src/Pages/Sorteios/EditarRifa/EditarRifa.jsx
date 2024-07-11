@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Main } from "../../../components/AdminLayout/AdminLayout";
 import Header, { LinkItem } from "../../../components/Header/Header";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 import { stateInfoRifaForm, stateUserLogin } from "../../../common/states/atom";
 import { fetchDados, putDados } from "../../../common/http/http";
 import Geral from "../AdicionarRifa/Geral/Geral";
@@ -15,15 +15,16 @@ import DescricaoSorteio from "../AdicionarRifa/DescricaoSorteio/DescricaoSorteio
 import Regulamento from "../AdicionarRifa/Regulamento/Regulamento";
 import PedidoAprovado from "../AdicionarRifa/PedidoAprovado/PedidoAprovado";
 import { CategoryContainer } from "../AdicionarRifa/CriarRifa";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function EditarRifa() {
   const { id } = useParams();
-  
   const [formState, setFormState] = useRecoilState(stateInfoRifaForm);
+  const resetFormState = useResetRecoilState(stateInfoRifaForm);
   const userLogin = useRecoilValue(stateUserLogin);
   const [submitting, setSubmitting] = useState(false);
   const [postError, setPostError] = useState(null);
+  const navigate = useNavigate();
 
   const flattenObject = (obj) => {
     const flattened = {};
@@ -39,15 +40,16 @@ export default function EditarRifa() {
     return flattened;
   };
 
-
   useEffect(() => {
     const obterDados = async () => {
       const response = await fetchDados(`/admin/editar/rifa/${id}`, userLogin);
    
-
       const flattenedData = flattenObject(response.data);
       setFormState(flattenedData);
 
+      console.log('flattenedData: ', flattenedData)
+
+      console.log('response', response.data)
     };
     
     if (id) {
@@ -59,12 +61,10 @@ export default function EditarRifa() {
     e.preventDefault();
     setSubmitting(true);
 
-
-
     try {
-      const response = await putDados(`/admin/editar/rifa/${id}`, formState, userLogin);
-     
-
+      await putDados(`/admin/editar/rifa/${id}`, formState, userLogin);
+      navigate("/dashboard/rifas");
+      resetFormState();
     } catch (error) {
       console.error('Erro ao fazer POST:', error);
       setPostError('Erro ao enviar os dados.');

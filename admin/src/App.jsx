@@ -41,8 +41,8 @@ function App() {
               <Route path="rifas" element={<Sorteios />} />
               <Route path="rifas/adicionar" element={<AdicionarRifa />} />
               <Route path="rifas/editar/:id" element={<EditarRifa />} />
-              <Route path="rifas/imagens" element={<ImagensRifa />} />
-              <Route path="rifas/cotas" element={<RifasCotas />} />
+              <Route path="rifas/imagens/:id" element={<ImagensRifa />} />
+              <Route path="rifas/cotas/:id" element={<RifasCotas />} />
               <Route path="rifas/packs" element={<Pacotes />} />
               <Route path="rifas/upsell" element={<Upsell />} />
               <Route path="consultaCota" element={<ConsultaCota />} />

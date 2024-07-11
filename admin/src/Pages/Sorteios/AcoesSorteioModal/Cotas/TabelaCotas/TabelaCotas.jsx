@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { stateOpenModalCotaPremiada, stateOpenModalEditarCotaPremiada } from "../../../../../common/states/atom";
+import { stateIdModal, stateOpenModalCotaPremiada, stateOpenModalEditarCotaPremiada, stateTabelaCotasInfo } from "../../../../../common/states/atom";
 
 export const Table = styled.table`
   width: 100%;
@@ -47,7 +47,7 @@ export const Table = styled.table`
 
   .status-rescued {
     background-color: #6f42c1;
-}
+  }
 
   .status-tag {
     padding: 5px 10px;
@@ -96,7 +96,7 @@ export const Table = styled.table`
 
   .button-edit {
     background-color: #f4b400;
-}
+  }
 
   @media (max-width: 1366px) {
     overflow-x: auto;
@@ -108,6 +108,13 @@ export const Table = styled.table`
 export default function TabelaCotas() {
   const [openModalCotaPremiada, setOpenModalCotaPremiada] = useRecoilState(stateOpenModalCotaPremiada);
   const [openModalEditarCotaPremiada, setOpenModalEditarCotaPremiada] = useRecoilState(stateOpenModalEditarCotaPremiada);
+  const tabelaCotasInfo = useRecoilValue(stateTabelaCotasInfo);
+  const setIdModal = useSetRecoilState(stateIdModal);
+
+  const handlePegaIdModal = (id) => {
+    setOpenModalEditarCotaPremiada(!openModalEditarCotaPremiada)
+    setIdModal(id);
+  }
 
   return (
     <div>
@@ -118,7 +125,7 @@ export default function TabelaCotas() {
             <th>ID</th>
             <th>Cota</th>
             <th>Prêmio</th>
-            <th>Státus</th>
+            <th>Status</th>
             <th>Mostrar</th>
             <th>Criado em</th>
             <th>Alterado em</th>
@@ -127,15 +134,24 @@ export default function TabelaCotas() {
         </thead>
 
         <tbody>
-          <tr className="raffle-item">
-              <td>#1</td>
-              <td>714</td>
-              <td><b>989812</b></td>
-              <td>300,00</td>
-              <td><span className="status-tag status-rescued">Resgatada</span></td>
-              <td><span className="status-tag status-available">SIM</span></td>
-              <td>15/04/24 15:56</td>
-              <td>03/06/24 22:28</td>
+        {tabelaCotasInfo.map((cota, index) => (
+            <tr key={cota.id} className="raffle-cota">
+              <td>#{index + 1}</td>
+              <td>{cota.id}</td>
+              <td><b>{cota.qntd_cota}</b></td>
+              <td>{cota.award}</td>
+              <td>
+                <span className={`status-tag ${cota.status === 'resgatada' ? 'status-rescued' : cota.status === 'reservada' ? 'status-reserved' : 'status-available'}`}>
+                  {cota.status}
+                </span>
+              </td>
+              <td>
+                <span className={`status-tag ${cota.show_site === 'SIM' ? 'status-available' : 'status-reserved'}`}>
+                  {cota.show_site}
+                </span>
+              </td>
+              <td>{cota.created_at}</td>
+              <td>{cota.updated_at}</td>
               <td>
                 <div className="button-group">
                   <button 
@@ -145,13 +161,14 @@ export default function TabelaCotas() {
                     <i className="fas fa-eye"></i> VER
                   </button>
                   <button className="action-button button-edit" 
-                    onClick={() => setOpenModalEditarCotaPremiada(!openModalEditarCotaPremiada)}
+                    onClick={() => handlePegaIdModal(cota.id)}
                   >
                     <i className="fas fa-edit"></i> Editar
                   </button>
                 </div>
               </td>
-          </tr>
+            </tr>
+          ))}
         </tbody>
       </Table>
     </div>

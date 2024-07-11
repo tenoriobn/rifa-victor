@@ -70,7 +70,7 @@ class RifasController extends Controller
     public function storeRifa(StoreRifasRequest $request) {
 
         try {
-            return $this->rifaService->createRifas($request);
+            $this->rifaService->createRifas($request);
             return response()->json(["success" => true, "msg" => "Rifa criada com sucesso" ], $this->success);
         } catch (Exception $e) {
             return response()->json(["response" => false, "msg" => "Ocorreu um erro interno ao cadastrar a rifa", "error" => $e->getMessage()], $this->serverError);
@@ -109,19 +109,19 @@ class RifasController extends Controller
         try {
             $qntdCota = $request->qntd_cota;
             $rifaId = $request->rifas_id;
-
-            $rifa = Rifas::withCount('cota')->find($rifaId);
+            // dd($request->all());
+            $rifa = Rifas::with('cota')->find($rifaId);
             if (!$rifa) {
                 return response()->json(['response' => false, 'msg' => 'Rifa não encontrada'], 404);
             }
 
             $qntdCotaExist = AwardedQuota::where('rifas_id', $rifaId)->count();
-            $isMake = $rifa->cota_count - $qntdCotaExist;
-
+            $isMake = $rifa->cota->qntd_cota - $qntdCotaExist;
             if ($qntdCota <= $isMake) {
                 $bilhetePremiado = AwardedQuota::createAwardedQuota($qntdCota, $request->award, $request->show_site, $request->status, $rifaId);
                 if ($bilhetePremiado) {
-                    return response()->json(["success" => true, "msg" => "Rifa criada com sucesso"], 200);
+                    $bilhetePremiado = AwardedQuota::getAllRifaCotaPremiadas($rifaId);
+                    return response()->json(["success" => true, "msg" => "Rifa criada com sucesso", 'data' => $bilhetePremiado], 200);
                 }
 
                 return response()->json(['response' => false, 'msg' => 'Erro ao criar a cota'], 500);

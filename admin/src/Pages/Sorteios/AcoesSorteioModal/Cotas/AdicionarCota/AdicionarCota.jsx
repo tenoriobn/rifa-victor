@@ -1,7 +1,10 @@
-import styled from "styled-components"
+import styled from "styled-components";
+import { postDados } from "../../../../../common/http/http";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { stateCotasPremiadas, stateOpenModalAdicionarCota, stateTabelaCotasInfo, stateUserLogin } from "../../../../../common/states/atom";
+import { useParams } from "react-router-dom";
 
 const Form = styled.form`
-
   width: 100%;
 
   label {
@@ -57,36 +60,92 @@ const Form = styled.form`
 `;
 
 export default function AdicionarCota() {
+  const { id } = useParams();
+  const userLogin = useRecoilValue(stateUserLogin);
+  const [openModalAdicionarCota, setOpenModalAdicionarCota] = useRecoilState(stateOpenModalAdicionarCota);
+  const setTabelaCotasInfo = useSetRecoilState(stateTabelaCotasInfo);
+  // const [formValues, setFormValues] = useState({qntd_cota: '', award: '', show_site: 'Y', status: 'available', rifas_id: id});
+  const [formValues, setFormValues] = useRecoilState(stateCotasPremiadas)
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+      rifas_id: id
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await postDados('/admin/cadastrar/rifas/cota', formValues, userLogin);
+
+      setTabelaCotasInfo(response.data)
+      setOpenModalAdicionarCota(!openModalAdicionarCota)
+      
+      console.log(response.data)
+    } catch (error) {
+      console.error('Erro ao fazer POST:', error);
+    }
+  };
+
   return (
-    <Form action="/dashboard/rifas/cotas/Add/174" id="frmAddPack" method="POST">
+    <Form id="frmAddPack" onSubmit={handleSubmit}>
       <label htmlFor="frm_add_qtd" id="frm_lb_qtd">
         Quantidade (MAX: 20)
-        <input className="number" id="frm_add_qtd" name="qtd" required="" />
+        <input
+          className="number"
+          id="frm_add_qtd"
+          name="qntd_cota"
+          value={formValues.qntd_cota || ''}
+          onChange={handleChange}
+          required
+        />
       </label>
 
       <label htmlFor="frm_add_text">
         Prêmio
-        <input type="text" id="frm_add_text" name="text" maxLength="50" required="" />
+        <input
+          type="text"
+          id="frm_add_text"
+          name="award"
+          maxLength="50"
+          value={formValues.award || ''}
+          onChange={handleChange}
+          required
+        />
       </label>
 
       <label htmlFor="frm_add_visible">
         Mostrar no site
-        <select name="visible" id="frm_add_visible">
-          <option defaultValue="Y">SIM</option>
-          <option defaultValue="N">NÃO</option>
+        <select
+          name="show_site"
+          id="frm_add_visible"
+          value={formValues.show_site || ''}
+          onChange={handleChange}
+        >
+          <option value="Y">SIM</option>
+          <option value="N">NÃO</option>
         </select>
       </label>
 
       <label htmlFor="frm_add_st">
         Státus
-        <select name="st" id="frm_add_st">
-          <option defaultValue="available">Disponivel</option>
-          <option defaultValue="reserved">Bloqueada</option>
-          <option defaultValue="immediate">Imediato</option>
+        <select
+          name="status"
+          id="frm_add_st"
+          value={formValues.status || ''}
+          onChange={handleChange}
+        >
+          <option value="available">Disponível</option>
+          <option value="reserved">Bloqueada</option>
+          <option value="immediate">Imediato</option>
         </select>
       </label>
 
-      <input type="submit" defaultValue="Adicionar" />
+      <input type="submit" value="Adicionar" />
     </Form>
-  )
+  );
 }

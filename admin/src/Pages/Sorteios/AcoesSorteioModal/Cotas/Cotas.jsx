@@ -3,17 +3,35 @@ import Header, { LinkItem } from "../../../../components/Header/Header";
 import Titulo from "../../../../components/Titulo/Titulo";
 import TabelaCotas from "./TabelaCotas/TabelaCotas";
 import Modal from "../../../../components/Modal/Modal";
-import { useRecoilState } from "recoil";
-import { stateOpenModalAdicionarCota, stateOpenModalCotaPremiada, stateOpenModalEditarCotaPremiada } from "../../../../common/states/atom";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { stateOpenModalAdicionarCota, stateOpenModalCotaPremiada, stateOpenModalEditarCotaPremiada, stateTabelaCotasInfo, stateUserLogin } from "../../../../common/states/atom";
 import AdicionarCota from "./AdicionarCota/AdicionarCota";
 import CotasForm from "./CotasForm/CotasForm";
 import ModalCotaPremiada from "./ModalCotaPremiada/ModalCotaPremiada";
 import ModalEditarCotaPremiada from "./ModalEditarCotaPremiada/ModalEditarCotaPremiada";
+import { useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { fetchDados } from "../../../../common/http/http";
 
 export default function RifasCotas() {
   const [openModalAdicionarCota, setOpenModalAdicionarCota] = useRecoilState(stateOpenModalAdicionarCota);
   const [openModalCotaPremiada, setOpenModalCotaPremiada] = useRecoilState(stateOpenModalCotaPremiada);
   const [openModalEditarCotaPremiada, setOpenModalEditarCotaPremiada] = useRecoilState(stateOpenModalEditarCotaPremiada);
+  const { id } = useParams();
+  const setTabelaCotasInfo = useSetRecoilState(stateTabelaCotasInfo);
+  const userLogin = useRecoilValue(stateUserLogin);
+
+  useEffect(() => {
+    const obterDados = async () => {
+      const response = await fetchDados(`/admin/editar/rifa/cota/${id}`, userLogin);
+   
+      setTabelaCotasInfo(response.data);
+    };
+    
+    if (id) {
+      obterDados();
+    }
+  }, []);
 
   return (
     <section>

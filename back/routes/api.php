@@ -34,6 +34,7 @@ use App\Http\Controllers\V1\{AuthController, AdminController, ClientController, 
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->put("/editar/rifa/{id}", [RifasController::class, "editRifa"])->name('admin.edit.rifa');
 
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/cadastrar/rifas/cota", [RifasController::class, "storeCota"])->name('admin.create.rifa.cota');
+
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/editar/rifa/cota/{id}", [RifasController::class, "getAllCotaPremiadaRifa"])->name('admin.get.rifa.cota');
 
 

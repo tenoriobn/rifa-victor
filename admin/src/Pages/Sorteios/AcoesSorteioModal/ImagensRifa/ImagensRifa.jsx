@@ -103,6 +103,8 @@ export default function ImagensRifa() {
     setImages(images.filter((_, i) => i !== index));
   };
 
+  // /cadastrar/rifas/imagem
+
   return (
     <>
       <Header>

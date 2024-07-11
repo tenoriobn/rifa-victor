@@ -26,9 +26,9 @@ class RifasOthers extends Model {
         return $this->belongsTo(Rifas::class);
     }
 
-    public static function rifasOthersCreateOrUpdate($facebook_pixel, $facebook_token, $tiktok_pixel, $whatsapp_group, $link_ebook, $nota_fiscal, $rifaId, $rifaOtherId) {
+    public static function rifasOthersCreateOrUpdate($facebook_pixel, $facebook_token, $tiktok_pixel, $whatsapp_group, $link_ebook, $nota_fiscal, $rifaId) {
         $result  = self::updateOrCreate(
-            ['id' => $rifaOtherId],
+            ['rifas_id' => $rifaId],
             [
                 'facebook_pixel' => $facebook_pixel,
                 'facebook_token' => $facebook_token,

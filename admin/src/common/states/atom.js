@@ -191,3 +191,20 @@ export const stateIdModalAcoesSorteio = atom({
   key: 'stateIdModalAcoesSorteio',
   default: '',
 })
+
+export const stateIdModal = atom({
+  key: 'stateIdModal',
+  default: '',
+})
+
+export const stateTabelaCotasInfo = atom({
+  key: 'stateTabelaCotasInfo',
+  default: [],
+});
+
+export const stateCotasPremiadas = atom({
+  key: 'stateCotasPremiadas',
+  default: {qntd_cota: '', award: '', show_site: 'Y', status: 'available'},
+});
+
+
