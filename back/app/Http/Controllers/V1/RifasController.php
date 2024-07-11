@@ -257,7 +257,7 @@ class RifasController extends Controller
 
     public function show($slug, $id) {
         try {
-            $rifaData = Rifas::getOneRifas($id);
+            $rifaData = Rifas::getOneRifa($id);
 
             if (!$rifaData) {
                 return response()->json(["success" => false, "msg" => "Rifa has not been found."], $this->notFound);
