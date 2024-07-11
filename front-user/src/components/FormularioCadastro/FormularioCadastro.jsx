@@ -3,7 +3,6 @@ import { useRecoilState, useSetRecoilState } from 'recoil';
 import useValidarFormulario from '../../common/state/hooks/FormularioCadastro/useValidarFormulario';
 import { estadoErroCadastro, estadoFinalizarPedido } from '../../common/state/atom';
 import { postDados } from '../../common/http/http';
-import { useNavigate } from 'react-router-dom';
 import useLogin from '../../common/state/hooks/FormulariosAcesso/useLogarUsuario';
 import { motion } from 'framer-motion';
 import { transicaoAnimada } from '../../common/util/transicaoAnimada';
@@ -12,7 +11,6 @@ export default function FormularioCadastro() {
   const [nome, setNome] = useState('');
   const [sobrenome, setSobrenome] = useState('');
   const { telefone, formatarTelefone } = useValidarFormulario(nome, sobrenome);
-  const navigate = useNavigate();
   const login = useLogin();
   const [finalizarPedido, setFinalizarPedido] = useRecoilState(estadoFinalizarPedido);
   const setErroCadastro = useSetRecoilState(estadoErroCadastro);
@@ -28,14 +26,10 @@ export default function FormularioCadastro() {
       const dados = await postDados('/cadastro', dadosParaEnviar);
       console.log(dados);
 
-      const loginSuccess = await login(dadosParaEnviar.cellphone);
-
-      if (loginSuccess) {
-        navigate('/checkout');
-      }
+      await login(dadosParaEnviar.cellphone);
 
       setErroCadastro(false)
-      setFinalizarPedido(false);
+
     } catch (error) {
       setFinalizarPedido(false);
       setErroCadastro(true);

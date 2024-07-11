@@ -28,6 +28,8 @@ export default function FormularioLogin() {
       setRenderizaComponenteLogin(false)
       setErro(null)
 
+      console.log(decoded)
+
     } catch (error) {
       setErro(error)
     }
