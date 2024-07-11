@@ -1,8 +1,11 @@
-import { useState } from "react";
 import styled from "styled-components";
 import { Main } from "../../../../components/AdminLayout/AdminLayout";
 import Header from "../../../../components/Header/Header";
 import { LinkItem } from "../../../../components/Header/Header";
+import Modal from "../../../../components/Modal/Modal";
+import { useRecoilState } from "recoil";
+import { stateImagensRifa, stateOpenModalNovaImagem } from "../../../../common/states/atom";
+import ModalImagemRifa from "./ModalImagemRifa/ModalImagemRifa";
 
 const TextImagesContainer = styled.div`
   line-height: 1.25rem;
@@ -54,56 +57,14 @@ const ContainerImages = styled.div`
 `;
 
 export default function ImagensRifa() {
-  const [images, setImages] = useState([]);
+  const [imagensRifa, setImagensRifa] = useRecoilState(stateImagensRifa) 
+  const [openModalNovaImagem, setOpenModalNovaImagem] = useRecoilState(stateOpenModalNovaImagem);
 
-  const handleFileChange = (event) => {
-    const files = Array.from(event.target.files);
-
-    files.forEach((file) => {
-      const isValidType = file.type === "image/jpeg" || file.type === "image/png";
-      const isValidSize = file.size <= 400 * 1024;
-
-      if (!isValidType) {
-        alert(`O arquivo não é do tipo permitido (JPG ou PNG).`);
-        return;
-      }
-
-      if (!isValidSize) {
-        alert(`O arquivo é maior que 400 KB.`);
-        return;
-      }
-
-      const img = new Image();
-      img.onload = () => {
-        const isValidDimensions = img.width === 732 && img.height === 411;
-        if (!isValidDimensions) {
-          alert(`A imagem não tem as dimensões permitidas (732x411 pixels).`);
-          return;
-        }
-
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          const base64String = reader.result.replace("data:", "").replace(/^.+,/, "");
-          setImages((prevImages) => {
-            if (prevImages.length < 4) {
-              return [...prevImages, base64String];
-            } else {
-              alert("Você só pode carregar até 4 imagens.");
-              return prevImages;
-            }
-          });
-        };
-        reader.readAsDataURL(file);
-      };
-      img.src = URL.createObjectURL(file);
-    });
+  const handleExcluirImagem = (index) => {
+    const novasImagens = [...imagensRifa];
+    novasImagens.splice(index, 1);
+    setImagensRifa(novasImagens);
   };
-
-  const handleDeleteImage = (index) => {
-    setImages(images.filter((_, i) => i !== index));
-  };
-
-  // /cadastrar/rifas/imagem
 
   return (
     <>
@@ -114,9 +75,8 @@ export default function ImagensRifa() {
           </a> <i className="fa-solid fa-dice"></i> IMAGENS
         </h2>
 
-        <LinkItem as="label" className="button-new">
+        <LinkItem as="label" className="button-new" onClick={() => setOpenModalNovaImagem(!openModalNovaImagem)}>
           <i className="fas fa-plus"></i> Nova Imagem
-          <input type="file" accept="image/jpeg,image/png" onChange={handleFileChange} multiple style={{ display: "none" }} />
         </LinkItem>
       </Header>
 
@@ -132,16 +92,22 @@ export default function ImagensRifa() {
         </TextImagesContainer>
 
         <ContainerImages>
-          {images.map((base64String, index) => (
+          {imagensRifa.map((imagem, index) => (
             <div className="product" key={index}>
-              <img src={`data:image/jpeg;base64,${base64String}`} alt={`Imagem ${index + 1}`} />
+              <img src={imagem} alt={`Imagem ${index + 1}`} />
               <div className="buttons">
-                <button onClick={() => handleDeleteImage(index)}><i className="fas fa-trash-alt"></i> Excluir</button>
+                <button onClick={() => handleExcluirImagem(index)}>
+                  <i className="fas fa-trash-alt"></i> Excluir
+                </button>
               </div>
             </div>
           ))}
         </ContainerImages>
       </Main>
+
+      <Modal title="NOVA IMAGEM" openState={openModalNovaImagem} setOpenState={setOpenModalNovaImagem}>
+        <ModalImagemRifa />
+      </Modal>
     </>
   );
 }

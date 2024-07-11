@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Main } from "../../../../components/AdminLayout/AdminLayout";
 import Header, { LinkItem } from "../../../../components/Header/Header";
 import Titulo from "../../../../components/Titulo/Titulo";
@@ -24,7 +25,6 @@ export default function RifasCotas() {
   useEffect(() => {
     const obterDados = async () => {
       const response = await fetchDados(`/admin/editar/rifa/cota/${id}`, userLogin);
-   
       setTabelaCotasInfo(response.data);
     
     };

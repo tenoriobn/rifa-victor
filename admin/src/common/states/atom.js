@@ -96,6 +96,11 @@ export const stateOpenModalVerInfoCliente = atom({
   default: false,
 });
 
+export const stateOpenModalNovaImagem = atom({
+  key: 'stateOpenModalNovaImagem',
+  default: false,
+});
+
 export const stateInfoRifaForm = atom({
   key: 'stateInfoRifaForm',
   default: {
@@ -207,4 +212,8 @@ export const stateCotasPremiadas = atom({
   default: {qntd_cota: '', award: '', show_site: 'sim', status: 'disponivel'},
 });
 
+export const stateImagensRifa = atom({
+  key: 'stateImagensRifa',
+  default: [],
+});
 
