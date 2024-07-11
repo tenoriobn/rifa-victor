@@ -33,7 +33,7 @@ export default function ModalPix() {
   return (
     <>
       <button 
-        className="py-2 px-6 text-xl bg-blue-500 text-white rounded-lg border border-solid border-blue-500 hover:bg-blue-600 transition-colors active:bg-blue-700 disabled:bg-neutral-400"
+        className="py-2 px-6 text-xl bg-blue-500 text-white rounded-lg border border-solid border-blue-500 hover:bg-blue-600 transition-colors duration-300 active:bg-blue-700 disabled:bg-neutral-400"
         onClick={() => setModalVisivel(!modalVisivel)}
       >
         Pagar 

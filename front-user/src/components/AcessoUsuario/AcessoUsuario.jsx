@@ -88,8 +88,12 @@ export default function AcessoUsuario() {
           disabled={!termosAceito || (renderizaComponenteCadastro && !camposPreenchidos) || (!renderizaComponenteCadastro && (!termosAceito || !usuario))}
           onClick={handleClick}
         >
-          <div className="absolute left-0 top-0 bg-emerald-700 w-0 group-hover:w-full transition-all h-1/2"></div>
-          <div className="absolute right-0 bottom-0 bg-emerald-700 w-0 group-hover:w-full transition-all h-1/2"></div>
+          {termosAceito && (renderizaComponenteCadastro ? camposPreenchidos : usuario) && (
+            <>
+              <div className="absolute left-0 top-0 bg-emerald-700 w-0 group-hover:w-full transition-all h-1/2"></div>
+              <div className="absolute right-0 bottom-0 bg-emerald-700 w-0 group-hover:w-full transition-all h-1/2"></div>
+            </>
+          )}
           <div className="relative px-4 py-1 transition-all flex items-center justify-center gap-1">
             Finalizar Pedido 
             <Verificado className="icon" />
