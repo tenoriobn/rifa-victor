@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->json('numbers')->nullable();
             $table->tinyInteger('status')->default(0)->comment('0 => pagamento pedente, 1 => pago, 2 => pagamento não aprovado');
+
             $table->unsignedBigInteger('rifas_id');
             $table->foreign("rifas_id")->references("id")->on("rifas");
             $table->unsignedBigInteger('pay_id');

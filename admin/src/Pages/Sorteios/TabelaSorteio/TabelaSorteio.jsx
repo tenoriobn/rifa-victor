@@ -159,7 +159,7 @@ export default function TabelaSorteio() {
   useEffect(() => {
     const obterDados = async () => {
       try {
-        const response = await fetchDados('/admin/dashboard/rifas', userLogin);
+        const response = await fetchDados('/admin/dashboard/todas-rifas', userLogin);
 
         setSorteios(response.data)
       } catch (error) {
@@ -175,7 +175,7 @@ export default function TabelaSorteio() {
     const confirmacao = window.confirm('Tem certeza que deseja finalizar esta rifa?');
     if (confirmacao) {
       try {
-        await putDados(`admin/finalizar/rifas/${id}`, userLogin);
+        await putDados(`admin/dashboard/rifa/finalizar/${id}`, userLogin);
         setSorteios((prevSorteios) => prevSorteios.filter(sorteio => sorteio.id !== id));
         alert('Rifa finalizada com sucesso!');
       } catch (error) {

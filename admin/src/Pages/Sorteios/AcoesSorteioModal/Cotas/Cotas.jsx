@@ -4,8 +4,8 @@ import Header, { LinkItem } from "../../../../components/Header/Header";
 import Titulo from "../../../../components/Titulo/Titulo";
 import TabelaCotas from "./TabelaCotas/TabelaCotas";
 import Modal from "../../../../components/Modal/Modal";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { stateOpenModalAdicionarCota, stateOpenModalCotaPremiada, stateOpenModalEditarCotaPremiada, stateTabelaCotasInfo, stateUserLogin } from "../../../../common/states/atom";
+import { useRecoilState, useRecoilValue, useSetRecoilState, useResetRecoilState } from "recoil";
+import { stateOpenModalAdicionarCota, stateOpenModalCotaPremiada, stateOpenModalEditarCotaPremiada, stateTabelaCotasInfo, stateUserLogin, stateCotasPremiadas } from "../../../../common/states/atom";
 import AdicionarCota from "./AdicionarCota/AdicionarCota";
 import CotasForm from "./CotasForm/CotasForm";
 import ModalCotaPremiada from "./ModalCotaPremiada/ModalCotaPremiada";
@@ -21,11 +21,14 @@ export default function RifasCotas() {
   const { id } = useParams();
   const setTabelaCotasInfo = useSetRecoilState(stateTabelaCotasInfo);
   const userLogin = useRecoilValue(stateUserLogin);
+  const resetCotaPremiada = useResetRecoilState(stateCotasPremiadas);
 
   useEffect(() => {
     const obterDados = async () => {
-      const response = await fetchDados(`/admin/editar/rifa/cota/${id}`, userLogin);
+      const response = await fetchDados(`/admin/dashboard/bilhete-premiado/editar/${id}`, userLogin);
       setTabelaCotasInfo(response.data);
+
+      console.log(response);
     
     };
     if (id) {
@@ -33,6 +36,11 @@ export default function RifasCotas() {
     }
     // console.log('response ',response.data);
   }, []);
+
+  const handleOpenModalAdicionarCota = () => {
+    setOpenModalAdicionarCota(!openModalAdicionarCota);
+    resetCotaPremiada();
+  } 
 
   return (
     <section>
@@ -43,7 +51,7 @@ export default function RifasCotas() {
           </a> <i className="fa-solid fa-box-open"></i> COTAS PRÊMIADAS
         </h2>
 
-        <LinkItem className="button-new" onClick={() => setOpenModalAdicionarCota(!openModalAdicionarCota)}>
+        <LinkItem className="button-new" onClick={handleOpenModalAdicionarCota}>
           <i className="fas fa-plus"></i> Novo
         </LinkItem>
       </Header>

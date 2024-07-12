@@ -18,7 +18,7 @@ export default function FormularioLogin() {
     event.preventDefault();
     try {
       const dadosLogin = { "cellphone": telefone };
-      const response = await postDados('/login', dadosLogin);
+      const response = await postDados('client/login', dadosLogin);
 
       localStorage.setItem('access_token', response.access_token);
 

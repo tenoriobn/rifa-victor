@@ -1,7 +1,7 @@
 import {  useEffect } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from "recoil";
-import { estadoErroCadastro, estadoFinalizarPedido, estadoFormularioPreenchido, estadoRenderizaComponenteCadastro, estadoTermosAceito, estadoUsuario, estadoValorCompra } from "../../common/state/atom";
+import { estadoErroCadastro, estadoFinalizarPedido, estadoFormularioPreenchido, estadoRenderizaComponenteCadastro, estadoTermosAceito, estadoUsuario, estadoValorCompra, estadoCheckoutId } from "../../common/state/atom";
 import useAlternarFormularios from "../../common/state/hooks/FormulariosAcesso/useAlternarFormularios";
 import FormulariosAcesso from "./FormulariosAcesso/FormulariosAcesso";
 import TermosCondicoes from "./TermosCondicoes/TermosCondicoes";
@@ -16,6 +16,8 @@ export default function AcessoUsuario() {
   const { id } = useParams();
   const [finalizarPedido, setFinalizarPedido] = useRecoilState(estadoFinalizarPedido);
   const renderizaComponenteCadastro = useRecoilValue(estadoRenderizaComponenteCadastro);
+  const [checkoutReq, setCheckoutReq] = useRecoilState(estadoCheckoutId);
+
   const valorCompra = useRecoilValue(estadoValorCompra);
   const termosAceito = useRecoilValue(estadoTermosAceito);
   const camposPreenchidos = useRecoilValue(estadoFormularioPreenchido);
@@ -40,8 +42,10 @@ export default function AcessoUsuario() {
   
       const enviarDados = async () => {
         try {
-          await postDados('produtos/comprar-rifa', dadosParaEnviar, true);
-          navigate('/checkout');
+          const response = await postDados('produtos/comprar-rifa', dadosParaEnviar, true);
+
+          setCheckoutReq(response);
+          
           setFinalizarPedido(false);
         } catch (error) {
           console.error('Erro ao comprar rifa:', error);
@@ -51,6 +55,14 @@ export default function AcessoUsuario() {
       enviarDados();
     }
   }, [usuario, finalizarPedido, valorCompra, id, navigate, setFinalizarPedido]);
+
+  useEffect(() => {
+    if (checkoutReq.success === true && checkoutReq.data.id) {
+      const idCheckout = checkoutReq.data.id;
+      const slugCheckout = checkoutReq.data.checkout;
+      navigate(`/checkout/${idCheckout}/${slugCheckout}`);
+    }
+  }, [checkoutReq]);
 
   const handleClick = () => {
     setFinalizarPedido(true);

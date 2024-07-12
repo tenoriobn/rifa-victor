@@ -1,4 +1,8 @@
 import styled from "styled-components";
+import { useParams } from "react-router-dom";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { postDados } from "../../../../../common/http/http";
+import { statePacote, stateTabelaPacotesInfo, stateUserLogin, stateOpenModalAdicionarPacote } from "../../../../../common/states/atom";
 
 const Form = styled.form`
   font-size: .9rem;
@@ -57,34 +61,101 @@ const Form = styled.form`
 `;
 
 export default function ModalAdicionarPacote() {
+  const { id } = useParams();
+  const userLogin = useRecoilValue(stateUserLogin);
+  const setTabelaPacotesInfo = useSetRecoilState(stateTabelaPacotesInfo);
+  const [pacote, setPacote] = useRecoilState(statePacote)
+  const [openModalAdicionarPacote, setOpenModalAdicionarPacote] = useRecoilState(stateOpenModalAdicionarPacote);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setPacote((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+      rifas_id: id
+    }));
+  };
+
+  console.log(pacote)
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await postDados('/admin/dashboard/pacote/cadastrar', pacote, userLogin);
+      
+      setTabelaPacotesInfo(response.data)
+      setOpenModalAdicionarPacote(!openModalAdicionarPacote)
+      
+    } catch (error) {
+      console.error('Erro ao fazer POST:', error);
+    }
+  };
+
+
   return (
-    <Form action="/dashboard/rifas/cotas/Edit/174" id="frmAddPack" method="POST">
-      <label htmlFor="">
+    <Form id="frmAddPack" onSubmit={handleSubmit}>
+      <label htmlFor="frm_add_number_price">
         Valor por cota
-        <input type="text" id="frm_add_number_price" name="number_price" className="moneyCota" required="" />
+        <input
+          type="text"
+          id="frm_add_number_price"
+          name="value_cota"
+          className="moneyCota"
+          value={pacote.value_cota || ""}
+          onChange={handleChange}
+          required
+        />
       </label>
 
-      <label htmlFor="">
+      <label htmlFor="frm_add_qtd">
         Quantidade de cotas
-        <input type="number" id="frm_add_qtd" name="qtd" maxLength="4" required="" />
+        <input
+          type="number"
+          id="frm_add_qtd"
+          name="qntd_cota"
+          maxLength="4"
+          value={pacote.qntd_cota || ""}
+          onChange={handleChange}
+          required
+        />
       </label>
 
-      <label htmlFor="">
+      <label htmlFor="frm_add_price">
         Valor Total
-        <input type="text" id="frm_add_price" name="price" />
+        <input
+          type="text"
+          id="frm_add_price"
+          name="valor_total"
+          value={pacote.valor_total || ""}
+          onChange={handleChange}
+        />
       </label>
 
-      <label htmlFor="">
+      <label htmlFor="frm_add_most_popular">
         Mais Popular
-        <select name="most_popular" id="frm_add_most_popular">
-          <option defaultValue="sim">Sim</option>
-          <option defaultValue="nao">Não</option>
+        <select
+          id="frm_add_most_popular"
+          name="popular"
+          value={pacote.popular || ""}
+          onChange={handleChange}
+        >
+          <option value="sim">Sim</option>
+          <option value="nao">Não</option>
         </select>
       </label>
 
-      <label htmlFor="">
+      <label htmlFor="frm_add_pkg">
         Cod. Promocional
-        <input type="text" style={{textTransform: "uppercase"}} id="frm_add_pkg" name="pkg" maxLength="10" />
+        <input
+          type="text"
+          id="frm_add_pkg"
+          name="cod_promo"
+          style={{ textTransform: "uppercase" }}
+          maxLength="10"
+          value={pacote.cod_promo || ""}
+          onChange={handleChange}
+        />
       </label>
 
       <input type="submit" value="Adicionar" />

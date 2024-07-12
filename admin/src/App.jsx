@@ -43,7 +43,7 @@ function App() {
               <Route path="rifas/editar/:id" element={<EditarRifa />} />
               <Route path="rifas/imagens/:id" element={<ImagensRifa />} />
               <Route path="rifas/cotas/:id" element={<RifasCotas />} />
-              <Route path="rifas/packs" element={<Pacotes />} />
+              <Route path="rifas/packs/:id" element={<Pacotes />} />
               <Route path="rifas/upsell" element={<Upsell />} />
               <Route path="consultaCota" element={<ConsultaCota />} />
               <Route path="sorteio" element={<SorteioSearch />} />

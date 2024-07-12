@@ -20,7 +20,7 @@ class AwardedQuota extends Model
     public static function createAwardedQuota($qntdCota, $award, $show_site, $status, $rifaId) {
 
         $rifa = Rifas::with(['cota'])->find($rifaId);
-        $randomNumbers = self::makeRandomNumberCota($qntdCota, $rifa);
+        $randomNumbers = self::makeRandomNumberBilhetePremiado($qntdCota, $rifa);
 
         $quotas = [];
 
@@ -40,8 +40,18 @@ class AwardedQuota extends Model
 
         return $result ? true : false;
     }
+    public static function updateAwardedQuota($date) {
 
-    private static function makeRandomNumberCota($qntdCota, $rifa) {
+        $result = self::where('id', $date->id)->update([
+            'award' => $date->award,
+            'show_site' => $date->show_site,
+            'status' => $date->status,
+        ]);
+
+        return $result ? true : false;
+    }
+
+    private static function makeRandomNumberBilhetePremiado($qntdCota, $rifa) {
         $maxNumbers = $rifa->cota->qntd_cota;
 
         $generatedNumbers = [];
@@ -60,7 +70,10 @@ class AwardedQuota extends Model
         return self::where('number_cota', $number)->where('rifas_id', $rifaId)->exists();
     }
 
-    public static function getAllRifaCotaPremiadas($rifaId) {
+    public static function getAllBilhetePremiado($rifaId) {
         return self::where('rifas_id', $rifaId)->get();
+    }
+    public static function getOneBilhetePremiado($rifaId) {
+        return self::where('id', $rifaId)->first();
     }
 }

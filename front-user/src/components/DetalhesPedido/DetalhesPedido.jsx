@@ -1,14 +1,45 @@
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useRecoilState } from "recoil";
 import useSlideImages from "../../common/state/hooks/ImagemPremio/ImagemPremio";
 import InfoPedidos from "./InfoPedidos/InfoPedidos";
 import ModoPagamento from "./ModoPagamento/ModoPagamento";
 import NumerosBilhetes from "./ModoPagamento/NumerosBilhetes/NumerosBilhetes";
 import ResumoPedido from "./ResumoPedido/ResumoPedido";
-import { estadoRifa } from "../../common/state/atom";
+import { estadoCheckoutId, estadoCheckoutInfo, estadoRifa } from "../../common/state/atom";
+import { useEffect } from "react";
+import { fetchDados } from "../../common/http/http";
+import { useParams } from "react-router-dom";
 
 export default function DetalhesPedido() {  
   const rifa = useRecoilValue(estadoRifa);
   const { imgPremioSlide } = useSlideImages(rifa);
+  const checkoutReq = useRecoilValue(estadoCheckoutId);
+  const [checkoutInfo, setCheckoutInfo] = useRecoilState(estadoCheckoutInfo)
+  const { id } = useParams();
+
+  useEffect(() => {
+    const pegarDados = async () => {
+      try {
+        const checkoutId = checkoutReq.data.id;
+        console.log(checkoutId)
+
+        const response = await fetchDados(`client/pedidos/${id}`, true);
+
+        setCheckoutInfo(response);
+
+        console.log('checkout:', checkoutInfo)
+
+        
+        console.log('id da url: ', id)
+        
+
+        console.log(response);
+      } catch (error) {
+        console.error('Erro ao comprar rifa:', error);
+      }
+    };
+
+    pegarDados();
+  }, [])
 
   return (
     <>

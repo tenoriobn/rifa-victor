@@ -105,7 +105,7 @@ export default function AdicionarRifa() {
     setSubmitting(true);
 
     try {
-      await postDados('/admin/cadastrar/rifas', formState, userLogin);
+      await postDados('/admin/dashboard/rifas/cadastrar', formState, userLogin);
 
     } catch (error) {
       console.error('Erro ao fazer POST:', error);

@@ -19,19 +19,28 @@ class DiscountPackage extends Model
         return $this->belongsTo(Rifas::class);
     }
 
-    public static function createDiscountPackage($qntdCota, $valueCota, $valorTotal, $popular, $codPromo, $rifaId) {
-        $result  = self::updateOrCreate(
+    public static function createDiscountPackage($data) {
+        $result = self::updateOrCreate(
+            ['id' => $data->id],
             [
-                'qntd_cota' => $qntdCota,
-                'value_cota' => $valueCota,
-                'valor_total' => $valorTotal,
-                'popular' => $popular,
-                'status' => 'ativo',
-                'cod_promo' => $codPromo,
-                'rifas_id' => $rifaId,
+                'qntd_cota' => $data->qntd_cota,
+                'value_cota' => $data->value_cota,
+                'valor_total' => $data->valor_total,
+                'popular' => $data->popular,
+                'status' => $data->status,
+                'cod_promo' => $data->cod_promo,
+                'rifas_id' => $data->rifas_id,
+            ]
+        );
 
-            ]);
+        return $result ? true : false;
+    }
 
-            return $result ? true : false;
+
+    public static function getAllPacotes($id) {
+        return self::where('rifas_id', $id)->get();
+    }
+    public static function getOnePacote($id) {
+        return self::where('id', $id)->first();
     }
 }

@@ -9,7 +9,7 @@ export default function useLogin() {
   const login = async (telefone) => {
     try {
       const dadosLogin = { "cellphone": telefone };
-      const response = await postDados('/login', dadosLogin);
+      const response = await postDados('client/login', dadosLogin);
 
       if (response && response.access_token) {
         localStorage.setItem('access_token', response.access_token);

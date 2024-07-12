@@ -34,7 +34,7 @@ export default function App() {
               <Route path="meus-pedidos" element={<MeusPedidos />} />
             </Route>
 
-            <Route path="checkout" element={<ProtectedRoute element={<DetalhesPedido />} />} />
+            <Route path="checkout/:id/:slug" element={<ProtectedRoute element={<DetalhesPedido />} />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />

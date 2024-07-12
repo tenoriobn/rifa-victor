@@ -105,23 +105,27 @@ class RifasController extends Controller
         }
     }
 
-    public function storeCota(Request $request) {
+    public function storeBilhetePremiado(Request $request) {
         try {
             $qntdCota = $request->qntd_cota;
             $rifaId = $request->rifas_id;
-            // dd($request->all());
+
             $rifa = Rifas::with('cota')->find($rifaId);
             if (!$rifa) {
-                return response()->json(['response' => false, 'msg' => 'Rifa não encontrada'], 404);
+                return response()->json(['response' => false, 'msg' => 'Bilhete não encontrada'], 404);
             }
 
             $qntdCotaExist = AwardedQuota::where('rifas_id', $rifaId)->count();
             $isMake = $rifa->cota->qntd_cota - $qntdCotaExist;
-            if ($qntdCota <= $isMake) {
+
+            if (($qntdCota <= $isMake) || ($request->qntd_cota < 21)) {
                 $bilhetePremiado = AwardedQuota::createAwardedQuota($qntdCota, $request->award, $request->show_site, $request->status, $rifaId);
+
                 if ($bilhetePremiado) {
-                    $bilhetePremiado = AwardedQuota::getAllRifaCotaPremiadas($rifaId);
-                    return response()->json(["success" => true, "msg" => "Rifa criada com sucesso", 'data' => $bilhetePremiado], 200);
+
+                    $bilhetePremiado = AwardedQuota::getAllBilhetePremiado($rifaId);
+                    return response()->json(["success" => true, "msg" => "Bilhete criada com sucesso", 'data' => $bilhetePremiado], 200);
+
                 }
 
                 return response()->json(['response' => false, 'msg' => 'Erro ao criar a cota'], 500);
@@ -132,24 +136,89 @@ class RifasController extends Controller
             return response()->json(["response" => false, "msg" => "Ocorreu um erro interno ao cadastrar a rifa", "error" => $e->getMessage()], 500);
         }
     }
-    public function getAllCotaPremiadaRifa($id) {
+    public function editarBilhetePremiado(Request $request) {
+        try {
+            $bilheteId = $request->id;
+            $rifaId = $request->rifas_id;
+
+            $bilhete = AwardedQuota::find($bilheteId);
+
+            if (!$bilhete) {
+                return response()->json(['response' => false, 'msg' => 'Bilhete não encontrada'], 404);
+            }
+
+            $bilhetePremiado = AwardedQuota::updateAwardedQuota($request);
+            if ($bilhetePremiado) {
+                $bilhetePremiadoAll = AwardedQuota::getAllBilhetePremiado($rifaId);
+                return response()->json(["success" => true, "msg" => "Bilhete Premiado criada com sucesso", 'data' => $bilhetePremiadoAll], 200);
+            }
+
+
+        } catch (Exception $e) {
+            return response()->json(["response" => false, "msg" => "Ocorreu um erro interno ao editar a bilhete", "error" => $e->getMessage()], 500);
+        }
+    }
+    public function destroyBilhetePremiado(Request $request) {
+        try {
+            $bilheteId = $request->id;
+            $rifaId = $request->rifaId;
+
+            $bilhete = AwardedQuota::find($bilheteId);
+
+            if (!$bilhete) {
+                return response()->json(['response' => false, 'msg' => 'Bilhete não encontrada'], 404);
+            }
+
+            $isDelete = $bilhete->delete();
+            if ($isDelete) {
+                $bilhetePremiadoAll = AwardedQuota::getAllBilhetePremiado($rifaId);
+                return response()->json(["success" => true, "msg" => "Bilhete Premiado criada com sucesso", 'data' => $bilhetePremiadoAll], 200);
+            }
+
+
+        } catch (Exception $e) {
+            return response()->json(["response" => false, "msg" => "Ocorreu um erro interno ao editar a bilhete", "error" => $e->getMessage()], 500);
+        }
+    }
+    public function getAllBilhetePremiado($id) {
         try {
             $rifa = Rifas::find($id);
             if ($rifa == []) {
-                return response()->json(['response' => false, 'msg' => 'Rifa não encontrada'], 404);
+                return response()->json(['response' => false, 'msg' => 'Bilhete não encontrada'], 404);
             }
 
-            $qntdCotaExist = AwardedQuota::getAllRifaCotaPremiadas($id);
+            $qntdCotaExist = AwardedQuota::getAllBilhetePremiado($id);
             if ($qntdCotaExist->isEmpty()) {
-                return response()->json(['response' => false, 'msg' => 'Cota não encontrada'], 404);
+                return response()->json(['response' => false, 'msg' => 'Bilhete não encontrada'], 404);
             }
-            return  response()->json(["success" => true, "msg" => "Rifa criada com sucesso", "data" => $qntdCotaExist], 200);
+            return  response()->json(["success" => true, "data" => $qntdCotaExist], 200);
 
 
 
 
         } catch (Exception $e) {
             return response()->json(["response" => false, "msg" => "Ocorreu um erro interno ao cadastrar a rifa", "error" => $e->getMessage()], 500);
+        }
+    }
+    public function getOneBilhetePremiado($id) {
+        try {
+
+            $bilhete = AwardedQuota::find($id);
+            if ($bilhete == []) {
+                return response()->json(['response' => false, 'msg' => 'bilhete não encontrada'], 404);
+            }
+
+            $qntdCotaExist = AwardedQuota::getOneBilhetePremiado($id);
+            if ($qntdCotaExist == []) {
+                return response()->json(['response' => false, 'msg' => 'Bilhete Premiado não encontrada'], 404);
+            }
+            return  response()->json(["success" => true, "data" => $qntdCotaExist], 200);
+
+
+
+
+        } catch (Exception $e) {
+            return response()->json(["response" => false, "msg" => "Ocorreu um erro interno", "error" => $e->getMessage()], 500);
         }
     }
     public function storePacote(Request $request) {
@@ -161,13 +230,67 @@ class RifasController extends Controller
                 return response()->json(['response' => false, 'msg' => 'Rifa não encontrada'], 404);
             }
 
-            $pacote = DiscountPackage::createDiscountPackage( $request->qntd_cota, $request->value_cota, $request->valor_total, $request->popular, $request->cod_promo, $rifaId);
+            $pacote = DiscountPackage::createDiscountPackage($request);
 
             if ($pacote) {
-                return response()->json(["success" => true, "msg" => "Pacote criado com sucesso"], 200);
+                $pacote =  DiscountPackage::getAllPacotes($rifaId);
+                return response()->json(["success" => true, "msg" => "Pacote criado com sucesso", 'data' =>  $pacote], 200);
             }
 
             return response()->json(['response' => false, 'msg' => 'Erro ao criar o pacote'], 500);
+
+        } catch (Exception $e) {
+            return response()->json(["response" => false, "msg" => "Ocorreu um erro interno ao cadastrar a rifa", "error" => $e->getMessage()], 500);
+        }
+    }
+    public function editarPacote(Request $request) {
+        try {
+            $rifaId = $request->rifas_id;
+
+            $rifa = Rifas::withCount('cota')->find($rifaId);
+            if (!$rifa) {
+                return response()->json(['response' => false, 'msg' => 'Rifa não encontrada'], 404);
+            }
+
+            $pacote = DiscountPackage::createDiscountPackage($request);
+
+            if ($pacote) {
+                $pacote = DiscountPackage::getAllPacotes($rifaId);
+                return response()->json(["success" => true, "msg" => "Pacote editado com sucesso", 'data' => $pacote], 200);
+            }
+
+            return response()->json(['response' => false, 'msg' => 'Erro ao editar o pacote'], 500);
+
+        } catch (Exception $e) {
+            return response()->json(["response" => false, "msg" => "Ocorreu um erro", "error" => $e->getMessage()], 500);
+        }
+    }
+
+    public function getAllPacotes($id) {
+        try {
+
+            $pacotes = DiscountPackage::getAllPacotes($id);
+            if (!$pacotes) {
+                return response()->json(['response' => false, 'msg' => 'Pacote não encontrada'], 404);
+            }
+
+            return response()->json(["success" => true, "data" => $pacotes ], 200);
+
+
+        } catch (Exception $e) {
+            return response()->json(["response" => false, "msg" => "Ocorreu um erro interno ao cadastrar a rifa", "error" => $e->getMessage()], 500);
+        }
+    }
+    public function getOnePacotes($id) {
+        try {
+
+            $pacote = DiscountPackage::getOnePacote($id);
+            if (!$pacote) {
+                return response()->json(['response' => false, 'msg' => 'Pacote não encontrada'], 404);
+            }
+
+            return response()->json(["success" => true, "data" => $pacote ], 200);
+
 
         } catch (Exception $e) {
             return response()->json(["response" => false, "msg" => "Ocorreu um erro interno ao cadastrar a rifa", "error" => $e->getMessage()], 500);
@@ -197,6 +320,7 @@ class RifasController extends Controller
     }
     public function storeImagem(Request $request) {
         try {
+            return 'oi';
             // $this->authorize('create', User::class);
 
             // Verifica se há uma imagem no request e se é base64
@@ -274,7 +398,29 @@ class RifasController extends Controller
         try {
             $rifaPay = RifaPay::applyRifa($request);
             RifaNumber::applyRifa($request, $rifaPay);
-            return response()->json(["success" => true, "msg"=> "Rifa Comprada com sucesso"], $this->success);
+            return response()->json(["success" => true, "data"=> $rifaPay ], $this->success);
+        } catch (Exception $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], $this->serverError);
+        }
+    }
+    public function getCompra($id) {
+        try {
+            $buy = RifaPay::getOneCompra($id);
+            if (!$buy) {
+                return response()->json(["success" => false, "msg" => "Pedido não encontrado"], $this->notFound);
+            }
+            return response()->json(["success" => true, "data"=> $buy], $this->success);
+        } catch (Exception $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], $this->serverError);
+        }
+    }
+    public function getCompraClient($id) {
+        try {
+            $buy = RifaPay::getAllCompraClient($id);
+            if (!$buy) {
+                return response()->json(["success" => false, "msg" => "Pedidos não encontrado"], $this->notFound);
+            }
+            return response()->json(["success" => true, "data"=> $buy], $this->success);
         } catch (Exception $e) {
             return response()->json(["success" => false, "msg" => $e->getMessage()], $this->serverError);
         }

@@ -34,6 +34,15 @@ export const putDados = async (rota, dados, token) => {
   return response.data;
 };
 
+export const deleteDados = async (rota, token) => {
+  const response = await apiClient.delete(rota, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};
+
 export const postDados = async (rota, dados, incluirToken = false) => {
   const config = {
     headers: {

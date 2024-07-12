@@ -1,4 +1,7 @@
 import styled from "styled-components";
+import { putDados } from "../../../../../common/http/http";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { stateOpenModalEditarPacote, statePacote, stateTabelaPacotesInfo, stateUserLogin } from "../../../../../common/states/atom";
 
 const Form = styled.form`
   font-size: .9rem;
@@ -57,39 +60,111 @@ const Form = styled.form`
 `;
 
 export default function ModalEditarPacote() {
+  const userLogin = useRecoilValue(stateUserLogin);
+  const [pacote, setPacote] = useRecoilState(statePacote)
+  const setTabelaPacotesInfo = useSetRecoilState(stateTabelaPacotesInfo);
+  const [openModalEditarPacote, setOpenModalEditarPacote] = useRecoilState(stateOpenModalEditarPacote);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setPacote((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await putDados('/admin/dashboard/pacotes/editar', pacote, userLogin);
+
+      setOpenModalEditarPacote(!openModalEditarPacote)
+      setTabelaPacotesInfo(response.data)
+      
+      console.log(response.data)
+    } catch (error) {
+      console.error('Erro ao fazer POST:', error);
+    }
+  };
+
+
   return (
-    <Form action="/dashboard/rifas/cotas/Edit/174" id="frmAddPack" method="POST">
-      <label htmlFor="">
-        Quantidade de cotas
-        <input type="number" id="frm_qtd" name="qtd" />
-      </label>
-
-      <label htmlFor="">
+    <Form id="frmAddPack" onSubmit={handleSubmit}>
+      <label htmlFor="frm_add_number_price">
         Valor por cota
-        <input type="text" name="number_price" id="frm_number_price" className="money" disabled />
+        <input
+          type="text"
+          id="frm_add_number_price"
+          name="value_cota"
+          className="moneyCota"
+          value={pacote.value_cota || ""}
+          onChange={handleChange}
+          required
+          disabled
+        />
       </label>
 
-      <label htmlFor="">
+      <label htmlFor="frm_add_qtd">
+        Quantidade de cotas
+        <input
+          type="number"
+          id="frm_add_qtd"
+          name="qntd_cota"
+          maxLength="4"
+          value={pacote.qntd_cota || ""}
+          onChange={handleChange}
+          required
+          disabled
+        />
+      </label>
+
+      <label htmlFor="frm_add_price">
         Valor Total
-        <input type="text" id="frm_add_price" name="price" />
+        <input
+          type="text"
+          id="frm_add_price"
+          name="valor_total"
+          value={pacote.valor_total || ""}
+          onChange={handleChange}
+          disabled
+        />
       </label>
 
-      <label htmlFor="">
+      <label htmlFor="frm_add_most_popular">
         Mais Popular
-        <select name="most_popular" id="frm_most_popular">
-          <option defaultValue="sim">Sim</option>
-          <option defaultValue="nao">Não</option>
+        <select
+          id="frm_add_most_popular"
+          name="popular"
+          value={pacote.popular || ""}
+          onChange={handleChange}
+        >
+          <option value="sim">Sim</option>
+          <option value="nao">Não</option>
         </select>
       </label>
 
-      <label htmlFor="">
+      <label htmlFor="frm_add_pkg">
         Cod. Promocional
-        <input type="text" style={{textTransform: "uppercase"}} id="frm_pkg" name="pkg" maxLength="10" />
+        <input
+          type="text"
+          id="frm_add_pkg"
+          name="cod_promo"
+          style={{ textTransform: "uppercase" }}
+          maxLength="10"
+          value={pacote.cod_promo || ""}
+          onChange={handleChange}
+        />
       </label>
 
       <label htmlFor="">
         Státus
-        <select name="st" id="frm_st">
+        <select 
+          name="status" 
+          id="frm_st"
+          value={pacote.status || "ativo"}
+          onChange={handleChange}
+        >
           <option defaultValue="A">Ativo</option>
           <option defaultValue="F">Finalizado</option>
         </select>

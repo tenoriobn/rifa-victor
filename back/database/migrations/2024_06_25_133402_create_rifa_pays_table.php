@@ -17,6 +17,8 @@ return new class extends Migration
             $table->tinyInteger('verify')->default(0)->comment('0 => verificacao de pagamento pendente, 1 => verificacao de pagamento feita');
             $table->decimal('value');
             $table->integer('qntd_number');
+            $table->string('cod')->unique();
+            $table->string('checkout')->unique();
             $table->unsignedBigInteger('rifas_id');
             $table->foreign("rifas_id")->references("id")->on("rifas");
             $table->unsignedBigInteger('client_id');

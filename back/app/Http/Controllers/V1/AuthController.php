@@ -39,10 +39,14 @@ class AuthController extends Controller
         }
     }
 
+    public function logar() {
+        return response()->json(['message' => 'Você precisa se logar.'], 403 );
+    }
+
 
     public function login(Request $request) {
         $credentials = $request->only('cellphone');
-        // dd($credentials,'sss');
+
         $client = Clients::where('cellphone', $credentials['cellphone'])->first();
 
         if (!$client) {

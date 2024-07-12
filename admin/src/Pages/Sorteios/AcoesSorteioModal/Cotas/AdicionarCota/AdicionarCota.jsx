@@ -57,6 +57,16 @@ const Form = styled.form`
   input[type=submit]:hover {
     opacity: .8;
   }
+
+  input[type='number']::-webkit-outer-spin-button,
+  input[type='number']::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
 `;
 
 export default function AdicionarCota() {
@@ -64,12 +74,12 @@ export default function AdicionarCota() {
   const userLogin = useRecoilValue(stateUserLogin);
   const [openModalAdicionarCota, setOpenModalAdicionarCota] = useRecoilState(stateOpenModalAdicionarCota);
   const setTabelaCotasInfo = useSetRecoilState(stateTabelaCotasInfo);
-  // const [formValues, setFormValues] = useState({qntd_cota: '', award: '', show_site: 'Y', status: 'available', rifas_id: id});
-  const [formValues, setFormValues] = useRecoilState(stateCotasPremiadas)
+  // const [cotaPremiada, setCotaPremiada] = useState({qntd_cota: '', award: '', show_site: 'Y', status: 'available', rifas_id: id});
+  const [cotaPremiada, setCotaPremiada] = useRecoilState(stateCotasPremiadas)
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormValues((prevValues) => ({
+    setCotaPremiada((prevValues) => ({
       ...prevValues,
       [name]: value,
       rifas_id: id
@@ -80,7 +90,7 @@ export default function AdicionarCota() {
     e.preventDefault();
 
     try {
-      const response = await postDados('/admin/cadastrar/rifas/cota', formValues, userLogin);
+      const response = await postDados('/admin/dashboard/bilhete-premiado/cadastrar', cotaPremiada, userLogin);
 
       setTabelaCotasInfo(response.data)
       setOpenModalAdicionarCota(!openModalAdicionarCota)
@@ -96,10 +106,13 @@ export default function AdicionarCota() {
       <label htmlFor="frm_add_qtd" id="frm_lb_qtd">
         Quantidade (MAX: 20)
         <input
+          type="number"
           className="number"
           id="frm_add_qtd"
           name="qntd_cota"
-          value={formValues.qntd_cota || ''}
+          min="1"
+          max="20"
+          value={cotaPremiada.qntd_cota || ''}
           onChange={handleChange}
           required
         />
@@ -112,7 +125,7 @@ export default function AdicionarCota() {
           id="frm_add_text"
           name="award"
           maxLength="50"
-          value={formValues.award || ''}
+          value={cotaPremiada.award || ''}
           onChange={handleChange}
           required
         />
@@ -123,7 +136,7 @@ export default function AdicionarCota() {
         <select
           name="show_site"
           id="frm_add_visible"
-          value={formValues.show_site || ''}
+          value={cotaPremiada.show_site || ''}
           onChange={handleChange}
         >
           <option value="sim">SIM</option>
@@ -136,7 +149,7 @@ export default function AdicionarCota() {
         <select
           name="status"
           id="frm_add_st"
-          value={formValues.status || ''}
+          value={cotaPremiada.status || ''}
           onChange={handleChange}
         >
           <option value="disponivel">Disponível</option>

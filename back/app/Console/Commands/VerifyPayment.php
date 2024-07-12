@@ -2,50 +2,32 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-
 use App\Jobs\GenerateRifaNumbers;
-use App\Models\V1\RifaPay;
 use App\Models\V1\RifaNumber;
+use Illuminate\Console\Command;
+use App\Services\PaymentService;
 use Exception;
 
 class VerifyPayment extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
     protected $signature = 'pagamentos:verificar';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = 'Verificar pagamentos a cada minuto';
 
-    public function __construct()
+    protected $paymentService;
+
+    public function __construct(PaymentService $paymentService)
     {
         parent::__construct();
+        $this->paymentService = $paymentService;
     }
 
-    /**
-     * Execute the console command.
-     */
     public function handle()
     {
         try {
             $this->info('Verificando pagamentos...');
+            list($cancelPayIds, $payMadeIds) = $this->paymentService->verifyPayments();
 
-            $cancelPayIds = [];
-            $payMadeIds = [];
-
-
-            $cancelPay = RifaPay::cancelPayment()->toArray(); // Converter para array
-            $payMade = RifaPay::MadePayment()->toArray(); // Converter para array
-
-            if($cancelPay == [] && $payMade == []) {
+            if (empty($cancelPayIds) && empty($payMadeIds)) {
                 $this->info('Não há pagamentos pendentes para verificar.');
                 return;
             }
@@ -54,15 +36,9 @@ class VerifyPayment extends Command
                 RifaNumber::cancelRifaNumber($cancelPayIds);
             }
 
-            if (!empty($payMade)) {
-                foreach ($payMade as $payMadeId) {
-                    GenerateRifaNumbers::dispatch([$payMadeId]);
-                    //  $payment = RifaNumber::with(['rifa.cota', 'rifaPay'])->whereIn('pay_id', [$payMadeId])->get();
-                    // RifaNumber::generateUniqueNumbers($payment);
-                }
+            foreach ($payMadeIds as $payMadeId) {
+                GenerateRifaNumbers::dispatch([$payMadeId]);
             }
-
-
 
             $this->info('Verificação de pagamentos concluída.');
         } catch (Exception $e) {

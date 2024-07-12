@@ -23,7 +23,7 @@ export default function FormularioCadastro() {
         cellphone: dadosUsuario.cellphone,
       };
 
-      const dados = await postDados('/cadastro', dadosParaEnviar);
+      const dados = await postDados('client/cadastro', dadosParaEnviar);
       console.log(dados);
 
       await login(dadosParaEnviar.cellphone);

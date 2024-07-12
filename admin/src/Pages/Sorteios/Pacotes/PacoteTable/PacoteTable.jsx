@@ -1,7 +1,8 @@
 /* eslint-disable react/prop-types */
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { stateOpenModalEditarPacote } from "../../../../common/states/atom";
+import { stateOpenModalEditarPacote, statePacote, stateTabelaPacotesInfo, stateUserLogin, stateIdModal } from "../../../../common/states/atom";
+import { fetchDados } from "../../../../common/http/http";
 
 const Table = styled.table`
   width: 100%;
@@ -43,7 +44,7 @@ const Table = styled.table`
 
   .status-rescued {
     background-color: #6f42c1;
-}
+  }
 
   .status-tag {
     padding: .3125rem .625rem;
@@ -55,6 +56,10 @@ const Table = styled.table`
   }
   .status-inconsistente {
     background-color: #17a2b8;
+  }
+
+  .status-pago {
+    background-color: #28a745;
   }
 
   .status-cancelado {
@@ -83,7 +88,7 @@ const Table = styled.table`
 
   .button-edit {
     background-color: #f4b400;
-}
+  }
 
   @media (max-width: 1366px) {
     overflow-x: auto;
@@ -94,6 +99,21 @@ const Table = styled.table`
 
 export default function PacoteTable() {
   const [openModalEditarPacote, setOpenModalEditarPacote] = useRecoilState(stateOpenModalEditarPacote);
+  const tabelaPacotesInfo = useRecoilValue(stateTabelaPacotesInfo);
+  const userLogin = useRecoilValue(stateUserLogin);
+  const setPacote = useSetRecoilState(statePacote)
+  const setIdModal = useSetRecoilState(stateIdModal);
+
+  const handleEditar = async (id) => {
+    setOpenModalEditarPacote(!openModalEditarPacote)
+
+    const response = await fetchDados(`admin/dashboard/pacote/${id}`, userLogin);
+    setPacote(response.data);
+
+    console.log('response: ', response.data)
+
+    setIdModal(id);
+  }
 
   return (
     <div>
@@ -116,26 +136,36 @@ export default function PacoteTable() {
         </thead>
 
         <tbody>
-          <tr className="raffle-item">
-            <td align="center">#1</td>
-            <td align="center">344</td>
-            <td align="center">52</td>
-            <td align="center">R$ 15,08</td>
-            <td align="center">R$ 0,29</td>
-            <td align="center"><span className="status-tag status-inconsistente">NÃO</span></td>
-            <td align="center"></td>
-            <td align="center">R$&nbsp;0,00</td>
-            <td align="center"><span className="status-tag status-cancelado">Finalizado</span></td>
-            <td align="center">15/04 16:08</td>
-            <td align="center">16/04 09:54</td>
-            <td align="center">
-              <div className="button-group">
-                <a className="button-edit" onClick={() => setOpenModalEditarPacote(!openModalEditarPacote)}>
-                  <i className="fas fa-edit"></i> Editar
-                </a>
-              </div>
-            </td>
-          </tr>
+          {tabelaPacotesInfo.map((pacote, index) => (
+              <tr key={index} className="raffle-item">
+                <td>#{index + 1}</td>
+                <td>{pacote.id}</td>
+                <td>{pacote.qntd_cota}</td>
+                <td>R$ {pacote.valor_total}</td>
+                <td>R$ {pacote.value_cota}</td>
+                <td>
+                  <span className={`status-tag ${pacote.popular === 'sim' ? 'status-pago' : 'status-inconsistente'}`}>
+                    {pacote.popular}
+                  </span>
+                </td>
+                <td>{pacote.cod_promo}</td>
+                <td>R$</td>
+                <td>
+                  <span className={`status-tag ${pacote.status === 'ativo' ? 'status-pago' : 'status-cancelado'}`}>
+                    {pacote.status}
+                  </span>
+                </td>
+                <td>{pacote.created_at}</td>
+                <td>{pacote.updated_at}</td>
+                <td>
+                  <div className="button-group">
+                    <a className="button-edit" onClick={() => handleEditar(pacote.id)}>
+                      <i className="fas fa-edit"></i> Editar
+                    </a>
+                  </div>
+                </td>
+              </tr>
+            ))}
         </tbody>
       </Table>
     </div>

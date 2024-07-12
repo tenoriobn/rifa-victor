@@ -125,7 +125,7 @@ export default function Login() {
           password,
       };
 
-      const response = await postDados('/admin/login', dadosLogin);
+      const response = await postDados('/admin/user/login', dadosLogin);
 
       if (response && response.token) {
         salvarToken(response.token); 

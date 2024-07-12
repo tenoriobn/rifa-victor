@@ -1,7 +1,9 @@
 /* eslint-disable react/prop-types */
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { stateIdModal, stateOpenModalCotaPremiada, stateOpenModalEditarCotaPremiada, stateTabelaCotasInfo } from "../../../../../common/states/atom";
+import { stateCotasPremiadas, stateIdModal, stateOpenModalCotaPremiada, stateOpenModalEditarCotaPremiada, stateTabelaCotasInfo, stateUserLogin } from "../../../../../common/states/atom";
+import { deleteDados, fetchDados } from "../../../../../common/http/http";
+import { useParams } from "react-router-dom";
 
 export const Table = styled.table`
   width: 100%;
@@ -70,6 +72,10 @@ export const Table = styled.table`
     background-color: #28a745;
   }
 
+  .button-delete {
+    background-color: #e74a3b;
+  }
+
   .button-group {
     display: flex;
     gap: 5px;
@@ -108,12 +114,29 @@ export const Table = styled.table`
 export default function TabelaCotas() {
   const [openModalCotaPremiada, setOpenModalCotaPremiada] = useRecoilState(stateOpenModalCotaPremiada);
   const [openModalEditarCotaPremiada, setOpenModalEditarCotaPremiada] = useRecoilState(stateOpenModalEditarCotaPremiada);
-  const tabelaCotasInfo = useRecoilValue(stateTabelaCotasInfo);
+  const [tabelaCotasInfo, setTabelaCotasInfo] = useRecoilState(stateTabelaCotasInfo);
   const setIdModal = useSetRecoilState(stateIdModal);
+  const setCotaPremiada = useSetRecoilState(stateCotasPremiadas)
+  const userLogin = useRecoilValue(stateUserLogin);
+  const { id } = useParams();
 
-  const handlePegaIdModal = (id) => {
+  const handleEditar = async (id) => {
     setOpenModalEditarCotaPremiada(!openModalEditarCotaPremiada)
+
+    const response = await fetchDados(`admin/dashboard/bilhete-premiado/editar/${id}`, userLogin);
+    setCotaPremiada(response.data);
+
     setIdModal(id);
+  }
+
+  const handleDeletar = async (idCotaPremiada) => {
+    const rifa = { rifas_id: id };
+
+    console.log(rifa)
+
+    const response = await deleteDados(`admin/dashboard/bilhete-premiado/delete/${idCotaPremiada}/${id}`, userLogin);
+    setTabelaCotasInfo(response.data);
+    setIdModal(idCotaPremiada);
   }
 
   return (
@@ -146,7 +169,7 @@ export default function TabelaCotas() {
                 </span>
               </td>
               <td>
-                <span className={`status-tag ${cota.show_site === 'SIM' ? 'status-available' : 'status-reserved'}`}>
+                <span className={`status-tag ${cota.show_site === 'sim' ? 'status-available' : 'status-reserved'}`}>
                   {cota.show_site}
                 </span>
               </td>
@@ -154,17 +177,28 @@ export default function TabelaCotas() {
               <td>{cota.updated_at}</td>
               <td>
                 <div className="button-group">
-                  <button 
-                    className="action-button button-view" 
-                    onClick={() => setOpenModalCotaPremiada(!openModalCotaPremiada)}
-                  >
-                    <i className="fas fa-eye"></i> VER
-                  </button>
+                  {cota.status === "resgatada" && 
+                    <button 
+                      className="action-button button-view" 
+                      onClick={() => setOpenModalCotaPremiada(!openModalCotaPremiada)}
+                    >
+                      <i className="fas fa-eye"></i> VER
+                    </button>
+                  }
+
                   <button className="action-button button-edit" 
-                    onClick={() => handlePegaIdModal(cota.id)}
+                    onClick={() => handleEditar(cota.id)}
                   >
                     <i className="fas fa-edit"></i> Editar
                   </button>
+
+                  {cota.status !== "resgatada" &&
+                    <button className="action-button button-delete" 
+                      onClick={() => handleDeletar(cota.id)}
+                    >
+                      <i className="fas fa-check-square"></i> Excluir
+                    </button>
+                  }
                 </div>
               </td>
             </tr>

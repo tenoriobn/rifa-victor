@@ -42,7 +42,7 @@ export default function EditarRifa() {
 
   useEffect(() => {
     const obterDados = async () => {
-      const response = await fetchDados(`/admin/editar/rifa/${id}`, userLogin);
+      const response = await fetchDados(`/admin/dashboard/rifa/editar/${id}`, userLogin);
    
       const flattenedData = flattenObject(response.data);
       setFormState(flattenedData);
@@ -62,7 +62,7 @@ export default function EditarRifa() {
     setSubmitting(true);
 
     try {
-      await putDados(`/admin/editar/rifa/${id}`, formState, userLogin);
+      await putDados(`/admin/dashboard/rifa/editar/${id}`, formState, userLogin);
       navigate("/dashboard/rifas");
       resetFormState();
     } catch (error) {

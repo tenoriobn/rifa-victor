@@ -1,4 +1,7 @@
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components"
+import { stateCotasPremiadas, stateOpenModalEditarCotaPremiada, stateUserLogin, stateTabelaCotasInfo } from "../../../../../common/states/atom";
+import { putDados } from "../../../../../common/http/http";
 
 const Form = styled.form`
   font-size: .9rem;
@@ -57,33 +60,101 @@ const Form = styled.form`
 `;
 
 export default function ModalEditarCotaPremiada() {
+  const userLogin = useRecoilValue(stateUserLogin);
+  const [openModalEditarCotaPremiada, setOpenModalEditarCotaPremiada] = useRecoilState(stateOpenModalEditarCotaPremiada);
+  // const [cotaPremiada, setCotaPremiada] = useState({qntd_cota: '', award: '', show_site: 'Y', status: 'available', rifas_id: id});
+  const [cotaPremiada, setCotaPremiada] = useRecoilState(stateCotasPremiadas);
+  const setTabelaCotasInfo = useSetRecoilState(stateTabelaCotasInfo);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setCotaPremiada((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }));
+
+    console.log('modalEditarHandle:', cotaPremiada);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await putDados('/admin/dashboard/bilhete-premiado/editar/', cotaPremiada, userLogin);
+
+      setOpenModalEditarCotaPremiada(!openModalEditarCotaPremiada)
+      setTabelaCotasInfo(response.data)
+      
+      console.log(response.data)
+    } catch (error) {
+      console.error('Erro ao fazer POST:', error);
+    }
+  };
+
   return (
-    <Form action="/dashboard/rifas/cotas/Edit/174" id="frmAddPack" method="POST">
-        <label htmlFor="cota">
-          Cota
-          <input type="number" id="cota" name="cota" />
-        </label>
+    <Form id="frmAddPack" onSubmit={handleSubmit}>
+      <label htmlFor="frm_add_qtd" id="frm_lb_qtd">
+        Cota
+        <input
+          type="number"
+          className="number"
+          id="frm_add_qtd"
+          name="number_cota"
+          min="1"
+          max="20"
+          value={cotaPremiada.number_cota || ''}
+          onChange={handleChange}
+          required
+          disabled
+        />
+      </label>
 
-        <label htmlFor="text">
-          Prêmio
-          <input type="text" id="premio" name="text" maxLength="50" />
-        </label>
+      <label htmlFor="frm_add_text">
+        Prêmio
+        <input
+          type="text"
+          id="frm_add_text"
+          name="award"
+          maxLength="50"
+          value={cotaPremiada.award || ''}
+          onChange={handleChange}
+          required
+          disabled={cotaPremiada.status === "resgatada" ? true : false}
+        />
+      </label>
 
-        <label htmlFor="visible">
-          Mostrar no site
-          <select name="visible" id="visible">
-            <option value="sim">SIM</option>
-            <option value="nao">NÃO</option>
-          </select>
-        </label>
+      <label htmlFor="frm_add_visible">
+        Mostrar no site
+        <select
+          name="show_site"
+          id="frm_add_visible"
+          value={cotaPremiada.show_site || ''}
+          onChange={handleChange}
+        >
+          <option value="sim">SIM</option>
+          <option value="nao">NÃO</option>
+        </select>
+      </label>
 
-        <label htmlFor="st">
-          Státus
-          <select name="st" id="st">
-          <option value="rescued">Resgatada</option></select>
-        </label>
+      <label htmlFor="frm_add_st">
+        Státus
+        <select
+          name="status"
+          id="frm_add_st"
+          value={cotaPremiada.status || ''}
+          onChange={handleChange}
+        >
+          {cotaPremiada.status === "resgatada" ? <option value="resgatada">Resgatada</option> : 
+            <>
+              <option value="disponivel">Disponível</option>
+              <option value="bloqueada">Bloqueada</option>
+              <option value="imediato">Imediato</option>
+            </>
+          }
+        </select>
+      </label>
 
-        <input type="submit" value="Atualizar" />
+      <input type="submit" value="Adicionar" />
     </Form>
-  )
+  );
 }

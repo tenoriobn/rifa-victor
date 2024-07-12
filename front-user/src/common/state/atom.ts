@@ -108,3 +108,13 @@ export const estadoRanking = atom({
   key: 'estadoRanking',
   default: [],
 });
+
+export const estadoCheckoutId = atom({
+  key: 'estadoCheckoutId',
+  default: {},
+});
+
+export const estadoCheckoutInfo = atom({
+  key: 'estadoCheckoutInfo',
+  default: null,
+});
