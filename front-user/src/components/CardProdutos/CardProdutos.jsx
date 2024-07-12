@@ -137,11 +137,21 @@ export default function CardProdutos({ categoria }) {
           </Link>
         ))
       ) : (
-        <CardAviso 
-          classes="border-yellow-600 bg-yellow-100 text-yellow-700"
-          subtitulo="Nada aqui..."
-          mensagem="Parece que estamos sem ofertas disponíveis no momento, mas não se preocupe, em breve teremos novidades! Fique ligado!"
-        />
+        <>
+          {categoria === "ativas" ? 
+            <CardAviso 
+              classes="border-yellow-600 bg-yellow-100 text-yellow-700"
+              subtitulo="Nada aqui..."
+              mensagem="Parece que estamos sem ofertas disponíveis no momento, mas não se preocupe, em breve teremos novidades! Fique ligado!"
+            />
+            :
+            <CardAviso 
+              classes="border-yellow-600 bg-yellow-100 text-yellow-700"
+              subtitulo="Nada aqui..."
+              mensagem="Parece que estamos sem ofertas finalizadas no momento, em breve teremos novidades! Fique ligado!"
+            />
+          }
+        </>
       )}
     </div>
   );

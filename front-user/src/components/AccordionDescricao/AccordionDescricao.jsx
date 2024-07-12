@@ -31,7 +31,7 @@ export default function AccordionDescricao({ display }) {
         </button>
 
         <div 
-          className={`text-sm text-gray-500 dark:text-gray-400 bg-slate-100 rounded-lg overflow-hidden transition-max-height duration-200 px-2 ${selecaoAtiva === 'descricaoProduto' ? 'max-h-96 pt-1.5 pb-3 mt-1.5 mb-3' : 'max-h-0'}`}
+          className={`text-sm text-gray-500 dark:text-gray-500 bg-slate-100 rounded-lg overflow-hidden transition-max-height duration-200 px-2 ${selecaoAtiva === 'descricaoProduto' ? 'max-h-96 pt-1.5 pb-3 mt-1.5 mb-3' : 'max-h-0'}`}
         >
           <div dangerouslySetInnerHTML={limparHTML(rifa.description_product)} />
         </div>
@@ -49,7 +49,7 @@ export default function AccordionDescricao({ display }) {
         </button>
 
         <div 
-          className={`text-sm text-gray-500 dark:text-gray-400 bg-slate-100 rounded-lg overflow-hidden transition-max-height duration-200 ease-in-out px-2 ${selecaoAtiva === 'descricaoSorteio' ? 'max-h-96 pt-1.5 pb-3 mt-1.5 mb-3' : 'max-h-0'}`}
+          className={`text-sm text-gray-500 dark:text-gray-500 bg-slate-100 rounded-lg overflow-hidden transition-max-height duration-200 ease-in-out px-2 ${selecaoAtiva === 'descricaoSorteio' ? 'max-h-96 pt-1.5 pb-3 mt-1.5 mb-3' : 'max-h-0'}`}
         >
           <div dangerouslySetInnerHTML={limparHTML(rifa.description_sortition)} />
         </div>
