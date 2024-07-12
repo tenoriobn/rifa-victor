@@ -1,21 +1,21 @@
-import { useRecoilState, useRecoilValue } from "recoil";
-import { estadoFinalizarPedido, estadoUsuario } from "../../common/state/atom";
-import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useRecoilValue } from "recoil";
+import { estadoUsuario } from "../../common/state/atom";
+// import { useNavigate } from "react-router-dom";
+// import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { transicaoAnimada } from "../../common/util/transicaoAnimada";
 
 export default function DadosUsuario() {
   const usuario = useRecoilValue(estadoUsuario);
-  const [finalizarPedido, setFinalizarPedido] = useRecoilState(estadoFinalizarPedido);
-  const navigate = useNavigate()
+  // const [finalizarPedido, setFinalizarPedido] = useRecoilState(estadoFinalizarPedido);
+  // const navigate = useNavigate()
 
-  useEffect(() => {
-    if (finalizarPedido) {
-      navigate('/checkout');
-      setFinalizarPedido(false);
-    }
-  }, [finalizarPedido, setFinalizarPedido, navigate]);
+  // useEffect(() => {
+  //   if (finalizarPedido) {
+  //     navigate('/checkout');
+  //     setFinalizarPedido(false);
+  //   }
+  // }, [finalizarPedido, setFinalizarPedido, navigate]);
 
   const animacao = transicaoAnimada();
 

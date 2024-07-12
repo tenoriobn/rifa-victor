@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {  useEffect } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -61,6 +62,7 @@ export default function AcessoUsuario() {
       const idCheckout = checkoutReq.data.id;
       const slugCheckout = checkoutReq.data.checkout;
       navigate(`/checkout/${idCheckout}/${slugCheckout}`);
+      setCheckoutReq({})
     }
   }, [checkoutReq]);
 
