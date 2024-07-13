@@ -76,7 +76,7 @@ export default function ModalAdicionarNumeros() {
   return (
     <Form onSubmit={handleSubmit}>
       <label htmlFor="cota">
-        Número da Cota Premiada
+        Qntd. números
         <input
           type="text"
           name="cota"
@@ -88,7 +88,7 @@ export default function ModalAdicionarNumeros() {
       </label>
 
       <label htmlFor="number">
-        Destinatário da Cota
+        Telefone do usuário a receber
         <input
           type="text"
           name="number"

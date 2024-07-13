@@ -63,10 +63,6 @@ const MenuHeader = styled.div`
 const MenuBody = styled.div`
   margin-top: 2.1875rem;
 
-  .superadmin {
-    margin-top: 0px!important;
-  }
-
   ul li a {
     display: block;
     background: #20202a;
@@ -97,6 +93,10 @@ const MenuBody = styled.div`
   .menu-config {
     padding-left: 48px;
   }
+`;
+
+const MenuSuperAdmin = styled(MenuBody)`
+  margin-top: 0px!important;
 `;
 
 export default function Sidebar() {
@@ -160,7 +160,7 @@ export default function Sidebar() {
       </MenuBody>
       
     
-        <MenuBody className="superadmin">
+        <MenuSuperAdmin className="superadmin">
           <ul>
             <li className="dropdown">
               <a href="#" onClick={() => setSuperAdminActive(!superAdminActive)}>
@@ -180,7 +180,7 @@ export default function Sidebar() {
                 </>
               }
           </ul>
-        </MenuBody>
+        </MenuSuperAdmin>
 
     </ContainerSidebar>
   );

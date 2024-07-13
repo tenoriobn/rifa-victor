@@ -57,7 +57,7 @@ const Form = styled.form`
   }
 `;
 
-export default function ModalAdicionarNumeros() {
+export default function ModalTrocarBilhete() {
   const [cota, setCota] = useState("");
   const [number, setNumber] = useState("");
 
@@ -76,7 +76,7 @@ export default function ModalAdicionarNumeros() {
   return (
     <Form onSubmit={handleSubmit}>
       <label htmlFor="cota">
-        Qntd. Números
+        Número da cota sorteada
         <input
           type="text"
           name="cota"
@@ -88,7 +88,7 @@ export default function ModalAdicionarNumeros() {
       </label>
 
       <label htmlFor="number">
-        Destinatário dos Numeros
+        Telefone do novo vencedor
         <input
           type="text"
           name="number"
@@ -99,7 +99,7 @@ export default function ModalAdicionarNumeros() {
         />
       </label>
 
-      <input id="sendEditPack" type="submit" value="ADICIONAR" />
+      <input id="sendEditPack" type="submit" value="Efetuar Troca" />
     </Form>
   );
 }
