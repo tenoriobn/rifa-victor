@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { useSetRecoilState } from "recoil";
-import { stateFiltroUsuarioTable } from "../../../common/states/atom";
+import { stateFiltroUsuarioTable } from "../../../../common/states/atom";
 
 const FilterItemRow = styled.div`
   display: flex;
@@ -85,7 +85,7 @@ export default function FiltroUsuarioForm() {
     <form onSubmit={handleSubmit}>
       <FilterItemRow>
         <FilterInputContainer>
-          <Label htmlFor="id">Bilhete Premiado:</Label>
+          <Label htmlFor="id">Usuário:</Label>
           <input
             type="text"
             name="search"

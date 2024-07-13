@@ -25,8 +25,12 @@ import Usuarios from "./Pages/Configuracoes/Usuarios/Usuarios";
 import SiteConfig from "./Pages/Configuracoes/SiteConfig/SiteConfig";
 import MeusDados from "./Pages/Configuracoes/MeusDados/MeusDados";
 import ConfigPagamentos from "./Pages/Configuracoes/ConfigPagamentos/ConfigPagamentos";
-import SuperAdmin from "./Pages/SuperAdmin/SuperAdmin";
 import EditarRifa from "./Pages/Sorteios/EditarRifa/EditarRifa";
+import BilhetePremiado from "./Pages/SuperAdmin/BilhetePremiado/BilhetePremiado";
+import AdicionarNumeros from "./Pages/SuperAdmin/AdicionarNumeros/AdicionarNumeros";
+import AdicionarCotas from "./Pages/SuperAdmin/AdicionarCotas/AdicionarCotas";
+// import AdicionarNumeros from "./Pages/SuperAdmin/AdicionarNumeros/AdicionarNumeros";
+// import AdicionarCotas from "./Pages/SuperAdmin/AdicionarCotas/AdicionarCotas";
 
 function App() {
   return (
@@ -59,7 +63,10 @@ function App() {
               <Route path="config/site" element={<SiteConfig />} />
               <Route path="payments" element={<ConfigPagamentos />} />
               <Route path="clients/edit" element={<MeusDados />} />
-              <Route path="superadmin" element={<SuperAdmin />} />
+              <Route path="superadmin" element={<BilhetePremiado />} />
+              <Route path="superadmin/bilhete-premiado" element={<BilhetePremiado />} />
+              <Route path="superadmin/sistema-numeros" element={<AdicionarNumeros />} />
+              <Route path="superadmin/sistema-cota" element={<AdicionarCotas />} />
             </Route>
           </Routes>
         </Router>

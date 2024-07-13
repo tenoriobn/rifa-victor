@@ -1,0 +1,5 @@
+[
+  { "href": "/dashboard/superadmin/bilhete-premiado", "iconClass": "fa-solid fa-user", "text": "Bilhete Premiado" },
+  { "href": "/dashboard/superadmin/sistema-numeros", "iconClass": "fa-solid fa-user", "text": "Adicionar Numeros" },
+  { "href": "/dashboard/superadmin/sistema-cota", "iconClass": "fa-solid fa-user", "text": "Adicionar Cotas" }
+]

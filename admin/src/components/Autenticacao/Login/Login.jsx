@@ -5,6 +5,8 @@ import { stateUserLogin } from "../../../common/states/atom";
 import { useSetRecoilState } from "recoil";
 import { postDados, salvarToken } from '../../../common/http/http';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Section = styled.section`
   font-family: ${Theme.font.poppins}!important;
@@ -136,9 +138,12 @@ export default function Login() {
       }
 
     } catch (error) {
-      setErro(error);
+      setErro(error.response.data.response);
+      notify()
     }
   };
+
+  const notify = () => toast.error(erro);
 
   return (
     <Section>
@@ -158,6 +163,7 @@ export default function Login() {
                 name="email"
                 value={email}
                 onChange={handleEmailChange}
+                required
               />
             </label>
             
@@ -173,8 +179,8 @@ export default function Login() {
 
             <button type="submit">Acessar</button>
           </Form>
-
-          {erro && <p>Ocorreu um erro ao fazer login: {erro.message}</p>}
+          
+          <ToastContainer />
         </FormContainer>
       </RightSide>
     </Section>

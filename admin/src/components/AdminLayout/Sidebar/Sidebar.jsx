@@ -5,6 +5,7 @@ import { useRecoilState } from "recoil";
 import { stateMenuActive } from "../../../common/states/atom";
 import links from "./links.json";
 import linksConfiguracoes from "./linksConfiguracoes.json";
+import linksSuperAdmin from "./linksSuperAdmin.json";
 import { removerToken } from "../../../common/http/http";
 
 const ContainerSidebar = styled.div`
@@ -62,6 +63,10 @@ const MenuHeader = styled.div`
 const MenuBody = styled.div`
   margin-top: 2.1875rem;
 
+  .superadmin {
+    margin-top: 0px!important;
+  }
+
   ul li a {
     display: block;
     background: #20202a;
@@ -88,11 +93,16 @@ const MenuBody = styled.div`
   .dropdown > ul {
     display: ${(props) => (props.$submenuActive ? "block" : "none")};
   }
+
+  .menu-config {
+    padding-left: 48px;
+  }
 `;
 
 export default function Sidebar() {
   const [menuActive, setMenuActive] = useRecoilState(stateMenuActive);
   const [submenuActive, setSubmenuActive] = useState(false);
+  const [superAdminActive, setSuperAdminActive] = useState(false);
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -137,15 +147,41 @@ export default function Sidebar() {
             <ul>
               {linksConfiguracoes.map((link, index) => (
                 <li key={index}>
-                  <NavLink to={link.href} end onClick={() => setMenuActive(!menuActive)}>
+                  <NavLink className="menu-config" to={link.href} end onClick={() => setMenuActive(!menuActive)}>
                     <i className={link.iconClass}></i> {link.text}
                   </NavLink>
                 </li>
               ))}
             </ul>
           </li>
+
+
         </ul>
       </MenuBody>
+      
+    
+        <MenuBody className="superadmin">
+          <ul>
+            <li className="dropdown">
+              <a href="#" onClick={() => setSuperAdminActive(!superAdminActive)}>
+                <i className="fas fa-cogs"></i> SUPER ADMIN
+              </a>
+            </li>
+              {superAdminActive &&  
+                <>
+                  {linksSuperAdmin.map((link, index) => (
+                    <li key={index}>
+                      <NavLink className="menu-config" to={link.href} end onClick={() => setMenuActive(!menuActive)}>
+                        <i className={link.iconClass}></i> {link.text}
+                      </NavLink>
+                    </li>
+                  ))}
+
+                </>
+              }
+          </ul>
+        </MenuBody>
+
     </ContainerSidebar>
   );
 }

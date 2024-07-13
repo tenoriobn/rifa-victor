@@ -101,6 +101,16 @@ export const stateOpenModalNovaImagem = atom({
   default: false,
 });
 
+export const stateOpenModalAdicionarNumeros = atom({
+  key: 'stateOpenModalAdicionarNumeros',
+  default: false,
+});
+
+export const stateOpenModalAdicionarCotas = atom({
+  key: 'stateOpenModalAdicionarCotas',
+  default: false,
+});
+
 export const stateInfoRifaForm = atom({
   key: 'stateInfoRifaForm',
   default: {
