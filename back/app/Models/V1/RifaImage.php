@@ -21,4 +21,8 @@ class RifaImage extends Model
 
             return $result ? true : false;
     }
+
+    public static function getRifaImagens($id) {
+        return self::where('rifas_id', $id)->get();
+    }
 }

@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
-import { stateImagensRifa, stateOpenModalNovaImagem } from '../../../../../common/states/atom';
+import { stateImagensRifa, stateOpenModalNovaImagem, stateUserLogin } from '../../../../../common/states/atom';
+import { postDados } from "../../../../../common/http/http.js";
 
 const ImagemForm = styled.form`
   input {
@@ -28,6 +29,7 @@ export default function ModalImagemRifa() {
   const [imagensRifa, setImagensRifa] = useRecoilState(stateImagensRifa);
   const setOpenModalNovaImagem = useSetRecoilState(stateOpenModalNovaImagem);
   const [imagemSelecionada, setImagemSelecionada] = useState(null);
+  const userLogin = useRecoilValue(stateUserLogin);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -86,10 +88,25 @@ export default function ModalImagemRifa() {
       // Se todas as verificações passarem, adiciona a imagem ao estado e fecha o modal
       if (imagemSelecionada) {
         setImagensRifa([...imagensRifa, imagemSelecionada]);
+
+        handleSubmitImage();
+
         setOpenModalNovaImagem(false);
       }
     };
     img.src = URL.createObjectURL(file);
+  };
+
+
+  const handleSubmitImage = async () => {
+    try {
+      const response = await postDados('/admin/dashboard/rifa/imagens/cadastrar', imagemSelecionada, userLogin);
+
+      console.log('response: ', response)
+
+    } catch (error) {
+      console.error('Erro ao fazer POST:', error);
+    } 
   };
 
   return (

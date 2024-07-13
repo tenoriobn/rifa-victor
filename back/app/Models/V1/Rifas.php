@@ -56,6 +56,9 @@ class Rifas extends Model
     public function awardedQuotaClient(): hasMany {
         return $this->hasMany(AwardedQuotaClient::class);
     }
+    public function rifaImage(): hasMany {
+        return $this->hasMany(RifaImage::class);
+    }
 
     public static function rifaCreateOrUpdate($title, $slug, $description_resume, $show_site, $emphasis, $show_top, $video, $status, $price, $description_sortition, $description_product, $description_role, $description_order_approve, $data_sortition, $initial_sale, $end_sale, $end_rifa, $user_id, $rifa_id) {
         $rifaService = new FuncaoService();

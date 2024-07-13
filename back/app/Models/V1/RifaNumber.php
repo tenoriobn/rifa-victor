@@ -23,10 +23,11 @@ class RifaNumber extends Model {
         return $this->belongsTo(RifaPay::class, 'pay_id', 'id');
     }
 
+
     public static function applyRifa($date, $rifaPayId) {
         $numbers = json_encode($date->numbers);
         self::create([
-            'pay_id' => $rifaPayId,
+            'pay_id' => $rifaPayId->id,
             'rifas_id' => $date->rifas_id,
             'numbers' =>  $numbers ,
             'client_id' => $date->client_id,

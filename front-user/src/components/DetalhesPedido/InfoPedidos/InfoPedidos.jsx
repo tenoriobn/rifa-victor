@@ -1,11 +1,15 @@
-import Whatsapp from "../../../assets/Icons/whatsapp.svg?react"
+import Whatsapp from "../../../assets/Icons/whatsapp.svg?react";
+import { useRecoilValue } from "recoil";
+import { estadoCheckoutInfo } from "../../../common/state/atom";
 
 export default function InfoPedidos() {
+  const checkoutInfo = useRecoilValue(estadoCheckoutInfo)
+
   const informacoes = [
-    { label: '🔢 Código:', value: '2290627' },
-    { label: '🛍 Total de Cotas:', value: '35' },
-    { label: '➕ Taxa:', value: 'R$ 0,00' },
-    { label: '💲 Valor:', value: 'R$ 7,00' }
+    { label: '🔢 Código:', value: checkoutInfo.cod },
+    { label: '🛍 Total de Cotas:', value: checkoutInfo.qntd_number },
+    { label: '➕ Taxa:', value: checkoutInfo.rifa.rifa_payment.service_charge },
+    { label: '💲 Total:', value: checkoutInfo.value }
   ];
 
   return (
@@ -18,25 +22,34 @@ export default function InfoPedidos() {
           </p>
         ))}
 
-        <div className="mt-4 flex gap-2 text-neutral-700">
-          <p className="font-bold">⚠ Status:</p>
-          <p className="text-amber-500">Aguardando pagamento</p>
-        </div>
 
-        <div className="mt-4 flex gap-2 text-neutral-700">
-          <p className="font-bold">✅ Status:</p>
-          <p className="text-amber-500">Finalizado</p>
-        </div>
+        {checkoutInfo.status === 0 &&
+          <div className="mt-4 flex gap-2 text-neutral-700">
+            <p className="font-bold">⚠ Status:</p>
+            <p className="text-amber-500">Aguardando pagamento</p>
+          </div>
+        }
 
-        <div className="mt-4 flex gap-2 text-neutral-700">
-          <p className="font-bold">❌ Status:</p>
-          <p className="text-red-500">Cancelado</p>
-        </div>
+        {checkoutInfo.status === 1 &&
+          <div className="mt-4 flex gap-2 text-neutral-700">
+            <p className="font-bold">✅ Status:</p>
+            <p className="text-emerald-500">Finalizado</p>
+          </div>
+        }
 
-        <div className="flex gap-2 text-neutral-700">
-          <div className="font-bold">🗓 Pago em:</div>
-          <div>20/06/24, 16:28</div>
-        </div>
+        {checkoutInfo.status === 2 &&
+          <div className="mt-4 flex gap-2 text-neutral-700">
+            <p className="font-bold">❌ Status:</p>
+            <p className="text-red-500">Cancelado</p>
+          </div>
+        }
+
+        {checkoutInfo.status === 1 &&
+          <div className="flex gap-2 text-neutral-700">
+            <div className="font-bold">🗓 Pago em:</div>
+            <div>{checkoutInfo.updated_at}</div>
+          </div>
+        }
 
         <a 
           href="https://chat.whatsapp.com/11999999999"

@@ -118,3 +118,8 @@ export const estadoCheckoutInfo = atom({
   key: 'estadoCheckoutInfo',
   default: null,
 });
+
+export const estadoPedidosUsuario = atom({
+  key: 'estadoPedidosUsuario',
+  default: null,
+});

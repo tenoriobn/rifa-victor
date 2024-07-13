@@ -6,38 +6,36 @@ import ModoPagamento from "./ModoPagamento/ModoPagamento";
 import NumerosBilhetes from "./ModoPagamento/NumerosBilhetes/NumerosBilhetes";
 import ResumoPedido from "./ResumoPedido/ResumoPedido";
 import { estadoCheckoutInfo, estadoRifa } from "../../common/state/atom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { fetchDados } from "../../common/http/http";
 import { useParams } from "react-router-dom";
+import AvisoCarregando from "../AvisoCarregando/AvisoCarregando";
 
 export default function DetalhesPedido() {  
   const rifa = useRecoilValue(estadoRifa);
   const { imgPremioSlide } = useSlideImages(rifa);
-  const [checkoutInfo, setCheckoutInfo] = useRecoilState(estadoCheckoutInfo)
+  const [checkoutInfo, setCheckoutInfo] = useRecoilState(estadoCheckoutInfo);
   const { id } = useParams();
-
+  const [isLoading, setIsLoading] = useState(true);
+  
   useEffect(() => {
     const pegarDados = async () => {
       try {
-
-        const response = await fetchDados(`client/pedidos/${id}`, true);
-
-        setCheckoutInfo(response);
-
-        console.log('checkout:', checkoutInfo)
-
-        
-        console.log('id da url: ', id)
-        
-
-        console.log(response);
+        const response = await fetchDados(`client/checkout/pedido/${id}`, true);
+        setCheckoutInfo(response.data);
       } catch (error) {
         console.error('Erro ao comprar rifa:', error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     pegarDados();
-  }, [])
+  }, []);
+
+  if (isLoading) {
+    return <AvisoCarregando />; 
+  }
 
   return (
     <>
@@ -48,9 +46,17 @@ export default function DetalhesPedido() {
           alt="Imagem do Prêmio" 
         />
       </div>
-      <InfoPedidos />
-      <ModoPagamento />
-      <NumerosBilhetes />
+
+        <InfoPedidos /> 
+
+      {checkoutInfo.status === 0 &&  
+        <ModoPagamento />
+      }
+
+      {checkoutInfo.status === 1 &&  
+        <NumerosBilhetes />
+      }
+
       <ResumoPedido />
     </>
   )

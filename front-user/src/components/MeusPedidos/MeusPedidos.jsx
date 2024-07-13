@@ -3,9 +3,38 @@ import Paginacao from "./Paginacao/Paginacao";
 import TabelaPedidos from "./Tabela/TabelaPedidos";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useEffect, useState } from "react";
+import { fetchDados } from "../../common/http/http";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import AvisoCarregando from "../AvisoCarregando/AvisoCarregando";
+import {  estadoPedidosUsuario, estadoUsuario } from "../../common/state/atom.ts";
 
 export default function MeusPedidos() {
+  const setPedidosUsuario = useSetRecoilState(estadoPedidosUsuario);
+  const [isLoading, setIsLoading] = useState(true);
   const notify = () => toast.error('Erro ao carregar pedidos...');
+  const usuario = useRecoilValue(estadoUsuario);
+
+  useEffect(() => {
+    const pegarDados = async () => {
+      try {
+        const response = await fetchDados(`client/meus-pedidos/sorteios/${usuario.id}`, true);
+        console.log('response', response)
+        setPedidosUsuario(response.data)
+
+      } catch (error) {
+        console.error('Erro ao comprar rifa:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    pegarDados();
+  }, []);
+
+  if (isLoading) {
+    return <AvisoCarregando />; 
+  }
 
   return (
     <div 

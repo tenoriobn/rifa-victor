@@ -66,6 +66,8 @@ export default function ImagensRifa() {
     setImagensRifa(novasImagens);
   };
 
+  console.log(imagensRifa);
+
   return (
     <>
       <Header>

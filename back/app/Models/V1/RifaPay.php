@@ -16,7 +16,7 @@ class RifaPay extends Model
         return $this->hasOne(RifaNumber::class, 'pay_id', 'id');
     }
     public function rifa(): BelongsTo {
-        return $this->belongsTo(Rifas::class);
+        return $this->belongsTo(Rifas::class, 'rifas_id', 'id');
     }
     public function client(): BelongsTo {
         return $this->belongsTo(Clients::class);
@@ -40,10 +40,10 @@ class RifaPay extends Model
     }
 
     public static function getOneCompra($id) {
-        return self::with(['rifaNumber'])->where('id', $id)->first();
+        return self::with(['rifaNumber', 'rifa.rifaPayment'])->where('id', $id)->first();
     }
     public static function getAllCompraClient($id) {
-        return self::where('client_id', $id)->get();
+        return self::with(['rifaNumber', 'rifa.rifaPayment', 'rifa.rifaImage'])->where('client_id', $id)->orderByDesc('id')->get();
     }
 
     private static function generateUniqueNumericCode() {
