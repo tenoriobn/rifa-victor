@@ -110,6 +110,20 @@ export default function Sidebar() {
     navigate('/');
   }
 
+  const toggleSubmenu = () => {
+    setSubmenuActive(!submenuActive);
+    if (!submenuActive) {
+      setSuperAdminActive(false);
+    }
+  }
+
+  const toggleSuperAdmin = () => {
+    setSuperAdminActive(!superAdminActive);
+    if (!superAdminActive) {
+      setSubmenuActive(false);
+    }
+  }
+
   return (
     <ContainerSidebar $menuActive={menuActive}>
       <span onClick={() => setMenuActive(!menuActive)}>X</span>
@@ -141,7 +155,7 @@ export default function Sidebar() {
           ))}
 
           <li className="dropdown">
-            <a href="#" onClick={() => setSubmenuActive(!submenuActive)}>
+            <a href="#" onClick={toggleSubmenu}>
               <i className="fas fa-cogs"></i> CONFIGURAÇÕES
             </a>
             <ul>
@@ -160,10 +174,10 @@ export default function Sidebar() {
       </MenuBody>
       
     
-        <MenuSuperAdmin className="superadmin">
+        <MenuSuperAdmin>
           <ul>
             <li className="dropdown">
-              <a href="#" onClick={() => setSuperAdminActive(!superAdminActive)}>
+              <a href="#" onClick={toggleSuperAdmin}>
                 <i className="fas fa-cogs"></i> SUPER ADMIN
               </a>
             </li>
