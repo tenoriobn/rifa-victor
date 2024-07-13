@@ -12,7 +12,6 @@ import AvisoCarregando from "../AvisoCarregando/AvisoCarregando";
 export default function CardProdutos({ categoria }) {
   const [produtos, setProdutos] = useRecoilState(estadoProdutos);
 
-
   const setProdutoSelecionado = useSetRecoilState(estadoProdutoSelecionado);
   const produtosFiltrados = Array.isArray(produtos) ? produtos.filter(produto => produto.status === categoria) : [];
   const setRenderizaInfoUsuario = useSetRecoilState(estadoRenderizaInfoUsuario);
@@ -111,7 +110,7 @@ export default function CardProdutos({ categoria }) {
                   {categoria === "finalizadas" && (
                     <div className='flex items-center gap-2'>
                       <Calendario className="icon text-amber-500" />
-                      <p className="text-sm font-semibold text-zinc-700">{formatarData(produto.end_rifa)}</p>
+                      <p className="text-sm font-semibold text-zinc-700">{formatarData(produto.end_sale)}</p>
                     </div>
                   )}
 

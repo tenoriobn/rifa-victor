@@ -1,22 +1,28 @@
 import Whatsapp from "../../../assets/Icons/whatsapp.svg?react";
 import { useRecoilValue } from "recoil";
 import { estadoCheckoutInfo } from "../../../common/state/atom";
+import useCurrencyFormat from "../../../common/state/hooks/useCurrencyFormat/useCurrencyFormat";
+import useFormattedDate from "../../../common/state/hooks/useFormattedDate/useFormattedDate ";
 
 export default function InfoPedidos() {
-  const checkoutInfo = useRecoilValue(estadoCheckoutInfo)
+  const checkoutInfo = useRecoilValue(estadoCheckoutInfo);
+  const { formattedDate } = useFormattedDate();
+  const { formatCurrency } = useCurrencyFormat();
 
   const informacoes = [
     { label: '🔢 Código:', value: checkoutInfo.cod },
     { label: '🛍 Total de Cotas:', value: checkoutInfo.qntd_number },
-    { label: '➕ Taxa:', value: checkoutInfo.rifa.rifa_payment.service_charge },
-    { label: '💲 Total:', value: checkoutInfo.value }
+    { label: '➕ Taxa:', value: formatCurrency(checkoutInfo.rifa.rifa_payment.service_charge) },
+    { label: '💲 Total:', value: formatCurrency(checkoutInfo.value), class: "font-bold" }
+
+    
   ];
 
   return (
     <div className="flex flex-col-reverse md:flex-row w-full gap-8">
       <div className="grow bg-white p-4 rounded-md">
         {informacoes.map((info, index) => (
-          <p key={index} className="text-neutral-700">
+          <p key={index} className={`text-neutral-700 ${info.class}`}>
             <span className="font-semibold">{info.label} </span>
             {info.value}
           </p>
@@ -47,7 +53,7 @@ export default function InfoPedidos() {
         {checkoutInfo.status === 1 &&
           <div className="flex gap-2 text-neutral-700">
             <div className="font-bold">🗓 Pago em:</div>
-            <div>{checkoutInfo.updated_at}</div>
+            <div>{formattedDate(checkoutInfo.updated_at)}</div>
           </div>
         }
 
