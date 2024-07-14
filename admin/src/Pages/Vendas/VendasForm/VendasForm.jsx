@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import Datepicker from "react-tailwindcss-datepicker"; 
+import { useState } from "react";
 
 const Form = styled.form`
   display: flex;
@@ -43,11 +45,43 @@ const Form = styled.form`
 `;
 
 export default function VendasForm() {
+  const [value, setValue] = useState({ 
+    startDate: null, 
+    endDate: null 
+    }); 
+    
+  const handleValueChange = (newValue) => {
+    console.log("newValue:", newValue); 
+    setValue(newValue); 
+  } 
+
   return (
     <Form>
       <div className="filter-item">
         <label htmlFor="init_date">Data:</label>
-        <input type="text" name="datetimes" />
+        {/* <input type="text" name="datetimes" /> */}
+
+        <Datepicker 
+          i18n={"pt-br"} 
+          showShortcuts={true} 
+          displayFormat={"DD/MM/YYYY"}
+          showFooter={true} 
+          value={value} 
+          onChange={handleValueChange} 
+          configs={{
+              shortcuts: {
+              today: "Hoje", 
+              yesterday: "Ontem", 
+              past: period => `Ultimos ${period} Dias`, 
+              currentMonth: "Mês Atual", 
+              pastMonth: "Mês Anterior" 
+            },
+              footer: {
+              cancel: "Cancelar", 
+              apply: "Aplicar" 
+            }
+          }} 
+        /> 
       </div>
 
       <button type="submit" className="button-search">

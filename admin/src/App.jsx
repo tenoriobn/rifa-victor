@@ -29,6 +29,7 @@ import EditarRifa from "./Pages/Sorteios/EditarRifa/EditarRifa";
 import DefinirGanhador from "./Pages/SuperAdmin/DefinirGanhador/DefinirGanhador";
 import AdicionarNumeros from "./Pages/SuperAdmin/AdicionarNumeros/AdicionarNumeros";
 import AdicionarBilhetePremiado from "./Pages/SuperAdmin/AdicionarBilhetePremiado/AdicionarBilhetePremiado";
+import './tailwind.css';
 // import AdicionarNumeros from "./Pages/SuperAdmin/AdicionarNumeros/AdicionarNumeros";
 // import AdicionarCotas from "./Pages/SuperAdmin/AdicionarCotas/AdicionarCotas";
 

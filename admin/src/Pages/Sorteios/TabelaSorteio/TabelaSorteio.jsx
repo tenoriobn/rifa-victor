@@ -5,6 +5,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { stateIdModalAcoesSorteio, stateOpenModalAcoesSorteio, stateUserLogin } from "../../../common/states/atom";
 import { useEffect, useState } from "react";
 import { fetchDados, putDados } from "../../../common/http/http";
+import useFormattedDate from "../../../common/states/Hook/useFormattedDate";
 
 const Table = styled.table`
   width: 100%;
@@ -155,6 +156,7 @@ export default function TabelaSorteio() {
   const setIdModalAcoesSorteio = useSetRecoilState(stateIdModalAcoesSorteio);
   const [sorteios, setSorteios] = useState([]);
   const userLogin = useRecoilValue(stateUserLogin)
+  const { formattedDate } = useFormattedDate();
 
   useEffect(() => {
     const obterDados = async () => {
@@ -223,7 +225,7 @@ export default function TabelaSorteio() {
                 <b>{sorteio.title
                 }</b>
               </td>
-              <td>{sorteio.data_sortition}</td>
+              <td>{formattedDate(sorteio.data_sortition)}</td>
               <td>{sorteio.faturamentoTotal}</td>
               <td>{sorteio.faturamentoHoje}</td>
               <td>{sorteio.cotasVendidas}</td>
