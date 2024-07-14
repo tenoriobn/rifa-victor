@@ -418,13 +418,31 @@ class RifasController extends Controller
     public function buyRifa(OrderRifaRequest $request) {
         try {
             $rifaPay = RifaPay::applyRifa($request);
-            RifaNumber::applyRifa($request, $rifaPay);
-            return response()->json(["success" => true, "data"=> $rifaPay ], $this->success);
+            if (!$rifaPay) {
+                return response()->json(["success" => false, "msg" => $rifaPay['msg']], 500);
+            }
+
+            $rifaPayDetails = RifaPay::with(['rifa.cota', 'rifa.awardedQuota'])
+                ->find($rifaPay->id);
+
+            $result = RifaNumber::applyRifa($rifaPayDetails);
+
+            if(!$result) {
+                $rifaPayDetails->delete();
+                return response()->json(["success" => false, "msg" => "Quantidade de número invalido"], 409 );
+            }
+
+            return response()->json(["success" => true, "data" => $rifaPayDetails], 200);
         } catch (Exception $e) {
-            return response()->json(["success" => false, "msg" => $e->getMessage()], $this->serverError);
+            return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
         }
     }
-    public function getCompra($id) {
+
+
+
+
+
+        public function getCompra($id) {
         try {
             $buy = RifaPay::getOneCompra($id);
             if (!$buy) {

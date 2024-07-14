@@ -24,11 +24,11 @@ class PaymentService
         });
 
         if (!empty($cancelPayIds)) {
-            RifaPay::whereIn('id', $cancelPayIds)->update(['status' => 2, 'verify' => 1]);
+            RifaPay::whereIn('id', $cancelPayIds)->update(['status' => 0, 'verify' => 0]);
         }
 
         if (!empty($payMadeIds)) {
-            RifaPay::whereIn('id', $payMadeIds)->update(['verify' => 1]);
+            RifaPay::whereIn('id', $payMadeIds)->update(['verify' => 0]);
         }
 
         return [$cancelPayIds, $payMadeIds];

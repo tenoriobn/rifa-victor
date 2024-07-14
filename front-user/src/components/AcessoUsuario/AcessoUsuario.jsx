@@ -46,7 +46,7 @@ export default function AcessoUsuario() {
           const response = await postDados('produtos/comprar-rifa', dadosParaEnviar, true);
 
           setCheckoutReq(response);
-          
+          console.log('response', response)
           setFinalizarPedido(false);
         } catch (error) {
           console.error('Erro ao comprar rifa:', error);

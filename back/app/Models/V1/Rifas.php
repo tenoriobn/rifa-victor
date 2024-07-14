@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\{HasOne, hasMany};
 
 use App\Services\FuncaoService;
-use App\Models\V1\{RifasAwarded, RifasOthers, RifasPayment, awardedQuota, awardedQuotaClient};
+use App\Models\V1\{RifasAwarded, RifasOthers, RifasPayment, awardedQuota, awardedQuotaClient, rifaPay};
 
 class Rifas extends Model
 {
@@ -50,8 +50,12 @@ class Rifas extends Model
     public function rifaPayment(): HasOne {
         return $this->hasOne(RifasPayment::class);
     }
-    public function awardedQuota(): HasOne {
-        return $this->hasOne(AwardedQuota::class);
+    public function rifaPay() {
+        return $this->hasOne(RifaPay::class);
+    }
+
+    public function awardedQuota(): hasMany {
+        return $this->hasMany(AwardedQuota::class);
     }
     public function awardedQuotaClient(): hasMany {
         return $this->hasMany(AwardedQuotaClient::class);
