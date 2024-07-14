@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import seta from "../../../assets/icons/seta.svg";
 import { useState } from "react";
+import Datepicker from "react-tailwindcss-datepicker";
 
 const Form = styled.form`
   display: flex;
@@ -86,12 +87,44 @@ const Form = styled.form`
 export default function PedidosForm() {
   const [showFilters, setShowFilters] = useState(false);
 
+  const [value, setValue] = useState({ 
+    startDate: null, 
+    endDate: null 
+    }); 
+    
+  const handleValueChange = (newValue) => {
+    console.log("newValue:", newValue); 
+    setValue(newValue); 
+  } 
+
   return (
     <Form method="POST" action="/dashboard/rifas/cotas/174">
       <div className="filter-item-row">
         <div className="filter-item" style={{minWidth: "260px"}}>
           <label htmlFor="init_date">Data:</label>
-          <input type="text" name="datetimes" />
+          {/* <input type="text" name="datetimes" /> */}
+
+        <Datepicker 
+          i18n={"pt-br"} 
+          displayFormat={"DD/MM/YYYY"}
+          showFooter={true} 
+          value={value} 
+          onChange={handleValueChange} 
+          configs={{
+              shortcuts: {
+              today: "Hoje", 
+              yesterday: "Ontem", 
+              past: period => `Ultimos ${period} Dias`, 
+              currentMonth: "Mês Atual", 
+              pastMonth: "Mês Anterior" 
+            },
+              footer: {
+              cancel: "Cancelar", 
+              apply: "Aplicar" 
+            }
+          }} 
+        /> 
+
         </div>
 
         <div className="filter-item">

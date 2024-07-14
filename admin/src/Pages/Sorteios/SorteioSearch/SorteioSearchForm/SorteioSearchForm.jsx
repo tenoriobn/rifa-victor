@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import seta from "../../../../assets/icons/seta.svg";
+import Datepicker from "react-tailwindcss-datepicker";
+import { useState } from "react";
 
 const Form = styled.form`
   display: flex;
@@ -61,11 +63,42 @@ const Form = styled.form`
 `;
 
 export default function SorteioSearchForm() {
+  const [value, setValue] = useState({ 
+    startDate: null, 
+    endDate: null 
+    }); 
+    
+  const handleValueChange = (newValue) => {
+    console.log("newValue:", newValue); 
+    setValue(newValue); 
+  } 
+
   return (
     <Form method="POST" action="/dashboard/rifas/cotas/174">
       <div className="filter-item" style={{maxWidth: "300px"}}>
         <label>Periodo de Data:</label>
-        <input type="text" name="datetimes" defaultValue="" />
+        {/* <input type="text" name="datetimes" defaultValue="" /> */}
+
+        <Datepicker 
+          i18n={"pt-br"} 
+          displayFormat={"DD/MM/YYYY"}
+          showFooter={true} 
+          value={value} 
+          onChange={handleValueChange} 
+          configs={{
+              shortcuts: {
+              today: "Hoje", 
+              yesterday: "Ontem", 
+              past: period => `Ultimos ${period} Dias`, 
+              currentMonth: "Mês Atual", 
+              pastMonth: "Mês Anterior" 
+            },
+              footer: {
+              cancel: "Cancelar", 
+              apply: "Aplicar" 
+            }
+          }} 
+        /> 
       </div>
 
       <div className="filter-item" style={{maxWidth: "180px"}}>
