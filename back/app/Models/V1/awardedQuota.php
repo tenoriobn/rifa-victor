@@ -58,12 +58,23 @@ class AwardedQuota extends Model
         return self::where('rifas_id', $rifaId)->first();
     }
 
+    public static function findBilhetePremiado($num) {
+        return self::where('number_cota', $num)->first();
+    }
+
     public static function winnerBilhetePremiado($numbers, $clientId, $rifaId) {
-        $ganhador = self::whereIn('number_cota', $numbers)->where('rifas_id', $rifaId)->update([
+        return self::whereIn('number_cota', $numbers)->where('rifas_id', $rifaId)->update([
             'status' => 'resgatada',
             'client_id' => $clientId
         ]);
-        // dd($numbers, $clientId);
+
+    }
+    public static function definirWinnerBilhetePremiado($numbers, $clientId, $rifaId) {
+        return self::where('number_cota', $numbers)->where('rifas_id', $rifaId)->update([
+            'status' => 'resgatada',
+            'client_id' => $clientId
+        ]);
+
     }
 
     private static function makeRandomNumberBilhetePremiado($qntdCota, $rifa) {

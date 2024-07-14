@@ -33,8 +33,11 @@ class RifaNumber extends Model {
     public static function getAllNumbersClient($id) {
         return self::where('client_id', $id)->where('status', 1)->get();
     }
-    public static function applyRifa($rifaPay)
-    {
+    public static function countTotalNumber($id) {
+       return  self::where('rifas_id', $id)->where('status', 1)->selectRaw('SUM(JSON_LENGTH(numbers)) as total')->first();
+    }
+
+    public static function applyRifa($rifaPay) {
         return DB::transaction(function() use ($rifaPay) {
             $numbers = self::generateUniqueNumbers($rifaPay);
 

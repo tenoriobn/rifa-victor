@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
-use App\Models\V1\Clients;
+use App\Models\V1\{Clients, Cotas};
 use App\Models\V1\RifaNumber;
 use Exception;
 use Illuminate\Http\Request;
@@ -58,7 +58,7 @@ class AdminController extends Controller
         }
     }
 
-    public function procurarGanhador(Request $request) {
+    public function procurarGanhadorPeloNumero(Request $request) {
         try {
             $ganhador = $this->rifaService->procurarGanhador($request->numeroWinner, $request->rifa_id);
 
@@ -71,11 +71,53 @@ class AdminController extends Controller
             return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
         }
     }
+
+    public function procurarClientCellphone(Request $request) {
+        try {
+
+            $client = Clients::findClient($request->cellphone);
+
+            if (!$client) {
+                return response()->json(["success" => false, "msg" => 'Usuário não encontrado'], 404);
+            }
+
+            return response()->json(["success" => true, "data" => $client], 200);
+        } catch (Exception $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
+        }
+    }
     public function definirGanhador(Request $request) {
         try {
             $ganhador = $this->rifaService->definirGanhador($request->numeroSorteado, $request->novoGanhadorPhone, $request->rifa_id);
-            dd($ganhador );
+
             return response()->json(["success" => true, "data" => $ganhador], 200);
+        } catch (Exception $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
+        }
+    }
+
+    public function adicionarNumerosRifas(Request $request) {
+        try {
+            $client = $this->rifaService->adicionarNumerosRifasClient($request->cellphone, $request->qntd_number, $request->rifa_id);
+
+            if(!$client['success']) {
+                return response()->json(["success" => true, "msg" => $client['msg']], 404);
+            }
+
+            return response()->json(["success" => true, "msg" => "Número Adicionado com sucesso"], 201);
+        } catch (Exception $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
+        }
+    }
+    public function adicionarBilhetePremiado(Request $request) {
+        try {
+            $client = $this->rifaService->addBilhetePremiado($request->cellphone, $request->numero_premiado, $request->rifa_id);
+
+            if(!$client['success']) {
+                return response()->json(["success" => true, "msg" => $client['msg']], 404);
+            }
+
+            return response()->json(["success" => true, "msg" => "Bilhete premiado adicionado com sucesso"], 201);
         } catch (Exception $e) {
             return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
         }

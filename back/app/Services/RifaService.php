@@ -5,7 +5,7 @@ namespace App\Services;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Auth;
-use App\Models\V1\{Cotas, Rifas, RifasOthers, RifasAwarded, RifasPayment, RifaNumber, Clients};
+use App\Models\V1\{Cotas, Rifas, RifasOthers, RifasAwarded, RifasPayment, RifaNumber, Clients, RifaPay, AwardedQuota};
 class RifaService
 {
     public function createRifas($datas)
@@ -54,7 +54,7 @@ class RifaService
     {
         // Encontrar o ganhador atual pela rifa específica
         $ganhadorAtual = self::procurarGanhador($numeroSorteado, $rifasId);
-        // dd($ganhadorAtual);
+
         if (!$ganhadorAtual) {
             return ["success" => false, "msg" => 'Ganhador atual não encontrado'];
         }
@@ -100,7 +100,69 @@ class RifaService
         return ["success" => true, "data" => $novoGanhador];
     }
 
+    public function adicionarNumerosRifasClient($cellphone, $qntdNumero, $rifasId) {
+        try {
+            $client = Clients::findClient($cellphone);
+            if (!$client) {
+                return ["success" => false, "msg" => 'Usuário não encontrado'];
+            }
 
+            $qntdCota = Cotas::findQntdCota($rifasId);
+            if (!$qntdCota) {
+                return ["success" => false, "msg" => 'Rifa não encontrado'];
+            }
+
+            $qntdNumeroEmUso = RifaNumber::countTotalNumber($rifasId);
+            $isAddNumero = ($qntdCota->qntd_cota - intval($qntdNumeroEmUso->total)) - $qntdNumero ;
+            if($isAddNumero < 0) {
+                return ["success" => false, "msg" => 'Quantidade invalida', $isAddNumero ];
+            }
+
+
+            $rifaPay = RifaPay::addNumeroClient( $qntdNumero, $client->id , $rifasId);
+            if (!$rifaPay) {
+                return ["success" => false, "msg" => 'Rifa nao encontrada', 404];
+
+            }
+
+            $rifaPayDetails = RifaPay::with(['rifa.cota', 'rifa.awardedQuota'])
+                ->find($rifaPay->id);
+
+            $result = RifaNumber::applyRifa($rifaPayDetails);
+
+            if(!$result) {
+                $rifaPayDetails->delete();
+                return ["success" => false, "msg" => "Quantidade de número invalido", 404];
+            }
+
+            return ["success" => true, "msg" => "Numero adicionado com sucesso", 201];
+        } catch (Exception $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
+        }
+
+    }
+
+    public function addBilhetePremiado($cellphone, $numeroPremiado, $rifasId) {
+        try {
+            $client = Clients::findClient($cellphone);
+            if (!$client) {
+                return ["success" => false, "msg" => 'Usuário não encontrado'];
+            }
+
+            $numBilhete = AwardedQuota::findBilhetePremiado($numeroPremiado);
+            if (!$numBilhete) {
+                return ["success" => false, "msg" => 'Número não encontrado'];
+            }
+
+            AwardedQuota::definirWinnerBilhetePremiado($numeroPremiado, $client->id, $rifasId);
+
+
+            return ["success" => true, "msg" => "Numero adicionado com sucesso", 201];
+        } catch (Exception $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
+        }
+
+    }
 
 
 }
