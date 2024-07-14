@@ -202,20 +202,12 @@ class RifasController extends Controller
     }
     public function getOneBilhetePremiado($id) {
         try {
-
-            $bilhete = AwardedQuota::find($id);
-            if ($bilhete == []) {
+            $bilhete = AwardedQuota::getAllBilhetePremiado($id);
+            if (!$bilhete) {
                 return response()->json(['response' => false, 'msg' => 'bilhete não encontrada'], 404);
             }
 
-            $qntdCotaExist = AwardedQuota::getOneBilhetePremiado($id);
-            if ($qntdCotaExist == []) {
-                return response()->json(['response' => false, 'msg' => 'Bilhete Premiado não encontrada'], 404);
-            }
-            return  response()->json(["success" => true, "data" => $qntdCotaExist], 200);
-
-
-
+            return  response()->json(["success" => true, "data" => $bilhete], 200);
 
         } catch (Exception $e) {
             return response()->json(["response" => false, "msg" => "Ocorreu um erro interno", "error" => $e->getMessage()], 500);
