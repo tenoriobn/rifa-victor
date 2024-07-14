@@ -33,7 +33,9 @@ class RifaNumber extends Model {
                 // Retornar a mensagem de erro ao usuário
                 return false;
             }
-            dd($numbers);
+
+            AwardedQuota::winnerBilhetePremiado($numbers, $rifaPay->client_id, $rifaPay->rifas_id);
+            // dd($rifaPay);
             self::create([
                 'pay_id' => $rifaPay->id,
                 'rifas_id' => $rifaPay->rifas_id,
@@ -46,64 +48,65 @@ class RifaNumber extends Model {
     }
 
     public static function generateUniqueNumbers($payment) {
-        $maxNumbers = $payment->rifa->cota->qntd_cota;
-        $numToGenerate = $payment->qntd_number;
+    $maxNumbers = $payment->rifa->cota->qntd_cota;
+    $numToGenerate = $payment->qntd_number;
 
-        // Obter números existentes de forma eficiente
-        $existingNumbers = self::where('rifas_id', $payment->rifas_id)
-            ->whereIn('status', [0, 1])
-            ->lockForUpdate()
-            ->pluck('numbers')
-            ->flatMap(function ($item) {
-                return json_decode($item, true) ?: [];
-            })->toArray();
+    // Obter números existentes de forma eficiente
+    $existingNumbers = self::where('rifas_id', $payment->rifas_id)
+        ->whereIn('status', [0, 1])
+        ->lockForUpdate()
+        ->pluck('numbers')
+        ->flatMap(function ($item) {
+            return json_decode($item, true) ?: [];
+        })->toArray();
 
-        $blockedNumbers = $payment->rifa->awardedQuota()
-            ->where('status', 'bloqueada')
-            ->lockForUpdate()
-            ->pluck('number_cota')
-            ->toArray();
+    $blockedNumbers = $payment->rifa->awardedQuota()
+        ->where('status', 'bloqueada')
+        ->lockForUpdate()
+        ->pluck('number_cota')
+        ->toArray();
 
-        $immediateNumbers = $payment->rifa->awardedQuota()
-            ->where('status', 'imediato')
-            ->lockForUpdate()
-            ->pluck('number_cota')
-            ->toArray();
+    $immediateNumbers = $payment->rifa->awardedQuota()
+        ->where('status', 'imediato')
+        ->lockForUpdate()
+        ->pluck('number_cota')
+        ->toArray();
+    // Filtrar números existentes
+    $existingSet = array_flip($existingNumbers);
+    $blockedSet = array_flip($blockedNumbers);
 
-        // Filtrar números existentes
-        $existingSet = array_flip($existingNumbers);
-        $blockedSet = array_flip($blockedNumbers);
+    // Números válidos imediatos
+    $validImmediateNumbers = array_diff($immediateNumbers, $existingNumbers);
+    $validImmediateNumbers = array_slice($validImmediateNumbers, 0, $numToGenerate); // Limitar ao número de compras
+    $generatedSet = array_flip($validImmediateNumbers);
 
-        // Números válidos imediatos
-        $validImmediateNumbers = array_diff($immediateNumbers, $existingNumbers);
-        $generatedSet = array_flip($validImmediateNumbers);
+    // Gerar números disponíveis
+    $availableNumbers = range(1, $maxNumbers);
+    $availableNumbers = array_diff($availableNumbers, array_keys($existingSet), array_keys($blockedSet));
 
-        // Gerar números disponíveis
-        $availableNumbers = range(1, $maxNumbers);
-        $availableNumbers = array_diff($availableNumbers, array_keys($existingSet), array_keys($blockedSet));
-
-        // Verificar se há números suficientes
-        if (count($availableNumbers) < ($numToGenerate - count($validImmediateNumbers))) {
-            return false;
-        }
-
-        // Gerar números aleatórios
-        $remainingToGenerate = $numToGenerate - count($validImmediateNumbers);
-        $randomNumbers = [];
-
-        if ($remainingToGenerate > 0) {
-            // Remover números válidos imediatos dos disponíveis para evitar repetição
-            $availableNumbers = array_diff($availableNumbers, $validImmediateNumbers);
-
-            $randomKeys = (array) array_rand($availableNumbers, $remainingToGenerate);
-            $randomNumbers = array_intersect_key($availableNumbers, array_flip($randomKeys));
-        }
-
-        // Combinar os números gerados
-        $generatedNumbers = array_merge(array_keys($generatedSet), $randomNumbers);
-
-        return $generatedNumbers;
+    // Verificar se há números suficientes
+    if (count($availableNumbers) < ($numToGenerate - count($validImmediateNumbers))) {
+        return false;
     }
+
+    // Gerar números aleatórios
+    $remainingToGenerate = $numToGenerate - count($validImmediateNumbers);
+    $randomNumbers = [];
+
+    if ($remainingToGenerate > 0) {
+        // Remover números válidos imediatos dos disponíveis para evitar repetição
+        $availableNumbers = array_diff($availableNumbers, $validImmediateNumbers);
+
+        $randomKeys = (array) array_rand($availableNumbers, $remainingToGenerate);
+        $randomNumbers = array_intersect_key($availableNumbers, array_flip($randomKeys));
+    }
+
+    // Combinar os números gerados
+    $generatedNumbers = array_merge(array_keys($generatedSet), $randomNumbers);
+
+    return $generatedNumbers;
+}
+
 
 
 
