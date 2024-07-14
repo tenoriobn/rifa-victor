@@ -63,10 +63,6 @@ const MenuHeader = styled.div`
 const MenuBody = styled.div`
   margin-top: 2.1875rem;
 
-  .superadmin {
-    margin-top: 0px!important;
-  }
-
   ul li a {
     display: block;
     background: #20202a;
@@ -99,6 +95,10 @@ const MenuBody = styled.div`
   }
 `;
 
+const MenuSuperAdmin = styled(MenuBody)`
+  margin-top: 0px!important;
+`;
+
 export default function Sidebar() {
   const [menuActive, setMenuActive] = useRecoilState(stateMenuActive);
   const [submenuActive, setSubmenuActive] = useState(false);
@@ -108,6 +108,20 @@ export default function Sidebar() {
   const handleLogout = () => {
     removerToken();
     navigate('/');
+  }
+
+  const toggleSubmenu = () => {
+    setSubmenuActive(!submenuActive);
+    if (!submenuActive) {
+      setSuperAdminActive(false);
+    }
+  }
+
+  const toggleSuperAdmin = () => {
+    setSuperAdminActive(!superAdminActive);
+    if (!superAdminActive) {
+      setSubmenuActive(false);
+    }
   }
 
   return (
@@ -141,7 +155,7 @@ export default function Sidebar() {
           ))}
 
           <li className="dropdown">
-            <a href="#" onClick={() => setSubmenuActive(!submenuActive)}>
+            <a href="#" onClick={toggleSubmenu}>
               <i className="fas fa-cogs"></i> CONFIGURAÇÕES
             </a>
             <ul>
@@ -160,10 +174,10 @@ export default function Sidebar() {
       </MenuBody>
       
     
-        <MenuBody className="superadmin">
+        <MenuSuperAdmin>
           <ul>
             <li className="dropdown">
-              <a href="#" onClick={() => setSuperAdminActive(!superAdminActive)}>
+              <a href="#" onClick={toggleSuperAdmin}>
                 <i className="fas fa-cogs"></i> SUPER ADMIN
               </a>
             </li>
@@ -180,7 +194,7 @@ export default function Sidebar() {
                 </>
               }
           </ul>
-        </MenuBody>
+        </MenuSuperAdmin>
 
     </ContainerSidebar>
   );

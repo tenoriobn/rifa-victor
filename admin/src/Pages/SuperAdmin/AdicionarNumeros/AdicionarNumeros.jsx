@@ -6,7 +6,8 @@ import Modal from "../../../components/Modal/Modal";
 import Titulo from "../../../components/Titulo/Titulo";
 import ModalAdicionarNumeros from "./ModalAdicionarNumeros/ModalAdicionarNumeros";
 import FiltroUsuarioForm from "./FiltroUsuarioForm/FiltroUsuarioForm";
-import FiltroUsuarioTable from "../BilhetePremiado/FiltroUsuarioTable/FiltroUsuarioTable";
+import FiltroUsuarioTable from "./FiltroUsuarioTable/FiltroUsuarioTable";
+
 
 export default function AdicionarNumeros() {
   const [openModalAdicionarNumeros, setOpenModalAdicionarNumeros] = useRecoilState(stateOpenModalAdicionarNumeros);
@@ -23,7 +24,7 @@ export default function AdicionarNumeros() {
         <FiltroUsuarioTable />
       </Main>
 
-      <Modal title="ADICIONAR NUMEROS" openState={openModalAdicionarNumeros} setOpenState={setOpenModalAdicionarNumeros}>
+      <Modal title="ADICIONAR NÚMEROS" openState={openModalAdicionarNumeros} setOpenState={setOpenModalAdicionarNumeros}>
         <ModalAdicionarNumeros />
       </Modal>
     </section>

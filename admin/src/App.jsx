@@ -26,9 +26,9 @@ import SiteConfig from "./Pages/Configuracoes/SiteConfig/SiteConfig";
 import MeusDados from "./Pages/Configuracoes/MeusDados/MeusDados";
 import ConfigPagamentos from "./Pages/Configuracoes/ConfigPagamentos/ConfigPagamentos";
 import EditarRifa from "./Pages/Sorteios/EditarRifa/EditarRifa";
-import BilhetePremiado from "./Pages/SuperAdmin/BilhetePremiado/BilhetePremiado";
+import DefinirGanhador from "./Pages/SuperAdmin/DefinirGanhador/DefinirGanhador";
 import AdicionarNumeros from "./Pages/SuperAdmin/AdicionarNumeros/AdicionarNumeros";
-import AdicionarCotas from "./Pages/SuperAdmin/AdicionarCotas/AdicionarCotas";
+import AdicionarBilhetePremiado from "./Pages/SuperAdmin/AdicionarBilhetePremiado/AdicionarBilhetePremiado";
 // import AdicionarNumeros from "./Pages/SuperAdmin/AdicionarNumeros/AdicionarNumeros";
 // import AdicionarCotas from "./Pages/SuperAdmin/AdicionarCotas/AdicionarCotas";
 
@@ -63,10 +63,10 @@ function App() {
               <Route path="config/site" element={<SiteConfig />} />
               <Route path="payments" element={<ConfigPagamentos />} />
               <Route path="clients/edit" element={<MeusDados />} />
-              <Route path="superadmin" element={<BilhetePremiado />} />
-              <Route path="superadmin/bilhete-premiado" element={<BilhetePremiado />} />
-              <Route path="superadmin/sistema-numeros" element={<AdicionarNumeros />} />
-              <Route path="superadmin/sistema-cota" element={<AdicionarCotas />} />
+              <Route path="superadmin" element={<DefinirGanhador />} />
+              <Route path="superadmin/definir-ganhador" element={<DefinirGanhador />} />
+              <Route path="superadmin/bilhete-premiado" element={<AdicionarBilhetePremiado />} />
+              <Route path="superadmin/adicionar-numeros" element={<AdicionarNumeros />} />
             </Route>
           </Routes>
         </Router>

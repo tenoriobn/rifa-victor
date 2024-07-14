@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components"
-import { stateFiltroUsuarioTable, stateOpenModalAdicionarNumeros } from "../../../../common/states/atom";
+import { stateFiltroUsuarioTable, stateOpenModalAdicionarBilhetePremiado } from "../../../../common/states/atom";
 
 const Table = styled.table`
   width: 100%;
@@ -91,10 +91,8 @@ const Table = styled.table`
   }
 `;
 
-
-
 export default function FiltroUsuarioTable() {  
-  const [openModalAdicionarNumeros, setOpenModalAdicionarNumeros] = useRecoilState(stateOpenModalAdicionarNumeros);
+  const [openModalTrocarBilhete, setOpenModalTrocarBilhete] = useRecoilState(stateOpenModalAdicionarBilhetePremiado);
   const filtroUsuarioTable = useRecoilValue(stateFiltroUsuarioTable)
 
   return (
@@ -123,7 +121,7 @@ export default function FiltroUsuarioTable() {
                     <a
                       href="#"
                       className="button-edit"
-                      onClick={() => setOpenModalAdicionarNumeros(!openModalAdicionarNumeros)}
+                      onClick={() => setOpenModalTrocarBilhete(!openModalTrocarBilhete)}
                     >
                       <i className="fas fa-edit"></i> Editar
                     </a>

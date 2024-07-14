@@ -1,9 +1,13 @@
 import { useRecoilValue } from "recoil";
 import { estadoPedidosUsuario } from "../../../../common/state/atom";
 import { Link } from "react-router-dom";
+import useFormattedDate from "../../../../common/state/hooks/useFormattedDate/useFormattedDate ";
+import useCurrencyFormat from "../../../../common/state/hooks/useCurrencyFormat/useCurrencyFormat";
 
 export default function ConteudoTabela() {
   const dadosTabela = useRecoilValue(estadoPedidosUsuario);
+  const { formattedDate } = useFormattedDate();
+  const { formatCurrency } = useCurrencyFormat();
 
   return (
     <tbody>
@@ -16,8 +20,8 @@ export default function ConteudoTabela() {
           </td>
           <td className="px-2">{item.cod}</td>
           <td className="px-2">{item.qntd_number}</td>
-          <td className="px-2 text-right">{item.value}</td>
-          <td className="px-2">{item.updated_at}</td>
+          <td className="px-2 text-right">{formatCurrency(item.value)}</td>
+          <td className="px-2">{formattedDate(item.updated_at)}</td>
           <td className="px-2 whitespace-break-spaces text-center">
             <div className={`rounded-lg p-1 text-xs flex flex-wrap items-center justify-center ${item.status === "Cancelada" ? "bg-red-100 text-red-600 " : "bg-emerald-100 text-emerald-600 "}`}>
               {item.status}

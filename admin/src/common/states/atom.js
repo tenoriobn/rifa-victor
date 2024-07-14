@@ -106,8 +106,8 @@ export const stateOpenModalAdicionarNumeros = atom({
   default: false,
 });
 
-export const stateOpenModalAdicionarCotas = atom({
-  key: 'stateOpenModalAdicionarCotas',
+export const stateOpenModalAdicionarBilhetePremiado = atom({
+  key: 'stateOpenModalAdicionarBilhetePremiado',
   default: false,
 });
 

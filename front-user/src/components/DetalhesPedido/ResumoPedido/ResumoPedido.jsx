@@ -1,8 +1,10 @@
 import { useRecoilValue } from "recoil";
 import { estadoCheckoutInfo } from "../../../common/state/atom";
+import useFormattedDate from "../../../common/state/hooks/useFormattedDate/useFormattedDate ";
 
 export default function ResumoPedido() {
   const checkoutInfo = useRecoilValue(estadoCheckoutInfo);
+  const { formattedDate } = useFormattedDate();
 
   console.log(checkoutInfo)
 
@@ -22,7 +24,10 @@ export default function ResumoPedido() {
           }
 
           {checkoutInfo.status === 1 && 
-            <p> Pedido Aprovado em <span className="font-semibold">{checkoutInfo.updated_at}</span></p>
+          <>
+            <p className="font-bold">Pedido Finalizado</p>
+            <p> Pedido Aprovado em <span className="font-semibold">{formattedDate(checkoutInfo.updated_at)}</span></p>
+          </>
           }
         </div>
       }

@@ -85,13 +85,13 @@ export default function FiltroUsuarioForm() {
     <form onSubmit={handleSubmit}>
       <FilterItemRow>
         <FilterInputContainer>
-          <Label htmlFor="id">Usuário:</Label>
+          <Label htmlFor="id">Telefone do usuário:</Label>
           <input
             type="text"
             name="search"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Pesquise pelo bilhete premiado"
+            placeholder="Pesquise o usuário a receber"
           />
         </FilterInputContainer>
 
