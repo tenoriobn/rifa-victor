@@ -24,6 +24,15 @@ class RifaNumber extends Model {
     }
 
 
+    public static function lookingForNumber($number, $rifasId) {
+        $ganhador = self::with(['client', 'rifa'])->where('status', 1)->whereJsonContains('numbers', $number)->where('rifas_id', $rifasId)->first();
+        // dd($ganhador, $number, $rifasId);
+        return $ganhador ?? false;
+    }
+
+    public static function getAllNumbersClient($id) {
+        return self::where('client_id', $id)->where('status', 1)->get();
+    }
     public static function applyRifa($rifaPay)
     {
         return DB::transaction(function() use ($rifaPay) {

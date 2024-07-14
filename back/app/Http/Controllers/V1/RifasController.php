@@ -457,16 +457,7 @@ class RifasController extends Controller
         }
     }
 
-    public function winners() {
-        try {
 
-            $winners = RifaWinner::getAllWinners();
-            return response()->json(["success" => true, "data" => $winners], $this->success);
-
-        } catch (Exception $e) {
-            return response()->json(["success" => false, "msg" => $e->getMessage()], $this->serverError);
-        }
-    }
 
     public function defineWinners(WinnerRequest $request) {
         try {
