@@ -42,7 +42,7 @@ export default function ModalImagemRifa() {
     }
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     
     // Verificações de tamanho, tipo e peso do arquivo
@@ -100,7 +100,8 @@ export default function ModalImagemRifa() {
 
   const handleSubmitImage = async () => {
     try {
-      const response = await postDados('/admin/dashboard/rifa/imagens/cadastrar', imagemSelecionada, userLogin);
+      const rifaId = 2;
+      const response = await postDados('/admin/dashboard/rifa/imagens/cadastrar', { imagem: imagemSelecionada, rifa_id: rifaId }, userLogin);
 
       console.log('response: ', response)
 

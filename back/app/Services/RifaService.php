@@ -5,7 +5,7 @@ namespace App\Services;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Auth;
-use App\Models\V1\{Cotas, Rifas, RifasOthers, RifasAwarded, RifasPayment, RifaNumber, Clients, RifaPay, AwardedQuota};
+use App\Models\V1\{Cotas, Rifas, RifasOthers, RifasAwarded, RifasPayment, RifaNumber, Clients, RifaPay, AwardedQuota, RifaImage};
 class RifaService
 {
     public function createRifas($datas)
@@ -41,8 +41,27 @@ class RifaService
 
         return 'ativas';
     }
-    public function saveImage ($img) {
-        return $img;
+    public function saveImage($imgBase64, $rifaId) {
+        // Extrair a extensão da imagem
+        preg_match('#^data:image/(?<type>.+);base64,#', $imgBase64, $matches);
+        $type = $matches['type'];
+        $allowedTypes = ['jpg', 'jpeg', 'png'];
+
+        // Verificar se o tipo é permitido
+        if (!in_array($type, $allowedTypes)) {
+        throw new \Exception('Formato de imagem não permitido. Aceito apenas JPG e PNG.');
+        }
+
+        // Decodificar a imagem base64
+        $imgData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $imgBase64));
+        $imgName = Str::random(10) . '.' . $type; // Manter a extensão original
+        $reactImagePath = '../../front-user/src/assets/images/imgRifas/' . $imgName;
+
+        // Salvar a imagem na pasta imgRifas
+        file_put_contents($reactImagePath, $imgData);
+
+        // Salvar a imagem no banco de dados
+        return RifaImage::createImage($imgName, $rifaId);
     }
 
     public function procurarGanhador($numeroWinner, $rifasId)

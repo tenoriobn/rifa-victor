@@ -7,13 +7,16 @@ use \Exception;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 use App\Http\Requests\V1\{StoreRifasRequest, UpdateRifasRequest, PaymentRequest, OrderRifaRequest, WinnerRequest};
 use App\Http\Resources\V1\{RifasResource};
 use App\Models\V1\{Rifas, RifaWinner, RifaPay, AwardedQuota, DiscountPackage, RifaUpsell, RifaImage};
 use App\Services\RifaService;
+
+
+
 
 
 
@@ -310,11 +313,32 @@ class RifasController extends Controller
             return response()->json(["response" => false, "msg" => "Ocorreu um erro interno ao cadastrar a rifa", "error" => $e->getMessage()], 500);
         }
     }
+
+    public function storeImagem(Request $request) {
+        try {
+            // Validar a entrada
+            $request->validate([
+                'imagem' => 'required|string',
+                'rifa_id' => 'required|integer',
+            ]);
+
+            $imgBase64 = $request->input('imagem');
+            $rifaId = $request->input('rifa_id');
+
+            // Usar o serviço para armazenar a imagem
+            $result = $this->rifaService->saveImage($imgBase64, $rifaId);
+
+            return response()->json(["response" => $result, "msg" => $result ? "Imagem salva com sucesso." : "Erro ao salvar imagem."], $result ? 201 : 500);
+        } catch (\Exception $e) {
+            return response()->json(["response" => false, "msg" => "Erro ao processar a imagem.", "error" => $e->getMessage()], 500);
+        }
+    }
+
     public function getImagens($id) {
         try {
 
             $imagens = RifaImage::getRifaImagens($id);
-            if (!$imagens) {
+            if (!count($imagens)) {
                 return response()->json(['response' => false, 'msg' => 'Imagem não encontrada'], 404);
             }
 
@@ -325,45 +349,23 @@ class RifasController extends Controller
             return response()->json(["response" => false, "msg" => "Ocorreu um erro interno", "error" => $e->getMessage()], 500);
         }
     }
-
-    public function storeImagem(Request $request) {
+    public function destroyImagem($id) {
         try {
 
-            // $this->authorize('create', User::class);
+            $img = RifaImage::getOneRifaImagens($id);
+            if (!$img) {
+                return response()->json(['response' => false, 'msg' => 'Imagem não encontrada'], 404);
+            }
+            $img->delete();
+            return response()->json(["success" => true, "msg" => 'Imagem deletada com sucesso' ], 200);
 
-            // Verifica se há uma imagem no request e se é base64
-            // if ($request->has('path') && is_array($request->path)) {
-            //     foreach ($request->path as $index => $base64Image) {
-            //         // if ($this->isValidBase64Image($base64Image)) {
-            //         //     // Decodifica a imagem base64
-            //         //     $imageData = base64_decode($base64Image);
-            //         //     $imageName = Str::random(20) . '.png'; // Nome único para a imagem
 
-            //         //     // Salva a imagem na pasta pública
-            //         //     $path = public_path('rifaImg') . '/' . $imageName;
-            //         //     file_put_contents($path, $imageData);
-
-            //         //     // Salva o nome da imagem no banco de dados
-            //         //     RifaImage::create([
-            //         //         'imagem' => $imageName,
-            //         //         'rifas_id' => $request->rifas_id[$index], // Supondo que o id esteja no mesmo índice
-            //         //     ]);
-            //         // } else {
-            //         //     return response()->json(["response" => false, "msg" => "O arquivo enviado não é uma imagem válida."], 500);
-            //         // }
-            //     }
-            //     // $imagens = RifaImage::getRifaImagens($id);
-            //     $imagens = RifaImage::getRifaImagens(1);
-            //     return  $imagens ;
-            //     return response()->json(["response" => true, "msg" => "Imagens adicionadas com sucesso.", "data" => $imagens], 200);
-            // }
-            $imagens = RifaImage::getRifaImagens(1);
-                return  $imagens;
-            return response()->json(["response" => true, "msg" => "Nenhuma imagem encontrada no request."], 404);
-        } catch (\Exception $e) {
-            return response()->json(["response" => true, "msg" => "Erro ao processar as imagens:", "error" => $e->getMessage()], 500);
+        } catch (Exception $e) {
+            return response()->json(["response" => false, "msg" => "Ocorreu um erro interno", "error" => $e->getMessage()], 500);
         }
     }
+
+
 
     private function isValidBase64Image($base64)
     {
@@ -562,9 +564,7 @@ class RifasController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+
     public function destroy($id)
     {
         try {

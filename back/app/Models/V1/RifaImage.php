@@ -11,7 +11,7 @@ class RifaImage extends Model
 
     protected $fillable = [ 'path', 'rifas_id' ];
 
-    public static function createUpsell($img,  $rifaId) {
+    public static function createImage($img,  $rifaId) {
         $result  = self::updateOrCreate(
             [
                 'path' => $img,
@@ -24,5 +24,8 @@ class RifaImage extends Model
 
     public static function getRifaImagens($id) {
         return self::where('rifas_id', $id)->get();
+    }
+    public static function getOneRifaImagens($id) {
+        return self::where('id', $id)->first();
     }
 }
