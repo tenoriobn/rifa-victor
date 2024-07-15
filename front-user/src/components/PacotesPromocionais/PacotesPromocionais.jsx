@@ -1,8 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import Medidor from "../../assets/Icons/medidor.svg?react";
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { estadoPacoteSelecionado, estadoRenderizaComponenteCadastro, estadoRenderizaInfoUsuario, estadoRifa, estadoUsuario, estadoValorCompra, estadoValorRange, estadoProdutos } from "../../common/state/atom";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { estadoPacoteSelecionado, estadoRenderizaComponenteCadastro, estadoRenderizaInfoUsuario, estadoRifa, estadoUsuario, estadoValorCompra, estadoValorRange, estadoProdutos, estadoValorPacotePromocional } from "../../common/state/atom";
 import useOperacoesInputRange from "../../common/state/hooks/inputRange/useOperacoesInputRange";
 import useCurrencyFormat from "../../common/state/hooks/useCurrencyFormat/useCurrencyFormat";
+import { useEffect } from "react";
 
 export default function PacotesPromocionais() {
   const produto = useRecoilValue(estadoProdutos);
@@ -11,32 +13,29 @@ export default function PacotesPromocionais() {
   const { adicionarValorPromocional } = useOperacoesInputRange();
   const valorRange = useRecoilValue(estadoValorRange);
   const pacoteSelecionado = useRecoilValue(estadoPacoteSelecionado);
-  
-  let pacotes = produto.discount_package.slice();
-  pacotes.sort((a, b) => a.qntd_cota - b.qntd_cota);
-  
-
+  const [valorPacotePromocional, setValorPacotePromocional] = useRecoilState(estadoValorPacotePromocional);
   const valorCompra = useRecoilValue(estadoValorCompra);
   const setRenderizaComponenteCadastro = useSetRecoilState(estadoRenderizaComponenteCadastro);
   const setRenderizaInfoUsuario = useSetRecoilState(estadoRenderizaInfoUsuario);
-  const rifa = useRecoilValue(estadoRifa)
-
-    // const precoUnidade = valorRange >= produto.discount_package[1].value_cota  ? produto.discount_package[1].value_cota  : precoAntigo;
-    const precoUnidade = (qntdCota, valorPacote) => { 
-      return valorRange >= qntdCota  ? valorPacote  : precoAntigo;
-    }
-    
-  // const precoUnidade = valorRange >= 1000 ? '0,15' : valorRange >= 500 ? '0,19' : '0,20';
+  const rifa = useRecoilValue(estadoRifa);
   const usuario = useRecoilValue(estadoUsuario);
+  
+  let pacotes = produto.discount_package.slice();
+  pacotes.sort((a, b) => a.qntd_cota - b.qntd_cota);
 
+  useEffect(() => {
+    const pacoteEncontrado = pacotes
+      .filter(pacote => pacote.qntd_cota <= valorRange)
+      .reduce((prev, current) => (prev.qntd_cota > current.qntd_cota ? prev : current), {});
 
-  // const pacotes = [
-  //   { id: 1, valor: 250, precoNovo: 50.00, maisPopular: true },
-  //   { id: 2, valor: 500, precoAntigo: 100.00, precoNovo: 95.00, maisPopular: false },
-  //   { id: 3, valor: 1000, precoAntigo: 200.00, precoNovo: 150.00, maisPopular: false },
-  //   { id: 4, valor: 2000, precoAntigo: 400.00, precoNovo: 300.00, maisPopular: false }
-  // ];
+    setValorPacotePromocional(pacoteEncontrado.value_cota ? pacoteEncontrado.value_cota : precoAntigo);
+  }, [valorRange, pacotes]);
 
+  const handlePacoteSelecionado = (pacote) => {
+    adicionarValorPromocional(pacote);
+    setValorPacotePromocional(pacote.value)
+  }
+  
   const handleClick = () => {
     if (usuario) {
       setRenderizaInfoUsuario(true)
@@ -61,7 +60,7 @@ export default function PacotesPromocionais() {
               ${pacoteSelecionado.id === pacote.id ? 'bg-green-200 text-neutral-700' : 'bg-slate-300 text-black'}
               ${pacoteSelecionado.id === pacote.id ? '' : 'hover:bg-slate-400'}`
             }
-            onClick={() => adicionarValorPromocional(pacote)}
+            onClick={() => handlePacoteSelecionado(pacote)}
           >
             {pacote.popular === "sim"  && (
               <div className="flex gap-2 absolute -top-5 left-1/2 -translate-x-1/2 z-[999]">
@@ -76,7 +75,7 @@ export default function PacotesPromocionais() {
                 {formatCurrency(precoAntigo * pacote.qntd_cota)}
               </p>
             )}
-            <p className={`text-sm ${pacote.maisPopular ? 'text-neutral-700' : 'text-green-700'}`}>
+            <p className={`text-base ${pacote.popular === "sim" ? 'text-neutral-700' : 'text-green-700'}`}>
               {formatCurrency(pacote.valor_total)}
             </p>
 
@@ -88,7 +87,7 @@ export default function PacotesPromocionais() {
       <div className='flex flex-col md:flex-row gap-4 items-center justify-between mt-6'>
         <div>
           <p 
-            className={`font-bold transition-all duration-300 ${valorRange >= 500 ? 'text-sm line-through text-neutral-400' : 'text-xl'}`}>
+            className={`font-bold transition-all duration-300 ${valorPacotePromocional < precoAntigo ? 'text-sm line-through text-neutral-400' : 'text-xl'}`}>
             Preço Unit:
             
             <span className="font-normal">
@@ -97,11 +96,11 @@ export default function PacotesPromocionais() {
           </p>
 
           {
-            precoAntigo > pacoteSelecionado.value_cota && (
+            valorPacotePromocional < precoAntigo && (
               <p className='text-xl text-emerald-600 transition-all duration-300 font-bold'>
                 Preço Promocional:
     
-                <span className="font-normal"> R$&nbsp;{precoUnidade(pacoteSelecionado.qntd_cota, pacoteSelecionado.value_cota)}</span>
+                <span className="font-normal"> {formatCurrency(valorPacotePromocional)}</span>
               </p>
             )
           }
