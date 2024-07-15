@@ -47,7 +47,7 @@ class RifaNumber extends Model {
             }
 
             AwardedQuota::winnerBilhetePremiado($numbers, $rifaPay->client_id, $rifaPay->rifas_id);
-            // dd($rifaPay);
+
             self::create([
                 'pay_id' => $rifaPay->id,
                 'rifas_id' => $rifaPay->rifas_id,
@@ -143,9 +143,9 @@ class RifaNumber extends Model {
 
     public static function cancelRifaNumber($ids) {
         return self::with(['rifa'])->whereIn('pay_id', $ids)
-        ->update(['status' => 2]);
+        ->update(['status' => 2, 'numbers' => null]);
     }
-    public static function makeRifaNumber($ids) {
+    public static function approvedRifaNumber($ids) {
         return self::with(['rifa'])->whereIn('pay_id', $ids)
         ->update(['status' => 1]);
     }

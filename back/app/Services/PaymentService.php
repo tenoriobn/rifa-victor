@@ -11,9 +11,9 @@ class PaymentService
         $cancelPayIds = [];
         $payMadeIds = [];
 
-        RifaPay::chunk(100, function ($payments) use (&$cancelPayIds, &$payMadeIds) {
+        RifaPay::with(['rifa.rifaPayment'])->chunk(100, function ($payments) use (&$cancelPayIds, &$payMadeIds) {
             foreach ($payments as $payment) {
-                $timeLimit = $payment->rifa->cota->camada ?? 30;
+                $timeLimit = $payment->rifa->rifaPayment->time_pay ?? 30;
 
                 if ($payment->status == 0 && $payment->verify == 0 && $payment->created_at <= now()->subMinutes($timeLimit)) {
                     $cancelPayIds[] = $payment->id;
@@ -24,11 +24,11 @@ class PaymentService
         });
 
         if (!empty($cancelPayIds)) {
-            RifaPay::whereIn('id', $cancelPayIds)->update(['status' => 0, 'verify' => 0]);
+            RifaPay::whereIn('id', $cancelPayIds)->update(['status' => 2, 'verify' => 1]);
         }
 
         if (!empty($payMadeIds)) {
-            RifaPay::whereIn('id', $payMadeIds)->update(['verify' => 0]);
+            RifaPay::whereIn('id', $payMadeIds)->update(['verify' => 1]);
         }
 
         return [$cancelPayIds, $payMadeIds];

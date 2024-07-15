@@ -34,14 +34,13 @@ class VerifyPayment extends Command
 
             if (!empty($cancelPayIds)) {
                 RifaNumber::cancelRifaNumber($cancelPayIds);
+                $this->info('Pagamentos cancelados: ' . implode(', ', $cancelPayIds));
+            }
+            if (!empty($payMadeIds)) {
+                RifaNumber::approvedRifaNumber($payMadeIds);
+                $this->info('Pagamentos aprovados: ' . implode(', ', $payMadeIds));
             }
 
-            // foreach ($payMadeIds as $payMadeId) {
-                // GenerateRifaNumbers::dispatch([$payMadeId]);
-                $payment = RifaNumber::with(['rifa.cota', 'rifa.awardedQuota', 'rifaPay'])->whereIn('pay_id',$payMadeIds)->get();
-                $resp = RifaNumber::generateUniqueNumbers($payment);
-            // }
-            dd( $resp );
             $this->info('Verificação de pagamentos concluída.');
         } catch (Exception $e) {
             $this->error('Ocorreu um erro durante a verificação de pagamentos: ' . $e->getMessage());
