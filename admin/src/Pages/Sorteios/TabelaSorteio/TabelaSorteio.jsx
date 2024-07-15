@@ -191,6 +191,19 @@ export default function TabelaSorteio() {
     setOpenModalAcoesSorteio(!openModalAcoesSorteio);
     setIdModalAcoesSorteio(id);
   }
+  
+  const getStatusLabel = (status) => {
+    switch (status) {
+      case 'finalizadas':
+        return 'finalizada';
+      case 'ativas':
+        return 'ativa';
+      case 'inativos':
+        return 'inativo';
+      default:
+        return status;
+    }
+  }
 
   return (
     <div className="">
@@ -240,14 +253,16 @@ export default function TabelaSorteio() {
                     ''
                   }`}
                 >
-                  {sorteio.status}
+                  {getStatusLabel(sorteio.status)}
                 </span>
               </td>
               <td>
                 <div className="button-group">
-                  <a className="button-delete" href="#" onClick={() => handleFinalizar(sorteio.id)} >
-                    <i className="fa-solid fa-toggle-on"></i> Finalizar
-                  </a>
+                  {sorteio.status !== 'finalizadas' && (
+                    <a className="button-delete" href="#" onClick={() => handleFinalizar(sorteio.id)} >
+                      <i className="fa-solid fa-toggle-on"></i> Finalizar
+                    </a>
+                  )}
                   <Link className="button-dashboard" to={sorteio.dashboardLink}>
                     <ion-icon name="stats-chart" role="img" className="md hydrated"></ion-icon> Dashboard
                   </Link>

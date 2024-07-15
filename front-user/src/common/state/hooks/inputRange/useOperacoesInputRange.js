@@ -27,7 +27,7 @@ const useOperacoesInputRange = () => {
 
   const adicionarValorPromocional = (pacote) => {
     setPacoteSelecionado(pacote);
-    setValorRange(pacote.valor);
+    setValorRange(pacote.qntd_cota);
   }
 
   useValorCompra();

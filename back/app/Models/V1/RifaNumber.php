@@ -26,7 +26,7 @@ class RifaNumber extends Model {
 
     public static function lookingForNumber($number, $rifasId) {
         $ganhador = self::with(['client', 'rifa'])->where('status', 1)->whereJsonContains('numbers', $number)->where('rifas_id', $rifasId)->first();
-        // dd($ganhador, $number, $rifasId);
+
         return $ganhador ?? false;
     }
 
@@ -60,64 +60,65 @@ class RifaNumber extends Model {
     }
 
     public static function generateUniqueNumbers($payment) {
-    $maxNumbers = $payment->rifa->cota->qntd_cota;
-    $numToGenerate = $payment->qntd_number;
+        $maxNumbers = $payment->rifa->cota->qntd_cota;
+        $numToGenerate = $payment->qntd_number;
 
-    // Obter números existentes de forma eficiente
-    $existingNumbers = self::where('rifas_id', $payment->rifas_id)
-        ->whereIn('status', [0, 1])
-        ->lockForUpdate()
-        ->pluck('numbers')
-        ->flatMap(function ($item) {
-            return json_decode($item, true) ?: [];
-        })->toArray();
+        // Obter números existentes de forma eficiente
+        $existingNumbers = self::where('rifas_id', $payment->rifas_id)
+            ->whereIn('status', [0, 1])
+            ->lockForUpdate()
+            ->pluck('numbers')
+            ->flatMap(function ($item) {
+                return json_decode($item, true) ?: [];
+            })->toArray();
 
-    $blockedNumbers = $payment->rifa->awardedQuota()
-        ->where('status', 'bloqueada')
-        ->lockForUpdate()
-        ->pluck('number_cota')
-        ->toArray();
+        $blockedNumbers = $payment->rifa->awardedQuota()
+            ->where('status', 'bloqueada')
+            ->lockForUpdate()
+            ->pluck('number_cota')
+            ->toArray();
 
-    $immediateNumbers = $payment->rifa->awardedQuota()
-        ->where('status', 'imediato')
-        ->lockForUpdate()
-        ->pluck('number_cota')
-        ->toArray();
-    // Filtrar números existentes
-    $existingSet = array_flip($existingNumbers);
-    $blockedSet = array_flip($blockedNumbers);
+        $immediateNumbers = $payment->rifa->awardedQuota()
+            ->where('status', 'imediato')
+            ->lockForUpdate()
+            ->pluck('number_cota')
+            ->toArray();
+        // Filtrar números existentes
+        $existingSet = array_flip($existingNumbers);
+        $blockedSet = array_flip($blockedNumbers);
 
-    // Números válidos imediatos
-    $validImmediateNumbers = array_diff($immediateNumbers, $existingNumbers);
-    $validImmediateNumbers = array_slice($validImmediateNumbers, 0, $numToGenerate); // Limitar ao número de compras
-    $generatedSet = array_flip($validImmediateNumbers);
+        // Números válidos imediatos
+        $validImmediateNumbers = array_diff($immediateNumbers, $existingNumbers);
+        $validImmediateNumbers = array_slice($validImmediateNumbers, 0, $numToGenerate); // Limitar ao número de compras
+        $generatedSet = array_flip($validImmediateNumbers);
 
-    // Gerar números disponíveis
-    $availableNumbers = range(1, $maxNumbers);
-    $availableNumbers = array_diff($availableNumbers, array_keys($existingSet), array_keys($blockedSet));
+        // Gerar números disponíveis
+        $availableNumbers = range(1, $maxNumbers);
+        $availableNumbers = array_diff($availableNumbers, array_keys($existingSet), array_keys($blockedSet));
 
-    // Verificar se há números suficientes
-    if (count($availableNumbers) < ($numToGenerate - count($validImmediateNumbers))) {
-        return false;
+        // Verificar se há números suficientes
+        if (count($availableNumbers) < ($numToGenerate - count($validImmediateNumbers))) {
+            return false;
+        }
+
+        // Gerar números aleatórios
+        $remainingToGenerate = $numToGenerate - count($validImmediateNumbers);
+        $randomNumbers = [];
+
+        if ($remainingToGenerate > 0) {
+            // Remover números válidos imediatos dos disponíveis para evitar repetição
+            $availableNumbers = array_diff($availableNumbers, $validImmediateNumbers);
+
+            $randomKeys = (array) array_rand($availableNumbers, $remainingToGenerate);
+            $randomNumbers = array_intersect_key($availableNumbers, array_flip($randomKeys));
+        }
+
+        // Combinar os números gerados
+        $generatedNumbers = array_merge(array_keys($generatedSet), $randomNumbers);
+
+        return $generatedNumbers;
     }
 
-    // Gerar números aleatórios
-    $remainingToGenerate = $numToGenerate - count($validImmediateNumbers);
-    $randomNumbers = [];
-
-    if ($remainingToGenerate > 0) {
-        // Remover números válidos imediatos dos disponíveis para evitar repetição
-        $availableNumbers = array_diff($availableNumbers, $validImmediateNumbers);
-
-        $randomKeys = (array) array_rand($availableNumbers, $remainingToGenerate);
-        $randomNumbers = array_intersect_key($availableNumbers, array_flip($randomKeys));
-    }
-
-    // Combinar os números gerados
-    $generatedNumbers = array_merge(array_keys($generatedSet), $randomNumbers);
-
-    return $generatedNumbers;
-}
 
 
 
@@ -128,13 +129,14 @@ class RifaNumber extends Model {
 
 
 
-
-    public static function getRanking() {
+    public static function getRankingRifa($id) {
         $result = self::where('status', 1)
+            ->where('rifas_id', $id)
             ->select('client_id')
             ->selectRaw('SUM(JSON_LENGTH(numbers)) as total_numbers')
             ->with('client')
             ->groupBy('client_id')
+            ->orderByRaw('SUM(JSON_LENGTH(numbers)) DESC')
             ->limit(6)
             ->get();
 

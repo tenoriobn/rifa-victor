@@ -62,6 +62,7 @@ class RifaPay extends Model
         return self::with(['rifaNumber', 'rifa.rifaPayment', 'rifa.rifaImage'])->where('client_id', $id)->orderByDesc('id')->get();
     }
 
+
     private static function generateUniqueNumericCode() {
         do {
             $code = rand(100000, 999999);

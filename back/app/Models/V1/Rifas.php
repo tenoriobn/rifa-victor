@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\{HasOne, hasMany};
 
 use App\Services\FuncaoService;
-use App\Models\V1\{RifasAwarded, RifasOthers, RifasPayment, awardedQuota, awardedQuotaClient, rifaPay};
+use App\Models\V1\{RifasAwarded, RifasOthers, RifasPayment, awardedQuota, awardedQuotaClient, RifaPay, DiscountPackage};
 
 class Rifas extends Model
 {
@@ -50,9 +50,9 @@ class Rifas extends Model
     public function rifaPayment(): HasOne {
         return $this->hasOne(RifasPayment::class);
     }
-    public function rifaPay() {
-        return $this->hasOne(RifaPay::class);
-    }
+    // public function rifaPay() {
+    //     return $this->hasOne(RifaPay::class);
+    // }
 
     public function awardedQuota(): hasMany {
         return $this->hasMany(AwardedQuota::class);
@@ -62,6 +62,12 @@ class Rifas extends Model
     }
     public function rifaImage(): hasMany {
         return $this->hasMany(RifaImage::class);
+    }
+    public function rifaPay(): hasMany {
+        return $this->hasMany(RifaPay::class);
+    }
+    public function discountPackage(): hasMany {
+        return $this->hasMany(DiscountPackage::class);
     }
 
     public static function rifaCreateOrUpdate($title, $slug, $description_resume, $show_site, $emphasis, $show_top, $video, $status, $price, $description_sortition, $description_product, $description_role, $description_order_approve, $data_sortition, $initial_sale, $end_sale, $end_rifa, $user_id, $rifa_id) {
@@ -101,16 +107,19 @@ class Rifas extends Model
         return self::with(['cota', 'rifaAwarded', 'rifaOthers', 'rifaPayment', 'awardedQuota', 'awardedQuotaClient.client'])->where('winner_id', 0)->latest()->get();
     }
     public static function getAllRifas() {
-        return self::with(['cota', 'rifaAwarded', 'rifaOthers', 'rifaPayment', 'awardedQuota', 'awardedQuotaClient.client'])->latest()->get();
+        return self::with(['cota', 'rifaAwarded', 'rifaOthers', 'rifaPayment', 'awardedQuota', 'rifaPay', 'awardedQuotaClient.client'])->latest()->get();
     }
     public static function getOneRifa($id) {
-        return self::with(['cota', 'rifaAwarded', 'rifaOthers', 'rifaPayment', 'awardedQuota', 'awardedQuotaClient.client'])->where("id", $id)->first();
+        return self::with(['cota', 'rifaAwarded', 'rifaOthers', 'rifaPayment', 'awardedQuota', 'discountPackage', 'awardedQuotaClient.client'])->where("id", $id)->first();
     }
     public static function getOneRifaActiva($id) {
         return self::with(['cota', 'rifaAwarded', 'rifaOthers', 'rifaPayment', 'awardedQuota', 'awardedQuotaClient.client'])->where("id", $id)->where('status','ativas')->first();
     }
     public static function getOneRifaEdit($id) {
         return self::with(['cota', 'rifaAwarded', 'rifaOthers', 'rifaPayment', 'awardedQuota', 'awardedQuotaClient.client'])->where("id", $id)->where('status','ativas')->first();
+    }
+    public static function RifaActiva() {
+        return self::where('status','ativas')->first();
     }
 
 }

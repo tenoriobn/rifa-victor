@@ -44,7 +44,7 @@ class RifasController extends Controller
     }
     public function getAllRifasAdmin() {
         try {
-            $rifasData = Rifas::getAllRifas()->select(['id','title', 'status', 'data_sortition']);
+            $rifasData = Rifas::getAllRifas()->select(['id', 'title', 'status', 'data_sortition']);
 
             if (!$rifasData) {
                 return response()->json(["success" => false, "msg" => "rifas não foi encontrada."], $this->notFound);
@@ -73,7 +73,16 @@ class RifasController extends Controller
     public function storeRifa(StoreRifasRequest $request) {
 
         try {
-            $this->rifaService->createRifas($request);
+            $isMakeRifa = Rifas::RifaActiva();
+
+            if($isMakeRifa) {
+                return response()->json(["success" => true, "msg" => "Para cadastrar um nova rifa, você precisa finalizar a rifa: $isMakeRifa->title"]);
+            }
+            $rifa = $this->rifaService->createRifas($request);
+
+            if(!$rifa) {
+                return response()->json(["success" => true, "msg" => "Ocorreu um erro ao cadastrar" ], 422 );
+            }
             return response()->json(["success" => true, "msg" => "Rifa criada com sucesso" ], $this->success);
         } catch (Exception $e) {
             return response()->json(["response" => false, "msg" => "Ocorreu um erro interno ao cadastrar a rifa", "error" => $e->getMessage()], $this->serverError);
@@ -401,7 +410,7 @@ class RifasController extends Controller
             if (!$rifaData) {
                 return response()->json(["success" => false, "msg" => "Rifa has not been found."], $this->notFound);
             }
-            $ranking = RifaNumber::getRanking();
+            $ranking = RifaNumber::getRankingRifa($id);
             $data = [ 'rifa' => $rifaData, 'ranking' => $ranking];
 
             return response()->json(["success" => true, "data" => $data], $this->success);

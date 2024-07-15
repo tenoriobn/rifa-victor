@@ -2,7 +2,7 @@
 import {  useEffect } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from "recoil";
-import { estadoErroCadastro, estadoFinalizarPedido, estadoFormularioPreenchido, estadoRenderizaComponenteCadastro, estadoTermosAceito, estadoUsuario, estadoValorCompra, estadoCheckoutId } from "../../common/state/atom";
+import { estadoErroCadastro, estadoFinalizarPedido, estadoFormularioPreenchido, estadoRenderizaComponenteCadastro, estadoTermosAceito, estadoUsuario, estadoValorCompra, estadoCheckoutId, estadoValorRange } from "../../common/state/atom";
 import useAlternarFormularios from "../../common/state/hooks/FormulariosAcesso/useAlternarFormularios";
 import FormulariosAcesso from "./FormulariosAcesso/FormulariosAcesso";
 import TermosCondicoes from "./TermosCondicoes/TermosCondicoes";
@@ -22,6 +22,7 @@ export default function AcessoUsuario() {
   const valorCompra = useRecoilValue(estadoValorCompra);
   const termosAceito = useRecoilValue(estadoTermosAceito);
   const camposPreenchidos = useRecoilValue(estadoFormularioPreenchido);
+  const valorRange = useRecoilValue(estadoValorRange); 
   const { voltarParaRifa } = useAlternarFormularios();
   const usuario = useRecoilValue(estadoUsuario);
   const erroCadastro = useRecoilValue(estadoErroCadastro);
@@ -37,7 +38,7 @@ export default function AcessoUsuario() {
       const dadosParaEnviar = {
         value: parseFloat(valorCompra.replace(',', '.')),
         client_id: usuario.id,
-        qntd_number: 400,
+        qntd_number: valorRange,
         rifas_id: id,
       };
   
@@ -55,7 +56,7 @@ export default function AcessoUsuario() {
 
       enviarDados();
     }
-  }, [usuario, finalizarPedido, valorCompra, id, navigate, setFinalizarPedido]);
+  }, [usuario, finalizarPedido, valorCompra, estadoValorRange, id, navigate, setFinalizarPedido]);
 
   useEffect(() => {
     if (checkoutReq.success === true && checkoutReq.data.id) {
