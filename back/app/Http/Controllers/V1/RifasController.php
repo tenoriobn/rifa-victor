@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\V1;
 
 use App\Models\V1\RifaNumber;
+
 use \Exception;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -44,7 +45,18 @@ class RifasController extends Controller
     }
     public function getAllRifasAdmin() {
         try {
-            $rifasData = Rifas::getAllRifas()->select(['id', 'title', 'status', 'data_sortition']);
+            $rifasData = Rifas::select(['id', 'title', 'status', 'data_sortition'])
+            ->withSum('rifaPayActiva as fat_total', 'value')
+            ->withSum('rifaPayToday as fat_hoje', 'value')
+            ->withCount(['rifaNumberActive as qntd_numeros' => function ($query) {
+                $query->select(DB::raw("SUM(LENGTH(numbers) - LENGTH(REPLACE(numbers, ',', '')) + 1) as number_count"));
+            }])
+            ->withCount(['rifaNumberReservado as qntd_numeros_reservado' => function ($query) {
+                $query->select(DB::raw("SUM(LENGTH(numbers) - LENGTH(REPLACE(numbers, ',', '')) + 1) as number_count"));
+            }])
+            ->latest()
+            ->get();
+
 
             if (!$rifasData) {
                 return response()->json(["success" => false, "msg" => "rifas não foi encontrada."], $this->notFound);

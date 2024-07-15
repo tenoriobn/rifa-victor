@@ -239,11 +239,11 @@ export default function TabelaSorteio() {
                 }</b>
               </td>
               <td>{formattedDate(sorteio.data_sortition)}</td>
-              <td>{sorteio.faturamentoTotal}</td>
-              <td>{sorteio.faturamentoHoje}</td>
-              <td>{sorteio.cotasVendidas}</td>
+              <td>{sorteio.fat_total}</td>
+              <td>{sorteio.fat_hoje}</td>
+              <td>{sorteio.qntd_numeros}</td>
               <td><b>{sorteio.percentualVendidas}</b></td>
-              <td>{sorteio.cotasReservadas}</td>
+              <td>{sorteio.qntd_numeros_reservado}</td>
               <td>
                 <span
                   className={`status-tag ${

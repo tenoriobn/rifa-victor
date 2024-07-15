@@ -5,7 +5,7 @@ namespace App\Models\V1;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\{HasOne, hasMany};
-
+use Carbon\Carbon;
 use App\Services\FuncaoService;
 use App\Models\V1\{RifasAwarded, RifasOthers, RifasPayment, awardedQuota, awardedQuotaClient, RifaPay, DiscountPackage};
 
@@ -50,9 +50,24 @@ class Rifas extends Model
     public function rifaPayment(): HasOne {
         return $this->hasOne(RifasPayment::class);
     }
-    // public function rifaPay() {
-    //     return $this->hasOne(RifaPay::class);
-    // }
+    public function rifaPay(): hasMany {
+        return $this->hasMany(RifaPay::class);
+    }
+    public function rifaPayActiva(): hasMany {
+        return $this->hasMany(RifaPay::class)->where('status', 1);
+    }
+    public function rifaNumberActive(): hasMany {
+        return $this->hasMany(RifaNumber::class)->where('status', 1);
+    }
+    public function rifaNumberReservado(): hasMany {
+        return $this->hasMany(RifaNumber::class)->where('status', 0);
+    }
+    public function rifaPayToday()
+    {
+        return $this->hasMany(RifaPay::class, 'rifas_id')
+            ->where('status', 1)
+            ->whereDate('created_at', Carbon::today());
+    }
 
     public function awardedQuota(): hasMany {
         return $this->hasMany(AwardedQuota::class);
@@ -63,9 +78,7 @@ class Rifas extends Model
     public function rifaImage(): hasMany {
         return $this->hasMany(RifaImage::class);
     }
-    public function rifaPay(): hasMany {
-        return $this->hasMany(RifaPay::class);
-    }
+
     public function discountPackage(): hasMany {
         return $this->hasMany(DiscountPackage::class);
     }
