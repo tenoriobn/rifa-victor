@@ -234,5 +234,13 @@ export const stateTabelaPacotesInfo = atom({
 
 export const statePacote = atom({
   key: 'statePacote',
-  default: [],
+  default: {
+    cod_promo: "",
+    popular: "sim",
+    qntd_cota: null,
+    rifas_id: null,
+    valor_total: null,
+    value_cota: 0,
+    status: "Ativo"
+  },
 });

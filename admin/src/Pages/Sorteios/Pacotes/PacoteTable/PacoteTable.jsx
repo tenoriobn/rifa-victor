@@ -3,6 +3,8 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { stateOpenModalEditarPacote, statePacote, stateTabelaPacotesInfo, stateUserLogin, stateIdModal } from "../../../../common/states/atom";
 import { fetchDados } from "../../../../common/http/http";
+import useCurrencyFormatTable from "../../../../common/states/Hook/useCurrencyFormatTable/useCurrencyFormatTable";
+import useFormattedDate from "../../../../common/states/Hook/useFormattedDate";
 
 const Table = styled.table`
   width: 100%;
@@ -29,6 +31,7 @@ const Table = styled.table`
     padding: .9375rem .625rem;
     background-color: #2e2e36;
     vertical-align: middle;
+    text-transform: uppercase;
   }
 
   td:first-child {
@@ -103,6 +106,8 @@ export default function PacoteTable() {
   const userLogin = useRecoilValue(stateUserLogin);
   const setPacote = useSetRecoilState(statePacote)
   const setIdModal = useSetRecoilState(stateIdModal);
+  const { formatCurrency } = useCurrencyFormatTable();
+  const { formattedDate } = useFormattedDate();
 
   const handleEditar = async (id) => {
     setOpenModalEditarPacote(!openModalEditarPacote)
@@ -114,6 +119,8 @@ export default function PacoteTable() {
 
     setIdModal(id);
   }
+
+  console.log('tabelaPacote', tabelaPacotesInfo)
 
   return (
     <div>
@@ -141,8 +148,8 @@ export default function PacoteTable() {
                 <td>#{index + 1}</td>
                 <td>{pacote.id}</td>
                 <td>{pacote.qntd_cota}</td>
-                <td>R$ {pacote.valor_total}</td>
-                <td>R$ {pacote.value_cota}</td>
+                <td>R$ {formatCurrency(pacote.valor_total)}</td>
+                <td>R$ {formatCurrency(pacote.value_cota)}</td>
                 <td>
                   <span className={`status-tag ${pacote.popular === 'sim' ? 'status-pago' : 'status-inconsistente'}`}>
                     {pacote.popular}
@@ -151,12 +158,12 @@ export default function PacoteTable() {
                 <td>{pacote.cod_promo}</td>
                 <td>R$</td>
                 <td>
-                  <span className={`status-tag ${pacote.status === 'ativo' ? 'status-pago' : 'status-cancelado'}`}>
+                  <span className={`status-tag ${pacote.status === 'Ativo' ? 'status-pago' : 'status-cancelado'}`}>
                     {pacote.status}
                   </span>
                 </td>
-                <td>{pacote.created_at}</td>
-                <td>{pacote.updated_at}</td>
+                <td>{formattedDate(pacote.created_at)}</td>
+                <td>{formattedDate(pacote.updated_at)}</td>
                 <td>
                   <div className="button-group">
                     <a className="button-edit" onClick={() => handleEditar(pacote.id)}>
