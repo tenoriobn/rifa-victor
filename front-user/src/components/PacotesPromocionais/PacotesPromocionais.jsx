@@ -75,7 +75,7 @@ export default function PacotesPromocionais() {
                 {formatCurrency(precoAntigo * pacote.qntd_cota)}
               </p>
             )}
-            <p className={`text-sm ${pacote.maisPopular ? 'text-neutral-700' : 'text-green-700'}`}>
+            <p className={`text-base ${pacote.popular === "sim" ? 'text-neutral-700' : 'text-green-700'}`}>
               {formatCurrency(pacote.valor_total)}
             </p>
 
