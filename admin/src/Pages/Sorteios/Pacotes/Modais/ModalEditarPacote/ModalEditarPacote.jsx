@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { putDados } from "../../../../../common/http/http";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { stateOpenModalEditarPacote, statePacote, stateTabelaPacotesInfo, stateUserLogin } from "../../../../../common/states/atom";
+import { NumericFormat } from "react-number-format";
 
 const Form = styled.form`
   font-size: .9rem;
@@ -32,7 +33,7 @@ const Form = styled.form`
     width: 100%;
     height: 40px;
     border-radius: 5px;
-    background: #41414b;
+    background-color: #41414b;
     border: none;
     outline: 0;
     margin-top: 10px;
@@ -93,14 +94,14 @@ export default function ModalEditarPacote() {
     <Form id="frmAddPack" onSubmit={handleSubmit}>
       <label htmlFor="frm_add_number_price">
         Valor por cota
-        <input
-          type="text"
-          id="frm_add_number_price"
-          name="value_cota"
-          className="moneyCota"
+        <NumericFormat
+          thousandSeparator="."
+          decimalSeparator=","
+          prefix="R$ "
+          decimalScale={2}
+          name="valor_total"
           value={pacote.value_cota || ""}
           onChange={handleChange}
-          required
           disabled
         />
       </label>
@@ -121,12 +122,14 @@ export default function ModalEditarPacote() {
 
       <label htmlFor="frm_add_price">
         Valor Total
-        <input
-          type="text"
-          id="frm_add_price"
+        <NumericFormat
+          thousandSeparator="."
+          decimalSeparator=","
+          prefix="R$ "
+          decimalScale={2}
           name="valor_total"
           value={pacote.valor_total || ""}
-          onChange={handleChange}
+          onChange={(e) => setPacote((prevPacote) => ({...prevPacote, valor_total: e.target.value}))}
           disabled
         />
       </label>
@@ -137,7 +140,7 @@ export default function ModalEditarPacote() {
           id="frm_add_most_popular"
           name="popular"
           value={pacote.popular || ""}
-          onChange={handleChange}
+          onChange={(e) => setPacote((prevPacote) => ({...prevPacote, popular: e.target.value}))}
         >
           <option value="sim">Sim</option>
           <option value="nao">Não</option>
@@ -153,7 +156,7 @@ export default function ModalEditarPacote() {
           style={{ textTransform: "uppercase" }}
           maxLength="10"
           value={pacote.cod_promo || ""}
-          onChange={handleChange}
+          onChange={(e) => setPacote((prevPacote) => ({...prevPacote, cod_promo: e.target.value}))}
         />
       </label>
 
@@ -163,7 +166,7 @@ export default function ModalEditarPacote() {
           name="status" 
           id="frm_st"
           value={pacote.status || "ativo"}
-          onChange={handleChange}
+          onChange={(e) => setPacote((prevPacote) => ({...prevPacote, status: e.target.value}))}
         >
           <option defaultValue="A">Ativo</option>
           <option defaultValue="F">Finalizado</option>
