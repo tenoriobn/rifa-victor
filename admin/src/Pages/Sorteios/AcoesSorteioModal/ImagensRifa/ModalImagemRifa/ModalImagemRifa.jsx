@@ -3,6 +3,7 @@ import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { stateImagensRifa, stateOpenModalNovaImagem, stateUserLogin } from '../../../../../common/states/atom';
 import { postDados } from "../../../../../common/http/http.js";
+import { useParams } from "react-router-dom";
 
 const ImagemForm = styled.form`
   input {
@@ -30,6 +31,7 @@ export default function ModalImagemRifa() {
   const setOpenModalNovaImagem = useSetRecoilState(stateOpenModalNovaImagem);
   const [imagemSelecionada, setImagemSelecionada] = useState(null);
   const userLogin = useRecoilValue(stateUserLogin);
+  const { id } = useParams()
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -100,8 +102,10 @@ export default function ModalImagemRifa() {
 
   const handleSubmitImage = async () => {
     try {
-      const rifaId = 2;
+      const rifaId = id;
       const response = await postDados('/admin/dashboard/rifa/imagens/cadastrar', { imagem: imagemSelecionada, rifa_id: rifaId }, userLogin);
+
+      setImagemSelecionada('');
 
       console.log('response: ', response)
 

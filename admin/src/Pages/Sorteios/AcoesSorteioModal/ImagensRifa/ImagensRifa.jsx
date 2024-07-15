@@ -1,11 +1,14 @@
+import { useEffect } from "react";
 import styled from "styled-components";
 import { Main } from "../../../../components/AdminLayout/AdminLayout";
 import Header from "../../../../components/Header/Header";
 import { LinkItem } from "../../../../components/Header/Header";
 import Modal from "../../../../components/Modal/Modal";
-import { useRecoilState } from "recoil";
-import { stateImagensRifa, stateOpenModalNovaImagem } from "../../../../common/states/atom";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { stateImagensRifa, stateOpenModalNovaImagem, stateUserLogin } from "../../../../common/states/atom";
 import ModalImagemRifa from "./ModalImagemRifa/ModalImagemRifa";
+import { deleteDados, fetchDados } from "../../../../common/http/http";
+import { useParams } from "react-router-dom";
 
 const TextImagesContainer = styled.div`
   line-height: 1.25rem;
@@ -25,12 +28,17 @@ const TextImagesContainer = styled.div`
 
 const ContainerImages = styled.div`
   margin-top: 50px;
+  display: flex;
+  align-items:center;
 
   .product {
     border: 1px solid #ccc;
     padding: 10px;
     margin: 10px;
-    display: inline-block;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items:center;
     width: 250px;
     text-align: center;
     box-sizing: border-box;
@@ -59,14 +67,28 @@ const ContainerImages = styled.div`
 export default function ImagensRifa() {
   const [imagensRifa, setImagensRifa] = useRecoilState(stateImagensRifa) 
   const [openModalNovaImagem, setOpenModalNovaImagem] = useRecoilState(stateOpenModalNovaImagem);
+  const userLogin = useRecoilValue(stateUserLogin);
+  const { id } = useParams();
 
-  const handleExcluirImagem = (index) => {
-    const novasImagens = [...imagensRifa];
-    novasImagens.splice(index, 1);
-    setImagensRifa(novasImagens);
+  console.log('id: ', id)
+
+  const handleExcluirImagem = async (idImg) => {
+    const response = await deleteDados(`admin/dashboard/rifa/imagens/deletar/${idImg}`, userLogin);
+    console.log(response)
   };
 
-  console.log(imagensRifa);
+  useEffect(() => {
+    const obterImage = async () => {
+      const response = await fetchDados(`/admin/dashboard/rifa/imagens/${id}`, userLogin);
+      setImagensRifa(response.data);
+
+      console.log(response);
+    };
+    
+    obterImage();
+  }, []);
+
+  console.log('veja aqui:', imagensRifa);
 
   return (
     <>
@@ -94,16 +116,20 @@ export default function ImagensRifa() {
         </TextImagesContainer>
 
         <ContainerImages>
-          {imagensRifa.map((imagem, index) => (
-            <div className="product" key={index}>
-              <img src={imagem} alt={`Imagem ${index + 1}`} />
-              <div className="buttons">
-                <button onClick={() => handleExcluirImagem(index)}>
-                  <i className="fas fa-trash-alt"></i> Excluir
-                </button>
+          {imagensRifa.length > 0 ? (
+            imagensRifa.map((imagem, index) => (
+              <div className="product" key={index}>
+                <img src={`../../../../../public/imgRifas/${imagem.path}`} alt={`Imagem ${index + 1}`} />
+                <div className="buttons">
+                  <button onClick={() => handleExcluirImagem(imagem.id)}>
+                    <i className="fas fa-trash-alt"></i> Excluir
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
+            ))
+          ) : (
+            <p>Nenhuma imagem encontrada.</p>
+          )}
         </ContainerImages>
       </Main>
 

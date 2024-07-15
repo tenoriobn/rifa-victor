@@ -45,7 +45,7 @@ class RifaPay extends Model
 
         $payId = self::create([
             'value' => $date->value,
-            'qntd_number' => 10000,
+            'qntd_number' => $date->qntd_number,
             'cod' => $cod,
             'checkout' => $checkout,
             'rifas_id' => $date->rifas_id,
