@@ -48,4 +48,8 @@ class Cotas extends Model {
 
             return $result ? true : false;
     }
+
+    public static function findQntdCota($rifaId) {
+        return self::where('rifas_id', $rifaId)->first();
+    }
 }

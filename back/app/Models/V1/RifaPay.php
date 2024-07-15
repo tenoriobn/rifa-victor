@@ -23,13 +23,29 @@ class RifaPay extends Model
     }
 
 
+    public static function addNumeroClient($qntdNumero, $client , $rifasId) {
+        $cod = self::generateUniqueNumericCode();
+        $checkout = self::generateUniqueAlphanumericCode(12);
+
+        $payId = self::create([
+            'value' => 0,
+            'qntd_number' => $qntdNumero,
+            'status' => 1,
+            'cod' => $cod,
+            'checkout' => $checkout,
+            'rifas_id' => $rifasId,
+            'client_id' => $client,
+        ]);
+
+        return $payId ?? false;
+    }
     public static function applyRifa($date) {
         $cod = self::generateUniqueNumericCode();
         $checkout = self::generateUniqueAlphanumericCode(12);
 
         $payId = self::create([
             'value' => $date->value,
-            'qntd_number' => $date->qntd_number,
+            'qntd_number' => 10000,
             'cod' => $cod,
             'checkout' => $checkout,
             'rifas_id' => $date->rifas_id,

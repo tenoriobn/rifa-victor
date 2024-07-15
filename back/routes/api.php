@@ -38,8 +38,11 @@
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->put("/dashboard/rifa/editar/{id}", [RifasController::class, "editRifa"])->name('admin.edit.rifa');
 
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/bilhete-premiado/cadastrar", [RifasController::class, "storeBilhetePremiado"])->name('admin.create.rifa.bilhete-premiado');
+
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/bilhete-premiado/editar/{id}", [RifasController::class, "getAllBilhetePremiado"])->name('admin.get.rifa.bilhete-premiado');
+
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/bilhete-premiado/editar/{id}", [RifasController::class, "getOneBilhetePremiado"])->name('admin.get.rifa.bilhete-premiado');
+
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->put("/dashboard/bilhete-premiado/editar", [RifasController::class, "editarBilhetePremiado"])->name('admin.get.rifa.bilhete-premiado');
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->delete("/dashboard/bilhete-premiado/delete/{id}/{rifaId}", [RifasController::class, "destroyBilhetePremiado"])->name('admin.delete.rifa.bilhete-premiado');
 
@@ -48,14 +51,21 @@
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/pacote/cadastrar", [RifasController::class, "storePacote"])->name('admin.create.rifa.pacote');
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->put("/dashboard/pacotes/editar", [RifasController::class, "editarPacote"])->name('admin.create.rifa.pacote');
 
-        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/rifa/imagens/{id}", [RifasController::class, "getImagens"])->name('admin.create.rifa.imagem');
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/rifa/imagens/{id}", [RifasController::class, "getImagens"])->name('admin.pegar.rifa.imagem');
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/rifa/imagens/cadastrar", [RifasController::class, "storeImagem"])->name('admin.create.rifa.imagem');
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->delete("/dashboard/rifa/imagens/deletar/{id}/", [RifasController::class, "destroyImagem"])->where(['id' => '[0-9]+'])->name('admin.deletar.rifa.imagem');
 
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/upsell/cadastrar", [RifasController::class, "storeUpsell"])->name('admin.create.rifa.upsell');
 
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->put("/dashboard/rifa/finalizar/{id}", [RifasController::class, "finalizarRifa"])->name('admin.finalizar.rifa');
 
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/me", [AdminController::class, "me"])->name('admin.me.user');
+
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/rifa/procurar-numero-premiado/procurar-ganhador", [AdminController::class, "procurarGanhadorPeloNumero"])->name('admin.procurar.ganhador');
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/rifa/definir-ganhador", [AdminController::class, "definirGanhador"])->name('admin.definir.ganhador');
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/client/procurar/pelo-telefone", [AdminController::class, "procurarClientCellphone"])->name('admin.procurar.client.celular');
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/client/rifa/adicionar-numero", [AdminController::class, "adicionarNumerosRifas"])->name('admin.adicionar.numero');
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/client/rifa/adicionar/bilhete-premiado", [AdminController::class, "adicionarBilhetePremiado"])->name('admin.adicionar.bilhete.premiado');
     });
 
     Route::group(['prefix' => 'produtos'], function () {
@@ -67,8 +77,8 @@
     });
 
     Route::get("/index", [RifasController::class, "index"])->name('index');
-    Route::get("/ganhadores", [RifasController::class, "winners"])->name('all.winners');
-    Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/define-ganhador", [RifasController::class, "defineWinners"])->name('define.winners');
+
+
 
     Route::group(["prefix" => "public-rifas"], function () {
         Route::get("/latest", [RifasController::class, "latest"]);
