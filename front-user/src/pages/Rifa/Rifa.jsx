@@ -28,8 +28,6 @@ export default function Rifa() {
   const setRifa = useSetRecoilState(estadoRifa)
   const setRanking = useSetRecoilState(estadoRanking)
   const { slug, id } = useParams();
-
-  console.log('estado produto: ', produto)
   
   useEffect(() => {
     const obterDados = async () => {

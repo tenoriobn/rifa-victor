@@ -10,6 +10,11 @@ export const estadoPacoteSelecionado = atom({
   default: 250,
 });
 
+export const estadoValorPacotePromocional = atom({
+  key: 'estadoValorPacotePromocional',
+  default: null,
+});
+
 export const estadoValorRange = atom({
   key: 'valorRange',
   default: 0,
