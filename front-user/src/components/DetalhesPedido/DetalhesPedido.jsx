@@ -20,6 +20,8 @@ export default function DetalhesPedido() {
       try {
         const response = await fetchDados(`client/checkout/pedido/${id}`, true);
         setCheckoutInfo(response.data);
+
+        console.log('Pedidos: ', response)
       } catch (error) {
         console.error('Erro ao comprar rifa:', error);
       } finally {
@@ -33,8 +35,6 @@ export default function DetalhesPedido() {
   if (isLoading) {
     return <AvisoCarregando />; 
   }
-
-  console.log('rifa', checkoutInfo.rifa.rifa_image[0])
 
   return (
     <>

@@ -1,48 +1,56 @@
 <?php
+
 namespace App\Services;
 
-use GuzzleHttp\Client;
+use MercadoPago\Client\Common\RequestOptions;
+use MercadoPago\Client\Payment\PaymentClient;
+use MercadoPago\Exceptions\MPApiException;
+use MercadoPago\MercadoPagoConfig;
 
 class MercadoPagoService
 {
-    protected $client;
-    protected $accessToken;
-
     public function __construct()
     {
-        $this->client = new Client();
-        $this->accessToken = config('services.mercadopago.access_token');
+        MercadoPagoConfig::setAccessToken(env('MERCADOPAGO_ACCESS_TOKEN'));
+        MercadoPagoConfig::setRuntimeEnviroment(MercadoPagoConfig::LOCAL);
+
+
     }
 
-    public function createPayment($amount, $description)
-    {
-        $response = $this->client->post('https://api.mercadopago.com/v1/payments', [
-            'headers' => [
-                'Authorization' => 'Bearer ' . $this->accessToken,
-                'Content-Type' => 'application/json',
-            ],
-            'json' => [
-                'transaction_amount' => (float)$amount,
-                'description' => $description,
-                'payment_method_id' => 'pix',
-                'payer' => [
-                    'email' => 'test_user_123456@testuser.com'
-                ]
-            ]
-        ]);
+    public function createPayment($price, $description, $token)
+{
+    $client = new PaymentClient();
 
-        return json_decode($response->getBody(), true);
+    $request = [
+        "transaction_amount" => $price,
+        "token" => $token,
+        "description" => $description,
+        "installments" => 1,
+        "payment_method_id" => 'pix',
+        "payer" => [
+            "email" => 'bianca@teste.com',
+        ]
+    ];
+
+    $requestOptions = new RequestOptions();
+    $requestOptions->setCustomHeaders(["X-Idempotency-Key: " . uniqid()]);
+
+
+    try {
+        $payment = $client->create($request, $requestOptions);
+
+        return $payment;
+
+    } catch (MPApiException $e) {
+
+        return [
+            'status_code' => $e->getApiResponse()->getStatusCode(),
+            'content' => $e->getApiResponse()->getContent(),
+            'message' => $e->getMessage(),
+        ];
+    } catch (\Exception $e) {
+        return ['error' => $e->getMessage()];
     }
+}
 
-    public function getPaymentStatus($payment_id)
-    {
-        $response = $this->client->get("https://api.mercadopago.com/v1/payments/{$payment_id}", [
-            'headers' => [
-                'Authorization' => 'Bearer ' . $this->accessToken,
-                'Content-Type' => 'application/json',
-            ]
-        ]);
-
-        return json_decode($response->getBody(), true);
-    }
 }

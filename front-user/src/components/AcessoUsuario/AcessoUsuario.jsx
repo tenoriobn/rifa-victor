@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {  useEffect } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
-import { useRecoilState, useRecoilValue } from "recoil";
-import { estadoErroCadastro, estadoFinalizarPedido, estadoFormularioPreenchido, estadoRenderizaComponenteCadastro, estadoTermosAceito, estadoUsuario, estadoValorCompra, estadoCheckoutId, estadoValorRange } from "../../common/state/atom";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { estadoErroCadastro, estadoFinalizarPedido, estadoFormularioPreenchido, estadoRenderizaComponenteCadastro, estadoTermosAceito, estadoUsuario, estadoValorCompra, estadoCheckoutId, estadoValorRange, estadoQrCode } from "../../common/state/atom";
 import useAlternarFormularios from "../../common/state/hooks/FormulariosAcesso/useAlternarFormularios";
 import FormulariosAcesso from "./FormulariosAcesso/FormulariosAcesso";
 import TermosCondicoes from "./TermosCondicoes/TermosCondicoes";
@@ -28,6 +28,7 @@ export default function AcessoUsuario() {
   const erroCadastro = useRecoilValue(estadoErroCadastro);
   const animacao = transicaoAnimada();
   const navigate = useNavigate();
+  const setQrCode = useSetRecoilState(estadoQrCode);
 
   useEffect(() => {
 
@@ -46,8 +47,12 @@ export default function AcessoUsuario() {
         try {
           const response = await postDados('produtos/comprar-rifa', dadosParaEnviar, true);
 
+          setQrCode([
+            response.data.qrCode,
+            response.data.qrCodeBase64
+          ])
+
           setCheckoutReq(response);
-          console.log('response', response)
           setFinalizarPedido(false);
         } catch (error) {
           console.error('Erro ao comprar rifa:', error);

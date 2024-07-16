@@ -8,7 +8,7 @@ export default function CardCotasAtivas() {
   const cotasAtivas = rifa?.awarded_quota?.filter(cota => cota.status !== 'resgatada' && cota.show_site === 'sim');
 
   return (
-    <div className='grid grid-cols-2 md:grid-cols-3 gap-4 mt-4'>
+    <div className={`${cotasAtivas.length > 0 ? 'grid grid-cols-2 md:grid-cols-3' : ''} gap-4 mt-4`}>
       {
         cotasAtivas.length > 0 ? (
           cotasAtivas.map((cotaAtiva, index) => (

@@ -128,3 +128,8 @@ export const estadoPedidosUsuario = atom({
   key: 'estadoPedidosUsuario',
   default: null,
 });
+
+export const estadoQrCode = atom({
+  key: 'estadoQrCode',
+  default: null,
+});

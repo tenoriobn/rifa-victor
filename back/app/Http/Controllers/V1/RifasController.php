@@ -447,9 +447,12 @@ class RifasController extends Controller
                 $rifaPayDetails->delete();
                 return response()->json(["success" => false, "msg" => "Quantidade de número invalido"], 409 );
             }
-            $payment = $this->mercadoPagoService->createPayment($rifaPay->value, 'rei do pix');
-            dd($payment);
-            return response()->json(["success" => true, "data" => $rifaPayDetails], 200);
+            $payment = $this->mercadoPagoService->createPayment(intval($rifaPay->value), 'Rei do Pix, [Compra da rifa '.$rifaPayDetails->rifa->title. ']', 'sddsd');
+
+            $rifaPayDetails->qrCode = $payment->point_of_interaction->transaction_data->qr_code;
+            $rifaPayDetails->qrCodeBase64 = $payment->point_of_interaction->transaction_data->qr_code_base64;
+
+             return response()->json(["success" => true, "data" => $rifaPayDetails], 200);
         } catch (Exception $e) {
             return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
         }
