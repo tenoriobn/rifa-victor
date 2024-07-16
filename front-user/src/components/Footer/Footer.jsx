@@ -26,7 +26,7 @@ export default function Footer() {
 
         <div className="inline-block group text-xs my-3">
           <p className="text-xs text-white text-center mb-1">
-            <span className="font-semibold">Rei do Pix</span> a Plataforma Líder em Gestão de Sorteios!
+            <span className="font-semibold">UAAU.PRO</span> a Plataforma Líder em Gestão de Sorteios!
           </p>
 
           <a href="mailto:reidopix@email.com" className="px-2 border">CONTATO</a>

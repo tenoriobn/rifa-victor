@@ -6,8 +6,6 @@ export default function ResumoPedido() {
   const checkoutInfo = useRecoilValue(estadoCheckoutInfo);
   const { formattedDate } = useFormattedDate();
 
-  console.log(checkoutInfo)
-
   return (
     <div>
       <h3 className="my-2 font-semibold text-neutral-700">Resumo do Pedido</h3>
