@@ -1,19 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useRecoilValue, useRecoilState } from "recoil";
-import useSlideImages from "../../common/state/hooks/ImagemPremio/ImagemPremio";
+import { useRecoilState } from "recoil";
 import InfoPedidos from "./InfoPedidos/InfoPedidos";
 import ModoPagamento from "./ModoPagamento/ModoPagamento";
 import NumerosBilhetes from "./ModoPagamento/NumerosBilhetes/NumerosBilhetes";
 import ResumoPedido from "./ResumoPedido/ResumoPedido";
-import { estadoCheckoutInfo, estadoRifa } from "../../common/state/atom";
+import { estadoCheckoutInfo } from "../../common/state/atom";
 import { useEffect, useState } from "react";
 import { fetchDados } from "../../common/http/http";
 import { useParams } from "react-router-dom";
 import AvisoCarregando from "../AvisoCarregando/AvisoCarregando";
 
 export default function DetalhesPedido() {  
-  const rifa = useRecoilValue(estadoRifa);
-  const { imgPremioSlide } = useSlideImages(rifa);
   const [checkoutInfo, setCheckoutInfo] = useRecoilState(estadoCheckoutInfo);
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(true);
@@ -37,11 +34,13 @@ export default function DetalhesPedido() {
     return <AvisoCarregando />; 
   }
 
+  console.log('rifa', checkoutInfo.rifa.rifa_image[0])
+
   return (
     <>
       <div className="aspect-[16/9] mb-4">
         <img 
-          src={imgPremioSlide} 
+          src={`../../../public/imgRifas/${checkoutInfo.rifa.rifa_image[0]?.path}`}
           className="w-full h-full object-cover rounded-lg mb-4"
           alt="Imagem do Prêmio" 
         />

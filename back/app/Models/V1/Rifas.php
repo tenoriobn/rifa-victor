@@ -117,19 +117,19 @@ class Rifas extends Model
     }
 
     public static function getAllRifasActivas() {
-        return self::with(['cota', 'rifaAwarded', 'rifaOthers', 'rifaPayment', 'awardedQuota', 'awardedQuotaClient.client'])->where('winner_id', 0)->latest()->get();
+        return self::with(['cota', 'rifaAwarded', 'rifaOthers', 'rifaPayment', 'awardedQuota.client', 'rifaImage', 'awardedQuotaClient'])->where('winner_id', 0)->latest()->get();
     }
     public static function getAllRifas() {
-        return self::with(['cota', 'rifaAwarded', 'rifaOthers', 'rifaPayment', 'awardedQuota', 'rifaPay', 'awardedQuotaClient.client'])->latest()->get();
+        return self::with(['cota', 'rifaAwarded', 'rifaOthers', 'rifaPayment', 'awardedQuota.client', 'rifaImage', 'rifaPay', 'awardedQuotaClient'])->latest()->get();
     }
     public static function getOneRifa($id) {
-        return self::with(['cota', 'rifaAwarded', 'rifaOthers', 'rifaPayment', 'awardedQuota', 'discountPackage', 'awardedQuotaClient.client'])->where("id", $id)->first();
+        return self::with(['cota', 'rifaAwarded', 'rifaOthers', 'rifaPayment', 'awardedQuota.client', 'discountPackage', 'rifaImage', 'awardedQuotaClient'])->where("id", $id)->first();
     }
     public static function getOneRifaActiva($id) {
-        return self::with(['cota', 'rifaAwarded', 'rifaOthers', 'rifaPayment', 'awardedQuota', 'awardedQuotaClient.client'])->where("id", $id)->where('status','ativas')->first();
+        return self::with(['cota', 'rifaAwarded', 'rifaOthers', 'rifaPayment', 'awardedQuota.client', 'rifaImage', 'awardedQuotaClient'])->where("id", $id)->where('status','ativas')->first();
     }
     public static function getOneRifaEdit($id) {
-        return self::with(['cota', 'rifaAwarded', 'rifaOthers', 'rifaPayment', 'awardedQuota', 'awardedQuotaClient.client'])->where("id", $id)->where('status','ativas')->first();
+        return self::with(['cota', 'rifaAwarded', 'rifaOthers', 'rifaPayment', 'awardedQuota.client', 'rifaImage', 'awardedQuotaClient'])->where("id", $id)->where('status','ativas')->first();
     }
     public static function RifaActiva() {
         return self::where('status','ativas')->first();

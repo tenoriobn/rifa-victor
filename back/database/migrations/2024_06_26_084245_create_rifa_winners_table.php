@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('rifa_winners', function (Blueprint $table) {
             $table->id();
-            $table->integer('ticket');
-            $table->dateTime('draw_day');
             $table->string('img');
+            $table->string('nome');
+            $table->integer('ticket');
+            $table->dateTime('cota');
             $table->unsignedBigInteger('rifas_id');
             $table->foreign("rifas_id")->references("id")->on("rifas");
-            $table->unsignedBigInteger('client_id');
-            $table->foreign("client_id")->references("id")->on("clients");
+
             $table->timestamps();
         });
     }

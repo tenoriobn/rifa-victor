@@ -95,6 +95,16 @@ class AdminController extends Controller
             return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
         }
     }
+    public function cadastrarGanhador(Request $request) {
+        try {
+            dd();
+            $ganhador = $this->rifaService->definirGanhador($request->numeroSorteado, $request->novoGanhadorPhone, $request->rifa_id);
+
+            return response()->json(["success" => true, "data" => $ganhador], 200);
+        } catch (Exception $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
+        }
+    }
 
     public function adicionarNumerosRifas(Request $request) {
         try {

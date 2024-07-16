@@ -70,10 +70,12 @@ class RifaService
         // Decodificar a imagem base64
         $imgData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $imgBase64));
         $imgName = Str::random(10) . '.' . $type; // Manter a extensão original
-        $reactImagePath = '../../admin/public/imgRifas/' . $imgName;
+        $reactImagePathAdmin = '../../admin/public/imgRifas/' . $imgName;
+        $reactImagePathFront = '../../front-user/public/imgRifas/' . $imgName;
 
         // Salvar a imagem na pasta imgRifas
-        file_put_contents($reactImagePath, $imgData);
+        file_put_contents($reactImagePathAdmin, $imgData);
+        file_put_contents($reactImagePathFront, $imgData);
 
         // Salvar a imagem no banco de dados
         return RifaImage::createImage($imgName, $rifaId);

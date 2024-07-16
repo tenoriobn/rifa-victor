@@ -25,7 +25,7 @@ export default function RifasCotas() {
 
   useEffect(() => {
     const obterDados = async () => {
-      const response = await fetchDados(`/admin/dashboard/bilhete-premiado/editar/${id}`, userLogin);
+      const response = await fetchDados(`/admin/dashboard/bilhete-premiado/all/${id}`, userLogin);
       setTabelaCotasInfo(response.data);
 
       console.log(response);

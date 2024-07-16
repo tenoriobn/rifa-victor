@@ -14,7 +14,7 @@ use Illuminate\Support\Str;
 use App\Http\Requests\V1\{StoreRifasRequest, UpdateRifasRequest, PaymentRequest, OrderRifaRequest, WinnerRequest};
 use App\Http\Resources\V1\{RifasResource};
 use App\Models\V1\{Rifas, RifaWinner, RifaPay, AwardedQuota, DiscountPackage, RifaUpsell, RifaImage};
-use App\Services\RifaService;
+use App\Services\{RifaService, MercadoPagoService};
 
 
 
@@ -30,9 +30,10 @@ class RifasController extends Controller
     protected $notFound = 404;
     protected $serverError = 500;
 
-      public function __construct(RifaService $rifaService)
+      public function __construct(RifaService $rifaService, MercadoPagoService $mercadoPagoService)
     {
         $this->rifaService = $rifaService;
+        $this->mercadoPagoService = $mercadoPagoService;
     }
     public function index() {
         try {
@@ -226,7 +227,7 @@ class RifasController extends Controller
     }
     public function getOneBilhetePremiado($id) {
         try {
-            $bilhete = AwardedQuota::getAllBilhetePremiado($id);
+            $bilhete = AwardedQuota::getOneBilhetePremiado($id);
             if (!$bilhete) {
                 return response()->json(['response' => false, 'msg' => 'bilhete não encontrada'], 404);
             }
@@ -446,7 +447,8 @@ class RifasController extends Controller
                 $rifaPayDetails->delete();
                 return response()->json(["success" => false, "msg" => "Quantidade de número invalido"], 409 );
             }
-
+            $payment = $this->mercadoPagoService->createPayment($rifaPay->value, 'rei do pix');
+            dd($payment);
             return response()->json(["success" => true, "data" => $rifaPayDetails], 200);
         } catch (Exception $e) {
             return response()->json(["success" => false, "msg" => $e->getMessage()], 500);

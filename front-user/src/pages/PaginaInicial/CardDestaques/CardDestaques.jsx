@@ -62,6 +62,8 @@ export default function CardDestaques() {
   //   return primeiroElemento; 
   // };
 
+  console.log(produto)
+
   return (
     <>
       {produto ? (
@@ -71,7 +73,8 @@ export default function CardDestaques() {
           onClick={() => setProdutoSelecionado(produto)}
           className="flex w-auto overflow-hidden rounded-lg bg-neutral-200 hover:shadow-[4px_4px_4px_#0002] border border-solid border-neutral-400 ring-0 ring-amber-500/60 hover:ring-offset-4 hover:ring-2 transition-all duration-300 flex-col mb-6 cursor-pointer"
         >
-          <img src= {"https://img.freepik.com/fotos-gratis/carro-luxuoso-estacionado-na-estrada-com-um-farol-iluminado-ao-por-do-sol_181624-60607.jpg?size=626&ext=jpg&ga=GA1.1.672697106.1717632000&semt=ais_user"}
+          <img 
+            src={`../../../public/imgRifas/${produto.rifa_image[0]?.path}`}            
             alt="Foto do Prêmio" 
             className="aspect-[16/9] w-full max-h-[200px] object-cover transition-all"
           />

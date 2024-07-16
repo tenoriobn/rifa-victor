@@ -120,13 +120,13 @@ export default function TabelaCotas() {
   const userLogin = useRecoilValue(stateUserLogin);
   const { id } = useParams();
 
-  const handleEditar = async (id) => {
+  const handleEditar = async (idModal) => {
     setOpenModalEditarCotaPremiada(!openModalEditarCotaPremiada)
 
-    const response = await fetchDados(`admin/dashboard/bilhete-premiado/editar/${id}`, userLogin);
+    const response = await fetchDados(`admin/dashboard/bilhete-premiado/editar/${idModal}`, userLogin);
     setCotaPremiada(response.data);
 
-    setIdModal(id);
+    setIdModal(idModal);
   }
 
   const handleDeletar = async (idCotaPremiada) => {

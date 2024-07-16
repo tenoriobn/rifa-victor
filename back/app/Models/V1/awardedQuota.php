@@ -11,10 +11,13 @@ class AwardedQuota extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['number_cota', 'award', 'show_site', 'status', 'rifas_id'];
+    protected $fillable = ['number_cota', 'award', 'show_site', 'status', 'rifas_id', 'client_id'];
 
     public function rifa(): BelongsTo {
         return $this->belongsTo(Rifas::class);
+    }
+    public function client(): BelongsTo {
+        return $this->belongsTo(Clients::class);
     }
 
     public static function createAwardedQuota($qntdCota, $award, $show_site, $status, $rifaId) {
@@ -55,7 +58,7 @@ class AwardedQuota extends Model
         return self::where('rifas_id', $rifaId)->get();
     }
     public static function getOneBilhetePremiado($rifaId) {
-        return self::where('rifas_id', $rifaId)->first();
+        return self::where('id', $rifaId)->first();
     }
 
     public static function findBilhetePremiado($num) {

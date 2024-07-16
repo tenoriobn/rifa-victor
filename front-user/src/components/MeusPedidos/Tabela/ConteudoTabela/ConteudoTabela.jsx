@@ -9,13 +9,20 @@ export default function ConteudoTabela() {
   const { formattedDate } = useFormattedDate();
   const { formatCurrency } = useCurrencyFormat();
 
+  console.log('dados tabela: ', dadosTabela)
+
   return (
     <tbody>
       {dadosTabela.map((item, index) => (
         <tr key={index} className={`text-left ${item.status === "Cancelada" ? "bg-red-50 text-red-600" : "bg-emerald-50 text-emerald-600"}`}>
           <td>
             <div className={`p-2 border-0 border-l-4 border-solid ${item.status === "Cancelada" ? "border-red-400" : "border-emerald-400"} `}>
-              <img src={item.imgSrc} alt="" className="h-auto min-w-[64px] w-full aspect-[16/9] object-cover rounded-lg" />
+              <img 
+                // src={item.imgSrc} 
+                src={`../../../public/imgRifas/${item.rifa.rifa_image[0]?.path}`}
+                alt="" 
+                className="h-auto min-w-[64px] w-full aspect-[16/9] object-cover rounded-lg" 
+              />
             </div>
           </td>
           <td className="px-2">{item.cod}</td>
