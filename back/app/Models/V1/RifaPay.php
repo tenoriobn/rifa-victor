@@ -10,7 +10,7 @@ use App\Models\V1\{Rifas, Clients, RifaNumber};
 class RifaPay extends Model
 {
     use HasFactory;
-    protected $fillable = ['status', 'verify', 'value', 'qntd_number', 'cod', 'checkout','rifas_id', 'client_id'];
+    protected $fillable = ['status', 'verify', 'value', 'qntd_number', 'pix_id', 'qr_code', 'qr_code_base64', 'cod', 'checkout','rifas_id', 'client_id'];
 
     public function rifaNumber(): hasOne {
         return $this->hasOne(RifaNumber::class, 'pay_id', 'id');
@@ -39,6 +39,16 @@ class RifaPay extends Model
 
         return $payId ?? false;
     }
+    public static function addPix($paymentId, $pixId, $qrCode, $qrCodeBase64) {
+        $payId = self::where('id', $paymentId)->update([
+            'pix_id' => $pixId,
+            'qr_code' => $qrCode,
+            'qr_code_base64' => $qrCodeBase64
+        ]);
+
+        return $payId ?? false;
+    }
+
     public static function applyRifa($date) {
         $cod = self::generateUniqueNumericCode();
         $checkout = self::generateUniqueAlphanumericCode(12);

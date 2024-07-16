@@ -1,10 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import InfoPedidos from "./InfoPedidos/InfoPedidos";
 import ModoPagamento from "./ModoPagamento/ModoPagamento";
 import NumerosBilhetes from "./ModoPagamento/NumerosBilhetes/NumerosBilhetes";
 import ResumoPedido from "./ResumoPedido/ResumoPedido";
-import { estadoCheckoutInfo } from "../../common/state/atom";
+import { estadoCheckoutInfo, estadoQrCode } from "../../common/state/atom";
 import { useEffect, useState } from "react";
 import { fetchDados } from "../../common/http/http";
 import { useParams } from "react-router-dom";
@@ -14,14 +14,13 @@ export default function DetalhesPedido() {
   const [checkoutInfo, setCheckoutInfo] = useRecoilState(estadoCheckoutInfo);
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(true);
-  
+  const setQrCode = useSetRecoilState(estadoQrCode);
   useEffect(() => {
     const pegarDados = async () => {
       try {
         const response = await fetchDados(`client/checkout/pedido/${id}`, true);
         setCheckoutInfo(response.data);
-
-        console.log('Pedidos: ', response)
+        setQrCode([response.data.qr_code, response.data.qr_code_base64]);
       } catch (error) {
         console.error('Erro ao comprar rifa:', error);
       } finally {

@@ -17,40 +17,65 @@ class MercadoPagoService
 
     }
 
-    public function createPayment($price, $description, $token)
-{
-    $client = new PaymentClient();
-
-    $request = [
-        "transaction_amount" => $price,
-        "token" => $token,
-        "description" => $description,
-        "installments" => 1,
-        "payment_method_id" => 'pix',
-        "payer" => [
-            "email" => 'bianca@teste.com',
-        ]
-    ];
-
-    $requestOptions = new RequestOptions();
-    $requestOptions->setCustomHeaders(["X-Idempotency-Key: " . uniqid()]);
-
-
-    try {
-        $payment = $client->create($request, $requestOptions);
-
-        return $payment;
-
-    } catch (MPApiException $e) {
-
-        return [
-            'status_code' => $e->getApiResponse()->getStatusCode(),
-            'content' => $e->getApiResponse()->getContent(),
-            'message' => $e->getMessage(),
+    public function createPayment($rifa, $description) {
+        $client = new PaymentClient();
+        $timeLimit = $rifa->rifa->rifaPayment->time_pay ?? 30;
+        $expirationDate = now()->addMinutes($timeLimit)->setTimezone('UTC')->format('Y-m-d\TH:i:sP');
+        $request = [
+            "transaction_amount" => $rifa->value,
+            "description" => $description,
+            // "date_of_expiration" =>  $expirationDate,
+            "installments" => 1,
+            "payment_method_id" => 'pix',
+            "payer" => [
+                "email" => 'bianca@teste.com',
+            ]
         ];
-    } catch (\Exception $e) {
-        return ['error' => $e->getMessage()];
+
+        $requestOptions = new RequestOptions();
+        $requestOptions->setCustomHeaders(["X-Idempotency-Key: " . uniqid()]);
+    
+        try {
+            $payment = $client->create($request, $requestOptions);
+
+            return $payment;
+
+        } catch (MPApiException $e) {
+     
+            return [
+                'status' => false,
+                'status_code' => $e->getApiResponse()->getStatusCode(),
+                'content' => $e->getApiResponse()->getContent(),
+                'message' => $e->getMessage(),
+            ];
+        } catch (\Exception $e) {
+            return ['status' => false, 'message' => $e->getMessage()];
+        }
     }
-}
+
+    public function checkPaymentStatus($paymentId)
+    {
+        $client = new PaymentClient();
+    
+        try {
+            $payment = $client->get($paymentId);
+      
+            return [
+                'status' => true,
+                'payment' => $payment,
+            ];
+
+        } catch (MPApiException $e) {
+            return [
+                'status' => false,
+                'status_code' => $e->getApiResponse()->getStatusCode(),
+                'content' => $e->getApiResponse()->getContent(),
+                'message' => $e->getMessage(),
+            ];
+        } catch (\Exception $e) {
+            return ['status' => false, 'message' => $e->getMessage()];
+        }
+    }
+
 
 }

@@ -17,6 +17,9 @@ return new class extends Migration
             $table->tinyInteger('verify')->default(0)->comment('0 => verificacao de pagamento pendente, 1 => verificacao de pagamento feita');
             $table->decimal('value');
             $table->integer('qntd_number');
+            $table->bigInteger('pix_id')->nullable();
+            $table->longText('qr_code')->nullable();
+            $table->longText('qr_code_base64')->nullable();
             $table->string('cod')->unique();
             $table->string('checkout')->unique();
             $table->unsignedBigInteger('rifas_id');

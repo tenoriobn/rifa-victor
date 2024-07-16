@@ -131,5 +131,5 @@ export const estadoPedidosUsuario = atom({
 
 export const estadoQrCode = atom({
   key: 'estadoQrCode',
-  default: null,
+  default: ['', ''],
 });

@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('rifa_numbers', function (Blueprint $table) {
             $table->id();
-            $table->string('numbers')->nullable();
-            $table->tinyInteger('status')->default(0)->comment('0 => pagamento pedente, 1 => pago, 2 => pagamento não aprovado');
+            $table->string('numbers')->index()->nullable();
+            $table->tinyInteger('status')->index()->default(0)->comment('0 => pagamento pedente, 1 => pago, 2 => pagamento não aprovado');
 
             $table->unsignedBigInteger('rifas_id');
             $table->foreign("rifas_id")->references("id")->on("rifas");
@@ -24,8 +24,6 @@ return new class extends Migration
             $table->foreign("client_id")->references("id")->on("clients");
             $table->timestamps();
 
-            $table->index('status');
-            $table->index('numbers');
         });
     }
 
