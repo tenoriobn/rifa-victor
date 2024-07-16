@@ -9,8 +9,6 @@ export default function ConteudoTabela() {
   const { formattedDate } = useFormattedDate();
   const { formatCurrency } = useCurrencyFormat();
 
-  console.log('dados tabela: ', dadosTabela)
-
   return (
     <tbody>
       {dadosTabela.map((item, index) => (

@@ -20,7 +20,7 @@ export default function CardDestaques() {
       setProdutos(dados.data);
       setLoading(false);
     } catch (error) {
-      setErroConexao(true); // Marca erro de conexão ao falhar o fetch
+      setErroConexao(true);
       setLoading(false);
     }
   };
@@ -54,15 +54,6 @@ export default function CardDestaques() {
       </CardAviso>
     );
   }
-
-  // const converterImgProduto = (imgs) => {
-  //   let img = imgs.replace(/\\"/g, '"');
-  //   let imgArray = JSON.parse(img);
-  //   let primeiroElemento = imgArray[0];
-  //   return primeiroElemento; 
-  // };
-
-  console.log(produto)
 
   return (
     <>

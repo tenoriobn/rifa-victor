@@ -12,7 +12,6 @@ export default function NumerosBilhetes() {
     numeros = checkoutInfo.rifa_number.numbers;
   }
 
-  console.log(numeros);
   return (
     <div className="flex flex-col gap-2 mt-4">
       <p className="font-bold whitespace-nowrap text-neutral-700">Seus números:</p>

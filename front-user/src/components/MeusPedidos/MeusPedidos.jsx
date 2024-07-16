@@ -22,12 +22,11 @@ export default function MeusPedidos() {
     const pegarDados = async () => {
       try {
         const response = await fetchDados(`client/meus-pedidos/sorteios/${usuario.id}`, true);
-        console.log('response', response)
         setPedidosUsuario(response.data)
         setErroConexao(false);
       } catch (error) {
         setErroConexao(true);
-        notify(); // Chama notify em caso de erro
+        notify();
         console.error('Erro ao comprar rifa:', error);
       } finally {
         setIsLoading(false);

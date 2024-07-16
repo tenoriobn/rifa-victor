@@ -153,7 +153,7 @@ export default function Login() {
 
       <RightSide>
         <FormContainer>
-          <center><h1>Rei do Pix Prêmios</h1></center>
+          <center><h1>Ana Lima Prêmios</h1></center>
 
           <Form onSubmit={handleLogin}>
             <label htmlFor="email">

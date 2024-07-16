@@ -72,8 +72,6 @@ export default function CardProdutos({ categoria }) {
     setRenderizaComponenteCadastro(false);
     setRenderizaComponenteLogin(false);
   };
-
-  console.log('produto', produtos)
   
   return (
     <div className="flex flex-col gap-4">

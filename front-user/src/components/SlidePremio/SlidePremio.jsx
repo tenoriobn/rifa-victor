@@ -1,6 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useRecoilValue } from 'recoil';
 import { estadoProdutos, estadoRenderizaComponenteCadastro, estadoRenderizaComponenteLogin, estadoRenderizaInfoUsuario, estadoRifa } from '../../common/state/atom';
-// import useSlideImages from '../../common/state/hooks/ImagemPremio/ImagemPremio';
 import { motion } from 'framer-motion';
 import { transicaoAnimada } from '../../common/util/transicaoAnimada';
 import { useState, useEffect } from 'react';
@@ -17,7 +17,6 @@ export default function SlidePremio() {
   const animacao = transicaoAnimada();
   
   const imagensRifa = rifa.rifa_image;
-  console.log('rifa: ', rifa)
 
   useEffect(() => {
     setImgPremioSlide(imagensRifa[0]?.path)
