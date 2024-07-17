@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\{HasOne, hasMany};
 use Carbon\Carbon;
 use App\Services\FuncaoService;
-use App\Models\V1\{RifasAwarded, RifasOthers, RifasPayment, awardedQuota, awardedQuotaClient, RifaPay, DiscountPackage};
+use App\Models\V1\{RifasAwarded, RifasOthers, RifasPayment, AwardedQuota, AwardedQuotaClient, RifaPay, DiscountPackage};
 
 class Rifas extends Model
 {
