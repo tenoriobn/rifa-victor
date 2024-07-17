@@ -15,13 +15,14 @@ export default function ConteudoTabela() {
         <tr key={index} className={`text-left ${item.status === 0 ? "bg-amber-50 text-amber-600" : item.status === 1 ? "bg-emerald-50 text-emerald-600" : "bg-red-50 text-red-600" }`}>
           <td>
             <div className={`p-2 border-0 border-l-4 border-solid ${item.status === 0 ? "border-amber-400" : item.status === 1 ? "border-emerald-400" : "border-red-400"} `}>
-            <div className={`p-2 border-0 border-l-4 border-solid ${item.status === 0 ? "border-amber-400" : item.status === 1 ? "border-emerald-400" : "border-red-400"} `}>
-              <img 
-                // src={item.imgSrc} 
-                src={`../../../public/imgRifas/${item.rifa.rifa_image[0]?.path}`}
-                alt="" 
-                className="h-auto min-w-[64px] w-full aspect-[16/9] object-cover rounded-lg" 
-              />
+              <div className={`p-2 border-0 border-l-4 border-solid ${item.status === 0 ? "border-amber-400" : item.status === 1 ? "border-emerald-400" : "border-red-400"} `}>
+                <img 
+                  // src={item.imgSrc} 
+                  src={`../../../public/imgRifas/${item.rifa.rifa_image[0]?.path}`}
+                  alt="" 
+                  className="h-auto min-w-[64px] w-full aspect-[16/9] object-cover rounded-lg" 
+                />
+              </div>
             </div>
           </td>
           <td className="px-2">{item.cod}</td>
