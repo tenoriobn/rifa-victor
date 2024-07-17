@@ -30,13 +30,23 @@ const HeaderContainer = styled.header`
   }
 
   h2 {
-    font-size: 1.5rem;
+    font-size: 1rem;
     font-weight: 600;
     text-transform: uppercase;
   }
 
+  @media (min-width: 768px) {
+    h2 {
+      font-size: 1.25rem;
+    }
+  }
+
   @media (min-width: 992px) {
     padding: 1.25rem;
+
+    h2 {
+      font-size: 1.5rem;
+    }
 
     button {
       display: none;

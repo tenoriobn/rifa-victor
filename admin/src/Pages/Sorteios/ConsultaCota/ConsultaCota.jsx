@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { Main } from "../../../components/AdminLayout/AdminLayout";
 import Header from "../../../components/Header/Header";
 import ConsultaCotaForm from "./ConsultaCotaForm/ConsultaCotaForm";
+import { useParams } from "react-router-dom";
 
 const ConsultaCotaContainer = styled.div`
   display: flex;
@@ -32,11 +33,13 @@ const ConsultaCotaContainer = styled.div`
 `;
 
 export default function ConsultaCota() {
+  const { id } = useParams();
+
   return (
     <div>
       <Header>
         <h2>
-          <a href="/dashboard/rifas/dashboard/174">
+          <a href={`/dashboard/rifas/dashboard/${id}`}>
             <i style={{color: "orangered"}} className="fa-solid fa-angle-double-left"></i>
           </a> <i className="fa-brands fa-searchengin"></i> Consulta Cota
         </h2>

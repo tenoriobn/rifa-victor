@@ -12,9 +12,9 @@ export default function ConteudoTabela() {
   return (
     <tbody>
       {dadosTabela.map((item, index) => (
-        <tr key={index} className={`text-left ${item.status === "Cancelada" ? "bg-red-50 text-red-600" : "bg-emerald-50 text-emerald-600"}`}>
+        <tr key={index} className={`text-left ${item.status === 0 ? "bg-amber-100 text-amber-600" : item.status === 1 ? "bg-emerald-50 text-emerald-600" : "bg-red-50 text-red-600" }`}>
           <td>
-            <div className={`p-2 border-0 border-l-4 border-solid ${item.status === "Cancelada" ? "border-red-400" : "border-emerald-400"} `}>
+            <div className={`p-2 border-0 border-l-4 border-solid ${item.status === 0 ? "border-amber-400" : item.status === 1 ? "border-emerald-400" : "border-red-400"} `}>
               <img 
                 // src={item.imgSrc} 
                 src={`../../../public/imgRifas/${item.rifa.rifa_image[0]?.path}`}
@@ -27,9 +27,10 @@ export default function ConteudoTabela() {
           <td className="px-2">{item.qntd_number}</td>
           <td className="px-2 text-right">{formatCurrency(item.value)}</td>
           <td className="px-2">{formattedDate(item.updated_at)}</td>
-          <td className="px-2 whitespace-break-spaces text-center">
-            <div className={`rounded-lg p-1 text-xs flex flex-wrap items-center justify-center ${item.status === "Cancelada" ? "bg-red-100 text-red-600 " : "bg-emerald-100 text-emerald-600 "}`}>
-              {item.status}
+          <td className="px-2 whitespace-break-spaces text-center"><div className={`rounded-lg p-1 text-xs flex flex-wrap items-center justify-center ${item.status === 0 ? "bg-amber-100 text-amber-600"  : item.status === 1 ? "bg-emerald-100 text-emerald-600 " : "bg-red-100 text-red-600 "}`}>
+            
+              {item.status === 0 ? "Aguardando Pagamento" : item.status === 1 ? "Finalizado" : "Cancelado"}
+              bg-amber-100 text-amber-600
             </div>
           </td>
           <td className="px-2">

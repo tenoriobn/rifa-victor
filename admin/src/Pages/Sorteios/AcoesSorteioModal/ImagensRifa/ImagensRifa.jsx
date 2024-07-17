@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from "react";
 import styled from "styled-components";
 import { Main } from "../../../../components/AdminLayout/AdminLayout";
@@ -30,6 +31,7 @@ const ContainerImages = styled.div`
   margin-top: 50px;
   display: flex;
   align-items:center;
+  justify-content: center;
 
   .product {
     border: 1px solid #ccc;
@@ -94,7 +96,7 @@ export default function ImagensRifa() {
     <>
       <Header>
         <h2>
-          <a href="/dashboard/rifas/editar/174">
+          <a href={`/dashboard/rifas/editar/${id}`}>
             <i style={{ color: "orangered" }} className="fa-solid fa-angle-double-left"></i>
           </a> <i className="fa-solid fa-dice"></i> IMAGENS
         </h2>
@@ -128,7 +130,7 @@ export default function ImagensRifa() {
               </div>
             ))
           ) : (
-            <p>Nenhuma imagem encontrada.</p>
+            <p className="nenhuma-imagem">Nenhuma imagem encontrada.</p>
           )}
         </ContainerImages>
       </Main>

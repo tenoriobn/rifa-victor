@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Header from "../../../components/Header/Header";
 import SorteioSearchForm from "./SorteioSearchForm/SorteioSearchForm";
 import { Main } from "../../../components/AdminLayout/AdminLayout";
+import { useParams } from "react-router-dom";
 
 const SorteioSearchContainer = styled.div`
   display: flex;
@@ -27,11 +28,13 @@ const SorteioSearchContainer = styled.div`
 `;
 
 export default function SorteioSearch() {
+  const { id } = useParams();
+
   return (
     <section>
       <Header>
         <h2>
-          <a href="/dashboard/rifas/editar/174">
+          <a href={`/dashboard/rifas/editar/${id}`}>
             <i style={{ color: "orangered" }} className="fa-solid fa-angle-double-left"></i>
           </a> <i className="fas fa-gift"></i> SORTEIO - SAVEIRO CROSS DOS SONHOS 
         </h2>

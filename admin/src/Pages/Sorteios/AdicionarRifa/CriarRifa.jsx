@@ -23,7 +23,7 @@ export const CategoryContainer = styled.div`
   gap: 20px;
 
   .category {
-    flex-basis: calc(50% - 30px);
+    flex-basis: calc(50% - 10px);
     padding: 10px;
     background-color: #2e2e36;
     border-radius: 10px;
