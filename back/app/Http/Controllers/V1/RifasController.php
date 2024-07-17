@@ -387,23 +387,6 @@ class RifasController extends Controller
         }
     }
 
-
-
-    private function isValidBase64Image($base64)
-    {
-
-        // if (preg_match('/^data:image\/(\w+);base64,/', $base64, $type)) {
-        //     $base64 = substr($base64, strpos($base64, ',') + 1);
-        //     $type = strtolower($type[1]); // jpg, png, gif
-
-        //     if (!in_array($type, ['jpg', 'jpeg', 'png', 'gif'])) {
-        //         return false;
-        //     }
-
-        //     return base64_decode($base64, true) !== false;
-        // }
-        return false;
-    }
     public function finalizarRifa($id)
     {
         $rifa = Rifas::where('id',$id);
@@ -511,6 +494,20 @@ class RifasController extends Controller
 
             $winners = RifaWinner::defineWinner($request);
 
+            return response()->json(["success" => true, "data" => $winners], $this->success);
+
+        } catch (Exception $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], $this->serverError);
+        }
+    }
+
+    public function getAllWinners() {
+        try {
+            $winners = RifaWinner::getAllWinners();
+
+            if(!$winners) {
+                return response()->json(["success" => false, "msg" => "Ganhadores não encontrado"], 404);
+            }
             return response()->json(["success" => true, "data" => $winners], $this->success);
 
         } catch (Exception $e) {

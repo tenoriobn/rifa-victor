@@ -64,8 +64,9 @@
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/client/procurar/pelo-telefone", [AdminController::class, "procurarClientCellphone"])->name('admin.procurar.client.celular');
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/rifa/procurar-numero-premiado/procurar-ganhador", [AdminController::class, "procurarGanhadorPeloNumero"])->name('admin.procurar.ganhador');
 
+      
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/rifa/definir-ganhador", [AdminController::class, "definirGanhador"])->name('admin.definir.ganhador');
-        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/cadastrar-ganhador", [AdminController::class, "definirGanhador"])->name('admin.definir.ganhador');
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/cadastrar-ganhador", [AdminController::class, "definirGanhador"])->name('admin.cadastrar.ganhador');
 
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/client/rifa/adicionar-numero", [AdminController::class, "adicionarNumerosRifas"])->name('admin.adicionar.numero');
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/client/rifa/adicionar/bilhete-premiado", [AdminController::class, "adicionarBilhetePremiado"])->name('admin.adicionar.bilhete.premiado');
@@ -74,6 +75,8 @@
     Route::group(['prefix' => 'produtos'], function () {
         Route::get("/", [RifasController::class, "allRifas"])->name('all.rifas');
         Route::get("/{slug}/{id}", [RifasController::class, "show"])->where(['slug' => '[a-zA-Z0-9\-_]+', 'id' => '[0-9]+'])->name('show.one.rifa');
+
+        Route::get("/todos/ganhadores", [RifasController::class, "getAllWinners"])->name('admin.pegar.ganhador');
 
         Route::post("/comprar-rifa", [RifasController::class, "buyRifa"])->name('buy.rifa');
 
