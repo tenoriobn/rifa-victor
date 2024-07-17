@@ -46,7 +46,7 @@ export default function RifasCotas() {
     <section>
       <Header>
         <h2>
-          <a href="/dashboard/rifas/editar/174">
+          <a href={`/dashboard/rifas/editar/${id}`}>
             <i style={{ color: "orangered" }} className="fa-solid fa-angle-double-left"></i>
           </a> <i className="fa-solid fa-box-open"></i> COTAS PRÊMIADAS
         </h2>

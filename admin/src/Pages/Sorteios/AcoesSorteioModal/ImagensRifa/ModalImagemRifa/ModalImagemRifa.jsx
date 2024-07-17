@@ -14,6 +14,7 @@ const ImagemForm = styled.form`
     padding: 10px;
     background: 0 0;
     border: 1px solid #275680;
+    width: 100%;
   }
   
   button {

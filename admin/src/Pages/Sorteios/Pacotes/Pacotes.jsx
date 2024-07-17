@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 import { Main } from "../../../components/AdminLayout/AdminLayout";
 import Header, { LinkItem } from "../../../components/Header/Header";
@@ -45,7 +46,7 @@ export default function Pacotes() {
     <section>
       <Header>
         <h2>
-          <a href="/dashboard/rifas/editar/174">
+          <a href={`/dashboard/rifas/editar/${id}`}>
             <i style={{ color: "orangered" }} className="fa-solid fa-angle-double-left"></i>
           </a> <i className="fa-solid fa-box-open"></i> PACOTES
         </h2>

@@ -87,8 +87,8 @@ const Table = styled.table`
 
   @media (max-width: 1366px) {
     overflow-x: auto;
-    white-space: nowrap;
-    display: block;
+    /* white-space: nowrap; */
+    width: 100%;
   }
 `;
 
