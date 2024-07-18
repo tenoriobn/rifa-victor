@@ -14,8 +14,6 @@ export default function InfoPedidos() {
     { label: '🛍 Total de Cotas:', value: checkoutInfo.qntd_number },
     { label: '➕ Taxa:', value: formatCurrency(checkoutInfo.rifa.rifa_payment.service_charge) },
     { label: '💲 Total:', value: formatCurrency(checkoutInfo.value), class: "font-bold" }
-
-    
   ];
 
   return (
@@ -27,8 +25,7 @@ export default function InfoPedidos() {
             {info.value}
           </p>
         ))}
-
-
+        
         {checkoutInfo.status === 0 &&
           <div className="mt-4 flex gap-2 text-neutral-700">
             <p className="font-bold">⚠ Status:</p>
@@ -58,7 +55,7 @@ export default function InfoPedidos() {
         }
 
         <a 
-          href="https://chat.whatsapp.com/11999999999"
+          href="https://chat.whatsapp.com/+553798127715"
           target="_blank"
           className="relative inline-block group text-white rounded overflow-hidden shadow-transparent shadow-md hover:shadow-black/3 0 text-xs bg-green-500"
         >

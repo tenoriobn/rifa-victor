@@ -107,7 +107,6 @@ export default function Login() {
   const setUserLogin = useSetRecoilState(stateUserLogin);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [erro, setErro] = useState(null);
   const navigate = useNavigate();
 
   const handleEmailChange = (event) => {
@@ -128,22 +127,22 @@ export default function Login() {
       };
 
       const response = await postDados('/admin/user/login', dadosLogin);
+      
+      console.log('aqui')
 
       if (response && response.token) {
         salvarToken(response.token); 
         setUserLogin(response.token); 
         navigate('/dashboard');
       } else {
+        console.log('aqui')
         throw new Error('Token não encontrado na resposta.');
       }
 
     } catch (error) {
-      setErro(error.response.data.response);
-      notify()
+      toast.error(error.response.data.response || 'Erro ao fazer login');
     }
   };
-
-  const notify = () => toast.error(erro);
 
   return (
     <Section>

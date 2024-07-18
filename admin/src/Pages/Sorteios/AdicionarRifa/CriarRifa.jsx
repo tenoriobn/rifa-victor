@@ -12,9 +12,12 @@ import Regulamento from "./Regulamento/Regulamento";
 import PedidoAprovado from "./PedidoAprovado/PedidoAprovado";
 import { Main } from "../../../components/AdminLayout/AdminLayout";
 import Header from "../../../components/Header/Header";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { stateInfoRifaForm, stateUserLogin } from "../../../common/states/atom";
 import { postDados } from "../../../common/http/http";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from "react-router-dom";
 
 export const CategoryContainer = styled.div`
   display: flex;
@@ -64,7 +67,7 @@ export const CategoryContainer = styled.div`
   .category select {
     width: 100%;
 
-    background: 0 0;
+    background-color: #2e2e36;
     border: 1px solid #275680;
     color: #fff;
     display: block;
@@ -74,7 +77,7 @@ export const CategoryContainer = styled.div`
   }
 
   .category select option {
-    background: #000;
+    background-color: #2e2e36;
   }
 
   .success {
@@ -95,10 +98,10 @@ export const CategoryContainer = styled.div`
 `;
 
 export default function AdicionarRifa() {
-  const formState = useRecoilValue(stateInfoRifaForm);
+  const [formState, setFormState] = useRecoilState(stateInfoRifaForm);
   const userLogin = useRecoilValue(stateUserLogin);
   const [submitting, setSubmitting] = useState(false);
-  const [postError, setPostError] = useState(null);
+  const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -106,10 +109,18 @@ export default function AdicionarRifa() {
 
     try {
       await postDados('/admin/dashboard/rifas/cadastrar', formState, userLogin);
+      // navigate("dashboard/rifas/")
+
+      setTimeout(() => {
+        navigate("/dashboard/rifas/");
+        setFormState('');
+      }, 1350);
+
+      toast.success('Sorteio criado com sucesso!');
 
     } catch (error) {
       console.error('Erro ao fazer POST:', error);
-      setPostError('Erro ao enviar os dados.');
+      toast.error(error.response.data.response || 'Erro ao criar sorteio');
     } finally {
       setSubmitting(false);
     }
@@ -145,8 +156,9 @@ export default function AdicionarRifa() {
             >
               {submitting ? 'Enviando...' : 'ADICIONAR'}
             </button>
-            {postError && <p style={{ color: 'red' }}>{postError}</p>}
           </CategoryContainer>
+
+          <ToastContainer theme="colored"/>
         </form>
       </Main>
     </>

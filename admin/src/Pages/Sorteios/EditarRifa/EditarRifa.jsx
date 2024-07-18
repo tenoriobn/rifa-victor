@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { Main } from "../../../components/AdminLayout/AdminLayout";
 import Header, { LinkItem } from "../../../components/Header/Header";
@@ -16,6 +17,7 @@ import Regulamento from "../AdicionarRifa/Regulamento/Regulamento";
 import PedidoAprovado from "../AdicionarRifa/PedidoAprovado/PedidoAprovado";
 import { CategoryContainer } from "../AdicionarRifa/CriarRifa";
 import { useNavigate, useParams } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function EditarRifa() {
   const { id } = useParams();
@@ -23,7 +25,6 @@ export default function EditarRifa() {
   const resetFormState = useResetRecoilState(stateInfoRifaForm);
   const userLogin = useRecoilValue(stateUserLogin);
   const [submitting, setSubmitting] = useState(false);
-  const [postError, setPostError] = useState(null);
   const navigate = useNavigate();
 
   const flattenObject = (obj) => {
@@ -43,7 +44,7 @@ export default function EditarRifa() {
   useEffect(() => {
     const obterDados = async () => {
       const response = await fetchDados(`/admin/dashboard/rifa/editar/${id}`, userLogin);
-   
+
       const flattenedData = flattenObject(response.data);
       setFormState(flattenedData);
 
@@ -63,11 +64,15 @@ export default function EditarRifa() {
 
     try {
       await putDados(`/admin/dashboard/rifa/editar/${id}`, formState, userLogin);
-      navigate("/dashboard/rifas");
-      resetFormState();
+      setTimeout(() => {
+        navigate("/dashboard/rifas/");
+        resetFormState();
+      }, 1350);
+
+      toast.success('Sorteio criado com sucesso!');
+
     } catch (error) {
-      console.error('Erro ao fazer POST:', error);
-      setPostError('Erro ao enviar os dados.');
+      toast.error(error.response.data.response || 'Erro ao criar sorteio');
     } finally {
       setSubmitting(false);
     }
@@ -107,7 +112,8 @@ export default function EditarRifa() {
             >
               {submitting ? 'Enviando...' : 'ADICIONAR'}
             </button>
-            {postError && <p style={{ color: 'red' }}>{postError}</p>}
+
+            <ToastContainer theme="colored"/>
           </CategoryContainer>
         </form>
       </Main>

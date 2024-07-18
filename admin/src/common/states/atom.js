@@ -227,6 +227,12 @@ export const stateImagensRifa = atom({
   default: [],
 });
 
+export const stateImagemRifaUpload = atom({
+  key: 'stateImagemRifaUpload',
+  default: '',
+});
+
+
 export const stateTabelaPacotesInfo = atom({
   key: 'stateTabelaPacotesInfo',
   default: [],

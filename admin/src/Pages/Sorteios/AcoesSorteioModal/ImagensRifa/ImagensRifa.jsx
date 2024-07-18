@@ -1,12 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Main } from "../../../../components/AdminLayout/AdminLayout";
 import Header from "../../../../components/Header/Header";
 import { LinkItem } from "../../../../components/Header/Header";
 import Modal from "../../../../components/Modal/Modal";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { stateImagensRifa, stateOpenModalNovaImagem, stateUserLogin } from "../../../../common/states/atom";
+import { stateImagemRifaUpload, stateImagensRifa, stateOpenModalNovaImagem, stateUserLogin } from "../../../../common/states/atom";
 import ModalImagemRifa from "./ModalImagemRifa/ModalImagemRifa";
 import { deleteDados, fetchDados } from "../../../../common/http/http";
 import { useParams } from "react-router-dom";
@@ -71,26 +71,42 @@ export default function ImagensRifa() {
   const [openModalNovaImagem, setOpenModalNovaImagem] = useRecoilState(stateOpenModalNovaImagem);
   const userLogin = useRecoilValue(stateUserLogin);
   const { id } = useParams();
-
-  console.log('id: ', id)
+  const [imagemRifaUpload, setImagemRifaUpload] = useRecoilState(stateImagemRifaUpload);
+  const [imagemRifaDelete, setImagemRifaDelete] = useState('')
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleExcluirImagem = async (idImg) => {
     const response = await deleteDados(`admin/dashboard/rifa/imagens/deletar/${idImg}`, userLogin);
-    console.log(response)
+    console.log('deleted: ', response)
+    setImagemRifaDelete(response)
   };
 
   useEffect(() => {
     const obterImage = async () => {
-      const response = await fetchDados(`/admin/dashboard/rifa/imagens/${id}`, userLogin);
-      setImagensRifa(response.data);
-
-      console.log(response);
+      try {
+        setIsLoading(true);
+        const response = await fetchDados(`/admin/dashboard/rifa/imagens/${id}`, userLogin);
+        if (response.data && response.data.length > 0) {
+          setImagensRifa(response.data);
+        } else {
+          setImagensRifa([]);
+        }
+  
+        setImagemRifaDelete(false);
+        setImagemRifaUpload(false);
+      } catch (error) {
+        if (error.response && error.response.status === 404) {
+          setImagensRifa([]);
+        } else {
+          console.error('Erro ao obter imagens:', error);
+        }
+      } finally {
+        setIsLoading(false);
+      }
     };
-    
+  
     obterImage();
-  }, []);
-
-  console.log('veja aqui:', imagensRifa);
+  }, [imagemRifaUpload, imagemRifaDelete, id, userLogin]);
 
   return (
     <>
@@ -118,7 +134,9 @@ export default function ImagensRifa() {
         </TextImagesContainer>
 
         <ContainerImages>
-          {imagensRifa.length > 0 ? (
+          {isLoading ? (
+            <p className="carregando">Carregando...</p>
+          ) : imagensRifa.length > 0 ? (
             imagensRifa.map((imagem, index) => (
               <div className="product" key={index}>
                 <img src={`../../../../../public/imgRifas/${imagem.path}`} alt={`Imagem ${index + 1}`} />

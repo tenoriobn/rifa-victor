@@ -8,7 +8,7 @@ export default function Footer() {
 
         <div className="inline-flex flex-wrap items-center justify-center gap-2 mb-4">
           <a 
-            href="https://wa.me/5511999002211"
+            href="https://wa.me/+553798127715"
             className="hover:scale-125 hover:px-2 transition-all"
             target="_blank"
           >
@@ -26,7 +26,7 @@ export default function Footer() {
 
         <div className="inline-block group text-xs my-3">
           <p className="text-xs text-white text-center mb-1">
-            <span className="font-semibold">UAAU.PRO</span> a Plataforma Líder em Gestão de Sorteios!
+            <span className="font-semibold">OVERZ</span> a Plataforma Líder em Gestão de Sorteios!
           </p>
 
           <a href="mailto:reidopix@email.com" className="px-2 border">CONTATO</a>
