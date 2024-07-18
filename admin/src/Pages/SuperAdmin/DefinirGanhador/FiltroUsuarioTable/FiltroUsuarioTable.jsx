@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components"
-import { stateFiltroUsuarioTable, stateOpenModalNovoGanhador } from "../../../../common/states/atom";
+import { stateIdModal, stateInfoCotaSorteada, stateOpenModalNovoGanhador } from "../../../../common/states/atom";
 
 const Table = styled.table`
   width: 100%;
@@ -91,11 +91,15 @@ const Table = styled.table`
   }
 `;
 
-
-
 export default function FiltroUsuarioTable() {  
   const [openModalNovoGanhador, setOpenModalNovoGanhador] = useRecoilState(stateOpenModalNovoGanhador);
-  const filtroUsuarioTable = useRecoilValue(stateFiltroUsuarioTable)
+  const infoCotaSorteada = useRecoilValue(stateInfoCotaSorteada);
+  const setIdModal = useSetRecoilState(stateIdModal)
+
+  const handleOpenModal = (id) => {
+    setOpenModalNovoGanhador(!openModalNovoGanhador);
+    setIdModal(id);
+  }
 
   return (
     <div className="">
@@ -111,8 +115,8 @@ export default function FiltroUsuarioTable() {
         </thead>
 
         <tbody>
-          {filtroUsuarioTable.length > 0 ? (
-            filtroUsuarioTable.map((usuario, index) => (
+          {infoCotaSorteada.length > 0 ? (
+            infoCotaSorteada.map((usuario, index) => (
               <tr key={index} className="raffle-item">
                 <td>{usuario.nome}</td>
                 <td>{usuario.rifa}</td>
@@ -123,7 +127,7 @@ export default function FiltroUsuarioTable() {
                     <a
                       href="#"
                       className="button-edit"
-                      onClick={() => setOpenModalNovoGanhador(!openModalNovoGanhador)}
+                      onClick={() => handleOpenModal(usuario.id)}
                     >
                       <i className="fas fa-edit"></i> Editar
                     </a>

@@ -1,5 +1,7 @@
 import { useState } from "react";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components"
+import { stateInfoCotaSorteada } from "../../../../common/states/atom";
 
 const Form = styled.form`
   font-size: .9rem;
@@ -58,15 +60,18 @@ const Form = styled.form`
 `;
 
 export default function ModalTrocarBilhete() {
-  const [cota, setCota] = useState("");
+  const infoCotaSorteada = useRecoilValue(stateInfoCotaSorteada);
+  const [cota, setCota] = useState(infoCotaSorteada[0].cota);
   const [number, setNumber] = useState("");
+
+  console.log(infoCotaSorteada)
 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      // const response = await postDados.post("/api/trocar-bilhete", { cota, number });
+      // const response = await postDados.post("/api/trocar-bilhete", { cota, number, idRifa });
 
     } catch (error) {
       console.error("Erro ao trocar bilhete:", error);

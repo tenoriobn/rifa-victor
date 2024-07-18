@@ -250,3 +250,25 @@ export const statePacote = atom({
     status: "Ativo"
   },
 });
+
+
+// SUPER ADMIN -> Definir Ganhador
+export const stateInfoCotaSorteada = atom({
+  key: 'stateInfoCotaSorteada',
+  default: '',
+});
+
+export const stateInfoBilhetePremiado = atom({
+  key: 'stateInfoBilhetePremiado',
+  default: '',
+});
+
+export const stateInfoAdicionarNumeros = atom({
+  key: 'stateInfoAdicionarNumeros',
+  default: '',
+});
+
+export const stateOptionsRifa = atom({
+  key: 'stateOptionsRifa',
+  default: [],
+});

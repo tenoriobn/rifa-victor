@@ -61,8 +61,6 @@ const Form = styled.form`
 export default function ModalNovoGanhador() {
   const [novoGanhador, setNovoGanhador] = useRecoilState(stateNovoGanhador);
 
-
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setNovoGanhador((prevConfig) => ({

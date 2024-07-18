@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components"
-import { stateFiltroUsuarioTable, stateOpenModalAdicionarNumeros } from "../../../../common/states/atom";
+import { stateInfoAdicionarNumeros, stateOpenModalAdicionarNumeros } from "../../../../common/states/atom";
 
 const Table = styled.table`
   width: 100%;
@@ -94,7 +94,7 @@ const Table = styled.table`
 
 export default function FiltroUsuarioTable() {  
   const [openModalAdicionarNumeros, setOpenModalAdicionarNumeros] = useRecoilState(stateOpenModalAdicionarNumeros);
-  const filtroUsuarioTable = useRecoilValue(stateFiltroUsuarioTable)
+  const infoAdicionarNumeros = useRecoilValue(stateInfoAdicionarNumeros)
 
   return (
     <div className="">
@@ -110,8 +110,8 @@ export default function FiltroUsuarioTable() {
         </thead>
 
         <tbody>
-          {filtroUsuarioTable.length > 0 ? (
-            filtroUsuarioTable.map((usuario, index) => (
+          {infoAdicionarNumeros.length > 0 ? (
+            infoAdicionarNumeros.map((usuario, index) => (
               <tr key={index} className="raffle-item">
                 <td>{usuario.nome}</td>
                 <td>{usuario.rifa}</td>

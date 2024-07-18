@@ -1,5 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components"
+import { stateInfoBilhetePremiado } from "../../../../common/states/atom";
+import { useRecoilValue } from "recoil";
 
 const Form = styled.form`
   font-size: .9rem;
@@ -58,15 +60,18 @@ const Form = styled.form`
 `;
 
 export default function ModalAdicionarBilhetePremiado() {
+  const infoBilhetePremiado = useRecoilValue(stateInfoBilhetePremiado)
   const [cota, setCota] = useState("");
-  const [number, setNumber] = useState("");
+  const [phone, setNumber] = useState("");
+
+  console.log('infoBilhetePremiado', infoBilhetePremiado)
 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      // const response = await postDados.post("/api/trocar-bilhete", { cota, number });
+      // const response = await postDados.post("/api/trocar-bilhete", { cota, phone });
 
     } catch (error) {
       console.error("Erro ao trocar bilhete:", error);
@@ -87,13 +92,13 @@ export default function ModalAdicionarBilhetePremiado() {
         />
       </label>
 
-      <label htmlFor="number">
+      <label htmlFor="phone">
         Telefone do Ganhador
         <input
           type="text"
-          name="number"
-          id="number"
-          value={number}
+          name="phone"
+          id="phone"
+          value={phone}
           onChange={(e) => setNumber(e.target.value)}
           required
         />
