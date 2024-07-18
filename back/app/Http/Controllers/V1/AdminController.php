@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
-use App\Models\V1\{Clients, Cotas};
+use App\Models\V1\{Clients, Rifas};
 use App\Models\V1\RifaNumber;
 use Exception;
 use Illuminate\Http\Request;
@@ -128,6 +128,19 @@ class AdminController extends Controller
             }
 
             return response()->json(["success" => true, "msg" => "Bilhete premiado adicionado com sucesso"], 201);
+        } catch (Exception $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
+        }
+    }
+    public function rifaAtivas() {
+        try {
+            $rifas = Rifas::getAllRifasActivas();
+
+            if(!$rifas) {
+                return response()->json(["success" => true, "msg" => 'rifas não encontradas'], 404);
+            }
+
+            return response()->json(["success" => true, "data" => $rifas], 200);
         } catch (Exception $e) {
             return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
         }
