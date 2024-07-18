@@ -48,6 +48,7 @@ const Form = styled.form`
     background-repeat: no-repeat;
     background-position: right 10px center;
     background-size: 12px 12px;
+    height: 40px;
 
     background-color: #20202a;
     color: #fff;
