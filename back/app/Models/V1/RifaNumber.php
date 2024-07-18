@@ -133,12 +133,13 @@ class RifaNumber extends Model {
         $result = self::where('status', 1)
             ->where('rifas_id', $id)
             ->select('client_id')
-            ->selectRaw('SUM(JSON_LENGTH(numbers)) as total_numbers')
+            ->selectRaw('SUM(CASE WHEN JSON_VALID(numbers) THEN JSON_LENGTH(numbers) ELSE 0 END) as total_numbers')
             ->with('client')
             ->groupBy('client_id')
-            ->orderByRaw('SUM(JSON_LENGTH(numbers)) DESC')
+            ->orderByRaw('SUM(CASE WHEN JSON_VALID(numbers) THEN JSON_LENGTH(numbers) ELSE 0 END) DESC')
             ->limit(6)
             ->get();
+
 
         return $result ?? false;
     }
