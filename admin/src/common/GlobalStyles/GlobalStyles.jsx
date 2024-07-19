@@ -25,6 +25,10 @@ const GlobalStyles = createGlobalStyle`
       font-family: ${Theme.font.montserrat};
       outline: none;
     }
+    
+    select {
+      cursor: pointer;
+    }
   }
 `;
 

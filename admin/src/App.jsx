@@ -49,9 +49,9 @@ function App() {
               <Route path="rifas/imagens/:id" element={<ImagensRifa />} />
               <Route path="rifas/cotas/:id" element={<RifasCotas />} />
               <Route path="rifas/packs/:id" element={<Pacotes />} />
-              <Route path="rifas/upsell" element={<Upsell />} />
-              <Route path="consultaCota" element={<ConsultaCota />} />
-              <Route path="sorteio" element={<SorteioSearch />} />
+              <Route path="rifas/upsell/:id" element={<Upsell />} />
+              <Route path="consultaCota/:id" element={<ConsultaCota />} />
+              <Route path="sorteio/:id" element={<SorteioSearch />} />
 
               <Route path="pedidos" element={<Pedidos />} />
               <Route path="clientes" element={<Clientes />} />

@@ -63,11 +63,11 @@ const ModalContainer = styled.div`
   }
 `;
 
-export default function Modal({ title, children, openState, setOpenState }) {
+export default function Modal({ title, children, openState, setOpenState, maxWidth }) {
   return (
     openState && (
       <ModalContainer>
-        <div className="modal-content">
+        <div className="modal-content" style={maxWidth}>
           <div className="modal-header">
             <h2 id="modalTitulo">{title}</h2>
 

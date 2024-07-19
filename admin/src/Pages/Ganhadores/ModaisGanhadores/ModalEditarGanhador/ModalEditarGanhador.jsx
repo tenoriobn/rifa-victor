@@ -1,6 +1,7 @@
 import styled from "styled-components"
 import { stateNovoGanhador } from "../../../../common/states/atom";
 import { useRecoilState } from "recoil";
+import useImageUpload from "../../../../common/states/Hook/useImageUpload";
 
 const Form = styled.form`
   font-size: .9rem;
@@ -25,13 +26,19 @@ const Form = styled.form`
     box-sizing: border-box;
   }
 
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
   select {
     display: block;
     margin-bottom: 10px;
     width: 100%;
     height: 40px;
     border-radius: 5px;
-    background: #41414b;
+    background-color: #41414b;
     border: none;
     outline: 0;
     margin-top: 10px;
@@ -60,26 +67,23 @@ const Form = styled.form`
 
 export default function ModalEditarGanhador() {
   const [novoGanhador, setNovoGanhador] = useRecoilState(stateNovoGanhador);
+  const { handleFileChange } = useImageUpload(setNovoGanhador, novoGanhador);
 
-
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setNovoGanhador((prevConfig) => ({
-      ...prevConfig,
-      [name]: value
-    }));
-  };
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setNovoGanhador((prevConfig) => ({
+  //     ...prevConfig,
+  //     [name]: value
+  //   }));
+  // };
 
   const handleSaveChanges = async (event) => {
     event.preventDefault();
 
     try {
-
+      console.log('adicionarGanhador:', novoGanhador)
       // const response = await postDados("http://seu-backend.com/api/site/config", siteConfig);
       // setSiteConfig(response.data)
-
-
     } catch (error) {
       console.error("Erro ao enviar dados:", error);
     }
@@ -93,9 +97,9 @@ export default function ModalEditarGanhador() {
           type="file" 
           name="imagem" 
           id="imagem" 
-          accept="image/*"
+          accept="image/png, image/jpeg, image/jpg"
           defaultValue={novoGanhador.imagem || ""}  
-          onChange={handleChange}  
+          onChange={handleFileChange}
         />
       </label>
 
@@ -106,18 +110,21 @@ export default function ModalEditarGanhador() {
           name="name" 
           id="name" 
           defaultValue={novoGanhador.name || ""}  
-          onChange={handleChange} 
+          onChange={(e) => setNovoGanhador({ ...novoGanhador, name: e.target.value })} 
+          required
         />
       </label>
 
       <label htmlFor="">
         Cota
         <input 
-          type="text" 
+          type="number" 
           name="number" 
           id="number" 
           defaultValue={novoGanhador.number || ""}  
-          onChange={handleChange} 
+          // onChange={handleChange} 
+          onChange={(e) => setNovoGanhador({ ...novoGanhador, numberCota: e.target.value })}
+          required
         />
       </label>
 

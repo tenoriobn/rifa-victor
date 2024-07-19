@@ -58,6 +58,7 @@ const Table = styled.table`
     font-weight: bold;
     text-align: center;
     display: inline-block;
+    text-transform: uppercase;
   }
 
   .status-pago {
@@ -235,8 +236,7 @@ export default function TabelaSorteio() {
                 <a href="" target="_blank">
                   <i className="fa-solid fa-link"></i>
                 </a>
-                <b>{sorteio.title
-                }</b>
+                <b>{sorteio.title}</b>
               </td>
               <td>{formattedDate(sorteio.data_sortition)}</td>
               <td>{sorteio.fat_total}</td>

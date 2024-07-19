@@ -27,13 +27,19 @@ const Form = styled.form`
     box-sizing: border-box;
   }
 
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
   select {
     display: block;
     margin-bottom: 10px;
     width: 100%;
     height: 40px;
     border-radius: 5px;
-    background: #41414b;
+    background-color: #41414b;
     border: none;
     outline: 0;
     margin-top: 10px;
@@ -85,7 +91,7 @@ export default function ModalAdicionarBilhetePremiado() {
       <label htmlFor="cotaPremiada">
         Número do Bilhete
         <input
-          type="text"
+          type="number"
           name="cotaPremiada"
           id="cotaPremiada"
           value={cotaPremiada}

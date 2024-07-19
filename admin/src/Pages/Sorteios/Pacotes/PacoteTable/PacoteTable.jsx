@@ -56,6 +56,7 @@ const Table = styled.table`
     font-weight: bold;
     text-align: center;
     display: inline-block;
+    text-transform: uppercase;
   }
   .status-inconsistente {
     background-color: #17a2b8;

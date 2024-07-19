@@ -1,5 +1,7 @@
 /* eslint-disable react/prop-types */
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
+import { stateOpenModalVerInfoCliente } from "../../../common/states/atom";
 
 export const Table = styled.table`
   width: 100%;
@@ -54,6 +56,7 @@ export const Table = styled.table`
     font-weight: bold;
     text-align: center;
     display: inline-block;
+    text-transform: uppercase;
   }
 
   .status-rescued {
@@ -104,6 +107,8 @@ export const Table = styled.table`
 `;
 
 export default function ClientesTable() {
+  const [openModalVerInfoCliente, setOpenModalVerInfoCliente] = useRecoilState(stateOpenModalVerInfoCliente);
+
   return (
     <div>
       <Table>
@@ -131,11 +136,11 @@ export default function ClientesTable() {
                 <div className="button-group">
                   <button 
                     className="action-button button-view" 
+                    onClick={() => setOpenModalVerInfoCliente(!openModalVerInfoCliente)}
                   >
                     <i className="fas fa-eye"></i> VER
                   </button>
-                  <button className="action-button button-edit" 
-                  >
+                  <button className="action-button button-edit">
                     <i className="fas fa-edit"></i> Editar
                   </button>
                 </div>

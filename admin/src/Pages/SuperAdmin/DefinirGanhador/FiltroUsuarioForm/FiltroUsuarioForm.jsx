@@ -113,6 +113,7 @@ export default function FiltroUsuarioForm() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Pesquisar pelo número da cota sorteada"
+            required
           />
         </FilterInputContainer>
 

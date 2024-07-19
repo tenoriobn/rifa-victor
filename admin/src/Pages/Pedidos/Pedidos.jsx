@@ -25,7 +25,7 @@ export default function Pedidos() {
         <PedidosPagination />
       </Main>
 
-      <Modal title="PEDIDO" openState={openModalVerCota} setOpenState={setOpenModalVerCota}>
+      <Modal title="PEDIDO" openState={openModalVerCota} setOpenState={setOpenModalVerCota} maxWidth={{ maxWidth: '595px' }}>
         <ModalPedido />
       </Modal>
     </section>

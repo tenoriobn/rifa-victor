@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useSetRecoilState, useRecoilValue } from "recoil";
 import { stateInfoBilhetePremiado, stateOptionsRifa } from "../../../../common/states/atom";
 import { postDados } from "../../../../common/http/http";
+import { PatternFormat } from "react-number-format";
 
 const FilterItemRow = styled.div`
   display: flex;
@@ -98,12 +99,14 @@ export default function FiltroUsuarioForm() {
       <FilterItemRow>
         <FilterInputContainer>
           <Label htmlFor="id">Telefone do usuário:</Label>
-          <input
+          <PatternFormat
+            format="(##) #####-####"
             type="text"
             name="search"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Pesquise pelo ganhador do bilhete"
+            required
           />
         </FilterInputContainer>
 

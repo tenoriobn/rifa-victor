@@ -51,6 +51,7 @@ const Table = styled.table`
     text-align: center;
     display: inline-block;
     box-sizing: border-box;
+    text-transform: uppercase;
   }
 
   .status-pago {

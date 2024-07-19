@@ -56,6 +56,7 @@ export const Table = styled.table`
     font-weight: bold;
     text-align: center;
     display: inline-block;
+    text-transform: uppercase;
   }
 
   .status-rescued {

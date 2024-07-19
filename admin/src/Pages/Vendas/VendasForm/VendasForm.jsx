@@ -34,6 +34,10 @@ const Form = styled.form`
   }
 
   .button-search {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
     background-color: #858796;
     color: white;
     border: none;
@@ -62,6 +66,8 @@ export default function VendasForm() {
         {/* <input type="text" name="datetimes" /> */}
 
         <Datepicker 
+          toggleClassName="hidden"
+          classNames="datapicker"
           i18n={"pt-br"} 
           showShortcuts={true} 
           displayFormat={"DD/MM/YYYY"}

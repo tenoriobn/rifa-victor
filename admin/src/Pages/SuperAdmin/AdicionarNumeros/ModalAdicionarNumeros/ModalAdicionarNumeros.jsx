@@ -33,7 +33,7 @@ const Form = styled.form`
     width: 100%;
     height: 40px;
     border-radius: 5px;
-    background: #41414b;
+    background-color: #41414b;
     border: none;
     outline: 0;
     margin-top: 10px;

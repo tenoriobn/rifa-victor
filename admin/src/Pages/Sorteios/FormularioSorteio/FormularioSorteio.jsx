@@ -1,4 +1,3 @@
-import seta from "../../../assets/icons/seta.svg"
 import styled from "styled-components";
 import options from "./options.json"
 import { stateFiltroSorteio } from "../../../common/states/atom";
@@ -49,35 +48,34 @@ const FilterSelectContainer = styled.div`
   max-width: 180px;
   width: 100%;
 
+
   select {
-    background-image: url(${seta});
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-    background-size: 12px 12px;
-
     background-color: #20202a;
-    border: .0625rem solid #275680;
-    border-radius: .3125rem;
     color: #fff;
+    border: .0625rem solid #275680;
     padding: .625rem;
-    height: 40px;
-
-    appearance: none;
+    border-radius: .3125rem;
     -webkit-appearance: none;
     -moz-appearance: none;
-    outline: none;
+    appearance: none;
+    height: 40px;
+    width: 100%;
+    line-height: normal;
+    padding-right: 30px;
   }
 `;
 
 const Button = styled.button`
-  cursor: pointer;
   background-color: #858796;
-  border: none;
-  border-radius: .3125rem;
   color: white;
-  padding: .625rem .9375rem;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  cursor: pointer;
   height: 40px;
-  transition: all .3s ease-in-out;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 
   &:hover {
     background-color: #7a7b86;

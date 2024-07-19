@@ -58,6 +58,7 @@ export const Table = styled.table`
     font-weight: bold;
     text-align: center;
     display: inline-block;
+    text-transform: uppercase;
   }
 
   .status-rescued {
@@ -148,7 +149,7 @@ export default function TabelaCotas() {
             <th>ID</th>
             <th>Cota</th>
             <th>Prêmioaa</th>
-            <th>Status</th>
+            <th className="status">Status</th>
             <th>Mostrar</th>
             <th>Criado em</th>
             <th>Alterado em</th>

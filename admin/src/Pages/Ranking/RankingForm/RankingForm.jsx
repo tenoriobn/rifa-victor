@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import seta from "../../../assets/icons/seta.svg";
 import { useState } from "react";
 import { stateVisibilidadeColunaTabelaRanking } from "../../../common/states/atom";
 import { useRecoilState } from "recoil";
@@ -25,6 +24,10 @@ const Form = styled.form`
     max-width: 300px;
   }
 
+  .filter-item-buttons {
+    display: flex;
+  }
+
   .filter-item input {
     height: 40px;
     margin-right: 5px;
@@ -44,12 +47,6 @@ const Form = styled.form`
   }
 
   select {
-    background-image: url(${seta});
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-    background-size: 12px 12px;
-    height: 40px;
-
     background-color: #20202a;
     color: #fff;
     border: .0625rem solid #275680;
@@ -58,7 +55,10 @@ const Form = styled.form`
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
+    height: 40px;
     width: 100%;
+    line-height: normal;
+    padding-right: 30px;
   }
 
   .button-activate {
@@ -83,7 +83,10 @@ const Form = styled.form`
     border-radius: 5px;
     padding: 10px 15px;
     cursor: pointer;
-    height: 38px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
   }
 
   .column-controls {
@@ -133,6 +136,7 @@ export default function RankingForm() {
           {/* <input type="text" name="datetimes" /> */}
 
           <Datepicker 
+            toggleClassName="hidden"
             i18n={"pt-br"} 
             displayFormat={"DD/MM/YYYY"}
             showFooter={true} 
@@ -201,7 +205,7 @@ export default function RankingForm() {
           </select>
         </div>
 
-        <div className="filter-item">
+        <div className="filter-item filter-item-buttons">
           <label htmlFor="status">&nbsp;</label>
           <a className="button-activate" onClick={() => setShowFilters(!showFilters)}>
             <i id="btn_filtro" className={showFilters ? "fas fa-minus-circle" : "fas fa-plus-circle"}></i>

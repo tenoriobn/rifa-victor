@@ -2,6 +2,7 @@
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components"
 import { stateInfoBilhetePremiado, stateOpenModalAdicionarBilhetePremiado } from "../../../../common/states/atom";
+import useFormattedDate from "../../../../common/states/Hook/useFormattedDate";
 
 const Table = styled.table`
   width: 100%;
@@ -46,6 +47,7 @@ const Table = styled.table`
     font-weight: bold;
     text-align: center;
     display: inline-block;
+    text-transform: uppercase;
   }
 
   .button-group {
@@ -94,6 +96,7 @@ const Table = styled.table`
 export default function FiltroUsuarioTable() {  
   const [openModalTrocarBilhete, setOpenModalTrocarBilhete] = useRecoilState(stateOpenModalAdicionarBilhetePremiado);
   const infoBilhetePremiado = useRecoilValue(stateInfoBilhetePremiado)
+  const { formattedDate } = useFormattedDate();
 
   const infoBilhetePremiadoFilter = infoBilhetePremiado.data?.data;
   const tituloRifa = infoBilhetePremiado.selectSearch?.title;
@@ -115,7 +118,7 @@ export default function FiltroUsuarioTable() {
             <tr className="raffle-item">
               <td>{infoBilhetePremiadoFilter.name} {infoBilhetePremiadoFilter?.surname}</td>
               <td>{tituloRifa}</td>
-              <td>{infoBilhetePremiadoFilter?.created_at}</td>
+              <td>{formattedDate(infoBilhetePremiadoFilter?.created_at)}</td>
               <td>
                 <div className="button-group">
                   <a

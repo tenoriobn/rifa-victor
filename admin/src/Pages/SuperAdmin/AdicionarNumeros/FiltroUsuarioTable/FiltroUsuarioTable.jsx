@@ -2,6 +2,7 @@
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components"
 import { stateInfoAdicionarNumeros, stateOpenModalAdicionarNumeros } from "../../../../common/states/atom";
+import useFormattedDate from "../../../../common/states/Hook/useFormattedDate";
 
 const Table = styled.table`
   width: 100%;
@@ -46,6 +47,7 @@ const Table = styled.table`
     font-weight: bold;
     text-align: center;
     display: inline-block;
+    text-transform: uppercase;
   }
 
   .button-group {
@@ -95,9 +97,9 @@ const Table = styled.table`
 export default function FiltroUsuarioTable() {  
   const [openModalAdicionarNumeros, setOpenModalAdicionarNumeros] = useRecoilState(stateOpenModalAdicionarNumeros);
   const infoAdicionarNumeros = useRecoilValue(stateInfoAdicionarNumeros)
-
   const infoBilhetePremiadoFilter = infoAdicionarNumeros.data?.data;
   const tituloRifa = infoAdicionarNumeros.selectSearch?.title;
+  const { formattedDate } = useFormattedDate();
   // const tituloRifa = infoAdicionarNumeros.selectSearch.title;
 
   console.log('infoAdicionarNumeros', infoAdicionarNumeros)
@@ -109,19 +111,17 @@ export default function FiltroUsuarioTable() {
           <tr>
             <th>Nome</th>
             <th>Rifa</th>
-            <th>Cota</th>
             <th>Data</th>
             <th>Ações</th>
           </tr>
         </thead>
-
-
+        
         <tbody>
           {infoBilhetePremiadoFilter && (
             <tr className="raffle-item">
               <td>{infoBilhetePremiadoFilter.name} {infoBilhetePremiadoFilter?.surname}</td>
               <td>{tituloRifa}</td>
-              <td>{infoBilhetePremiadoFilter?.created_at}</td>
+              <td>{formattedDate(infoBilhetePremiadoFilter?.created_at)}</td>
               <td>
                 <div className="button-group">
                   <a

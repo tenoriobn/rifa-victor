@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useRecoilState } from "recoil";
 import { stateOpenModalAdicionarNumeros, stateOptionsRifa } from "../../../common/states/atom";
 import { Main } from "../../../components/AdminLayout/AdminLayout";

@@ -62,6 +62,7 @@ export default function AfiliadosForm() {
         {/* <input type="text" name="datetimes" /> */}
 
         <Datepicker 
+          toggleClassName="hidden"
           i18n={"pt-br"} 
           displayFormat={"DD/MM/YYYY"}
           showFooter={true} 

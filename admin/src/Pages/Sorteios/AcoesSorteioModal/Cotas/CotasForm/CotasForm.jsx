@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import seta from "../../../../../assets/icons/seta.svg";
 
 const Form = styled.form`
   display: flex;
@@ -21,11 +20,6 @@ const Form = styled.form`
   }
 
   select {
-    background-image: url(${seta});
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-    background-size: 12px 12px;
-
     background-color: #20202a;
     color: #fff;
     border: .0625rem solid #275680;
@@ -34,7 +28,10 @@ const Form = styled.form`
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
+    height: 40px;
     width: 100%;
+    line-height: normal;
+    padding-right: 30px;
   }
 
   .button-search {
@@ -44,7 +41,10 @@ const Form = styled.form`
     border-radius: 5px;
     padding: 10px 15px;
     cursor: pointer;
-    height: 38px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
   }
 `;
 

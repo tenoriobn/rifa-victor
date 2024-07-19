@@ -9,12 +9,16 @@ const SorteioSearchContainer = styled.div`
   flex-direction: column;
 
   h2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     text-align: center;
     color: #f5f5f5;
     margin-bottom: 15px;
   }
 
   h2 img {
+
     max-width: 400px;
     width: 100%;
   }

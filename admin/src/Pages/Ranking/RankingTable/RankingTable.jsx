@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { stateVisibilidadeColunaTabelaRanking } from "../../../common/states/atom";
+import { stateOpenModalVerInfoCliente, stateVisibilidadeColunaTabelaRanking } from "../../../common/states/atom";
 
 export const Table = styled.table`
   width: 100%;
@@ -63,6 +63,7 @@ export const Table = styled.table`
 
 export default function RankingTable() {
   const isibilidadeColunaTabelaRanking = useRecoilValue(stateVisibilidadeColunaTabelaRanking);
+  const [openModalVerInfoCliente, setOpenModalVerInfoCliente] = useRecoilState(stateOpenModalVerInfoCliente);
 
   return (
     <div>
@@ -121,7 +122,7 @@ export default function RankingTable() {
             )}
             {isibilidadeColunaTabelaRanking.acoes && (
               <td align="center" className="acoes">
-                <button className="button-view">
+                <button className="button-view" onClick={() => setOpenModalVerInfoCliente(!openModalVerInfoCliente)}>
                   <i className="fas fa-eye"></i> VER
                 </button>
               </td>
