@@ -95,6 +95,9 @@ export default function FiltroUsuarioTable() {
   const [openModalTrocarBilhete, setOpenModalTrocarBilhete] = useRecoilState(stateOpenModalAdicionarBilhetePremiado);
   const infoBilhetePremiado = useRecoilValue(stateInfoBilhetePremiado)
 
+  const infoBilhetePremiadoFilter = infoBilhetePremiado.data?.data;
+  const tituloRifa = infoBilhetePremiado.selectSearch.title;
+
   return (
     <div className="">
       <Table>
@@ -102,34 +105,30 @@ export default function FiltroUsuarioTable() {
           <tr>
             <th>Nome</th>
             <th>Rifa</th>
-            <th>Cota</th>
             <th>Data</th>
             <th>Ações</th>
           </tr>
         </thead>
 
         <tbody>
-          {infoBilhetePremiado.length > 0 ? (
-            infoBilhetePremiado.map((usuario, index) => (
-              <tr key={index} className="raffle-item">
-                <td>{usuario.nome}</td>
-                <td>{usuario.rifa}</td>
-                <td>{usuario.cota}</td>
-                <td>{usuario.data}</td>
-                <td>
-                  <div className="button-group">
-                    <a
-                      href="#"
-                      className="button-edit"
-                      onClick={() => setOpenModalTrocarBilhete(!openModalTrocarBilhete)}
-                    >
-                      <i className="fas fa-edit"></i> Editar
-                    </a>
-                  </div>
-                </td>
-              </tr>
-            ))
-          ) : null}
+          {infoBilhetePremiadoFilter && (
+            <tr className="raffle-item">
+              <td>{infoBilhetePremiadoFilter.name} {infoBilhetePremiadoFilter?.surname}</td>
+              <td>{tituloRifa}</td>
+              <td>{infoBilhetePremiadoFilter?.created_at}</td>
+              <td>
+                <div className="button-group">
+                  <a
+                    href="#"
+                    className="button-edit"
+                    onClick={() => setOpenModalTrocarBilhete(!openModalTrocarBilhete)}
+                  >
+                    <i className="fas fa-edit"></i> Editar
+                  </a>
+                </div>
+              </td>
+            </tr>
+          )}
         </tbody>
       </Table>
     </div>

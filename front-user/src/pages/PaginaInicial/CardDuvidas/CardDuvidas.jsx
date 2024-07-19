@@ -15,7 +15,7 @@ export default function CardDuvidas() {
 
         <div className="flex justify-center w-full">
           <a 
-            href="https://wa.me/+553798127715"
+            href="https://wa.me/+5543996403859"
             className="inline-flex items-center gap-x-2 px-2 py-1 text-sm font-semibold text-green-50 bg-green-600 hover:bg-green-700 active:bg-green-800 rounded-lg border border-solid border-green-700/50 transition-colors duration-300"
             target="_blank"
           >

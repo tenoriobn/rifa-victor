@@ -5,11 +5,27 @@ import { Main } from "../../../components/AdminLayout/AdminLayout";
 import Header from "../../../components/Header/Header";
 import Modal from "../../../components/Modal/Modal";
 import Titulo from "../../../components/Titulo/Titulo";
-import { stateOpenModalAdicionarBilhetePremiado } from "../../../common/states/atom";
+import { stateOpenModalAdicionarBilhetePremiado, stateOptionsRifa } from "../../../common/states/atom";
 import ModalAdicionarBilhetePremiado from "./ModalAdicionarBilhetePremiado/ModalAdicionarBilhetePremiado";
+import { useEffect } from "react";
+import { fetchDados } from "../../../common/http/http";
 
 export default function AdicionarBilhetePremiado() {
   const [openModalAdicionarBilhetePremiado, setOpenModalAdicionarBilhetePremiado] = useRecoilState(stateOpenModalAdicionarBilhetePremiado);
+  const [optionsRifa, setOptionsRifa] = useRecoilState(stateOptionsRifa);
+
+  console.log('optionsRifa', optionsRifa)
+
+  useEffect(() => {
+    const obterDados = async () => {
+      const response = await fetchDados(`/admin/dashboard/client/rifa/ativas`);
+
+      setOptionsRifa(response.data);
+    };
+    
+
+    obterDados();
+  }, []);
 
   return (
     <section>

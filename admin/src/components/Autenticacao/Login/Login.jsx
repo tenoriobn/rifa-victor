@@ -152,7 +152,7 @@ export default function Login() {
 
       <RightSide>
         <FormContainer>
-          <center><h1>Ana Lima Prêmios</h1></center>
+          <center><h1>OVERZ Prêmios</h1></center>
 
           <Form onSubmit={handleLogin}>
             <label htmlFor="email">

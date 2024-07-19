@@ -96,6 +96,11 @@ export default function FiltroUsuarioTable() {
   const [openModalAdicionarNumeros, setOpenModalAdicionarNumeros] = useRecoilState(stateOpenModalAdicionarNumeros);
   const infoAdicionarNumeros = useRecoilValue(stateInfoAdicionarNumeros)
 
+  const infoBilhetePremiadoFilter = infoAdicionarNumeros.data?.data;
+  const tituloRifa = infoAdicionarNumeros.selectSearch.title;
+
+  console.log('infoAdicionarNumeros', infoAdicionarNumeros)
+
   return (
     <div className="">
       <Table>
@@ -109,28 +114,26 @@ export default function FiltroUsuarioTable() {
           </tr>
         </thead>
 
+
         <tbody>
-          {infoAdicionarNumeros.length > 0 ? (
-            infoAdicionarNumeros.map((usuario, index) => (
-              <tr key={index} className="raffle-item">
-                <td>{usuario.nome}</td>
-                <td>{usuario.rifa}</td>
-                <td>{usuario.cota}</td>
-                <td>{usuario.data}</td>
-                <td>
-                  <div className="button-group">
-                    <a
-                      href="#"
-                      className="button-edit"
-                      onClick={() => setOpenModalAdicionarNumeros(!openModalAdicionarNumeros)}
-                    >
-                      <i className="fas fa-edit"></i> Editar
-                    </a>
-                  </div>
-                </td>
-              </tr>
-            ))
-          ) : null}
+          {infoBilhetePremiadoFilter && (
+            <tr className="raffle-item">
+              <td>{infoBilhetePremiadoFilter.name} {infoBilhetePremiadoFilter?.surname}</td>
+              <td>{tituloRifa}</td>
+              <td>{infoBilhetePremiadoFilter?.created_at}</td>
+              <td>
+                <div className="button-group">
+                  <a
+                    href="#"
+                    className="button-edit"
+                    onClick={() => setOpenModalAdicionarNumeros(!openModalAdicionarNumeros)}
+                  >
+                    <i className="fas fa-edit"></i> Editar
+                  </a>
+                </div>
+              </td>
+            </tr>
+          )}
         </tbody>
       </Table>
     </div>

@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import { useState } from "react";
-import { useSetRecoilState } from "recoil";
-import { stateInfoBilhetePremiado } from "../../../../common/states/atom";
+import { useSetRecoilState, useRecoilValue } from "recoil";
+import { stateInfoBilhetePremiado, stateOptionsRifa } from "../../../../common/states/atom";
+import { postDados } from "../../../../common/http/http";
 
 const FilterItemRow = styled.div`
   display: flex;
@@ -69,32 +70,24 @@ const Button = styled.button`
   }
 `;
 
-const usuarioFiltrado = {
-  nome: "Juliano Oliveira Amaral",
-  cota: "007149",
-  data: "17/04/2024",
-  rifas: [
-    {
-      name: "F250 OU 50K NO PIX",
-      id: 1,
-    },
-    {
-      name: "RIFA 2",
-      id: 2,
-    },
-  ],
-}
+
 
 export default function FiltroUsuarioForm() {
   const [search, setSearch] = useState('');
   const setInfoBilhetePremiado = useSetRecoilState(stateInfoBilhetePremiado)
+  const [selectSearch, setSelectSearch] = useState('');
+  const optionsRifa = useRecoilValue(stateOptionsRifa);
+
+  const handleSelectChange = (e) => {
+    const [id, title] = e.target.value.split('|');
+    setSelectSearch({ id, title });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // const response = await postDados.post('/api/search', { search });
-      // setInfoBilhetePremiado(response.data)
-      setInfoBilhetePremiado(usuarioFiltrado)
+      const response = await postDados('/admin/dashboard/client/procurar/pelo-telefone', { cellphone:search, rifa_id:selectSearch });
+      setInfoBilhetePremiado({ data: response, selectSearch, search });
     } catch (error) {
       console.error("There was an error fetching the data!", error);
     }
@@ -117,11 +110,17 @@ export default function FiltroUsuarioForm() {
         <FilterInputContainer>
           <Label htmlFor="id">Selecionar sorteio:</Label>
 
-          <select name="id_raffle" id="id_raffle" required>
+          <select 
+            name="id_raffle" 
+            id="id_raffle" 
+            value={`${selectSearch.id}|${selectSearch.title}`}
+            onChange={handleSelectChange}
+            required
+          >
             <option value="">SELECIONE O SORTEIO</option>
-              {usuarioFiltrado.rifas.map((rifa) => (
-              <option key={rifa.id} value={rifa.id}>
-                {rifa.name}
+              {optionsRifa.map((rifa) => (
+              <option key={rifa.id} value={`${rifa.id}|${rifa.title}`}>
+                {rifa.title}
               </option>
             ))}
           </select>

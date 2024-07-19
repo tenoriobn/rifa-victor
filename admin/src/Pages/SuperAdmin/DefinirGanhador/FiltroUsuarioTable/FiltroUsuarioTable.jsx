@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components"
-import { stateIdModal, stateInfoCotaSorteada, stateOpenModalNovoGanhador } from "../../../../common/states/atom";
+import { stateInfoCotaSorteada, stateOpenModalNovoGanhador } from "../../../../common/states/atom";
 
 const Table = styled.table`
   width: 100%;
@@ -94,12 +94,11 @@ const Table = styled.table`
 export default function FiltroUsuarioTable() {  
   const [openModalNovoGanhador, setOpenModalNovoGanhador] = useRecoilState(stateOpenModalNovoGanhador);
   const infoCotaSorteada = useRecoilValue(stateInfoCotaSorteada);
-  const setIdModal = useSetRecoilState(stateIdModal)
 
-  const handleOpenModal = (id) => {
-    setOpenModalNovoGanhador(!openModalNovoGanhador);
-    setIdModal(id);
-  }
+  const infoCota = infoCotaSorteada.data?.data;
+  const numeroVencedor = infoCotaSorteada.search;
+
+  console.log('infoCota', infoCota);
 
   return (
     <div className="">
@@ -113,31 +112,28 @@ export default function FiltroUsuarioTable() {
             <th>Ações</th>
           </tr>
         </thead>
-
         <tbody>
-          {infoCotaSorteada.length > 0 ? (
-            infoCotaSorteada.map((usuario, index) => (
-              <tr key={index} className="raffle-item">
-                <td>{usuario.nome}</td>
-                <td>{usuario.rifa}</td>
-                <td>{usuario.cota}</td>
-                <td>{usuario.data}</td>
-                <td>
-                  <div className="button-group">
-                    <a
-                      href="#"
-                      className="button-edit"
-                      onClick={() => handleOpenModal(usuario.id)}
-                    >
-                      <i className="fas fa-edit"></i> Editar
-                    </a>
-                  </div>
-                </td>
-              </tr>
-            ))
-          ) : null}
+          {infoCota && (
+            <tr className="raffle-item">
+              <td>{infoCota?.client?.name} {infoCota?.client?.surname}</td>
+              <td>{infoCota?.rifa?.title}</td>
+              <td>{numeroVencedor}</td>
+              <td>{infoCota?.created_at}</td>
+              <td>
+                <div className="button-group">
+                  <a
+                    href="#"
+                    className="button-edit"
+                    onClick={() => setOpenModalNovoGanhador(!openModalNovoGanhador)}
+                  >
+                    <i className="fas fa-edit"></i> Editar
+                  </a>
+                </div>
+              </td>
+            </tr>
+          )}
         </tbody>
       </Table>
     </div>
-  )
+  );
 }

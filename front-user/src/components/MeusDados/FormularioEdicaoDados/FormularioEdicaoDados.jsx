@@ -92,7 +92,7 @@ export default function FormularioEdicaoDados() {
           <h4 className="text-gray-700 w-full flex items-center  gap-2 font-medium">
             Para alterar dados, contate o suporte via WhatsApp:
             <a 
-              href="https://wa.me/+553798127715"
+              href="https://wa.me/+5543996403859"
               className="flex gap-1 text-white rounded text-xs bg-green-500 py-1 px-4 cursor-pointer"
               target="_blank"
             >

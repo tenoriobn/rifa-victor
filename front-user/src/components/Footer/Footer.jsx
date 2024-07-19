@@ -8,7 +8,7 @@ export default function Footer() {
 
         <div className="inline-flex flex-wrap items-center justify-center gap-2 mb-4">
           <a 
-            href="https://wa.me/+553798127715"
+            href="https://wa.me/+5543996403859"
             className="hover:scale-125 hover:px-2 transition-all"
             target="_blank"
           >
@@ -16,7 +16,7 @@ export default function Footer() {
           </a>
 
           <a 
-            href="https://instagram.com/reidopix"
+            href="https://instagram.com/ana_limapremios"
             className="hover:scale-125 hover:px-2 transition-all"
             target="_blank"
           >            

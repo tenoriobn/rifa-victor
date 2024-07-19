@@ -28,20 +28,20 @@ class MercadoPagoService
             "installments" => 1,
             "payment_method_id" => 'pix',
             "payer" => [
-                "email" => 'bianca@teste.com',
+                "email" => 'analima@projetos.com',
             ]
         ];
 
         $requestOptions = new RequestOptions();
         $requestOptions->setCustomHeaders(["X-Idempotency-Key: " . uniqid()]);
-    
+
         try {
             $payment = $client->create($request, $requestOptions);
 
             return $payment;
 
         } catch (MPApiException $e) {
-     
+
             return [
                 'status' => false,
                 'status_code' => $e->getApiResponse()->getStatusCode(),
@@ -56,10 +56,10 @@ class MercadoPagoService
     public function checkPaymentStatus($paymentId)
     {
         $client = new PaymentClient();
-    
+
         try {
             $payment = $client->get($paymentId);
-      
+
             return [
                 'status' => true,
                 'payment' => $payment,

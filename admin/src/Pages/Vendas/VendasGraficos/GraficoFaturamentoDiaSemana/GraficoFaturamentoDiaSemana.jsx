@@ -49,7 +49,7 @@ export default function GraficoFaturamentoDiario() {
 
   return (
     <ContainerCharts className="container-charts">
-      <div className="chart-title"><h3>Faturamento - Dia da Semana</h3></div>
+      <div className="chart-title"><h3>Faturamento - Semanal</h3></div>
       <canvas ref={canvasRef}></canvas>
     </ContainerCharts>
   );

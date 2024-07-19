@@ -25,7 +25,16 @@ class RifaNumber extends Model {
 
 
     public static function lookingForNumber($number, $rifasId) {
-        $ganhador = self::with(['client', 'rifa'])->where('status', 1)->whereJsonContains('numbers', $number)->where('rifas_id', $rifasId)->first();
+        $ganhador = self::with(['client', 'rifa'])
+        ->where('status', 1)
+        ->where(function($query) use ($number) {
+            $query->where('numbers', 'like', '%,'.$number.',%')
+                  ->orWhere('numbers', 'like', $number.',%')
+                  ->orWhere('numbers', 'like', '%,'.$number)
+                  ->orWhere('numbers', '=', $number);
+        })
+        ->where('rifas_id', $rifasId)
+        ->first();
 
         return $ganhador ?? false;
     }
@@ -137,7 +146,7 @@ class RifaNumber extends Model {
             ->with('client')
             ->groupBy('client_id')
             ->orderByRaw('SUM(CASE WHEN JSON_VALID(numbers) THEN JSON_LENGTH(numbers) ELSE 0 END) DESC')
-            ->limit(6)
+            ->limit(3)
             ->get();
 
 

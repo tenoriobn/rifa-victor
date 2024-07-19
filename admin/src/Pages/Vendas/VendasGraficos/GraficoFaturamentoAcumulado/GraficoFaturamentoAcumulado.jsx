@@ -56,7 +56,7 @@ export default function GraficoFaturamentoAcumulado() {
 
   return (
     <ContainerCharts className="container-charts">
-      <div className="chart-title"><h3>Faturamento - Hora do Dia</h3></div>
+      <div className="chart-title"><h3>Faturamento - Acumulado</h3></div>
       <canvas ref={canvasRef}></canvas>
     </ContainerCharts>
   );

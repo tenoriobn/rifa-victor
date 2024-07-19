@@ -14,20 +14,15 @@ import { useEffect } from "react";
 export default function DefinirGanhador() {
   const [openModalNovoGanhador, setOpenModalNovoGanhador] = useRecoilState(stateOpenModalNovoGanhador);
   const [optionsRifa, setOptionsRifa] = useRecoilState(stateOptionsRifa);
-
-  console.log('optionsRifa', optionsRifa)
   
   useEffect(() => {
     const obterDados = async () => {
-      const response = await fetchDados(`/admin/dashboard/rifa/editar/`);
+      const response = await fetchDados(`/admin/dashboard/client/rifa/ativas`);
 
-      setOptionsRifa(response);
-
-      console.log('response', response.data)
+      setOptionsRifa(response.data);
     };
-    
-
-    // obterDados();
+  
+    obterDados();
   }, []);
 
   return (

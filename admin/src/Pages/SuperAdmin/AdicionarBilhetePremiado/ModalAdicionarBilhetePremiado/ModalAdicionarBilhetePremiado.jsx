@@ -2,6 +2,7 @@ import { useState } from "react";
 import styled from "styled-components"
 import { stateInfoBilhetePremiado } from "../../../../common/states/atom";
 import { useRecoilValue } from "recoil";
+import { postDados } from "../../../../common/http/http";
 
 const Form = styled.form`
   font-size: .9rem;
@@ -61,17 +62,18 @@ const Form = styled.form`
 
 export default function ModalAdicionarBilhetePremiado() {
   const infoBilhetePremiado = useRecoilValue(stateInfoBilhetePremiado)
-  const [cota, setCota] = useState("");
-  const [phone, setNumber] = useState("");
+  const [cotaPremiada, setCotaPremiada] = useState("");
 
-  console.log('infoBilhetePremiado', infoBilhetePremiado)
-
+  const telefoneVencedor = infoBilhetePremiado.search;
+  const rifaId = infoBilhetePremiado.selectSearch.id;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      // const response = await postDados.post("/api/trocar-bilhete", { cota, phone });
+      const response = await postDados("/admin/dashboard/client/rifa/adicionar/bilhete-premiado", { cellphone: telefoneVencedor, numero_premiado: cotaPremiada, rifa_id: rifaId });
+
+      console.log('response modal', response)
 
     } catch (error) {
       console.error("Erro ao trocar bilhete:", error);
@@ -80,30 +82,17 @@ export default function ModalAdicionarBilhetePremiado() {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <label htmlFor="cota">
+      <label htmlFor="cotaPremiada">
         Número do Bilhete
         <input
           type="text"
-          name="cota"
-          id="cota"
-          value={cota}
-          onChange={(e) => setCota(e.target.value)}
+          name="cotaPremiada"
+          id="cotaPremiada"
+          value={cotaPremiada}
+          onChange={(e) => setCotaPremiada(e.target.value)}
           required
         />
       </label>
-
-      <label htmlFor="phone">
-        Telefone do Ganhador
-        <input
-          type="text"
-          name="phone"
-          id="phone"
-          value={phone}
-          onChange={(e) => setNumber(e.target.value)}
-          required
-        />
-      </label>
-
       <input id="sendEditPack" type="submit" value="ADICIONAR" />
     </Form>
   );

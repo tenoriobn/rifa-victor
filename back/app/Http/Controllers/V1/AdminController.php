@@ -97,7 +97,6 @@ class AdminController extends Controller
     }
     public function cadastrarGanhador(Request $request) {
         try {
-            dd();
             $ganhador = $this->rifaService->definirGanhador($request->numeroSorteado, $request->novoGanhadorPhone, $request->rifa_id);
 
             return response()->json(["success" => true, "data" => $ganhador], 200);

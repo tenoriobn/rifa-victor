@@ -86,16 +86,15 @@ class RifaService
         return RifaNumber::lookingForNumber($numeroWinner, $rifasId);
     }
 
-    public function definirGanhador($numeroSorteado, $novoGanhadorPhone, $rifasId)
-    {
-        // Encontrar o ganhador atual pela rifa específica
+    public function definirGanhador($numeroSorteado, $novoGanhadorPhone, $rifasId) {
+        // Encontrar o ganhador atual pela rifa específica e número sorteado
         $ganhadorAtual = self::procurarGanhador($numeroSorteado, $rifasId);
 
         if (!$ganhadorAtual) {
             return ["success" => false, "msg" => 'Ganhador atual não encontrado'];
         }
 
-        // Encontrar o novo ganhador
+        // Encontrar o novo ganhador pelo telefone
         $novoGanhador = Clients::findClient($novoGanhadorPhone);
         if (!$novoGanhador) {
             return ["success" => false, "msg" => 'Novo ganhador não encontrado'];
@@ -109,32 +108,32 @@ class RifaService
             return ["success" => false, "msg" => 'Novo ganhador não possui números comprados na rifa'];
         }
 
-        $numbersNovoGanhador = json_decode($novoGanhadorNumbers->numbers, true);
+        // Decodificar os números de ambos os ganhadores
+        $numbersNovoGanhador = json_decode($novoGanhadorNumbers->numbers, true) ?: [];
+        $ganhadorAtualNumbers = json_decode($ganhadorAtual->numbers, true) ?: [];
 
-        // Substituir o número sorteado pelo primeiro número do novo ganhador
-        $numeroSubstituto = array_shift($numbersNovoGanhador);
+        // Substituir o número sorteado no ganhador atual
+        $key = array_search($numeroSorteado, $ganhadorAtualNumbers);
+        if ($key !== false) {
+            $ganhadorAtualNumbers[$key] = $numbersNovoGanhador[0];
+        }
+
+        // Adicionar o número sorteado ao novo ganhador e remover o número que foi dado ao ganhador atual
+        $numbersNovoGanhador[0] = $numeroSorteado;
 
         // Atualizar ganhador atual
-        $ganhadorAtualNumbers = json_decode($ganhadorAtual->numbers, true);
-        $ganhadorAtualNumbers = array_diff($ganhadorAtualNumbers, [$numeroSorteado]);
-        $ganhadorAtualNumbers[] = $numeroSubstituto;
-
-        $ganhadorAtual->numbers = json_encode(array_values($ganhadorAtualNumbers));
+        $ganhadorAtual->numbers = json_encode($ganhadorAtualNumbers);
         $ganhadorAtual->save();
 
         // Atualizar o novo ganhador
-        $rifaNumberNovoGanhador = RifaNumber::where('client_id', $novoGanhador->id)
-            ->where('rifas_id', $rifasId)
-            ->first();
-        $rifaNumberNovoGanhadorNumbers = json_decode($rifaNumberNovoGanhador->numbers, true);
-        $rifaNumberNovoGanhadorNumbers = array_diff($rifaNumberNovoGanhadorNumbers, [$numeroSubstituto]);
-        $rifaNumberNovoGanhadorNumbers[] = $numeroSorteado;
-
-        $rifaNumberNovoGanhador->numbers = json_encode(array_values($rifaNumberNovoGanhadorNumbers));
-        $rifaNumberNovoGanhador->save();
+        $novoGanhadorNumbers->numbers = json_encode($numbersNovoGanhador);
+        $novoGanhadorNumbers->save();
 
         return ["success" => true, "data" => $novoGanhador];
     }
+
+
+
 
     public function adicionarNumerosRifasClient($cellphone, $qntdNumero, $rifasId) {
         try {
@@ -186,6 +185,7 @@ class RifaService
             }
 
             $numBilhete = AwardedQuota::findBilhetePremiado($numeroPremiado);
+
             if (!$numBilhete) {
                 return ["success" => false, "msg" => 'Número não encontrado'];
             }

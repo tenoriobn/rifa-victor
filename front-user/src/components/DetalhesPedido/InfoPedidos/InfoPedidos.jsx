@@ -55,7 +55,7 @@ export default function InfoPedidos() {
         }
 
         <a 
-          href="https://chat.whatsapp.com/+553798127715"
+          href="https://chat.whatsapp.com/+5543996403859"
           target="_blank"
           className="relative inline-block group text-white rounded overflow-hidden shadow-transparent shadow-md hover:shadow-black/3 0 text-xs bg-green-500"
         >

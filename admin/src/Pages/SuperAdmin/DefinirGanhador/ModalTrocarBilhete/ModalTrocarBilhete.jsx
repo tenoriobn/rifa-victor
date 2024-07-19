@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components"
 import { stateInfoCotaSorteada } from "../../../../common/states/atom";
+import { postDados } from "../../../../common/http/http";
 
 const Form = styled.form`
   font-size: .9rem;
@@ -61,17 +62,18 @@ const Form = styled.form`
 
 export default function ModalTrocarBilhete() {
   const infoCotaSorteada = useRecoilValue(stateInfoCotaSorteada);
-  const [cota, setCota] = useState(infoCotaSorteada[0].cota);
+  const [cota, setCota] = useState(infoCotaSorteada.search);
   const [number, setNumber] = useState("");
-
-  console.log(infoCotaSorteada)
+  const rifaId = infoCotaSorteada.data.data.rifa.id;
 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      // const response = await postDados.post("/api/trocar-bilhete", { cota, number, idRifa });
+      const response = await postDados("/admin/dashboard/rifa/definir-ganhador", { numeroSorteado: cota, novoGanhadorPhone: number,  rifa_id: rifaId});
+
+      console.log('trocado', response)
 
     } catch (error) {
       console.error("Erro ao trocar bilhete:", error);

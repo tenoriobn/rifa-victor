@@ -1,5 +1,8 @@
 import { useState } from "react";
 import styled from "styled-components"
+import { postDados } from "../../../../common/http/http";
+import { stateInfoAdicionarNumeros } from "../../../../common/states/atom";
+import { useRecoilValue } from "recoil";
 
 const Form = styled.form`
   font-size: .9rem;
@@ -58,15 +61,20 @@ const Form = styled.form`
 `;
 
 export default function ModalAdicionarNumeros() {
-  const [cota, setCota] = useState("");
-  const [number, setNumber] = useState("");
+  const infoAdicionarNumeros = useRecoilValue(stateInfoAdicionarNumeros)
+  const [qntdNumero, setQntdNumero] = useState("");
 
+  const telefoneVencedor = infoAdicionarNumeros.search;
+  const rifaId = infoAdicionarNumeros.selectSearch.id;
+
+  console.log('dados', qntdNumero, telefoneVencedor, rifaId)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      // const response = await postDados.post("/api/trocar-bilhete", { cota, number });
+      const response = await postDados("/admin/dashboard/client/rifa/adicionar-numero", { qntd_number: qntdNumero,  cellphone: telefoneVencedor, rifa_id : rifaId });
+      console.log('response modal', response)
 
     } catch (error) {
       console.error("Erro ao trocar bilhete:", error);
@@ -75,26 +83,14 @@ export default function ModalAdicionarNumeros() {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <label htmlFor="cota">
+      <label htmlFor="qntdNumero">
         Qntd. números
         <input
           type="text"
-          name="cota"
-          id="cota"
-          value={cota}
-          onChange={(e) => setCota(e.target.value)}
-          required
-        />
-      </label>
-
-      <label htmlFor="number">
-        Telefone do usuário a receber
-        <input
-          type="text"
-          name="number"
-          id="number"
-          value={number}
-          onChange={(e) => setNumber(e.target.value)}
+          name="qntdNumero"
+          id="qntdNumero"
+          value={qntdNumero}
+          onChange={(e) => setQntdNumero(e.target.value)}
           required
         />
       </label>
