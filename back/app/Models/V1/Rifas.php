@@ -116,6 +116,10 @@ class Rifas extends Model
             return $is_created ? $rifa_id : false;
     }
 
+    public static function findRifa($id) {
+        return self::with(['cota'])->where('id',$id)->first();
+    }
+
     public static function getAllRifasActivas() {
         return self::with(['cota', 'rifaAwarded', 'rifaOthers', 'rifaPayment', 'awardedQuota.client', 'rifaImage', 'awardedQuotaClient'])->where('status','ativas')->latest()->get();
     }

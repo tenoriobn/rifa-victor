@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('rifa_numbers', function (Blueprint $table) {
             $table->id();
-            $table->string('numbers')->index()->nullable();
+            $table->longText('numbers')->nullable();
             $table->tinyInteger('status')->index()->default(0)->comment('0 => pagamento pedente, 1 => pago, 2 => pagamento não aprovado');
 
             $table->unsignedBigInteger('rifas_id');

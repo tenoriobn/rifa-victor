@@ -416,9 +416,16 @@ class RifasController extends Controller
     }
     public function buyRifa(OrderRifaRequest $request) {
         try {
+
+            $isBuyRifa =  $this->rifaService->isBuy($request);
+
+            if(!$isBuyRifa['success']) {
+                return response()->json(["success" => false, "msg" => $isBuyRifa['msg']], 409 );
+            }
+
             $rifaPay = RifaPay::applyRifa($request);
             if (!$rifaPay) {
-                return response()->json(["success" => false, "msg" => $rifaPay['msg']], 500);
+                return response()->json(["success" => false, "msg" => "Ocorreu um erro ao comprar"], 500);
             }
 
             $rifaPayDetails = RifaPay::with(['rifa.cota', 'rifa.awardedQuota'])
@@ -432,7 +439,7 @@ class RifasController extends Controller
             }
 
             $payment = $this->mercadoPagoService->createPayment($rifaPay, 'Rei do Pix, [Compra da rifa '.$rifaPayDetails->rifa->title. ']');
-            
+
             if(!$payment) {
                 return response()->json(["success" => false, "msg" => [$payment['status_code'], $payment['content'], $payment['message']]], 500);
             }
@@ -440,7 +447,7 @@ class RifasController extends Controller
             $rifaPayDetails->pixId = $payment->id;
             $rifaPayDetails->qrCode = $payment->point_of_interaction->transaction_data->qr_code;
             $rifaPayDetails->qrCodeBase64 = $payment->point_of_interaction->transaction_data->qr_code_base64;
-            
+
             RifaPay::addPix($rifaPay->id, $rifaPayDetails->pixId, $rifaPayDetails->qrCode,$rifaPayDetails->qrCodeBase64);
 
              return response()->json(["success" => true, "data" => $rifaPayDetails], 200);

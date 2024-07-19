@@ -46,6 +46,10 @@ class Clients extends Authenticatable implements JWTSubject {
         $client = self::where('cellphone', $cellphone)->first();
         return $client;
     }
+    public static function findClientById($id) {
+        $client = self::where('id', $id)->first();
+        return $client;
+    }
 
     public function getJWTIdentifier() {
         return $this->getKey();

@@ -71,6 +71,9 @@ class RifaPay extends Model
     public static function getAllCompraClient($id) {
         return self::with(['rifaNumber', 'rifa.rifaPayment', 'rifa.rifaImage'])->where('client_id', $id)->orderByDesc('id')->get();
     }
+    public static function getAllCompraClientByRifa($idRifa, $idClient) {
+        return self::with(['rifaNumber', 'rifa.rifaPayment', 'rifa.cota'])->where('rifas_id', $idRifa)->where('client_id', $idClient)->where('status', 1)->get();
+    }
 
 
     private static function generateUniqueNumericCode() {

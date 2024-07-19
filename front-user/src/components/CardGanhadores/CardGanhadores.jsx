@@ -18,7 +18,7 @@ export default function CardGanhadores() {
   useEffect(() => {
     const obterDados = async () => {
       try {
-        const dados = await fetchDados('/ganhadores');
+        const dados = await fetchDados('/produtos/todos/ganhadores');
         setGanhadores(dados.data);
         setLoading(false);
       } catch (error) {

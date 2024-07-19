@@ -66,6 +66,7 @@
 
 
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/rifa/definir-ganhador", [AdminController::class, "definirGanhador"])->name('admin.definir.ganhador');
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/cadastrar/ganhador", [AdminController::class, "cadastrarGanhador"])->name('admin.cadastrar.ganhador');
 
 
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/client/rifa/adicionar-numero", [AdminController::class, "adicionarNumerosRifas"])->name('admin.adicionar.numero');

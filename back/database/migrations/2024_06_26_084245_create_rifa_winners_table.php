@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string('img');
             $table->string('nome');
             $table->integer('ticket');
-            $table->dateTime('cota');
+            $table->unsignedBigInteger('client_id');
+            $table->foreign("client_id")->references("id")->on("clients");
             $table->unsignedBigInteger('rifas_id');
             $table->foreign("rifas_id")->references("id")->on("rifas");
 

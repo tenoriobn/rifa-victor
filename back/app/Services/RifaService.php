@@ -201,5 +201,17 @@ class RifaService
 
     }
 
+    public function isBuy($date) {
+        $rifa = Rifas::findRifa($date->rifas_id);
+        $totalNumber = RifaPay::getAllCompraClientByRifa($date->rifas_id, $date->client_id)->sum('qntd_number') ;
+        $rifaQntdByClient = $rifa->cota->qntd_cota_max_client;
+
+        $buyClientLimit = $rifaQntdByClient - $totalNumber;
+        if($buyClientLimit < 0) {
+            return ['success' => false , 'msg' => 'Desculpe, você já atingiu o limite máximo de compras permitidas para esta rifa.'];
+        }
+        return ['success' => true];
+    }
+
 
 }
