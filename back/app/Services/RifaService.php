@@ -83,7 +83,7 @@ class RifaService
 
     public function procurarGanhador($numeroWinner, $rifasId)
     {
-        return RifaNumber::lookingForNumber($numeroWinner, $rifasId);
+        return RifaNumber::lookingForNumber(intval($numeroWinner), $rifasId);
     }
 
     public function definirGanhador($numeroSorteado, $novoGanhadorPhone, $rifasId) {
@@ -102,6 +102,7 @@ class RifaService
 
         // Obter os números do novo ganhador na rifa específica
         $novoGanhadorNumbers = RifaNumber::where('client_id', $novoGanhador->id)
+            ->where('status', 1)
             ->where('rifas_id', $rifasId)
             ->first();
         if (!$novoGanhadorNumbers) {

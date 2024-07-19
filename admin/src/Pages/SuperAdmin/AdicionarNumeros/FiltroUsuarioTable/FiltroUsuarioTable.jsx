@@ -97,7 +97,8 @@ export default function FiltroUsuarioTable() {
   const infoAdicionarNumeros = useRecoilValue(stateInfoAdicionarNumeros)
 
   const infoBilhetePremiadoFilter = infoAdicionarNumeros.data?.data;
-  const tituloRifa = infoAdicionarNumeros.selectSearch.title;
+  const tituloRifa = infoAdicionarNumeros.selectSearch?.title;
+  // const tituloRifa = infoAdicionarNumeros.selectSearch.title;
 
   console.log('infoAdicionarNumeros', infoAdicionarNumeros)
 

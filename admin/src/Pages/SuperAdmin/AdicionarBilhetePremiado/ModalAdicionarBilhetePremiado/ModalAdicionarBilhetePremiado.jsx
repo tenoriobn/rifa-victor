@@ -65,7 +65,7 @@ export default function ModalAdicionarBilhetePremiado() {
   const [cotaPremiada, setCotaPremiada] = useState("");
 
   const telefoneVencedor = infoBilhetePremiado.search;
-  const rifaId = infoBilhetePremiado.selectSearch.id;
+  const rifaId = infoBilhetePremiado.selectSearch?.id;
 
   const handleSubmit = async (e) => {
     e.preventDefault();

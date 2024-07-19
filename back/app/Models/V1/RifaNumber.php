@@ -25,25 +25,33 @@ class RifaNumber extends Model {
 
 
     public static function lookingForNumber($number, $rifasId) {
-        $ganhador = self::with(['client', 'rifa'])
-        ->where('status', 1)
-        ->where(function($query) use ($number) {
-            $query->where('numbers', 'like', '%,'.$number.',%')
-                  ->orWhere('numbers', 'like', $number.',%')
-                  ->orWhere('numbers', 'like', '%,'.$number)
-                  ->orWhere('numbers', '=', $number);
-        })
-        ->where('rifas_id', $rifasId)
-        ->first();
+        $participantes = self::with(['rifa', 'client'])->where('status', 1)->where('rifas_id', $rifasId)->get();
+        $ganhador = null; // Inicializa a variável
 
-        return $ganhador ?? false;
+        foreach ($participantes as $participante) {
+            $numbersParticipante = json_decode($participante->numbers, true);
+
+            // Verifica se $numbersParticipante é um array e realiza a busca
+            if (is_array($numbersParticipante)) {
+                $find = array_search($number, $numbersParticipante);
+
+                if ($find !== false) { // array_search retorna false se não encontrar
+                    $ganhador = $participante;
+                    break;
+                }
+            }
+        }
+
+        return $ganhador; // Retorna o participante encontrado ou null
     }
+
 
     public static function getAllNumbersClient($id) {
         return self::where('client_id', $id)->where('status', 1)->get();
     }
     public static function countTotalNumber($id) {
-       return  self::where('rifas_id', $id)->where('status', 1)->selectRaw('SUM(JSON_LENGTH(numbers)) as total')->first();
+       return  self::where('rifas_id', $id)->where('status', 1) ->whereRaw('JSON_VALID(numbers)')
+       ->selectRaw('SUM(JSON_LENGTH(numbers)) as total')->first();
     }
 
     public static function applyRifa($rifaPay) {
@@ -92,10 +100,19 @@ class RifaNumber extends Model {
             ->lockForUpdate()
             ->pluck('number_cota')
             ->toArray();
+
+        $existingNumbers = array_filter($existingNumbers, function($value) {
+            return !is_null($value);
+        });
+
+        $blockedNumbers = array_filter($blockedNumbers, function($value) {
+            return !is_null($value);
+        });
+
+
         // Filtrar números existentes
         $existingSet = array_flip($existingNumbers);
         $blockedSet = array_flip($blockedNumbers);
-
         // Números válidos imediatos
         $validImmediateNumbers = array_diff($immediateNumbers, $existingNumbers);
         $validImmediateNumbers = array_slice($validImmediateNumbers, 0, $numToGenerate); // Limitar ao número de compras

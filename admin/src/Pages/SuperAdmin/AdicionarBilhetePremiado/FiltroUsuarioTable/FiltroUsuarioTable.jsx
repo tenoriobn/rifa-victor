@@ -96,7 +96,7 @@ export default function FiltroUsuarioTable() {
   const infoBilhetePremiado = useRecoilValue(stateInfoBilhetePremiado)
 
   const infoBilhetePremiadoFilter = infoBilhetePremiado.data?.data;
-  const tituloRifa = infoBilhetePremiado.selectSearch.title;
+  const tituloRifa = infoBilhetePremiado.selectSearch?.title;
 
   return (
     <div className="">
