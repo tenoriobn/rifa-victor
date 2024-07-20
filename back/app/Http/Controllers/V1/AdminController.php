@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
-use App\Models\V1\{Clients, Rifas, RifaWinner};
+use App\Models\V1\{Clients, Rifas, RifaWinner, RifaPay};
 use App\Models\V1\RifaNumber;
 use Exception;
 use Illuminate\Http\Request;
@@ -28,6 +28,18 @@ class AdminController extends Controller
         try {
             $user = User::createUser($request->validated());
             return response()->json(['response' => 'Usuário criado com sucesso', 'user' => $user], 201);
+        } catch (\Throwable $e) {
+            return response()->json(['response' => 'Ocorreu um erro interno', 'error' => $e->getMessage()], 500);
+        }
+    }
+    public function destroyUser(UserRequest $request) {
+        try {
+            $user = User::find($request->id);
+            if (!$user ) {
+                return response()->json(["success" => false, "msg" =>"Usuario não encontrado"], 404);
+            }
+            $user->delete();
+            return response()->json(['response' => 'Usuário deletado com sucesso'], 201);
         } catch (\Throwable $e) {
             return response()->json(['response' => 'Ocorreu um erro interno', 'error' => $e->getMessage()], 500);
         }
@@ -185,6 +197,100 @@ class AdminController extends Controller
             }
 
             return response()->json(["success" => true, "data" => $rifas], 200);
+        } catch (Exception $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
+        }
+    }
+
+    public function getPedidos() {
+        try {
+            $buy = RifaPay::getAllCompra();
+            if (!$buy) {
+                return response()->json(["success" => false, "msg" => "Pedido não encontrado"], 404);
+            }
+            return response()->json(["success" => true, "data"=> $buy], 200);
+        } catch (Exception $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
+        }
+    }
+    public function getOnePedidos($idRifa, $idClient) {
+        try {
+            $buy = RifaPay::getOneCompraClientByRifa($idRifa, $idClient);
+            if (!$buy) {
+                return response()->json(["success" => false, "msg" => "Pedido não encontrado"], 404);
+            }
+            return response()->json(["success" => true, "data"=> $buy], 200);
+        } catch (Exception $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
+        }
+    }
+    public function cancelarPedidos($id) {
+        try {
+            $buy = RifaPay::cancelarCompra($id);
+            RifaNumber::cancelarCompra($id);
+            if (!$buy) {
+                return response()->json(["success" => false, "msg" => "Pedido não encontrado"], 404);
+            }
+            return response()->json(["success" => true, "data"=> "Compra cancelada"], 200);
+        } catch (Exception $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
+        }
+    }
+
+    public function allClients() {
+        try {
+            $clientes = Clients::getAllClient();
+            if (!$clientes) {
+                return response()->json(["success" => false, "msg" => "Pedido não encontrado"], 404);
+            }
+            return response()->json(["success" => true, "data"=> $clientes], 200);
+        } catch (Exception $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
+        }
+    }
+    public function editarClients(Request $request) {
+        try {
+            $cliente = Clients::editarClient($request);
+            if (!$cliente) {
+                return response()->json(["success" => false, "msg" => "Cliente não atualizado"], 404);
+            }
+            return response()->json(["success" => true, "data"=> $cliente], 200);
+        } catch (Exception $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
+        }
+    }
+    public function rankingGeral() {
+        try {
+            $ranking = RifaNumber::getRankingRifaGeral();
+            if (!$ranking) {
+                return response()->json(["success" => false, "msg" => "Ranking não atualizado"], 404);
+            }
+
+            return response()->json(["success" => true, "data"=> $ranking], 200);
+        } catch (Exception $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
+        }
+    }
+    public function getAllUsers() {
+        try {
+            $users = User::allUsers();
+            if (!$users) {
+                return response()->json(["success" => false, "msg" => "Usarios não encontrados"], 404);
+            }
+            dd($users );
+            return response()->json(["success" => true, "data"=> $users], 200);
+        } catch (Exception $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
+        }
+    }
+    public function editarUsers() {
+        try {
+            $users = User::allUsers();
+            if (!$users) {
+                return response()->json(["success" => false, "msg" => "Usarios não encontrados"], 404);
+            }
+            dd($users );
+            return response()->json(["success" => true, "data"=> $users], 200);
         } catch (Exception $e) {
             return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
         }

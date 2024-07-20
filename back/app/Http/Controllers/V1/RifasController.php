@@ -86,11 +86,11 @@ class RifasController extends Controller
     public function storeRifa(StoreRifasRequest $request) {
 
         try {
-            $isMakeRifa = Rifas::RifaActiva();
+            // $isMakeRifa = Rifas::RifaActiva();
 
-            if($isMakeRifa) {
-                return response()->json(["success" => true, "msg" => "Para cadastrar um nova rifa, você precisa finalizar a rifa: $isMakeRifa->title"]);
-            }
+            // if($isMakeRifa) {
+            //     return response()->json(["success" => true, "msg" => "Para cadastrar um nova rifa, você precisa finalizar a rifa: $isMakeRifa->title"], 422);
+            // }
             $rifa = $this->rifaService->createRifas($request);
 
             if(!$rifa) {
@@ -461,16 +461,16 @@ class RifasController extends Controller
 
 
         public function getCompra($id) {
-        try {
-            $buy = RifaPay::getOneCompra($id);
-            if (!$buy) {
-                return response()->json(["success" => false, "msg" => "Pedido não encontrado"], $this->notFound);
+            try {
+                $buy = RifaPay::getOneCompra($id);
+                if (!$buy) {
+                    return response()->json(["success" => false, "msg" => "Pedido não encontrado"], $this->notFound);
+                }
+                return response()->json(["success" => true, "data"=> $buy], $this->success);
+            } catch (Exception $e) {
+                return response()->json(["success" => false, "msg" => $e->getMessage()], $this->serverError);
             }
-            return response()->json(["success" => true, "data"=> $buy], $this->success);
-        } catch (Exception $e) {
-            return response()->json(["success" => false, "msg" => $e->getMessage()], $this->serverError);
         }
-    }
     public function getCompraClient($id) {
         try {
             $buy = RifaPay::getAllCompraClient($id);

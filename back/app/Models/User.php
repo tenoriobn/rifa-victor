@@ -50,4 +50,8 @@ class User extends Authenticatable
         $data['password'] = hash::make($data['password']);
         return self::create($data);
     }
+    public static function allUsers()
+    {
+        return self::get();
+    }
 }

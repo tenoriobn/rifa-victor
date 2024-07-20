@@ -54,6 +54,10 @@ class RifaNumber extends Model {
        ->selectRaw('SUM(JSON_LENGTH(numbers)) as total')->first();
     }
 
+    public static function cancelarCompra($id) {
+        return self::where('pay_id', $id)->update(['status' => 2]);
+    }
+
     public static function applyRifa($rifaPay) {
         return DB::transaction(function() use ($rifaPay) {
             $numbers = self::generateUniqueNumbers($rifaPay);
@@ -145,16 +149,6 @@ class RifaNumber extends Model {
         return $generatedNumbers;
     }
 
-
-
-
-
-
-
-
-
-
-
     public static function getRankingRifa($id) {
         $result = self::where('status', 1)
             ->where('rifas_id', $id)
@@ -169,7 +163,16 @@ class RifaNumber extends Model {
 
         return $result ?? false;
     }
+    public static function getRankingRifaGeral() {
+        $result = self::select('client_id', 'rifas_id', 'pay_id')
+            ->selectRaw('SUM(CASE WHEN JSON_VALID(numbers) THEN JSON_LENGTH(numbers) ELSE 0 END) as total_numbers')
+            ->with(['client', 'rifa', 'rifaPay'])
+            ->groupBy('client_id')
+            ->orderByRaw('SUM(CASE WHEN JSON_VALID(numbers) THEN JSON_LENGTH(numbers) ELSE 0 END) DESC')
+            ->get();
 
+        return $result ?? false;
+    }
     public static function cancelRifaNumber($ids) {
         return self::with(['rifa'])->whereIn('pay_id', $ids)
         ->update(['status' => 2, 'numbers' => null]);

@@ -16,7 +16,6 @@ class MercadoPagoService
 
 
     }
-
     public function createPayment($rifa, $description) {
         $client = new PaymentClient();
         $timeLimit = $rifa->rifa->rifaPayment->time_pay ?? 30;

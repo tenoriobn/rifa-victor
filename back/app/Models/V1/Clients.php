@@ -50,6 +50,18 @@ class Clients extends Authenticatable implements JWTSubject {
         $client = self::where('id', $id)->first();
         return $client;
     }
+    public static function getAllClient() {
+        return self::get();
+    }
+
+    public static function editarClient($date) {
+        $client = self::where('id', $date->id)->update([
+            'name' => $date->name,
+            'surname' => $date->surname,
+            'cellphone' => $date->cellphone,
+        ]);
+        return $client;
+    }
 
     public function getJWTIdentifier() {
         return $this->getKey();

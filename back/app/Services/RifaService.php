@@ -204,7 +204,7 @@ class RifaService
 
     public function isBuy($date) {
         $rifa = Rifas::findRifa($date->rifas_id);
-        $totalNumber = RifaPay::getAllCompraClientByRifa($date->rifas_id, $date->client_id)->sum('qntd_number') ;
+        $totalNumber = RifaPay::getAllCompraActiveClientByRifa($date->rifas_id, $date->client_id)->sum('qntd_number') ;
         $rifaQntdByClient = $rifa->cota->qntd_cota_max_client;
 
         $buyClientLimit = $rifaQntdByClient - $totalNumber;

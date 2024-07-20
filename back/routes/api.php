@@ -30,6 +30,7 @@
         Route::post("/user/register", [AdminController::class, "storeUser"])->name('admin.create.user');
         Route::post("/user/login", [AdminController::class, "login"])->name('admin.login.user');
         Route::middleware('auth:sanctum')->post("/user/logout", [AdminController::class, "logout"])->name('admin.logout.user');
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->delete("/user/delete", [AdminController::class, "destroyUser"])->name('admin.delete.user');
 
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/todas-rifas", [RifasController::class, "getAllRifasAdmin"])->name('admin.all.rifas');
 
@@ -76,6 +77,18 @@
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/client/rifa/adicionar/bilhete-premiado", [AdminController::class, "adicionarBilhetePremiado"])->name('admin.adicionar.bilhete.premiado');
 
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/client/rifa/ativas", [AdminController::class, "rifaAtivas"])->name('admin.adicionar.bilhete.premiado');
+
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/pedidos", [AdminController::class, "getPedidos"])->name('admin.pedidos');
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/pedido/{idRifa}/{idClient}", [AdminController::class, "getOnePedidos"])->name('admin.one.pedidos');
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->put("/dashboard/pedido/{id}", [AdminController::class, "cancelarPedidos"])->name('admin.cancelar.pedidos');
+
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/todos/clientes", [AdminController::class, "allClients"])->name('admin.todos.clientes');
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->put("/dashboard/editar/cliente", [AdminController::class, "editarClients"])->name('admin.editar.cliente');
+
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/ranking-geral", [AdminController::class, "rankingGeral"])->name('admin.ranking.cliente');
+
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/todos/usuarios", [AdminController::class, "getAllUsers"])->name('admin.usuarios');
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->put("/dashboard/usuarios/editar", [AdminController::class, "editarUsers"])->name('admin.editar.usuarios');
     });
 
     Route::group(['prefix' => 'produtos'], function () {
