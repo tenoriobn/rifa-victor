@@ -13,9 +13,9 @@ class RifaWinner extends Model
     use HasFactory;
 
     protected $fillable = [
-        'ticket',
-        'draw_day',
         'img',
+        'name',
+        'ticket',
         'rifas_id',
         'client_id',
     ];
@@ -31,12 +31,22 @@ class RifaWinner extends Model
     public static function getAllWinners() {
         return self::with(['rifa', 'client'])->latest()->get() ?? false;
     }
+    public static function findWinner($id) {
+        return self::with(['rifa', 'client'])->where('id', $id)->first() ?? false;
+    }
 
-    public static function defineWinner($data) {
+    public static function defineWinner($data, $client, $img) {
         return self::create([
+            'img' => $img,
             'ticket' => $data->ticket,
-            'draw_day' => $data->draw_day,
-            'img' => $data->img,
+            'rifas_id' => $data->rifa_id,
+            'client_id' => $client,
+        ]);
+    }
+    public static function editarWinner($data, $img) {
+        return self::where('id', $data->id)->update([
+            'img' => $img,
+            'ticket' => $data->ticket,
             'rifas_id' => $data->rifas_id,
             'client_id' => $data->client_id,
         ]);

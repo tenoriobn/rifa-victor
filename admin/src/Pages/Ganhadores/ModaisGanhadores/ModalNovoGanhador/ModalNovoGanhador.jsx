@@ -1,7 +1,10 @@
 import styled from "styled-components"
-import { stateNovoGanhador } from "../../../../common/states/atom";
-import { useRecoilState } from "recoil";
+import { stateNovoGanhador, stateOpenModalNovoGanhador, stateNovoGanhadorInfo, stateOptionsRifa } from "../../../../common/states/atom";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import useImageUpload from "../../../../common/states/Hook/useImageUpload";
+import { fetchDados, postDados } from "../../../../common/http/http";
+import { useEffect } from "react";
+// import { useState } from "react";
 
 const Form = styled.form`
   font-size: .9rem;
@@ -66,32 +69,33 @@ const Form = styled.form`
 `;
 
 export default function ModalNovoGanhador() {
+  const setOpenModalNovoGanhador = useSetRecoilState(stateOpenModalNovoGanhador);
   const [novoGanhador, setNovoGanhador] = useRecoilState(stateNovoGanhador);
-    const { handleFileChange } = useImageUpload(setNovoGanhador, novoGanhador);
+  const [novoGanhadorInfo, setNovoGanhadorInfo] = useRecoilState(stateNovoGanhadorInfo);
+  const { handleFileChange } = useImageUpload(setNovoGanhador, novoGanhador);
+  const [optionsRifa, setOptionsRifa] = useRecoilState(stateOptionsRifa);
 
-  // const handleFileChange = (event) => {
-  //   const file = event.target.files[0];
-  //   setSelectedFile(file);
-    
-  //   const reader = new FileReader();
-  //   reader.onloadend = () => {
-  //     setNovoGanhador({...novoGanhador, image: reader.result})
-  //   };
-  //   reader.readAsDataURL(file);
-  // }
+  useEffect(() => {
+    const obterDados = async () => {
+      const response = await fetchDados(`/admin/dashboard/client/rifa/ativas`);
 
+      setOptionsRifa(response.data);
+    };  
 
+    obterDados();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleSaveChanges = async (event) => {
     event.preventDefault();
 
     try {
+      const response = await postDados("admin/dashboard/cadastrar/ganhador", novoGanhador);
 
-      console.log('adicionarGanhador:', novoGanhador)
+      setNovoGanhadorInfo((prevGanhadorInfo) => [...prevGanhadorInfo, response.data]);
+      setNovoGanhador('');
 
-      // const response = await postDados("http://seu-backend.com/api/site/config", siteConfig);
-      // setSiteConfig(response.data)
-
+      setOpenModalNovoGanhador(false);
 
     } catch (error) {
       console.error("Erro ao enviar dados:", error);
@@ -104,22 +108,21 @@ export default function ModalNovoGanhador() {
         Foto
         <input 
           type="file" 
-          name="imagem" 
+          name="img" 
           id="imagem" 
           accept="image/*"
-          // onChange={(e) => setNovoGanhador({...novoGanhador, image: e.target.value})}  
           onChange={handleFileChange}
         />
       </label>
 
       <label htmlFor="">
-        Nome
+        Telefone
         <input 
           type="text" 
-          name="name" 
+          name="cellphone" 
           id="name" 
-          defaultValue={novoGanhador.name || ""}  
-          onChange={(e) => setNovoGanhador({ ...novoGanhador, name: e.target.value })} 
+          defaultValue={novoGanhador.cellphone || ""}  
+          onChange={(e) => setNovoGanhador({ ...novoGanhador, cellphone: e.target.value })} 
           required
         />
       </label>
@@ -127,27 +130,30 @@ export default function ModalNovoGanhador() {
         Cota
         <input 
           type="number"
-          name="number" 
+          name="ticket" 
           id="number" 
-          defaultValue={novoGanhador.number || ""}  
-          onChange={(e) => setNovoGanhador({ ...novoGanhador, numberCota: e.target.value })} 
+          defaultValue={novoGanhador.ticket || ""}  
+          onChange={(e) => setNovoGanhador({ ...novoGanhador, ticket: e.target.value })} 
           required
         />
       </label>
 
       <label htmlFor="id_raffle" id="label_id_rifa" style={{display: "block"}}>
         Sorteio
-        <select 
-          name="id_raffle" 
-          id="id_raffle" 
-          value={novoGanhador.sorteio}  
-          onChange={(e) => setNovoGanhador({ ...novoGanhador, sorteio: e.target.value })} 
-          required
-        >
-          <option value="">Selecione</option>
-          <option value="174">SAVEIRO CROSS DOS SONHOS </option>
-          <option value="178">F250 OU 50K NO PIX</option>
-        </select>
+          <select 
+            name="id_raffle" 
+            id="id_raffle" 
+            value={novoGanhador.rifa_id}
+            onChange={(e) => setNovoGanhador({ ...novoGanhador, rifa_id: e.target.value })} 
+            required
+          >
+            <option value="">SELECIONE O SORTEIO</option>
+              {optionsRifa?.map((rifa) => (
+              <option key={rifa.id} value={rifa.id}>
+                {rifa.title}
+              </option>
+            ))}
+          </select>
       </label>
 
 

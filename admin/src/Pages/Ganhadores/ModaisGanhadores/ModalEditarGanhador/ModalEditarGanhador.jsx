@@ -1,7 +1,9 @@
 import styled from "styled-components"
-import { stateNovoGanhador } from "../../../../common/states/atom";
-import { useRecoilState } from "recoil";
+import { stateNovoGanhador, stateIdModal, stateNovoGanhadorInfo, stateOpenModalEditarGanhador, stateUserLogin } from "../../../../common/states/atom";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import useImageUpload from "../../../../common/states/Hook/useImageUpload";
+import { useEffect } from "react";
+import { fetchDados, putDados } from "../../../../common/http/http";
 
 const Form = styled.form`
   font-size: .9rem;
@@ -66,26 +68,43 @@ const Form = styled.form`
 `;
 
 export default function ModalEditarGanhador() {
+  const setOpenModalEditarGanhador = useSetRecoilState(stateOpenModalEditarGanhador);
   const [novoGanhador, setNovoGanhador] = useRecoilState(stateNovoGanhador);
   const { handleFileChange } = useImageUpload(setNovoGanhador, novoGanhador);
+  const idModal = useRecoilValue(stateIdModal);
+  const [novoGanhadorInfo, setNovoGanhadorInfo] = useRecoilState(stateNovoGanhadorInfo);
+  const userLogin = useRecoilValue(stateUserLogin);
 
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setNovoGanhador((prevConfig) => ({
-  //     ...prevConfig,
-  //     [name]: value
-  //   }));
-  // };
+  console.log('DADOS EDITADOS', novoGanhador)
+  
+
+  useEffect(() => {
+    const obterDados = async () => {
+      const response = await fetchDados(`/admin/dashboard/cadastrar/ganhador/${idModal}`);
+
+      setNovoGanhador(response.data);
+    };  
+
+    obterDados();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleSaveChanges = async (event) => {
     event.preventDefault();
 
     try {
-      console.log('adicionarGanhador:', novoGanhador)
-      // const response = await postDados("http://seu-backend.com/api/site/config", siteConfig);
-      // setSiteConfig(response.data)
+      const response = await putDados("admin/dashboard/editar/ganhador", novoGanhador, userLogin);
+
+      console.log('DADOS ENVIADOS:', novoGanhador)
+
+      setNovoGanhadorInfo((prevGanhadorInfo) => [...prevGanhadorInfo, response.data]);
+      setNovoGanhador('');
+
+      setOpenModalEditarGanhador(false);
+
     } catch (error) {
       console.error("Erro ao enviar dados:", error);
+      console.log('DADOS ENVIADOS:', novoGanhador)
     }
   };
 
@@ -95,10 +114,9 @@ export default function ModalEditarGanhador() {
         Foto
         <input 
           type="file" 
-          name="imagem" 
+          name="img" 
           id="imagem" 
-          accept="image/png, image/jpeg, image/jpg"
-          defaultValue={novoGanhador.imagem || ""}  
+          accept="image/*"
           onChange={handleFileChange}
         />
       </label>
@@ -109,8 +127,20 @@ export default function ModalEditarGanhador() {
           type="text" 
           name="name" 
           id="name" 
-          defaultValue={novoGanhador.name || ""}  
+          defaultValue={novoGanhador?.client?.name || ""}  
           onChange={(e) => setNovoGanhador({ ...novoGanhador, name: e.target.value })} 
+          required
+        />
+      </label>
+
+      <label htmlFor="">
+        Telefone
+        <input 
+          type="text" 
+          name="cellphone" 
+          id="name" 
+          defaultValue={novoGanhador.cellphone || ""}  
+          onChange={(e) => setNovoGanhador({ ...novoGanhador, cellphone: e.target.value })} 
           required
         />
       </label>
@@ -121,9 +151,8 @@ export default function ModalEditarGanhador() {
           type="number" 
           name="number" 
           id="number" 
-          defaultValue={novoGanhador.number || ""}  
-          // onChange={handleChange} 
-          onChange={(e) => setNovoGanhador({ ...novoGanhador, numberCota: e.target.value })}
+          defaultValue={novoGanhador.ticket || ""}  
+          onChange={(e) => setNovoGanhador({ ...novoGanhador, ticket: e.target.value })} 
           required
         />
       </label>

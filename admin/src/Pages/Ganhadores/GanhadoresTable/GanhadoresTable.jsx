@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
-import { useRecoilState } from "recoil";
+import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components"
-import { stateOpenModalEditarGanhador } from "../../../common/states/atom";
+import { stateOpenModalEditarGanhador, stateNovoGanhadorInfo, stateIdModal } from "../../../common/states/atom";
 
 const Table = styled.table`
   width: 100%;
@@ -93,26 +93,33 @@ const Table = styled.table`
   }
 `;
 
-const ganhadoresData = [
-  {
-    imagem: "https://imagedelivery.net/TuyDlh37fwpu3jSKwZ3-9g/06f43084-aa29-480e-c4d9-36dfaaab8f00/thumb",
-    name: "Juliano Oliveira Amaral",
-    raffle: "F250 OU 50K NO PIX",
-    number: "007149",
-    date: "17/04/2024"
-  },
-  {
-    imagem: "https://imagedelivery.net/TuyDlh37fwpu3jSKwZ3-9g/06f43084-aa29-480e-c4d9-36dfaaab8f00/thumb",
-    name: "Fernanda Silva",
-    raffle: "SAVEIRO CROSS DOS SONHOS",
-    number: "005432",
-    date: "18/04/2024"
-  },
-  // Adicione mais objetos conforme necessário
-];
+// const ganhadoresData = [
+//   {
+//     imagem: "https://imagedelivery.net/TuyDlh37fwpu3jSKwZ3-9g/06f43084-aa29-480e-c4d9-36dfaaab8f00/thumb",
+//     name: "Juliano Oliveira Amaral",
+//     raffle: "F250 OU 50K NO PIX",
+//     number: "007149",
+//     date: "17/04/2024"
+//   },
+//   {
+//     imagem: "https://imagedelivery.net/TuyDlh37fwpu3jSKwZ3-9g/06f43084-aa29-480e-c4d9-36dfaaab8f00/thumb",
+//     name: "Fernanda Silva",
+//     raffle: "SAVEIRO CROSS DOS SONHOS",
+//     number: "005432",
+//     date: "18/04/2024"
+//   },
+//   // Adicione mais objetos conforme necessário
+// ];
 
 export default function GanhadoresTable() {  
   const [openModalEditarGanhador, setOpenModalEditarGanhador] = useRecoilState(stateOpenModalEditarGanhador);
+  const novoGanhadorInfo = useRecoilValue(stateNovoGanhadorInfo);
+  const setIdModal = useSetRecoilState(stateIdModal);
+
+  const handleModalId = (id) => {
+    setIdModal(id)
+    setOpenModalEditarGanhador(!openModalEditarGanhador)
+  }
 
   return (
     <div className="">
@@ -129,27 +136,33 @@ export default function GanhadoresTable() {
         </thead>
 
         <tbody>
-          {ganhadoresData.map((ganhador, index) => (
-            <tr key={index} className="raffle-item">
-              <td>
-                <img src={ganhador.imagem} alt={ganhador.name} />
-              </td>
-              <td>{ganhador.name}</td>
-              <td>{ganhador.raffle}</td>
-              <td>{ganhador.number}</td>
-              <td>{ganhador.date}</td>
-              <td>
-                <div className="button-group">
-                  <a href="#" className="button-edit" onClick={() => setOpenModalEditarGanhador(!openModalEditarGanhador)}>
-                    <i className="fas fa-edit"></i> Editar
-                  </a>
-                  <a className="button-delete" href="">
-                    <i className="fas fa-trash-alt"></i> Excluir
-                  </a>
-                </div>
-              </td>
+          {Array.isArray(novoGanhadorInfo) && novoGanhadorInfo.length > 0 ? (
+            novoGanhadorInfo.map((ganhador, index) => (
+              <tr key={index} className="raffle-item">
+                <td>
+                  <img src={`../../../../public/imgRifas/${ganhador?.img}`} alt="foto do ganhador" />
+                </td>
+                <td>{ganhador?.client?.name} {ganhador?.client?.surname}</td>
+                <td>{ganhador?.rifa.title}</td>
+                <td>{ganhador?.ticket}</td>
+                <td>{ganhador?.updated_at}</td>
+                <td>
+                  <div className="button-group">
+                    <a href="#" className="button-edit" onClick={() => handleModalId(ganhador.id)}>
+                      <i className="fas fa-edit"></i> Editar
+                    </a>
+                    <a className="button-delete" href="">
+                      <i className="fas fa-trash-alt"></i> Excluir
+                    </a>
+                  </div>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="6">Nenhum ganhador encontrado</td>
             </tr>
-          ))}
+          )}
         </tbody>
       </Table>
     </div>

@@ -348,8 +348,8 @@ class RifasController extends Controller
             $rifaId = $request->input('rifa_id');
 
             // Usar o serviço para armazenar a imagem
-            $result = $this->rifaService->saveImage($imgBase64, $rifaId);
-
+            $resp = $this->rifaService->saveImage($imgBase64, $rifaId);
+            $result = RifaImage::createImage($resp['imgName'], $resp['rifaId']);
             return response()->json(["response" => $result, "msg" => $result ? "Imagem salva com sucesso." : "Erro ao salvar imagem."], $result ? 201 : 500);
         } catch (\Exception $e) {
             return response()->json(["response" => false, "msg" => "Erro ao processar a imagem.", "error" => $e->getMessage()], 500);

@@ -6,7 +6,7 @@ const useImageUpload = (setNovoGanhador, novoGanhador) => {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setNovoGanhador({ ...novoGanhador, image: reader.result });
+        setNovoGanhador({ ...novoGanhador, img: reader.result });
       };
       reader.readAsDataURL(file);
     }

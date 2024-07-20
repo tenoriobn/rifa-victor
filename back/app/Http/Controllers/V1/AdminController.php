@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
-use App\Models\V1\{Clients, Rifas};
+use App\Models\V1\{Clients, Rifas, RifaWinner};
 use App\Models\V1\RifaNumber;
 use Exception;
 use Illuminate\Http\Request;
@@ -97,15 +97,59 @@ class AdminController extends Controller
     }
     public function cadastrarGanhador(Request $request) {
         try {
-            dd( $request);
-            $ganhador = $this->rifaService->definirGanhador($request->numeroSorteado, $request->novoGanhadorPhone, $request->rifa_id);
+            $image = $this->rifaService->saveImage($request->img, $request->rifa_id);
+            $client = Clients::findClient( $request->cellphone);
+            if (!$client ) {
+                return response()->json(["success" => false, "msg" =>"Cliente não encontrado"], 404);
+            }
+            $winnerId = RifaWinner::defineWinner($request, $client->id, $image['imgName']);
+            $winner = RifaWinner::findWinner($winnerId->id);
 
-            return response()->json(["success" => true, "data" => $ganhador], 200);
+            return response()->json(["success" => true, "data" => $winner], 200);
+        } catch (Exception $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
+        }
+    }
+    public function getOneGanhador($id) {
+        try {
+            $winner = RifaWinner::findWinner($id);
+            if (!$winner ) {
+                return response()->json(["success" => false, "msg" =>"Vencedor não encontrado"], 404);
+            }
+            return response()->json(["success" => true, "data" => $winner], 200);
+        } catch (Exception $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
+        }
+    }
+    public function editarGanhador(Request $request) {
+        try {
+            $winner = RifaWinner::findWinner($request->id);
+            if (!$winner ) {
+                return response()->json(["success" => false, "msg" =>"Vencedor não encontrado"], 404);
+            }
+
+                $image = $this->rifaService->saveImage($request->img, $request->rifas_id);
+
+            RifaWinner::editarWinner($request, $image['imgName']);
+
+            return response()->json(["success" => true, "data" => $winner], 200);
         } catch (Exception $e) {
             return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
         }
     }
 
+    public function destroyGanhador(Request $request) {
+        try {
+            $winner = RifaWinner::findWinner($request->winner_id);
+            if (!$winner ) {
+                return response()->json(["success" => false, "msg" =>"Vencedor não encontrado"], 404);
+            }
+            $winner->delete();
+            return response()->json(["success" => true, "data" => "Ganhador excluído com sucesso!"], 201);
+        } catch (Exception $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
+        }
+    }
     public function adicionarNumerosRifas(Request $request) {
         try {
             $client = $this->rifaService->adicionarNumerosRifasClient($request->cellphone, $request->qntd_number, $request->rifa_id);

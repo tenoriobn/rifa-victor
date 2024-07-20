@@ -78,7 +78,8 @@ class RifaService
         file_put_contents($reactImagePathFront, $imgData);
 
         // Salvar a imagem no banco de dados
-        return RifaImage::createImage($imgName, $rifaId);
+        return ["imgName" => $imgName, "rifaId" => $rifaId];
+        // return RifaImage::createImage($imgName, $rifaId);
     }
 
     public function procurarGanhador($numeroWinner, $rifasId)

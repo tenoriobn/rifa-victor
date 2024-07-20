@@ -76,6 +76,16 @@ export const stateOpenModalNovoGanhador = atom({
   default: false,
 });
 
+export const stateNovoGanhador = atom({
+  key: 'stateNovoGanhador',
+  default: {},
+})
+
+export const stateNovoGanhadorInfo = atom({
+  key: 'stateNovoGanhadorInfo',
+  default: {},
+})
+
 export const stateOpenModalEditarGanhador = atom({
   key: 'stateOpenModalEditarGanhador',
   default: false,
@@ -173,10 +183,7 @@ export const stateSiteConfig = atom({
   default: {},
 })
 
-export const stateNovoGanhador = atom({
-  key: 'stateNovoGanhador',
-  default: {},
-})
+
 
 export const stateVisibilidadeColunaTabelaRanking = atom({
   key: 'stateVisibilidadeColunaTabelaRanking',
