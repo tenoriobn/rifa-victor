@@ -2,7 +2,7 @@
 import SinalMenos from "../../assets/Icons/sinalMenos.svg?react";
 import SinalMais from "../../assets/Icons/sinalMais.svg?react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { estadoRifa, estadoValorRange } from "../../common/state/atom";
+import { estadoPacoteSelecionado, estadoRifa, estadoValorRange } from "../../common/state/atom";
 import useOperacoesInputRange from "../../common/state/hooks/inputRange/useOperacoesInputRange";
 import { useEffect } from "react";
 
@@ -10,10 +10,21 @@ export default function InputRange() {
   const [valorRange, setValorRange] = useRecoilState(estadoValorRange);
   const { calcularPorcentagem, decrementarValor, incrementarValor, } = useOperacoesInputRange();
   const rifa = useRecoilValue(estadoRifa)
+  const [pacoteSelecionado, setPacoteSelecionado] = useRecoilState(estadoPacoteSelecionado);
 
   useEffect(() => {
     setValorRange(rifa.cota.qntd_cota_min_order)
   }, []);
+
+  const handleButtonQntd = (type, value) => {
+    if (type === 'incrementar') {
+      incrementarValor(value);
+    } else if (type === 'decrementar') {
+      decrementarValor(value);
+    }
+
+    setPacoteSelecionado({...pacoteSelecionado, id: ''})
+  }
 
   return (
     <>
@@ -27,14 +38,14 @@ export default function InputRange() {
       >
         <button 
           className="inline-flex items-center h-10 w-10 text-xl shrink-0 justify-center text-white font-bold rounded-full bg-amber-500 hover:bg-amber-600 transition-all duration-300 disabled:bg-neutral-400 active:scale-110"
-          onClick={() => decrementarValor(5)}
+          onClick={() => handleButtonQntd('decrementar', 5)}
         > 
           -5 
         </button>
 
         <button 
           className="inline-flex items-center justify-center text-white rounded-full bg-amber-500 hover:bg-amber-600 transition-all duration-300 disabled:bg-neutral-400 active:scale-110"
-          onClick={() => decrementarValor(1)}
+          onClick={() => handleButtonQntd('decrementar', 1)}
         >
             <SinalMenos />
         </button>
@@ -47,14 +58,14 @@ export default function InputRange() {
 
         <button 
           className="inline-flex items-center justify-center text-white rounded-full bg-amber-500 hover:bg-amber-600 transition-all duration-300 disabled:bg-neutral-400 active:scale-110"
-          onClick={() => incrementarValor(1)}
+          onClick={() => handleButtonQntd('incrementar', 1)}
         >
           <SinalMais />
         </button>
 
         <button 
           className="inline-flex items-center h-10 w-10 text-xl shrink-0 justify-center text-white font-bold rounded-full bg-amber-500 hover:bg-amber-600 transition-all duration-300 disabled:bg-neutral-400 active:scale-110 "
-          onClick={() => incrementarValor(5)}
+          onClick={() => handleButtonQntd('incrementar', 5)}
         > 
             +5 
         </button>
@@ -63,7 +74,9 @@ export default function InputRange() {
       <div className="flex justify-between text-xs gap-2 items-center mb-4">
         <p className="font-bold">{rifa.cota.qntd_cota_min_order} </p>
 
-        <div className="relative w-full flex items-center h-5">
+        <div className="relative w-full flex items-center h-5"
+          onClick={() => setPacoteSelecionado({...pacoteSelecionado, id: ''})}
+        >
           <input 
             min={rifa.cota.qntd_cota_min_order} 
             max={rifa.cota.qntd_cota_max_order}
