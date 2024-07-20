@@ -1,16 +1,27 @@
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { Main } from "../../components/AdminLayout/AdminLayout";
 import Header from "../../components/Header/Header";
 import Titulo from "../../components/Titulo/Titulo";
 import PedidosForm from "./PedidosForm/PedidosForm";
 import PedidosPagination from "./PedidosPagination/PedidosPagination";
 import PedidosTable from "./PedidosTable/PedidosTable";
-import { stateOpenModalVerCota } from "../../common/states/atom";
+import { stateOpenModalVerCota, statePedidosInfo } from "../../common/states/atom";
 import Modal from "../../components/Modal/Modal";
 import ModalPedido from "./ModalPedido/ModalPedido";
 
 export default function Pedidos() {
   const [openModalVerCota, setOpenModalVerCota] = useRecoilState(stateOpenModalVerCota);
+  // const setPedidosInfo =  useSetRecoilState(statePedidosInfo);
+
+  // const obterDados = async () => {
+  //   const response = await fetchDados(`/produtos/todos/ganhadores/`);
+  //   setPedidosInfo (response.data);
+  //   console.log('response.data', response.data);
+  // };
+
+  // useEffect(() => {
+  //   obterDados();
+  // }, []);
 
   return (
     <section>

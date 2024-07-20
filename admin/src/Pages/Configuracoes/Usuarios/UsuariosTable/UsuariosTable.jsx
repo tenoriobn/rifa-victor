@@ -56,8 +56,21 @@ const Table = styled.table`
     align-items: center;
   }
 
+  .status-pago {
+    background-color: #28a745;
+  }
+
   .status-rescued {
     background-color: #6f42c1;
+  }
+
+  
+  .button-divergente {
+    background-color: #0d6efd;
+  }
+
+  .button-dashboard {
+    background-color: #1cc88a;
   }
 
   .button-edit {
@@ -95,6 +108,37 @@ const Table = styled.table`
 
 export default function UsuariosTable() {
   const [openModalEditarUsuario, setOpenModalEditarUsuario] = useRecoilState(stateOpenModalEditarUsuario);
+
+  const userItems = [
+    {
+      name: "Ana Lima",
+      phone: "(43) 99640-3859",
+      email: "anaplima2001@gmail.com",
+      status: "administrador",
+      date: "15/04/24 15:02"
+    },
+    {
+      name: "Ana Lima",
+      phone: "(43) 99640-3859",
+      email: "anaplima2001@gmail.com",
+      status: "usuario",
+      date: "15/04/24 15:02"
+    },
+    {
+      name: "Ana Lima",
+      phone: "(43) 99640-3859",
+      email: "anaplima2001@gmail.com",
+      status: "suporte",
+      date: "15/04/24 15:02"
+    },
+    {
+      name: "Ana Lima",
+      phone: "(43) 99640-3859",
+      email: "anaplima2001@gmail.com",
+      status: "superadmin",
+      date: "15/04/24 15:02"
+    }
+  ];
   
   return (
     <div className="">
@@ -111,26 +155,40 @@ export default function UsuariosTable() {
         </thead>
 
         <tbody>
-        <tr className="raffle-item">
-          <td>Ana Lima</td>
-          <td align="center">(43) 99640-3859</td>
-          <td align="center">anaplima2001@gmail.com</td>
-          <td align="center">
-            <span className="status-tag status-rescued">Administrador</span>                            </td>
-          <td align="center">15/04/24 15:02</td>
-          <td align="center">
-            <div className="button-group">
-              <a className="button-edit" onClick={() => setOpenModalEditarUsuario(!openModalEditarUsuario)}>
-                <i className="fas fa-edit"></i> Editar
-              </a>
-              <a href="#" 
-                className="button-delete"
-              >
-                <i className="fas fa-trash-alt"></i> Excluir
-              </a>
-            </div>
-          </td>
-        </tr>
+          {userItems.map((item, index) => (
+            <tr key={index} className="raffle-item">
+              <td>{item.name}</td>
+              <td align="center">{item.phone}</td>
+              <td align="center">{item.email}</td>
+              <td align="center">
+                <span 
+                  className={`status-tag ${
+                    item.status === 'administrador' ? 'status-pago' :
+                    item.status === 'usuario' ? 'status-rescued' :
+                    item.status === 'suporte' ? 'button-dashboard' :
+                    item.status === 'superadmin' ? 'button-divergente' :
+                    ''
+                  }`}
+                >
+                  {item.status}
+                </span>
+              </td>
+              <td align="center">{item.date}</td>
+              <td align="center">
+                <div className="button-group">
+                  <a
+                    className="button-edit"
+                    onClick={() => setOpenModalEditarUsuario(!openModalEditarUsuario)}
+                  >
+                    <i className="fas fa-edit"></i> Editar
+                  </a>
+                  <a href="#" className="button-delete">
+                    <i className="fas fa-trash-alt"></i> Excluir
+                  </a>
+                </div>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </Table>
     </div>

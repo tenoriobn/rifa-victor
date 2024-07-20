@@ -258,11 +258,51 @@ export const statePacote = atom({
   },
 });
 
+export const statePedidosInfo = atom({
+  key: 'statePedidosInfo',
+  default: []
+})
+
+export const statePedidosInfoModal = atom({
+  key: 'statePedidosInfoModal',
+  default: {}
+})
+
+export const stateClientesInfo = atom({
+  key: 'stateClientesInfo',
+  default: []
+})
+
+export const openModalVerInfoCliente = atom({
+  key: 'openModalVerInfoCliente',
+  default: false
+})
+
+export const stateOpenModalEditarInfoCliente = atom({
+  key: 'stateOpenModalEditarInfoCliente',
+  default: false
+})
+
+// export const PedidosInfoModal = atom({
+//   key: 'statePedidosInfoModal',
+//   default: []
+// })
+
+export const stateRankingInfoModal = atom({
+  key: 'stateRankingInfoModal',
+  default: []
+})
+
 
 // SUPER ADMIN -> Definir Ganhador
 export const stateInfoCotaSorteada = atom({
   key: 'stateInfoCotaSorteada',
   default: '',
+});
+
+export const stateAtualizaTableInfoCotaSorteada = atom({
+  key: 'stateAtualizaTableInfoCotaSorteada',
+  default: false,
 });
 
 export const stateInfoBilhetePremiado = atom({

@@ -9,6 +9,7 @@ import { stateOpenModalAdicionarBilhetePremiado, stateOptionsRifa } from "../../
 import ModalAdicionarBilhetePremiado from "./ModalAdicionarBilhetePremiado/ModalAdicionarBilhetePremiado";
 import { useEffect } from "react";
 import { fetchDados } from "../../../common/http/http";
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function AdicionarBilhetePremiado() {
   const [openModalAdicionarBilhetePremiado, setOpenModalAdicionarBilhetePremiado] = useRecoilState(stateOpenModalAdicionarBilhetePremiado);
@@ -28,6 +29,14 @@ export default function AdicionarBilhetePremiado() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const notifySuccess = (message) => {
+    toast.success(message);
+  };
+
+  const notifyError = (message) => {
+    toast.error(message);
+  };
+
   return (
     <section>
       <Header>
@@ -40,9 +49,11 @@ export default function AdicionarBilhetePremiado() {
         <FiltroUsuarioTable />
       </Main>
 
-      <Modal title="DEFINIR GANHADOR" openState={openModalAdicionarBilhetePremiado} setOpenState={setOpenModalAdicionarBilhetePremiado}>
-        <ModalAdicionarBilhetePremiado />
+      <Modal title="BILHETE PREMIADO" openState={openModalAdicionarBilhetePremiado} setOpenState={setOpenModalAdicionarBilhetePremiado}>
+        <ModalAdicionarBilhetePremiado onNotifySuccess={notifySuccess} onNotifyError={notifyError} />
       </Modal>
+
+      <ToastContainer theme="colored" />
     </section>
   )
 }

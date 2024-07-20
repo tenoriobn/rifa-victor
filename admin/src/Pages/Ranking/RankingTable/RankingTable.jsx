@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { stateOpenModalVerInfoCliente, stateVisibilidadeColunaTabelaRanking } from "../../../common/states/atom";
+import { stateOpenModalVerInfoCliente, stateRankingInfoModal, stateVisibilidadeColunaTabelaRanking } from "../../../common/states/atom";
 
 export const Table = styled.table`
   width: 100%;
@@ -64,6 +64,37 @@ export const Table = styled.table`
 export default function RankingTable() {
   const isibilidadeColunaTabelaRanking = useRecoilValue(stateVisibilidadeColunaTabelaRanking);
   const [openModalVerInfoCliente, setOpenModalVerInfoCliente] = useRecoilState(stateOpenModalVerInfoCliente);
+  const setRankingInfoModal = useRecoilState(stateRankingInfoModal);
+
+  const handleButtonId = async (id) => {
+    setOpenModalVerInfoCliente(!openModalVerInfoCliente)
+    // const response = await fetchDados(`admin/dashboard/pacote/${id}`);
+    // setRankingInfoModal(response.data);
+  }
+
+  const dadosTabela = [
+    {
+      id: 1,
+      posicao: "1º",
+      cliente: "Rafaela Souza",
+      telefone: "(43) 996XX-XX19",
+      cidade: "Quatiguá/Paraná",
+      sorteio: "SAVEIRO CROSS DOS SONHOS",
+      quantidade: 170,
+      total: "R$ 17,00",
+    },
+    {
+      id: 2,
+      posicao: "2º",
+      cliente: "João Silva",
+      telefone: "(43) 997XX-XX20",
+      cidade: "Londrina/Paraná",
+      sorteio: "CARRO DOS SONHOS",
+      quantidade: 150,
+      total: "R$ 15,00",
+    },
+    // Adicione mais objetos conforme necessário
+  ];
 
   return (
     <div>
@@ -82,52 +113,54 @@ export default function RankingTable() {
         </thead>
 
         <tbody>
-          <tr>
-            {isibilidadeColunaTabelaRanking.posicao && (
-              <td align="center" className="posicao">
-                <b>1º</b>
-              </td>
-            )}
-            {isibilidadeColunaTabelaRanking.cliente && (
-              <td align="center" className="cliente">
-                <a href="https://dash.alimaprojetos.com/dashboard/pedidos?id_customer=265287" target="_blank">
-                  Rafaela Souza
-                </a>
-              </td>
-            )}
-            {isibilidadeColunaTabelaRanking.telefone && (
-              <td align="center" className="telefone">
-                (43) 996XX-XX19
-              </td>
-            )}
-            {isibilidadeColunaTabelaRanking.cidade && (
-              <td align="center" className="cidade">
-                Quatiguá/Paraná
-              </td>
-            )}
-            {isibilidadeColunaTabelaRanking.sorteio && (
-              <td align="center" className="sorteio">
-                SAVEIRO CROSS DOS SONHOS
-              </td>
-            )}
-            {isibilidadeColunaTabelaRanking.quantidade && (
-              <td align="center" className="quantidade">
-                170
-              </td>
-            )}
-            {isibilidadeColunaTabelaRanking.total && (
-              <td align="center" className="total">
-                <b>R$ 17,00</b>
-              </td>
-            )}
-            {isibilidadeColunaTabelaRanking.acoes && (
-              <td align="center" className="acoes">
-                <button className="button-view" onClick={() => setOpenModalVerInfoCliente(!openModalVerInfoCliente)}>
-                  <i className="fas fa-eye"></i> VER
-                </button>
-              </td>
-            )}
-          </tr>
+          {dadosTabela.map((item) => (
+            <tr key={item.id}>
+              {isibilidadeColunaTabelaRanking.posicao && (
+                <td align="center" className="posicao">
+                  <b>{item.posicao}</b>
+                </td>
+              )}
+              {isibilidadeColunaTabelaRanking.cliente && (
+                <td align="center" className="cliente">
+                  <a href={`https://dash.alimaprojetos.com/dashboard/pedidos?id_customer=${item.id}`} target="_blank" rel="noopener noreferrer">
+                    {item.cliente}
+                  </a>
+                </td>
+              )}
+              {isibilidadeColunaTabelaRanking.telefone && (
+                <td align="center" className="telefone">
+                  {item.telefone}
+                </td>
+              )}
+              {isibilidadeColunaTabelaRanking.cidade && (
+                <td align="center" className="cidade">
+                  {item.cidade}
+                </td>
+              )}
+              {isibilidadeColunaTabelaRanking.sorteio && (
+                <td align="center" className="sorteio">
+                  {item.sorteio}
+                </td>
+              )}
+              {isibilidadeColunaTabelaRanking.quantidade && (
+                <td align="center" className="quantidade">
+                  {item.quantidade}
+                </td>
+              )}
+              {isibilidadeColunaTabelaRanking.total && (
+                <td align="center" className="total">
+                  <b>{item.total}</b>
+                </td>
+              )}
+              {isibilidadeColunaTabelaRanking.acoes && (
+                <td align="center" className="acoes">
+                  <button className="button-view" onClick={() => handleButtonId(item.id)}>
+                    <i className="fas fa-eye"></i> VER
+                  </button>
+                </td>
+              )}
+            </tr>
+          ))}
         </tbody>
       </Table>
     </div>

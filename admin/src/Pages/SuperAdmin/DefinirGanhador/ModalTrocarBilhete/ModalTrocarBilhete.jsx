@@ -1,8 +1,10 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components"
-import { stateInfoCotaSorteada } from "../../../../common/states/atom";
+import { stateAtualizaTableInfoCotaSorteada, stateInfoCotaSorteada, stateOpenModalNovoGanhador } from "../../../../common/states/atom";
 import { postDados } from "../../../../common/http/http";
+import { PatternFormat } from "react-number-format";
 
 const Form = styled.form`
   font-size: .9rem;
@@ -60,22 +62,26 @@ const Form = styled.form`
   }
 `;
 
-export default function ModalTrocarBilhete() {
+export default function ModalTrocarBilhete({ onNotifySuccess, onNotifyError }) {
+  const setOpenModalNovoGanhador = useSetRecoilState(stateOpenModalNovoGanhador);
   const infoCotaSorteada = useRecoilValue(stateInfoCotaSorteada);
+  const setAtualizaTableInfoCotaSorteada = useSetRecoilState(stateAtualizaTableInfoCotaSorteada);
   const [cota, setCota] = useState(infoCotaSorteada.search);
   const [number, setNumber] = useState("");
   const rifaId = infoCotaSorteada.data.data.rifa.id;
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       const response = await postDados("/admin/dashboard/rifa/definir-ganhador", { numeroSorteado: cota, novoGanhadorPhone: number,  rifa_id: rifaId});
-
+      setOpenModalNovoGanhador(false);
+      onNotifySuccess('Ganhador definido com sucesso!');
+      setAtualizaTableInfoCotaSorteada(true);
       console.log('trocado', response)
 
     } catch (error) {
+      onNotifyError('Erro ao definir ganhador:');
       console.error("Erro ao trocar bilhete:", error);
     }
   };
@@ -90,13 +96,15 @@ export default function ModalTrocarBilhete() {
           id="cota"
           value={cota}
           onChange={(e) => setCota(e.target.value)}
+          disabled
           required
         />
       </label>
 
       <label htmlFor="number">
         Telefone do novo vencedor
-        <input
+        <PatternFormat
+          format="(##) #####-####"
           type="text"
           name="number"
           id="number"

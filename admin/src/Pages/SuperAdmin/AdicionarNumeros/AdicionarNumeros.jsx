@@ -10,13 +10,11 @@ import FiltroUsuarioForm from "./FiltroUsuarioForm/FiltroUsuarioForm";
 import FiltroUsuarioTable from "./FiltroUsuarioTable/FiltroUsuarioTable";
 import { fetchDados } from "../../../common/http/http";
 import { useEffect } from "react";
-
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function AdicionarNumeros() {
   const [openModalAdicionarNumeros, setOpenModalAdicionarNumeros] = useRecoilState(stateOpenModalAdicionarNumeros);
   const [optionsRifa, setOptionsRifa] = useRecoilState(stateOptionsRifa);
-
-  console.log('optionsRifa', optionsRifa)
 
   useEffect(() => {
     const obterDados = async () => {
@@ -28,6 +26,14 @@ export default function AdicionarNumeros() {
 
     obterDados();
   }, []);
+
+  const notifySuccess = (message) => {
+    toast.success(message);
+  };
+
+  const notifyError = (message) => {
+    toast.error(message);
+  };
 
   return (
     <section>
@@ -42,8 +48,10 @@ export default function AdicionarNumeros() {
       </Main>
 
       <Modal title="ADICIONAR NÚMEROS" openState={openModalAdicionarNumeros} setOpenState={setOpenModalAdicionarNumeros}>
-        <ModalAdicionarNumeros />
+        <ModalAdicionarNumeros onNotifySuccess={notifySuccess} onNotifyError={notifyError} />
       </Modal>
+
+      <ToastContainer theme="colored" />
     </section>
   )
 }

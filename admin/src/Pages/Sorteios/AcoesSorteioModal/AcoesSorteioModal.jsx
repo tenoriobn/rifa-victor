@@ -123,7 +123,7 @@ export default function AcoesSorteioModal() {
           key={link.id}
           id={link.id}
           className={link.className}
-          to={`${link.to}${idModalAcoesSorteio}`}
+          to={link.id === "btn_afiliados" ? link.to : `${link.to}${idModalAcoesSorteio}`}
           onClick={() => setOpenModalAcoesSorteio(false)}
         >
           <i className={link.iconClass}></i> {link.text}

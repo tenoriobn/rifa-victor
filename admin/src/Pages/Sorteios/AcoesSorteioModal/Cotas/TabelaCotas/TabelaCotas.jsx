@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { stateCotasPremiadas, stateIdModal, stateOpenModalCotaPremiada, stateOpenModalEditarCotaPremiada, stateTabelaCotasInfo, stateUserLogin } from "../../../../../common/states/atom";
 import { deleteDados, fetchDados } from "../../../../../common/http/http";
 import { useParams } from "react-router-dom";
+import useFormattedDate from "../../../../../common/states/Hook/useFormattedDate";
 
 export const Table = styled.table`
   width: 100%;
@@ -120,6 +121,7 @@ export default function TabelaCotas() {
   const setCotaPremiada = useSetRecoilState(stateCotasPremiadas)
   const userLogin = useRecoilValue(stateUserLogin);
   const { id } = useParams();
+  const { formattedDate } = useFormattedDate();
 
   const handleEditar = async (idModal) => {
     setOpenModalEditarCotaPremiada(!openModalEditarCotaPremiada)
@@ -139,6 +141,8 @@ export default function TabelaCotas() {
     setTabelaCotasInfo(response.data);
     setIdModal(idCotaPremiada);
   }
+
+  console.log(tabelaCotasInfo)
 
   return (
     <div>
@@ -165,7 +169,7 @@ export default function TabelaCotas() {
               <td><b>{cota.number_cota}</b></td>
               <td>{cota.award}</td>
               <td>
-                <span className={`status-tag ${cota.status === 'resgatada' ? 'status-rescued' : cota.status === 'reservada' ? 'status-reserved' : 'status-available'}`}>
+                <span className={`status-tag ${cota.status === 'disponivel' ? 'status-available' : cota.status === 'imediato' ? 'status-rescued' : 'status-reserved'}`}>
                   {cota.status}
                 </span>
               </td>
@@ -174,8 +178,8 @@ export default function TabelaCotas() {
                   {cota.show_site}
                 </span>
               </td>
-              <td>{cota.created_at}</td>
-              <td>{cota.updated_at}</td>
+              <td>{formattedDate(cota.created_at)}</td>
+              <td>{formattedDate(cota.updated_at)}</td>
               <td>
                 <div className="button-group">
                   {cota.status === "resgatada" && 

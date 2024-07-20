@@ -27,7 +27,7 @@ export default function FormularioCadastro() {
 
       await login(dadosParaEnviar.cellphone);
 
-      setErroCadastro(false)
+      setErroCadastro(false);
 
     } catch (error) {
       setFinalizarPedido(false);

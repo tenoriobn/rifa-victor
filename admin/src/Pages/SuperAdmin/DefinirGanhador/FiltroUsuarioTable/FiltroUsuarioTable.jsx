@@ -2,6 +2,7 @@
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components"
 import { stateInfoCotaSorteada, stateOpenModalNovoGanhador } from "../../../../common/states/atom";
+import useFormattedDate from "../../../../common/states/Hook/useFormattedDate";
 
 const Table = styled.table`
   width: 100%;
@@ -95,6 +96,7 @@ const Table = styled.table`
 export default function FiltroUsuarioTable() {  
   const [openModalNovoGanhador, setOpenModalNovoGanhador] = useRecoilState(stateOpenModalNovoGanhador);
   const infoCotaSorteada = useRecoilValue(stateInfoCotaSorteada);
+  const { formattedDate } = useFormattedDate();
 
   const infoCota = infoCotaSorteada.data?.data;
   const numeroVencedor = infoCotaSorteada.search;
@@ -119,7 +121,7 @@ export default function FiltroUsuarioTable() {
               <td>{infoCota?.client?.name} {infoCota?.client?.surname}</td>
               <td>{infoCota?.rifa?.title}</td>
               <td>{numeroVencedor}</td>
-              <td>{infoCota?.created_at}</td>
+              <td>{formattedDate(infoCota?.created_at)}</td>
               <td>
                 <div className="button-group">
                   <a

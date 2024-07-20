@@ -25,10 +25,6 @@ export default function Pacotes() {
     const obterDados = async () => {
       const response = await fetchDados(`/admin/dashboard/todos-pacotes/${id}`, userLogin);
       setTabelaPacotesInfo(response.data);
-
-      console.log(response.data);
-
-      console.log('tabelaPacotesInf', tabelaPacotesInfo);
     
     };
     if (id) {

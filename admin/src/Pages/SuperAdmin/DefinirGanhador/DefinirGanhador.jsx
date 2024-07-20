@@ -10,6 +10,7 @@ import Titulo from "../../../components/Titulo/Titulo";
 import { stateOpenModalNovoGanhador, stateOptionsRifa } from "../../../common/states/atom";
 import { fetchDados } from "../../../common/http/http";
 import { useEffect } from "react";
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function DefinirGanhador() {
   const [openModalNovoGanhador, setOpenModalNovoGanhador] = useRecoilState(stateOpenModalNovoGanhador);
@@ -25,6 +26,14 @@ export default function DefinirGanhador() {
     obterDados();
   }, []);
 
+  const notifySuccess = (message) => {
+    toast.success(message);
+  };
+
+  const notifyError = (message) => {
+    toast.error(message);
+  };
+
   return (
     <section>
       <Header>
@@ -38,8 +47,10 @@ export default function DefinirGanhador() {
       </Main>
 
       <Modal title="DEFINIR GANHADOR" openState={openModalNovoGanhador} setOpenState={setOpenModalNovoGanhador}>
-        <ModalTrocarBilhete />
+        <ModalTrocarBilhete onNotifySuccess={notifySuccess} onNotifyError={notifyError} />
       </Modal>
+
+      <ToastContainer theme="colored" />
     </section>
   )
 }

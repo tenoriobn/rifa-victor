@@ -29,7 +29,7 @@ export default function Footer() {
             <span className="font-semibold">OVERZ</span> a Plataforma Líder em Gestão de Sorteios!
           </p>
 
-          <a href="mailto:reidopix@email.com" className="px-2 border">CONTATO</a>
+          <a href="https://wa.me/+5537998127715" className="px-2 border" target="_blank">CONTATO</a>
         </div>
       </div>
     </footer>

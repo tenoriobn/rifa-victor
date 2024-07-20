@@ -34,6 +34,8 @@ export default function AcessoUsuario() {
 
   }, [id]);
 
+  console.log('range: ', valorRange)
+
   useEffect(() => {
     if (usuario?.id && finalizarPedido) {
       const dadosParaEnviar = {
@@ -61,7 +63,7 @@ export default function AcessoUsuario() {
 
       enviarDados();
     }
-  }, [usuario, finalizarPedido, valorCompra, estadoValorRange, id, navigate, setFinalizarPedido]);
+  }, [usuario, finalizarPedido, valorCompra, valorRange, id, navigate, setFinalizarPedido]);
 
   useEffect(() => {
     if (checkoutReq.success === true && checkoutReq.data.id) {
@@ -75,6 +77,8 @@ export default function AcessoUsuario() {
   const handleClick = () => {
     setFinalizarPedido(true);
   };
+
+  console.log(erroCadastro)
 
   return (
     <motion.div {...animacao}>
