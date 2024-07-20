@@ -40,6 +40,11 @@ const Table = styled.table`
     border-bottom-right-radius: .3125rem;
   }
 
+  .ganhador img {
+    max-width: 200px;
+    width: 100%;
+  }
+
   .status-tag {
     padding: .3125rem .625rem;
     border-radius: .3125rem;
@@ -141,7 +146,7 @@ export default function GanhadoresTable() {
           {Array.isArray(novoGanhadorInfo) && novoGanhadorInfo.length > 0 ? (
             novoGanhadorInfo.map((ganhador, index) => (
               <tr key={index} className="raffle-item">
-                <td>
+                <td className="ganhador">
                   <img src={`../../../../public/imgRifas/${ganhador?.img}`} alt="foto do ganhador" />
                 </td>
                 <td>{ganhador?.client?.name} {ganhador?.client?.surname}</td>

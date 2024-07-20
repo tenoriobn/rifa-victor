@@ -1,7 +1,8 @@
 /* eslint-disable react/prop-types */
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { stateOpenModalVerCota } from "../../../common/states/atom";
+import { stateOpenModalVerCota, statePedidosInfoModal } from "../../../common/states/atom";
+import { deleteDados, fetchDados } from "../../../common/http/http";
 
 export const Table = styled.table`
   width: 100%;
@@ -122,8 +123,10 @@ export const Table = styled.table`
 
 export default function PedidosTable() {
   const [openModalVerCota, setOpenModalVerCota] = useRecoilState(stateOpenModalVerCota);
+  const setPedidosInfoModal = useRecoilState(statePedidosInfoModal);
+  // const pedidosInfo =  useRecoilValue(statePedidosInfo);
 
-  const raffleItems = [
+  const pedidosInfo = [
     {
       id: 1,
       number: "2386050",
@@ -178,6 +181,17 @@ export default function PedidosTable() {
     },
   ];
 
+  const handleButtonId = async (id) => {
+    setOpenModalVerCota(!openModalVerCota)
+    // const response = await fetchDados(`admin/dashboard/pacote/${id}`);
+    // setPedidosInfoModal(response.data);
+  }
+
+  const handleDeletar = async (idPedido) => {
+    // const response = await deleteDados(`admin/dashboard/bilhete-premiado/delete/${idPedido}/${id}`, userLogin);
+    // setTabelaCotasInfo(response.data);
+  }
+
   return (
     <div>
       <Table>
@@ -197,7 +211,7 @@ export default function PedidosTable() {
         </thead>
 
         <tbody>
-          {raffleItems.map(item => (
+          {pedidosInfo.map(item => (
             <tr key={item.id} className="raffle-item">
               <td>#{item.id}</td>
               <td>{item.number}</td>
@@ -228,10 +242,10 @@ export default function PedidosTable() {
               </td>
               <td>
                 <div className="button-group">
-                  <button className="button-view" onClick={() => setOpenModalVerCota(!openModalVerCota)}>
+                  <button className="button-view" onClick={() => handleButtonId(item.id)}>
                     <i className="fas fa-eye"></i> VER
                   </button>
-                  <a href={item.cancelUrl} className="button-delete">
+                  <a href={item.cancelUrl} className="button-delete" onClick={() => handleDeletar(item.id)}>
                     <i className="fas fa-ban"></i> Cancelar
                   </a>
                 </div>

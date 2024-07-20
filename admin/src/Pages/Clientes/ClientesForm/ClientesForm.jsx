@@ -101,36 +101,12 @@ export default function ClientesForm() {
       </div>
 
       <div className="filter-item">
-        <label htmlFor="cpf">CPF:</label>
-        <input
-          type="text"
-          name="cpf"
-          placeholder="Pesquise pelo CPF"
-          value={filtro.cpf}
-          onChange={handleChange}
-          autoComplete="off"
-        />
-      </div>
-
-      <div className="filter-item">
         <label htmlFor="phone">Telefone:</label>
         <input
           type="text"
           name="phone"
           placeholder="Pesquise pelo telefone"
           value={filtro.phone}
-          onChange={handleChange}
-          autoComplete="off"
-        />
-      </div>
-
-      <div className="filter-item">
-        <label htmlFor="email">E-mail:</label>
-        <input
-          type="text"
-          name="email"
-          placeholder="Pesquise pelo email"
-          value={filtro.email}
           onChange={handleChange}
           autoComplete="off"
         />

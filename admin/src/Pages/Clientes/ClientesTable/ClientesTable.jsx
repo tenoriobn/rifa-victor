@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { stateOpenModalVerInfoCliente } from "../../../common/states/atom";
+import { stateClientesInfo, stateIdModal, stateOpenModalEditarInfoCliente, stateOpenModalVerInfoCliente } from "../../../common/states/atom";
 
 export const Table = styled.table`
   width: 100%;
@@ -108,6 +108,41 @@ export const Table = styled.table`
 
 export default function ClientesTable() {
   const [openModalVerInfoCliente, setOpenModalVerInfoCliente] = useRecoilState(stateOpenModalVerInfoCliente);
+  const [openModalEditarInfoCliente, setOpenModalEditarInfoCliente] = useRecoilState(stateOpenModalEditarInfoCliente);
+  const setIdModal = useSetRecoilState(stateIdModal);
+  // const clientesInfo = useRecoilValue(stateClientesInfo);
+
+  const clientesInfo = [
+    {
+      id: "#1",
+      nome: "André Luiz",
+      telefone: "(11)98888-7777",
+      status: "nao",
+    },
+    {
+      id: "#2",
+      nome: "André Luiz",
+      telefone: "(11)98888-7777",
+      status: "sim",
+    },
+    {
+      id: "#3",
+      nome: "André Luiz",
+      telefone: "(11)98888-7777",
+      status: "sim",
+    }
+  ];
+
+  const handleButtonId = async (id) => {
+    setOpenModalVerInfoCliente(!openModalVerInfoCliente)
+    // const response = await fetchDados(`admin/dashboard/pacote/${id}`);
+    // setPedidosInfoModal(response.data);
+  }
+
+  const handleModalId = (id) => {
+    setIdModal(id)
+    setOpenModalEditarInfoCliente(!openModalEditarInfoCliente)
+  }
 
   return (
     <div>
@@ -116,8 +151,6 @@ export default function ClientesTable() {
           <tr>
             <th>#</th>
             <th>Nome</th>
-            <th>CPF</th>
-            <th>E-mail</th>
             <th>Telefone</th>
             <th>Cadastrado</th>
             <th>Ações</th>
@@ -125,27 +158,37 @@ export default function ClientesTable() {
         </thead>
 
         <tbody>
-          <tr className="raffle-item">
-              <td>#1</td>
-              <td>André Luiz</td>
-              <td><b>49878889887</b></td>
-              <td>andreluiz@email.com</td>
-              <td>(11)98888-7777</td>
-              <td><span className="status-tag status-available">SIM</span></td>
+          {clientesInfo.map((cliente, index) => (
+            <tr key={index} className="raffle-item">
+              <td>{cliente.id}</td>
+              <td>{cliente.nome}</td>
+              <td>{cliente.telefone}</td>
+              <td>
+                <span 
+                  className={`status-tag ${
+                    cliente.status === 'sim' ? 'status-available' :
+                    cliente.status === 'nao' ? 'status-reserved' :
+                    ''
+                  }`}
+                >
+                  {cliente.status}
+                </span>
+              </td>
               <td>
                 <div className="button-group">
                   <button 
                     className="action-button button-view" 
-                    onClick={() => setOpenModalVerInfoCliente(!openModalVerInfoCliente)}
+                    onClick={() => handleButtonId(cliente.id)}
                   >
                     <i className="fas fa-eye"></i> VER
                   </button>
-                  <button className="action-button button-edit">
+                  <button className="action-button button-edit" onClick={() => handleModalId(cliente.id)}>
                     <i className="fas fa-edit"></i> Editar
                   </button>
                 </div>
               </td>
-          </tr>
+            </tr>
+          ))}
         </tbody>
       </Table>
     </div>
