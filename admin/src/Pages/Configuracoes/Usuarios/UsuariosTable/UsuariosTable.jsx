@@ -131,6 +131,69 @@ export default function UsuariosTable() {
             </div>
           </td>
         </tr>
+
+        <tr className="raffle-item">
+          <td>Ana Lima</td>
+          <td align="center">(43) 99640-3859</td>
+          <td align="center">anaplima2001@gmail.com</td>
+          <td align="center">
+            <span className="status-tag status-rescued">Usuário</span>                            </td>
+          <td align="center">15/04/24 15:02</td>
+          <td align="center">
+            <div className="button-group">
+              <a className="button-edit" onClick={() => setOpenModalEditarUsuario(!openModalEditarUsuario)}>
+                <i className="fas fa-edit"></i> Editar
+              </a>
+              <a href="#" 
+                className="button-delete"
+              >
+                <i className="fas fa-trash-alt"></i> Excluir
+              </a>
+            </div>
+          </td>
+        </tr>
+
+        <tr className="raffle-item">
+          <td>Ana Lima</td>
+          <td align="center">(43) 99640-3859</td>
+          <td align="center">anaplima2001@gmail.com</td>
+          <td align="center">
+            <span className="status-tag status-rescued">Suporte</span>                            </td>
+          <td align="center">15/04/24 15:02</td>
+          <td align="center">
+            <div className="button-group">
+              <a className="button-edit" onClick={() => setOpenModalEditarUsuario(!openModalEditarUsuario)}>
+                <i className="fas fa-edit"></i> Editar
+              </a>
+              <a href="#" 
+                className="button-delete"
+              >
+                <i className="fas fa-trash-alt"></i> Excluir
+              </a>
+            </div>
+          </td>
+        </tr>
+
+        <tr className="raffle-item">
+          <td>Ana Lima</td>
+          <td align="center">(43) 99640-3859</td>
+          <td align="center">anaplima2001@gmail.com</td>
+          <td align="center">
+            <span className="status-tag status-rescued">Super Adminsitrador</span>                            </td>
+          <td align="center">15/04/24 15:02</td>
+          <td align="center">
+            <div className="button-group">
+              <a className="button-edit" onClick={() => setOpenModalEditarUsuario(!openModalEditarUsuario)}>
+                <i className="fas fa-edit"></i> Editar
+              </a>
+              <a href="#" 
+                className="button-delete"
+              >
+                <i className="fas fa-trash-alt"></i> Excluir
+              </a>
+            </div>
+          </td>
+        </tr>
         </tbody>
       </Table>
     </div>
