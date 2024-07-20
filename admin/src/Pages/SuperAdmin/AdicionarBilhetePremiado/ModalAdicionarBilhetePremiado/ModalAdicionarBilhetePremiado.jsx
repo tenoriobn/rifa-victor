@@ -1,7 +1,8 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 import styled from "styled-components"
-import { stateInfoBilhetePremiado } from "../../../../common/states/atom";
-import { useRecoilValue } from "recoil";
+import { stateInfoBilhetePremiado, stateOpenModalAdicionarBilhetePremiado } from "../../../../common/states/atom";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { postDados } from "../../../../common/http/http";
 
 const Form = styled.form`
@@ -66,7 +67,8 @@ const Form = styled.form`
   }
 `;
 
-export default function ModalAdicionarBilhetePremiado() {
+export default function ModalAdicionarBilhetePremiado({ onNotifySuccess, onNotifyError }) {
+  const setOpenModalAdicionarBilhetePremiado = useSetRecoilState(stateOpenModalAdicionarBilhetePremiado);
   const infoBilhetePremiado = useRecoilValue(stateInfoBilhetePremiado)
   const [cotaPremiada, setCotaPremiada] = useState("");
 
@@ -78,11 +80,14 @@ export default function ModalAdicionarBilhetePremiado() {
 
     try {
       const response = await postDados("/admin/dashboard/client/rifa/adicionar/bilhete-premiado", { cellphone: telefoneVencedor, numero_premiado: cotaPremiada, rifa_id: rifaId });
+      setOpenModalAdicionarBilhetePremiado(false)
+      onNotifySuccess('Bilhete adicionado com sucesso!');
 
-      console.log('response modal', response)
+      console.log(response)
 
     } catch (error) {
-      console.error("Erro ao trocar bilhete:", error);
+      onNotifyError('Erro ao adicionar Bilhete:');
+      console.error("Erro ao adicionar Bilhete:", error);
     }
   };
 

@@ -1,8 +1,9 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 import styled from "styled-components"
 import { postDados } from "../../../../common/http/http";
-import { stateInfoAdicionarNumeros } from "../../../../common/states/atom";
-import { useRecoilValue } from "recoil";
+import { stateInfoAdicionarNumeros, stateOpenModalAdicionarNumeros } from "../../../../common/states/atom";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 
 const Form = styled.form`
   font-size: .9rem;
@@ -60,7 +61,8 @@ const Form = styled.form`
   }
 `;
 
-export default function ModalAdicionarNumeros() {
+export default function ModalAdicionarNumeros({ onNotifySuccess, onNotifyError }) {
+  const setOpenModalAdicionarNumeros = useSetRecoilState(stateOpenModalAdicionarNumeros);
   const infoAdicionarNumeros = useRecoilValue(stateInfoAdicionarNumeros)
   const [qntdNumero, setQntdNumero] = useState("");
 
@@ -74,28 +76,33 @@ export default function ModalAdicionarNumeros() {
 
     try {
       const response = await postDados("/admin/dashboard/client/rifa/adicionar-numero", { qntd_number: qntdNumero,  cellphone: telefoneVencedor, rifa_id : rifaId });
-      console.log('response modal', response)
+      setOpenModalAdicionarNumeros(false);
+      onNotifySuccess('Números adicionados com sucesso!');
 
+      console.log('response modal', response)
     } catch (error) {
-      console.error("Erro ao trocar bilhete:", error);
+      onNotifyError('Erro ao adicionar números:');
+      console.error("Erro ao adicionar números:", error);
     }
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <label htmlFor="qntdNumero">
-        Qntd. números
-        <input
-          type="text"
-          name="qntdNumero"
-          id="qntdNumero"
-          value={qntdNumero}
-          onChange={(e) => setQntdNumero(e.target.value)}
-          required
-        />
-      </label>
+    <>
+      <Form onSubmit={handleSubmit}>
+        <label htmlFor="qntdNumero">
+          Qntd. números
+          <input
+            type="text"
+            name="qntdNumero"
+            id="qntdNumero"
+            value={qntdNumero}
+            onChange={(e) => setQntdNumero(e.target.value)}
+            required
+          />
+        </label>
 
-      <input id="sendEditPack" type="submit" value="ADICIONAR" />
-    </Form>
+        <input id="sendEditPack" type="submit" value="ADICIONAR" />
+      </Form>
+    </>
   );
 }

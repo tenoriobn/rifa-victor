@@ -265,6 +265,11 @@ export const stateInfoCotaSorteada = atom({
   default: '',
 });
 
+export const stateAtualizaTableInfoCotaSorteada = atom({
+  key: 'stateAtualizaTableInfoCotaSorteada',
+  default: false,
+});
+
 export const stateInfoBilhetePremiado = atom({
   key: 'stateInfoBilhetePremiado',
   default: '',
