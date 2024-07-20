@@ -6,6 +6,8 @@ import { stateIdModalAcoesSorteio, stateOpenModalAcoesSorteio, stateUserLogin } 
 import { useEffect, useState } from "react";
 import { fetchDados, putDados } from "../../../common/http/http";
 import useFormattedDate from "../../../common/states/Hook/useFormattedDate";
+import useCurrencyFormatTable from "../../../common/states/Hook/useCurrencyFormatTable/useCurrencyFormatTable";
+import useFormatPercentage from "../../../common/states/Hook/useFormatPercentage";
 
 const Table = styled.table`
   width: 100%;
@@ -122,42 +124,14 @@ const Table = styled.table`
   }
 `;
 
-// const sorteios = [
-//   {
-//     id: "174",
-//     nome: "SAVEIRO CROSS DOS SONHOS",
-//     dataSorteio: "-",
-//     faturamentoTotal: "R$ 48.946,31",
-//     faturamentoHoje: "R$ 458,40",
-//     cotasVendidas: "254.279",
-//     percentualVendidas: "25.43%",
-//     cotasReservadas: "330",
-//     status: "Ativa",
-//     imgSrc: "https://imagedelivery.net/TuyDlh37fwpu3jSKwZ3-9g/2a6e9600-32e1-44d2-8fff-801b4abe3e00/thumb",
-//     dashboardLink: "/dashboard/rifas/dashboard/174"
-//   },
-//   {
-//     id: "175",
-//     nome: "SAVEIRO CROSS DOS SONHOS",
-//     dataSorteio: "-",
-//     faturamentoTotal: "R$ 48.946,31",
-//     faturamentoHoje: "R$ 458,40",
-//     cotasVendidas: "254.279",
-//     percentualVendidas: "25.43%",
-//     cotasReservadas: "330",
-//     status: "Ativa",
-//     imgSrc: "https://imagedelivery.net/TuyDlh37fwpu3jSKwZ3-9g/2a6e9600-32e1-44d2-8fff-801b4abe3e00/thumb",
-//     dashboardLink: "/dashboard/rifas/dashboard/174"
-//   },
-//   // Adicione mais objetos de sorteios conforme necessário
-// ];
-
 export default function TabelaSorteio() {
   const [openModalAcoesSorteio, setOpenModalAcoesSorteio] = useRecoilState(stateOpenModalAcoesSorteio);
   const setIdModalAcoesSorteio = useSetRecoilState(stateIdModalAcoesSorteio);
   const [sorteios, setSorteios] = useState([]);
   const userLogin = useRecoilValue(stateUserLogin)
   const { formattedDate } = useFormattedDate();
+  const { formatCurrency } = useCurrencyFormatTable();
+  const { formatPercentage } = useFormatPercentage();
 
   useEffect(() => {
     const obterDados = async () => {
@@ -239,10 +213,16 @@ export default function TabelaSorteio() {
                 <b>{sorteio.title}</b>
               </td>
               <td>{formattedDate(sorteio.data_sortition)}</td>
-              <td>{sorteio.fat_total}</td>
-              <td>{sorteio.fat_hoje}</td>
+              <td>{formatCurrency(sorteio.fat_total)}</td>
+              <td>{formatCurrency(sorteio.fat_hoje)}</td>
               <td>{sorteio.qntd_numeros}</td>
-              <td><b>{sorteio.percentualVendidas}</b></td>
+              {/* <td><b>{formatPercentage((sorteio.qntd_numeros / sorteio.cota.qntd_cota * 100).toFixed(2))}%</b></td> */}
+              <td>
+                <b>
+                  {sorteio.cota ? formatPercentage((sorteio.qntd_numeros / sorteio.cota.qntd_cota) * 100) : 'N/A'}
+                </b>
+              </td>
+
               <td>{sorteio.qntd_numeros_reservado}</td>
               <td>
                 <span

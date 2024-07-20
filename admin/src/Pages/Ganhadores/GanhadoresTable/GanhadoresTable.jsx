@@ -2,6 +2,7 @@
 import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components"
 import { stateOpenModalEditarGanhador, stateNovoGanhadorInfo, stateIdModal } from "../../../common/states/atom";
+import useFormattedDate from "../../../common/states/Hook/useFormattedDate";
 
 const Table = styled.table`
   width: 100%;
@@ -115,6 +116,7 @@ export default function GanhadoresTable() {
   const [openModalEditarGanhador, setOpenModalEditarGanhador] = useRecoilState(stateOpenModalEditarGanhador);
   const novoGanhadorInfo = useRecoilValue(stateNovoGanhadorInfo);
   const setIdModal = useSetRecoilState(stateIdModal);
+  const { formattedDate } = useFormattedDate();
 
   const handleModalId = (id) => {
     setIdModal(id)
@@ -145,7 +147,7 @@ export default function GanhadoresTable() {
                 <td>{ganhador?.client?.name} {ganhador?.client?.surname}</td>
                 <td>{ganhador?.rifa.title}</td>
                 <td>{ganhador?.ticket}</td>
-                <td>{ganhador?.updated_at}</td>
+                <td>{formattedDate(ganhador?.updated_at)}</td>
                 <td>
                   <div className="button-group">
                     <a href="#" className="button-edit" onClick={() => handleModalId(ganhador.id)}>

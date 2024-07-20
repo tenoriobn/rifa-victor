@@ -116,12 +116,8 @@ export default function PacoteTable() {
     const response = await fetchDados(`admin/dashboard/pacote/${id}`, userLogin);
     setPacote(response.data);
 
-    console.log('response: ', response.data)
-
     setIdModal(id);
   }
-
-  console.log('tabelaPacote', tabelaPacotesInfo)
 
   return (
     <div>

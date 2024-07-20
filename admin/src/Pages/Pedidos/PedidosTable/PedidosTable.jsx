@@ -63,6 +63,14 @@ export const Table = styled.table`
     background-color: #dc3545;
   }
 
+  .button-divergente {
+    background-color: #0d6efd;
+  }
+
+  .button-dashboard {
+    background-color: #1cc88a;
+  }
+
   .button-group {
     display: flex;
     gap: 5px;
@@ -115,6 +123,61 @@ export const Table = styled.table`
 export default function PedidosTable() {
   const [openModalVerCota, setOpenModalVerCota] = useRecoilState(stateOpenModalVerCota);
 
+  const raffleItems = [
+    {
+      id: 1,
+      number: "2386050",
+      name: "Vanessa Aparecida dos Santos de Souza",
+      whatsapp: "5543988066387",
+      vehicle: "SAVEIRO CROSS DOS SONHOS",
+      quantity: 70,
+      price: "R$ 7,00",
+      dateStart: "07/07 16:50",
+      dateEnd: "07/07 16:52",
+      status: "aprovado",
+      cancelUrl: "http://localhost/dashboard/pedidos/cancelar/2386050",
+    },
+    {
+      id: 2,
+      number: "2386050",
+      name: "Vanessa Aparecida dos Santos de Souza",
+      whatsapp: "5543988066387",
+      vehicle: "SAVEIRO CROSS DOS SONHOS",
+      quantity: 70,
+      price: "R$ 7,00",
+      dateStart: "07/07 16:50",
+      dateEnd: "07/07 16:52",
+      status: "divergente",
+      cancelUrl: "http://localhost/dashboard/pedidos/cancelar/2386050"
+    },
+    {
+      id: 3,
+      number: "2386050",
+      name: "Vanessa Aparecida dos Santos de Souza",
+      whatsapp: "5543988066387",
+      vehicle: "SAVEIRO CROSS DOS SONHOS",
+      quantity: 70,
+      price: "R$ 7,00",
+      dateStart: "07/07 16:50",
+      dateEnd: "07/07 16:52",
+      status: "pendente",
+      cancelUrl: "http://localhost/dashboard/pedidos/cancelar/2386050"
+    },
+    {
+      id: 4,
+      number: "2386050",
+      name: "Vanessa Aparecida dos Santos de Souza",
+      whatsapp: "5543988066387",
+      vehicle: "SAVEIRO CROSS DOS SONHOS",
+      quantity: 70,
+      price: "R$ 7,00",
+      dateStart: "07/07 16:50",
+      dateEnd: "07/07 16:52",
+      status: "cancelado",
+      cancelUrl: "http://localhost/dashboard/pedidos/cancelar/2386050"
+    },
+  ];
+
   return (
     <div>
       <Table>
@@ -134,32 +197,47 @@ export default function PedidosTable() {
         </thead>
 
         <tbody>
-          <tr className="raffle-item">
-            <td>#1</td>
-            <td>2386050</td>
-            <td>
-              <a href="#">Vanessa Aparecida dos Santos de Souza </a>
-              <a id="whplnk" href="https://api.whatsapp.com/send?phone=5543988066387" target="_blank">
-                <i className="fa-brands fa-whatsapp"></i>
-              </a>
-            </td>
-            <td>SAVEIRO CROSS DOS SONHOS</td>
-            <td>70</td>
-            <td> R$ 7,00</td>
-            <td> 07/07 16:50</td>
-            <td> 07/07 16:52</td>
-            <td> <span className="status-tag status-pago">Aprovado</span></td>
-            <td>
-              <div className="button-group">
-                <button className="button-view" onClick={() => setOpenModalVerCota(!openModalVerCota)}>
-                  <i className="fas fa-eye"></i> VER
-                </button>
-                <a href="http://localhost/dashboard/pedidos/cancelar/2386050" className="button-delete">
-                  <i className="fas fa-ban"></i> Cancelar
+          {raffleItems.map(item => (
+            <tr key={item.id} className="raffle-item">
+              <td>#{item.id}</td>
+              <td>{item.number}</td>
+              <td>
+                <a href="#">{item.name}</a>
+                <a id="whplnk" href={`https://api.whatsapp.com/send?phone=${item.whatsapp}`} target="_blank">
+                  <i className="fa-brands fa-whatsapp"></i>
                 </a>
-              </div>
-            </td>
-          </tr>
+              </td>
+              <td>{item.vehicle}</td>
+              <td>{item.quantity}</td>
+              <td>{item.price}</td>
+              <td>{item.dateStart}</td>
+              <td>{item.dateEnd}</td>
+              <td>
+                <span 
+                  // className={`status-tag status-${item.status.toLowerCase()}`}
+                  className={`status-tag ${
+                    item.status === 'aprovado' ? 'status-pago' :
+                    item.status === 'divergente' ? 'status-cancelado' :
+                    item.status === 'pendente' ? 'button-divergente' :
+                    item.status === 'cancelado' ? 'button-dashboard' :
+                    ''
+                  }`}
+                >
+                  {item.status}
+                </span>
+              </td>
+              <td>
+                <div className="button-group">
+                  <button className="button-view" onClick={() => setOpenModalVerCota(!openModalVerCota)}>
+                    <i className="fas fa-eye"></i> VER
+                  </button>
+                  <a href={item.cancelUrl} className="button-delete">
+                    <i className="fas fa-ban"></i> Cancelar
+                  </a>
+                </div>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </Table>
     </div>

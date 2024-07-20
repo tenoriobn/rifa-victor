@@ -46,8 +46,7 @@ class RifasController extends Controller
     }
     public function getAllRifasAdmin() {
         try {
-            $rifasData = Rifas::select(['id', 'title', 'status', 'data_sortition'])
-            ->withSum('rifaPayActiva as fat_total', 'value')
+            $rifasData = Rifas::with(['cota'])->withSum('rifaPayActiva as fat_total', 'value')
             ->withSum('rifaPayToday as fat_hoje', 'value')
             ->withCount(['rifaNumberActive as qntd_numeros' => function ($query) {
                 $query->select(DB::raw("SUM(LENGTH(numbers) - LENGTH(REPLACE(numbers, ',', '')) + 1) as number_count"));
