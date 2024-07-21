@@ -19,6 +19,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'cellphone',
         'role',
         'email',
         'password',
@@ -49,6 +50,10 @@ class User extends Authenticatable
     {
         $data['password'] = hash::make($data['password']);
         return self::create($data);
+    }
+    public static function getOneUsers($id)
+    {
+        return self::where('id', $id)->first();
     }
     public static function allUsers()
     {

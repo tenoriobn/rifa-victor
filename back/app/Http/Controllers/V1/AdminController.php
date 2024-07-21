@@ -307,18 +307,43 @@ class AdminController extends Controller
             return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
         }
     }
-    public function editarUsers() {
+    public function editarUsers(Request $request) {
         try {
-            $users = User::allUsers();
-            if (!$users) {
-                return response()->json(["success" => false, "msg" => "Usarios não encontrados"], 404);
+            $validatedData = $request->validate([
+                'id' => 'required|integer|exists:users,id',
+                'name' => 'sometimes|string|max:191',
+                'cellphone' => 'sometimes|nullable|string|max:191',
+                'role' => 'sometimes|nullable|string|max:191',
+                'email' => 'sometimes|email|max:191',
+            ]);
+
+            $user = User::getOneUsers($request->id);
+            if (!$user) {
+                return response()->json(["success" => false, "msg" => "Usuário não encontrado"], 404);
             }
-            dd($users );
-            return response()->json(["success" => true, "data"=> $users], 200);
+
+            $user->update($validatedData);
+
+            return response()->json(["success" => true, "data"=> "Usuário editado com sucesso"], 200);
         } catch (Exception $e) {
             return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
         }
     }
+    public function destroyUsers(Request $request) {
+        try {
+            $user = User::getOneUsers($request->id);
+            if (!$user) {
+                return response()->json(["success" => false, "msg" => "Usuário não encontrado"], 404);
+            }
+
+            $user->delete();
+
+            return response()->json(["success" => true, "data"=> "Usuário excluido com sucesso"], 200);
+        } catch (Exception $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
+        }
+    }
+
 
     public function me(Request $request) {
         return response()->json($request->user());

@@ -91,6 +91,8 @@
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/todos/usuarios", [AdminController::class, "getAllUsers"])->name('admin.usuarios');
 
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->put("/dashboard/usuarios/editar", [AdminController::class, "editarUsers"])->name('admin.editar.usuarios');
+
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->delete("/dashboard/usuarios/deletar", [AdminController::class, "destroyUsers"])->name('admin.editar.usuarios');
     });
 
     Route::group(['prefix' => 'produtos'], function () {
