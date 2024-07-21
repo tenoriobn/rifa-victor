@@ -111,7 +111,6 @@ export default function ModalEditarCliente({setAtualizaTabela}) {
           type="text"
           id="phone"
           name="phone"
-          maxLength="15"
           value={clienteInfoModal.cellphone || ""}  
           onChange={(e) => setClienteInfoModal({ ...clienteInfoModal, cellphone: e.target.value })} 
           required
