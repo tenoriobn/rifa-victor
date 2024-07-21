@@ -109,7 +109,7 @@ class AdminController extends Controller
     }
     public function cadastrarGanhador(Request $request) {
         try {
-            $image = $this->rifaService->saveImage($request->img, $request->rifa_id);
+            $image = $this->rifaService->saveImage($request->img, $request->rifas_id);
             $client = Clients::findClient( $request->cellphone);
             if (!$client ) {
                 return response()->json(["success" => false, "msg" =>"Cliente não encontrado"], 404);
@@ -128,21 +128,34 @@ class AdminController extends Controller
             if (!$winner ) {
                 return response()->json(["success" => false, "msg" =>"Vencedor não encontrado"], 404);
             }
+
             return response()->json(["success" => true, "data" => $winner], 200);
         } catch (Exception $e) {
             return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
         }
     }
     public function editarGanhador(Request $request) {
+
         try {
             $winner = RifaWinner::findWinner($request->id);
             if (!$winner ) {
                 return response()->json(["success" => false, "msg" =>"Vencedor não encontrado"], 404);
             }
 
-                $image = $this->rifaService->saveImage($request->img, $request->rifas_id);
+            $client = Clients::findClient( $request->cellphone);
+            if (!$client ) {
+                return response()->json(["success" => false, "msg" =>"Cliente não encontrado"], 404);
+            }
 
-            RifaWinner::editarWinner($request, $image['imgName']);
+            $isImg = preg_match('#^data:image/(?<type>.+);base64,#', $request->img);
+            if($isImg) {
+                $image = $this->rifaService->saveImage($request->img, $request->rifas_id);
+                RifaWinner::editarWinner($request, $client->id, $image['imgName']);
+            } else {
+                RifaWinner::editarWinner($request, $client->id, $request->img);
+            }
+
+
 
             return response()->json(["success" => true, "data" => $winner], 200);
         } catch (Exception $e) {

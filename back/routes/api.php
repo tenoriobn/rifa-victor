@@ -69,7 +69,7 @@
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/rifa/definir-ganhador", [AdminController::class, "definirGanhador"])->name('admin.definir.ganhador');
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/cadastrar/ganhador/{id}", [AdminController::class, "getOneGanhador"])->name('admin.pegar.um.ganhador');
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/cadastrar/ganhador", [AdminController::class, "cadastrarGanhador"])->name('admin.cadastrar.ganhador');
-        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->put("/dashboard/editar/ganhador", [AdminController::class, "cadastrarGanhador"])->name('admin.editar.ganhador');
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->put("/dashboard/editar/ganhador", [AdminController::class, "editarGanhador"])->name('admin.editar.ganhador');
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->delete("/dashboard/delete/ganhador", [AdminController::class, "destroyGanhador"])->name('admin.delete.ganhador');
 
 

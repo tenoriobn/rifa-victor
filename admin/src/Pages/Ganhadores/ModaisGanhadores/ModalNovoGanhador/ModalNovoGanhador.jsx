@@ -144,7 +144,7 @@ export default function ModalNovoGanhador() {
             name="id_raffle" 
             id="id_raffle" 
             value={novoGanhador.rifa_id}
-            onChange={(e) => setNovoGanhador({ ...novoGanhador, rifa_id: e.target.value })} 
+            onChange={(e) => setNovoGanhador({ ...novoGanhador, rifas_id: e.target.value })} 
             required
           >
             <option value="">SELECIONE O SORTEIO</option>
