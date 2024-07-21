@@ -9,12 +9,13 @@ import { stateClientesInfo, stateOpenModalEditarInfoCliente, stateOpenModalVerIn
 import Modal from "../../components/Modal/Modal";
 import ModalClienteInfo from "./ClientesModais/ModalClienteInfo/ModalClienteInfo";
 import ModalEditarCliente from "./ClientesModais/ModalEditarCliente/ModalEditarCliente";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { fetchDados } from "../../common/http/http";
 
 export default function Clientes() {
   const [openModalVerInfoCliente, setOpenModalVerInfoCliente] = useRecoilState(stateOpenModalVerInfoCliente);
   const [openModalEditarInfoCliente, setOpenModalEditarInfoCliente] = useRecoilState(stateOpenModalEditarInfoCliente);
+  const [atualizaTabela, setAtualizaTabela] = useState(false);
   const setClientesInfo = useSetRecoilState(stateClientesInfo);
 
   const obterDados = async () => {
@@ -25,6 +26,13 @@ export default function Clientes() {
   useEffect(() => {
     obterDados();
   }, []);
+
+  useEffect(() => {
+    if (atualizaTabela) {
+      obterDados();
+      setAtualizaTabela(false);
+    }
+  }, [atualizaTabela]);
 
   return (
     <section>
@@ -42,8 +50,15 @@ export default function Clientes() {
         <ModalClienteInfo />
       </Modal>
 
-      <Modal title="CLIENTE" openState={openModalEditarInfoCliente} setOpenState={setOpenModalEditarInfoCliente}>
-      <ModalEditarCliente />
+      <Modal 
+        title="CLIENTE" 
+        openState={openModalEditarInfoCliente} 
+        setOpenState={setOpenModalEditarInfoCliente} 
+      >
+      <ModalEditarCliente 
+        atualizaTabela={atualizaTabela}
+        setAtualizaTabela={setAtualizaTabela}
+      />
       </Modal>
     </section>
   )

@@ -1,7 +1,9 @@
+/* eslint-disable react/prop-types */
 import styled from "styled-components"
 import { stateClienteInfoModal, stateOpenModalEditarInfoCliente, stateUserLogin } from "../../../../common/states/atom";
 import { useSetRecoilState, useRecoilState } from "recoil";
 import { putDados } from "../../../../common/http/http.js";
+import { PatternFormat } from "react-number-format";
 const Form = styled.form`
   font-size: .9rem;
   width: 100%;
@@ -58,7 +60,7 @@ const Form = styled.form`
   }
 `;
 
-export default function ModalEditarCliente() {
+export default function ModalEditarCliente({setAtualizaTabela}) {
   const [clienteInfoModal, setClienteInfoModal] = useRecoilState(stateClienteInfoModal);
   const setOpenModalEditarInfoCliente = useSetRecoilState(stateOpenModalEditarInfoCliente);
   const userLogin = useSetRecoilState(stateUserLogin);
@@ -71,6 +73,7 @@ export default function ModalEditarCliente() {
     try {
       await putDados(`admin/dashboard/editar/cliente`, clienteInfoModal, userLogin);
       setOpenModalEditarInfoCliente(false);
+      setAtualizaTabela(true)
 
     } catch (error) {
       console.error("Erro ao enviar dados:", error);
@@ -103,12 +106,13 @@ export default function ModalEditarCliente() {
 
       <label htmlFor="phone">
         Telefone
-        <input
+        <PatternFormat
+          format="(##) #####-####"
           type="text"
           id="phone"
           name="phone"
           maxLength="15"
-          defaultValue={clienteInfoModal.cellphone || ""}  
+          value={clienteInfoModal.cellphone || ""}  
           onChange={(e) => setClienteInfoModal({ ...clienteInfoModal, cellphone: e.target.value })} 
           required
         />
