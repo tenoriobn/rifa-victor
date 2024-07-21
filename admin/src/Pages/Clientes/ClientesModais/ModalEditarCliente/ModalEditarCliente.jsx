@@ -1,7 +1,7 @@
 import styled from "styled-components"
-import { stateClientesInfo, stateOpenModalEditarInfoCliente } from "../../../../common/states/atom";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-
+import { stateClienteInfoModal, stateOpenModalEditarInfoCliente, stateUserLogin } from "../../../../common/states/atom";
+import { useSetRecoilState, useRecoilState } from "recoil";
+import { putDados } from "../../../../common/http/http.js";
 const Form = styled.form`
   font-size: .9rem;
   width: 100%;
@@ -59,26 +59,18 @@ const Form = styled.form`
 `;
 
 export default function ModalEditarCliente() {
-  const [clienteInfo, setClientesInfo] = useRecoilValue(stateClientesInfo);
+  const [clienteInfoModal, setClienteInfoModal] = useRecoilState(stateClienteInfoModal);
   const setOpenModalEditarInfoCliente = useSetRecoilState(stateOpenModalEditarInfoCliente);
+  const userLogin = useSetRecoilState(stateUserLogin);
 
-
-  // // Função para lidar com o envio do formulário
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   // Aqui você pode enviar os dados para o backend, utilizando novoUsuario
-  //   // Lógica para enviar para o backend aqui
-  // };
+  console.log('clienteInfo', clienteInfoModal)
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      // const response = await putDados("admin/dashboard/editar/ganhador", clienteInfo, userLogin);
-
-      // console.log('DADOS ENVIADOS:', clienteInfo)
-
-      // setOpenModalEditarInfoCliente(false);
+      await putDados(`admin/dashboard/editar/cliente`, clienteInfoModal, userLogin);
+      setOpenModalEditarInfoCliente(false);
 
     } catch (error) {
       console.error("Erro ao enviar dados:", error);
@@ -92,8 +84,19 @@ export default function ModalEditarCliente() {
         <input
           type="text"
           name="name"
-          defaultValue={clienteInfo?.client?.name || ""}  
-          onChange={(e) => setClientesInfo({ ...clienteInfo, name: e.target.value })} 
+          defaultValue={clienteInfoModal?.name || ""}  
+          onChange={(e) => setClienteInfoModal({ ...clienteInfoModal, name: e.target.value })} 
+          required
+        />
+      </label>
+
+      <label htmlFor="surname">
+        Sobrenome
+        <input
+          type="text"
+          name="surname"
+          defaultValue={clienteInfoModal?.surname || ""}  
+          onChange={(e) => setClienteInfoModal({ ...clienteInfoModal, surname: e.target.value })} 
           required
         />
       </label>
@@ -105,8 +108,8 @@ export default function ModalEditarCliente() {
           id="phone"
           name="phone"
           maxLength="15"
-          defaultValue={clienteInfo?.client?.phone || ""}  
-          onChange={(e) => setClientesInfo({ ...clienteInfo, phone: e.target.value })} 
+          defaultValue={clienteInfoModal.cellphone || ""}  
+          onChange={(e) => setClienteInfoModal({ ...clienteInfoModal, cellphone: e.target.value })} 
           required
         />
       </label>

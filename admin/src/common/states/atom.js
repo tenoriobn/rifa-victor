@@ -273,6 +273,11 @@ export const stateClientesInfo = atom({
   default: []
 })
 
+export const stateClienteInfoModal = atom({
+  key: 'stateClienteInfoModal',
+  default: {}
+})
+
 export const openModalVerInfoCliente = atom({
   key: 'openModalVerInfoCliente',
   default: false
@@ -288,9 +293,14 @@ export const stateOpenModalEditarInfoCliente = atom({
 //   default: []
 // })
 
+export const stateRankingInfoTable = atom({
+  key: 'stateRankingInfoTable',
+  default: []
+})
+
 export const stateRankingInfoModal = atom({
   key: 'stateRankingInfoModal',
-  default: []
+  default: {}
 })
 
 

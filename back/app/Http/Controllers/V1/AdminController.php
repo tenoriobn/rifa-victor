@@ -248,6 +248,17 @@ class AdminController extends Controller
             return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
         }
     }
+    public function getOneClient($id) {
+        try {
+            $clientes = Clients::findClientById($id);
+            if (!$clientes) {
+                return response()->json(["success" => false, "msg" => "Pedido não encontrado"], 404);
+            }
+            return response()->json(["success" => true, "data"=> $clientes], 200);
+        } catch (Exception $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
+        }
+    }
     public function editarClients(Request $request) {
         try {
             $cliente = Clients::editarClient($request);
@@ -277,7 +288,7 @@ class AdminController extends Controller
             if (!$users) {
                 return response()->json(["success" => false, "msg" => "Usarios não encontrados"], 404);
             }
-            dd($users );
+
             return response()->json(["success" => true, "data"=> $users], 200);
         } catch (Exception $e) {
             return response()->json(["success" => false, "msg" => $e->getMessage()], 500);

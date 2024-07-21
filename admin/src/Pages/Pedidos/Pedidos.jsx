@@ -8,20 +8,22 @@ import PedidosTable from "./PedidosTable/PedidosTable";
 import { stateOpenModalVerCota, statePedidosInfo } from "../../common/states/atom";
 import Modal from "../../components/Modal/Modal";
 import ModalPedido from "./ModalPedido/ModalPedido";
+import { fetchDados } from "../../common/http/http";
+import { useEffect } from "react";
 
 export default function Pedidos() {
   const [openModalVerCota, setOpenModalVerCota] = useRecoilState(stateOpenModalVerCota);
-  // const setPedidosInfo =  useSetRecoilState(statePedidosInfo);
+  const setPedidosInfo =  useSetRecoilState(statePedidosInfo);
 
-  // const obterDados = async () => {
-  //   const response = await fetchDados(`/produtos/todos/ganhadores/`);
-  //   setPedidosInfo (response.data);
-  //   console.log('response.data', response.data);
-  // };
+  const obterDados = async () => {
+    const response = await fetchDados(`/admin/dashboard/pedidos`);
+    setPedidosInfo (response.data);
+    console.log('response.data', response.data);
+  };
 
-  // useEffect(() => {
-  //   obterDados();
-  // }, []);
+  useEffect(() => {
+    obterDados();
+  }, []);
 
   return (
     <section>

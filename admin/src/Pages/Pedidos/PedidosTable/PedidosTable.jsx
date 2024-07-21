@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { stateOpenModalVerCota, statePedidosInfoModal } from "../../../common/states/atom";
+import { stateOpenModalVerCota, statePedidosInfoModal, statePedidosInfo } from "../../../common/states/atom";
 import { deleteDados, fetchDados } from "../../../common/http/http";
 
 export const Table = styled.table`
@@ -124,62 +124,72 @@ export const Table = styled.table`
 export default function PedidosTable() {
   const [openModalVerCota, setOpenModalVerCota] = useRecoilState(stateOpenModalVerCota);
   const setPedidosInfoModal = useRecoilState(statePedidosInfoModal);
-  // const pedidosInfo =  useRecoilValue(statePedidosInfo);
+  const pedidosInfo =  useRecoilValue(statePedidosInfo);
 
-  const pedidosInfo = [
-    {
-      id: 1,
-      number: "2386050",
-      name: "Vanessa Aparecida dos Santos de Souza",
-      whatsapp: "5543988066387",
-      vehicle: "SAVEIRO CROSS DOS SONHOS",
-      quantity: 70,
-      price: "R$ 7,00",
-      dateStart: "07/07 16:50",
-      dateEnd: "07/07 16:52",
-      status: "aprovado",
-      cancelUrl: "http://localhost/dashboard/pedidos/cancelar/2386050",
-    },
-    {
-      id: 2,
-      number: "2386050",
-      name: "Vanessa Aparecida dos Santos de Souza",
-      whatsapp: "5543988066387",
-      vehicle: "SAVEIRO CROSS DOS SONHOS",
-      quantity: 70,
-      price: "R$ 7,00",
-      dateStart: "07/07 16:50",
-      dateEnd: "07/07 16:52",
-      status: "divergente",
-      cancelUrl: "http://localhost/dashboard/pedidos/cancelar/2386050"
-    },
-    {
-      id: 3,
-      number: "2386050",
-      name: "Vanessa Aparecida dos Santos de Souza",
-      whatsapp: "5543988066387",
-      vehicle: "SAVEIRO CROSS DOS SONHOS",
-      quantity: 70,
-      price: "R$ 7,00",
-      dateStart: "07/07 16:50",
-      dateEnd: "07/07 16:52",
-      status: "pendente",
-      cancelUrl: "http://localhost/dashboard/pedidos/cancelar/2386050"
-    },
-    {
-      id: 4,
-      number: "2386050",
-      name: "Vanessa Aparecida dos Santos de Souza",
-      whatsapp: "5543988066387",
-      vehicle: "SAVEIRO CROSS DOS SONHOS",
-      quantity: 70,
-      price: "R$ 7,00",
-      dateStart: "07/07 16:50",
-      dateEnd: "07/07 16:52",
-      status: "cancelado",
-      cancelUrl: "http://localhost/dashboard/pedidos/cancelar/2386050"
-    },
-  ];
+  // const pedidosInfo = [
+  //   {
+  //     id: 1,
+  //     number: "2386050",
+  //     name: "Vanessa Aparecida dos Santos de Souza",
+  //     whatsapp: "5543988066387",
+  //     vehicle: "SAVEIRO CROSS DOS SONHOS",
+  //     quantity: 70,
+  //     price: "R$ 7,00",
+  //     dateStart: "07/07 16:50",
+  //     dateEnd: "07/07 16:52",
+  //     status: "aprovado",
+  //     cancelUrl: "http://localhost/dashboard/pedidos/cancelar/2386050",
+  //   },
+  //   {
+  //     id: 2,
+  //     number: "2386050",
+  //     name: "Vanessa Aparecida dos Santos de Souza",
+  //     whatsapp: "5543988066387",
+  //     vehicle: "SAVEIRO CROSS DOS SONHOS",
+  //     quantity: 70,
+  //     price: "R$ 7,00",
+  //     dateStart: "07/07 16:50",
+  //     dateEnd: "07/07 16:52",
+  //     status: "divergente",
+  //     cancelUrl: "http://localhost/dashboard/pedidos/cancelar/2386050"
+  //   },
+  //   {
+  //     id: 3,
+  //     number: "2386050",
+  //     name: "Vanessa Aparecida dos Santos de Souza",
+  //     whatsapp: "5543988066387",
+  //     vehicle: "SAVEIRO CROSS DOS SONHOS",
+  //     quantity: 70,
+  //     price: "R$ 7,00",
+  //     dateStart: "07/07 16:50",
+  //     dateEnd: "07/07 16:52",
+  //     status: "pendente",
+  //     cancelUrl: "http://localhost/dashboard/pedidos/cancelar/2386050"
+  //   },
+  //   {
+  //     id: 4,
+  //     number: "2386050",
+  //     name: "Vanessa Aparecida dos Santos de Souza",
+  //     whatsapp: "5543988066387",
+  //     vehicle: "SAVEIRO CROSS DOS SONHOS",
+  //     quantity: 70,
+  //     price: "R$ 7,00",
+  //     dateStart: "07/07 16:50",
+  //     dateEnd: "07/07 16:52",
+  //     status: "cancelado",
+  //     cancelUrl: "http://localhost/dashboard/pedidos/cancelar/2386050"
+  //   },
+  // ];
+
+  const formatPhoneNumber = (number) => {
+    // Remove tudo que não é número
+    const cleanedNumber = number?.replace(/\D/g, '');
+  
+    // Adiciona o código do país (ex: 55 para Brasil)
+    return `55${cleanedNumber}`;
+  };
+
+  const formattedPhoneNumber = formatPhoneNumber(pedidosInfo?.client?.cellphone);
 
   const handleButtonId = async (id) => {
     setOpenModalVerCota(!openModalVerCota)
@@ -214,26 +224,26 @@ export default function PedidosTable() {
           {pedidosInfo.map(item => (
             <tr key={item.id} className="raffle-item">
               <td>#{item.id}</td>
-              <td>{item.number}</td>
+              <td>{item.pix_id}</td>
               <td>
-                <a href="#">{item.name}</a>
-                <a id="whplnk" href={`https://api.whatsapp.com/send?phone=${item.whatsapp}`} target="_blank">
+                <a href="#">{item?.client?.name} {item?.client?.surname}</a>
+                <a id="whplnk" href={`https://api.whatsapp.com/send?phone=${formattedPhoneNumber}`} target="_blank">
                   <i className="fa-brands fa-whatsapp"></i>
                 </a>
               </td>
-              <td>{item.vehicle}</td>
-              <td>{item.quantity}</td>
-              <td>{item.price}</td>
-              <td>{item.dateStart}</td>
-              <td>{item.dateEnd}</td>
+              <td>{item?.rifa?.title}</td>
+              <td>{item?.qntd_number}</td>
+              <td>{item?.value}</td>
+              <td>{item.created_at}</td>
+              <td>{item.updated_at}</td>
               <td>
                 <span 
                   // className={`status-tag status-${item.status.toLowerCase()}`}
                   className={`status-tag ${
-                    item.status === 'aprovado' ? 'status-pago' :
+                    item.status === '1' ? 'status-pago' :
                     item.status === 'divergente' ? 'status-cancelado' :
-                    item.status === 'pendente' ? 'button-divergente' :
-                    item.status === 'cancelado' ? 'button-dashboard' :
+                    item.status === '0' ? 'button-divergente' :
+                    item.status === '2' ? 'button-dashboard' :
                     ''
                   }`}
                 >

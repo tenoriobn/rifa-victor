@@ -18,38 +18,30 @@ const ClientInfoModalContainer = styled.div`
 `;
 
 export default function ModalRankingInfo() {
-  // const rankingInfoModal = useRecoilValue(stateRankingInfoModal);
+  const rankingInfoModal = useRecoilValue(stateRankingInfoModal);
 
-  const rankingInfoModal = {
-    nome: {
-      label: "Nome",
-      value: "Rafaela Matos de Souza",
-      id: "customerName",
-    },
-    telefone: {
-      label: "Telefone",
-      value: "(43) 99672-6519",
-      id: "customerPhone",
-      link: "https://wa.me/5543996726519", // Link do WhatsApp
-      icon: "fa-brands fa-whatsapp" // Ícone do WhatsApp
-    },
+  console.log("whatsapp:", `https://wa.me/${rankingInfoModal?.client?.cellphone}`)
+
+  const formatPhoneNumber = (number) => {
+    const cleanedNumber = number.replace(/\D/g, '');
+  
+    return `55${cleanedNumber}`;
   };
+
+  const formattedPhoneNumber = formatPhoneNumber(rankingInfoModal?.client?.cellphone);
 
   return (
     <ClientInfoModalContainer>
-      <label htmlFor={rankingInfoModal.nome.id}><b>{rankingInfoModal.nome.label}</b></label>
-      <p name={rankingInfoModal.nome.id} id={rankingInfoModal.nome.id}>{rankingInfoModal.nome.value}</p>
+      <label><b>Name</b></label>
+      <p>{rankingInfoModal?.client?.name} {rankingInfoModal?.client?.surname}</p>
       <p>&nbsp;</p>
-
-      <label htmlFor={rankingInfoModal.telefone.id}>
-        <b>{rankingInfoModal.telefone.label}</b> &nbsp;
-        {rankingInfoModal.telefone.link && (
-          <a id="whplnk" href={rankingInfoModal.telefone.link} target="_blank" rel="noopener noreferrer">
-            <i className={rankingInfoModal.telefone.icon}></i>
-          </a>
-        )}
+      <label>
+        <b>Telefone</b> &nbsp;
+        <a id="whplnk" href={`https://wa.me/${formattedPhoneNumber}`} target="_blank" rel="noopener noreferrer">
+          <i className="fa-brands fa-whatsapp"></i>
+        </a>
       </label>
-      <p name={rankingInfoModal.telefone.id} id={rankingInfoModal.telefone.id}>{rankingInfoModal.telefone.value}</p>
+      <p>{rankingInfoModal?.client?.cellphone}</p>
       <p>&nbsp;</p>
     </ClientInfoModalContainer>
   )

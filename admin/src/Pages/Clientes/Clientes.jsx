@@ -8,22 +8,22 @@ import { stateClientesInfo, stateOpenModalEditarInfoCliente, stateOpenModalVerIn
 import Modal from "../../components/Modal/Modal";
 import ModalClienteInfo from "./ClientesModais/ModalClienteInfo/ModalClienteInfo";
 import ModalEditarCliente from "./ClientesModais/ModalEditarCliente/ModalEditarCliente";
+import { useEffect } from "react";
+import { fetchDados } from "../../common/http/http";
 
 export default function Clientes() {
   const [openModalVerInfoCliente, setOpenModalVerInfoCliente] = useRecoilState(stateOpenModalVerInfoCliente);
   const [openModalEditarInfoCliente, setOpenModalEditarInfoCliente] = useRecoilState(stateOpenModalEditarInfoCliente);
-  // const setClientesInfo = useSetRecoilState(stateClientesInfo);
+  const setClientesInfo = useSetRecoilState(stateClientesInfo);
 
-    // const obterDados = async () => {
-  //   const response = await fetchDados(`/produtos/todos/ganhadores/`);
-  //   setClientesInfo(response.data);
-  //   console.log('response.data', response.data);
-  // };
+  const obterDados = async () => {
+    const response = await fetchDados(`/admin/dashboard/todos/clientes`);
+    setClientesInfo(response.data);
+  };
 
-  // useEffect(() => {
-  //   obterDados();
-  // }, []);
-
+  useEffect(() => {
+    obterDados();
+  }, []);
 
   return (
     <section>

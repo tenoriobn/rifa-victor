@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useRecoilState, useSetRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { stateClientesInfo, stateIdModal, stateOpenModalEditarInfoCliente, stateOpenModalVerInfoCliente } from "../../../common/states/atom";
+import { stateClientesInfo, stateOpenModalEditarInfoCliente, stateOpenModalVerInfoCliente, stateClienteInfoModal } from "../../../common/states/atom";
 
 export const Table = styled.table`
   width: 100%;
@@ -109,38 +109,18 @@ export const Table = styled.table`
 export default function ClientesTable() {
   const [openModalVerInfoCliente, setOpenModalVerInfoCliente] = useRecoilState(stateOpenModalVerInfoCliente);
   const [openModalEditarInfoCliente, setOpenModalEditarInfoCliente] = useRecoilState(stateOpenModalEditarInfoCliente);
-  const setIdModal = useSetRecoilState(stateIdModal);
-  // const clientesInfo = useRecoilValue(stateClientesInfo);
+  const clientesInfo = useRecoilValue(stateClientesInfo);
+  const setClienteInfoModal = useSetRecoilState(stateClienteInfoModal);
 
-  const clientesInfo = [
-    {
-      id: "#1",
-      nome: "André Luiz",
-      telefone: "(11)98888-7777",
-      status: "nao",
-    },
-    {
-      id: "#2",
-      nome: "André Luiz",
-      telefone: "(11)98888-7777",
-      status: "sim",
-    },
-    {
-      id: "#3",
-      nome: "André Luiz",
-      telefone: "(11)98888-7777",
-      status: "sim",
-    }
-  ];
+  console.log(clientesInfo)
 
-  const handleButtonId = async (id) => {
+  const handleButtonId = async (cliente) => {
     setOpenModalVerInfoCliente(!openModalVerInfoCliente)
-    // const response = await fetchDados(`admin/dashboard/pacote/${id}`);
-    // setPedidosInfoModal(response.data);
+    setClienteInfoModal(cliente);
   }
 
-  const handleModalId = (id) => {
-    setIdModal(id)
+  const handleModalId = (cliente) => {
+    setClienteInfoModal(cliente);
     setOpenModalEditarInfoCliente(!openModalEditarInfoCliente)
   }
 
@@ -152,7 +132,7 @@ export default function ClientesTable() {
             <th>#</th>
             <th>Nome</th>
             <th>Telefone</th>
-            <th>Cadastrado</th>
+            {/* <th>Cadastrado</th> */}
             <th>Ações</th>
           </tr>
         </thead>
@@ -160,10 +140,10 @@ export default function ClientesTable() {
         <tbody>
           {clientesInfo.map((cliente, index) => (
             <tr key={index} className="raffle-item">
-              <td>{cliente.id}</td>
-              <td>{cliente.nome}</td>
-              <td>{cliente.telefone}</td>
-              <td>
+              <td>#{cliente.id}</td>
+              <td>{cliente?.name} {cliente?.surname}</td>
+              <td>{cliente.cellphone}</td>
+              {/* <td>
                 <span 
                   className={`status-tag ${
                     cliente.status === 'sim' ? 'status-available' :
@@ -173,16 +153,16 @@ export default function ClientesTable() {
                 >
                   {cliente.status}
                 </span>
-              </td>
+              </td> */}
               <td>
                 <div className="button-group">
                   <button 
                     className="action-button button-view" 
-                    onClick={() => handleButtonId(cliente.id)}
+                    onClick={() => handleButtonId(cliente)}
                   >
                     <i className="fas fa-eye"></i> VER
                   </button>
-                  <button className="action-button button-edit" onClick={() => handleModalId(cliente.id)}>
+                  <button className="action-button button-edit" onClick={() => handleModalId(cliente)}>
                     <i className="fas fa-edit"></i> Editar
                   </button>
                 </div>

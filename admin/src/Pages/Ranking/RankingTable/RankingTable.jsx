@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { stateOpenModalVerInfoCliente, stateRankingInfoModal, stateVisibilidadeColunaTabelaRanking } from "../../../common/states/atom";
+import { stateOpenModalVerInfoCliente, stateRankingInfoTable, stateVisibilidadeColunaTabelaRanking, stateRankingInfoModal } from "../../../common/states/atom";
 
 export const Table = styled.table`
   width: 100%;
@@ -64,37 +64,37 @@ export const Table = styled.table`
 export default function RankingTable() {
   const isibilidadeColunaTabelaRanking = useRecoilValue(stateVisibilidadeColunaTabelaRanking);
   const [openModalVerInfoCliente, setOpenModalVerInfoCliente] = useRecoilState(stateOpenModalVerInfoCliente);
-  const setRankingInfoModal = useRecoilState(stateRankingInfoModal);
+  const setRankingInfoModal = useSetRecoilState(stateRankingInfoModal);
+  const rankingInfo =  useRecoilValue(stateRankingInfoTable);
 
-  const handleButtonId = async (id) => {
+  const handleButtonId = async (item) => {
     setOpenModalVerInfoCliente(!openModalVerInfoCliente)
-    // const response = await fetchDados(`admin/dashboard/pacote/${id}`);
-    // setRankingInfoModal(response.data);
+    setRankingInfoModal(item);
   }
 
-  const dadosTabela = [
-    {
-      id: 1,
-      posicao: "1º",
-      cliente: "Rafaela Souza",
-      telefone: "(43) 996XX-XX19",
-      cidade: "Quatiguá/Paraná",
-      sorteio: "SAVEIRO CROSS DOS SONHOS",
-      quantidade: 170,
-      total: "R$ 17,00",
-    },
-    {
-      id: 2,
-      posicao: "2º",
-      cliente: "João Silva",
-      telefone: "(43) 997XX-XX20",
-      cidade: "Londrina/Paraná",
-      sorteio: "CARRO DOS SONHOS",
-      quantidade: 150,
-      total: "R$ 15,00",
-    },
-    // Adicione mais objetos conforme necessário
-  ];
+  // const dadosTabela = [
+  //   {
+  //     id: 1,
+  //     posicao: "1º",
+  //     cliente: "Rafaela Souza",
+  //     telefone: "(43) 996XX-XX19",
+  //     cidade: "Quatiguá/Paraná",
+  //     sorteio: "SAVEIRO CROSS DOS SONHOS",
+  //     quantidade: 170,
+  //     total: "R$ 17,00",
+  //   },
+  //   {
+  //     id: 2,
+  //     posicao: "2º",
+  //     cliente: "João Silva",
+  //     telefone: "(43) 997XX-XX20",
+  //     cidade: "Londrina/Paraná",
+  //     sorteio: "CARRO DOS SONHOS",
+  //     quantidade: 150,
+  //     total: "R$ 15,00",
+  //   },
+  //   // Adicione mais objetos conforme necessário
+  // ];
 
   return (
     <div>
@@ -104,7 +104,6 @@ export default function RankingTable() {
             {isibilidadeColunaTabelaRanking.posicao && <th className="posicao">Posição</th>}
             {isibilidadeColunaTabelaRanking.cliente && <th className="cliente">Cliente</th>}
             {isibilidadeColunaTabelaRanking.telefone && <th className="telefone">Telefone</th>}
-            {isibilidadeColunaTabelaRanking.cidade && <th className="cidade">Cidade</th>}
             {isibilidadeColunaTabelaRanking.sorteio && <th className="sorteio">Sorteio</th>}
             {isibilidadeColunaTabelaRanking.quantidade && <th className="quantidade">Quantidade</th>}
             {isibilidadeColunaTabelaRanking.total && <th className="total">Total</th>}
@@ -113,54 +112,57 @@ export default function RankingTable() {
         </thead>
 
         <tbody>
-          {dadosTabela.map((item) => (
-            <tr key={item.id}>
+        {rankingInfo && rankingInfo.length > 0 ? (
+          rankingInfo.map((item, index) => (
+            <tr key={index}>
               {isibilidadeColunaTabelaRanking.posicao && (
                 <td align="center" className="posicao">
-                  <b>{item.posicao}</b>
+                  <b>{index + 1}º</b>
                 </td>
               )}
               {isibilidadeColunaTabelaRanking.cliente && (
                 <td align="center" className="cliente">
                   <a href={`https://dash.alimaprojetos.com/dashboard/pedidos?id_customer=${item.id}`} target="_blank" rel="noopener noreferrer">
-                    {item.cliente}
+                    {item?.client?.name} {item?.client?.surname}
                   </a>
                 </td>
               )}
               {isibilidadeColunaTabelaRanking.telefone && (
                 <td align="center" className="telefone">
-                  {item.telefone}
-                </td>
-              )}
-              {isibilidadeColunaTabelaRanking.cidade && (
-                <td align="center" className="cidade">
-                  {item.cidade}
+                  {item?.client?.cellphone}
                 </td>
               )}
               {isibilidadeColunaTabelaRanking.sorteio && (
                 <td align="center" className="sorteio">
-                  {item.sorteio}
+                  {item?.rifa?.title}
                 </td>
               )}
               {isibilidadeColunaTabelaRanking.quantidade && (
                 <td align="center" className="quantidade">
-                  {item.quantidade}
+                  {item.total_numbers}
                 </td>
               )}
               {isibilidadeColunaTabelaRanking.total && (
                 <td align="center" className="total">
-                  <b>{item.total}</b>
+                  <b>{item.valor_total}</b>
                 </td>
               )}
               {isibilidadeColunaTabelaRanking.acoes && (
                 <td align="center" className="acoes">
-                  <button className="button-view" onClick={() => handleButtonId(item.id)}>
+                  <button className="button-view" onClick={() => handleButtonId(item)}>
                     <i className="fas fa-eye"></i> VER
                   </button>
                 </td>
-              )}
+                )}
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={Object.keys(isibilidadeColunaTabelaRanking).length} align="center">
+                <i>Nenhum dado disponível</i>
+              </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </Table>
     </div>

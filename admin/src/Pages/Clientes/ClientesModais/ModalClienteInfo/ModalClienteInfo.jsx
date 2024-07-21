@@ -1,4 +1,6 @@
 import styled from "styled-components"
+import { useRecoilValue } from "recoil";
+import { stateClienteInfoModal } from "../../../../common/states/atom";
 
 const ClientInfoModalContainer = styled.div`
   width: 100%;
@@ -15,27 +17,28 @@ const ClientInfoModalContainer = styled.div`
 `;
 
 export default function ModalClienteInfo() {
-    // const pedidosInfoModal = useRecoilValue(statePedidosInfoModal);
-
-    const clienteInfo = {
-      nome: "Rafaela Matos de Souza",
-      telefone: "(43) 99672-6519",
-      whatsappLink: "https://wa.me/5543996726519"
+  const clienteInfoModal = useRecoilValue(stateClienteInfoModal);
+    const formatPhoneNumber = (number) => {
+      const cleanedNumber = number.replace(/\D/g, '');
+    
+      return `55${cleanedNumber}`;
     };
+  
+    const formattedPhoneNumber = formatPhoneNumber(clienteInfoModal.cellphone);
 
   return (
     <ClientInfoModalContainer>
       <label htmlFor="customerName"><b>Nome</b></label>
-      <p name="customerName" id="customerName">{clienteInfo.nome}</p>
+      <p name="customerName" id="customerName">{clienteInfoModal?.nome} {clienteInfoModal?.surname}</p>
       <p>&nbsp;</p>
 
       <label htmlFor="customerPhone">
         <b>Telefone</b>&nbsp; 
-        <a id="whplnk" href={clienteInfo.whatsappLink} target="_blank" rel="noopener noreferrer">
+        <a id="whplnk" href={`https://wa.me/${formattedPhoneNumber}`} target="_blank" rel="noopener noreferrer">
           <i className="fa-brands fa-whatsapp"></i>
         </a>
       </label>
-      <p name="customerPhone" id="customerPhone">{clienteInfo.telefone}</p>
+      <p name="customerPhone" id="customerPhone">{clienteInfoModal.cellphone}</p>
       <p>&nbsp;</p>
     </ClientInfoModalContainer>
   )

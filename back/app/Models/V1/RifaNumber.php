@@ -164,13 +164,14 @@ class RifaNumber extends Model {
         return $result ?? false;
     }
     public static function getRankingRifaGeral() {
-        $result = self::select('client_id', 'rifas_id', 'pay_id')
+        $result = self::where('status', 1)->select('client_id', 'rifas_id', 'pay_id')
             ->selectRaw('SUM(CASE WHEN JSON_VALID(numbers) THEN JSON_LENGTH(numbers) ELSE 0 END) as total_numbers')
+            ->withSum('rifaPay as valor_total', 'value')
             ->with(['client', 'rifa', 'rifaPay'])
             ->groupBy('client_id')
             ->orderByRaw('SUM(CASE WHEN JSON_VALID(numbers) THEN JSON_LENGTH(numbers) ELSE 0 END) DESC')
             ->get();
-
+        // dd($result );
         return $result ?? false;
     }
     public static function cancelRifaNumber($ids) {
