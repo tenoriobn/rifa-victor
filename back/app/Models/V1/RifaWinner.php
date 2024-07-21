@@ -39,16 +39,16 @@ class RifaWinner extends Model
         return self::create([
             'img' => $img,
             'ticket' => $data->ticket,
-            'rifas_id' => $data->rifa_id,
+            'rifas_id' => $data->rifas_id,
             'client_id' => $client,
         ]);
     }
-    public static function editarWinner($data, $img) {
+    public static function editarWinner($data, $client, $img) {
         return self::where('id', $data->id)->update([
             'img' => $img,
             'ticket' => $data->ticket,
             'rifas_id' => $data->rifas_id,
-            'client_id' => $data->client_id,
+            'client_id' => $client,
         ]);
     }
 }
