@@ -134,7 +134,7 @@ export default function ModalCotaPremiada() {
           <>
             <tr>
               <td><b>Gateway Pagamento</b></td>
-              <td><p name="pedidoGateway" id="pedidoGateway">{pedidosInfoModal.gatewayPagamento}</p></td>
+              <td><p name="pedidoGateway" id="pedidoGateway">{pedidosInfoModal.rifa.rifa_payment.gateway}</p></td>
             </tr>
 
             <tr>
