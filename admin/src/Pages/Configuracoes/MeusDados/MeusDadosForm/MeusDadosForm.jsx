@@ -72,22 +72,15 @@ export default function MeusDadosForm() {
     document: "01219599964"
   });
 
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormDadosUsuarios((prevData) => ({
-      ...prevData,
-      [name]: value
-    }));
-  };
+  console.log(formDadosUsuario);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      // const response = await postDados("http://127.0.0.1:5173/dashboard/clients/save/27", formDadosUsuario);
-    } catch (error) {
-      console.error("Erro ao atualizar dados:", error);
-    }
+    // try {
+    //   // const response = await postDados("http://127.0.0.1:5173/dashboard/clients/save/27", formDadosUsuario);
+    // } catch (error) {
+    //   console.error("Erro ao atualizar dados:", error);
+    // }
   };
 
   return (
@@ -102,7 +95,7 @@ export default function MeusDadosForm() {
               type="text" 
               name="name" 
               value={formDadosUsuario.name} 
-              onChange={handleChange} 
+              onChange={(e) => setFormDadosUsuarios({ ...formDadosUsuario, name: e.target.value })} 
               required 
             />
           </label>
@@ -113,7 +106,7 @@ export default function MeusDadosForm() {
               type="text" 
               name="email" 
               value={formDadosUsuario.email} 
-              onChange={handleChange} 
+              onChange={(e) => setFormDadosUsuarios({ ...formDadosUsuario, email: e.target.value })} 
               required 
             />
           </label>
@@ -126,7 +119,7 @@ export default function MeusDadosForm() {
               id="phone" 
               name="phone" 
               value={formDadosUsuario.phone} 
-              onChange={handleChange} 
+              onChange={(e) => setFormDadosUsuarios({ ...formDadosUsuario, phone: e.target.value })} 
               required 
             />
           </label>
@@ -139,7 +132,7 @@ export default function MeusDadosForm() {
               id="document" 
               name="document" 
               value={formDadosUsuario.document} 
-              onChange={handleChange} 
+              onChange={(e) => setFormDadosUsuarios({ ...formDadosUsuario, document: e.target.value })} 
               required 
             />
           </label>

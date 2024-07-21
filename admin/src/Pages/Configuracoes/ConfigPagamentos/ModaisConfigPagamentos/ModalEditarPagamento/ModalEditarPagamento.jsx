@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styled from "styled-components"
 
 const Form = styled.form`
@@ -57,26 +58,47 @@ const Form = styled.form`
 `;
 
 export default function ModalEditarPagamento() {
+  const [formDadosUsuario, setFormDadosUsuarios] = useState({
+    name: "Ana Lima",
+    token: "132456",
+    publicKey: "12",
+    nomeFatura: "Overz"
+  });
+
   return (
     <Form action="" id="frmAddPack" method="POST">
       <label htmlFor="">
         Nome
-        <input type="text" id="MPname" name="name" required="" />
+        <input 
+          type="text" id="MPname" name="name" required=""
+          value={formDadosUsuario.name} 
+          onChange={(e) => setFormDadosUsuarios({ ...formDadosUsuario, name: e.target.value })} 
+        />
       </label>
 
       <label htmlFor="">
         Token
-        <input type="text" id="MPtoken" name="token" required="" />
+        <input 
+          type="text" id="MPtoken" name="token" required="" 
+          value={formDadosUsuario.token} 
+          onChange={(e) => setFormDadosUsuarios({ ...formDadosUsuario, token: e.target.value })}   
+        />
       </label>
 
       <label htmlFor="">
         Public Key
-        <input type="text" id="MPpublic_key" name="public_key" required="" />
+        <input type="text" id="MPpublic_key" name="public_key" required="" 
+          value={formDadosUsuario.publicKey} 
+          onChange={(e) => setFormDadosUsuarios({ ...formDadosUsuario, publicKey: e.target.value })} 
+        />
       </label>
 
       <label htmlFor="">
         Nome na Fatura
-        <input type="text" id="MPstatement_descriptor" name="statement_descriptor" />
+        <input type="text" id="MPstatement_descriptor" name="statement_descriptor"
+          value={formDadosUsuario.nomeFatura}  
+          onChange={(e) => setFormDadosUsuarios({ ...formDadosUsuario, nomeFatura: e.target.value })} 
+        />
       </label>
 
       <input id="sendEditPack" type="submit" value="Atualizar" />

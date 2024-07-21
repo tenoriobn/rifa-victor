@@ -30,6 +30,7 @@ import DefinirGanhador from "./Pages/SuperAdmin/DefinirGanhador/DefinirGanhador"
 import AdicionarNumeros from "./Pages/SuperAdmin/AdicionarNumeros/AdicionarNumeros";
 import AdicionarBilhetePremiado from "./Pages/SuperAdmin/AdicionarBilhetePremiado/AdicionarBilhetePremiado";
 import './tailwind.css';
+import DashboardRifa from "./Pages/DashboardRifa/DashboardRifa";
 // import AdicionarNumeros from "./Pages/SuperAdmin/AdicionarNumeros/AdicionarNumeros";
 // import AdicionarCotas from "./Pages/SuperAdmin/AdicionarCotas/AdicionarCotas";
 
@@ -44,6 +45,7 @@ function App() {
               <Route index element={<Vendas />} />
 
               <Route path="rifas" element={<Sorteios />} />
+              <Route path="rifa/:id" element={<DashboardRifa />} />
               <Route path="rifas/adicionar" element={<AdicionarRifa />} />
               <Route path="rifas/editar/:id" element={<EditarRifa />} />
               <Route path="rifas/imagens/:id" element={<ImagensRifa />} />

@@ -72,7 +72,12 @@ const Table = styled.table`
   }
 
   .status-inactive {
-    background-color: #b24848
+    background-color: #858796;
+    color: white;
+    border: none;
+    border-radius: .3125rem;
+    padding: .625rem .9375rem;
+    cursor: pointer;
   }
 
   .button-group {
@@ -132,6 +137,8 @@ export default function TabelaSorteio() {
   const { formattedDate } = useFormattedDate();
   const { formatCurrency } = useCurrencyFormatTable();
   const { formatPercentage } = useFormatPercentage();
+
+  console.log(sorteios)
 
   useEffect(() => {
     const obterDados = async () => {
@@ -243,7 +250,14 @@ export default function TabelaSorteio() {
                       <i className="fa-solid fa-toggle-on"></i> Finalizar
                     </a>
                   )}
-                  <Link className="button-dashboard" to={sorteio.dashboardLink}>
+
+                  {sorteio.status === 'finalizadas' && (
+                  <button className="status-inactive">
+                    <ion-icon name="stats-chart" role="img" className="md hydrated"></ion-icon> Ativar
+                  </button>
+                  )}
+
+                  <Link className="button-dashboard" to={`/dashboard/rifa/${sorteio.id}`}>
                     <ion-icon name="stats-chart" role="img" className="md hydrated"></ion-icon> Dashboard
                   </Link>
                   <button 

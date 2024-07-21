@@ -4,13 +4,7 @@ import { stateSiteConfig } from "../../../../../common/states/atom";
 export default function ConfiguracoesInputs() {
   const [siteConfig, setSiteConfig] = useRecoilState(stateSiteConfig);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setSiteConfig((prevConfig) => ({
-      ...prevConfig,
-      [name]: value
-    }));
-  };
+  console.log(siteConfig)
 
   return (
     <div className="category">
@@ -21,8 +15,8 @@ export default function ConfiguracoesInputs() {
         <input 
           type="text" 
           name="app_title" 
-          defaultValue={siteConfig.app_title || ""} 
-          onChange={handleChange} 
+          value={siteConfig.app_title || ""} 
+          onChange={(e) => setSiteConfig({ ...siteConfig, app_title: e.target.value })} 
           required 
         />
       </label>
@@ -32,8 +26,8 @@ export default function ConfiguracoesInputs() {
         <input 
           type="text" 
           name="logo" 
-          defaultValue={siteConfig.logo || ""} 
-          onChange={handleChange} 
+          value={siteConfig.logo || ""} 
+          onChange={(e) => setSiteConfig({ ...siteConfig, logo: e.target.value })} 
         />
       </label>
 
@@ -42,8 +36,8 @@ export default function ConfiguracoesInputs() {
         <input 
           type="text" 
           name="logo_white" 
-          defaultValue={siteConfig.logo_white || ""} 
-          onChange={handleChange} 
+          value={siteConfig.logo_white || ""} 
+          onChange={(e) => setSiteConfig({ ...siteConfig, logo_white: e.target.value })} 
         />
       </label>
 
@@ -52,8 +46,8 @@ export default function ConfiguracoesInputs() {
         <input 
           type="text" 
           name="empresa" 
-          defaultValue={siteConfig.empresa || ""} 
-          onChange={handleChange} 
+          value={siteConfig.empresa || ""} 
+          onChange={(e) => setSiteConfig({ ...siteConfig, empresa: e.target.value })} 
         />
       </label>
 
@@ -62,8 +56,8 @@ export default function ConfiguracoesInputs() {
         <input 
           type="text" 
           name="analytics" 
-          defaultValue={siteConfig.analytics || ""} 
-          onChange={handleChange} 
+          value={siteConfig.analytics || ""} 
+          onChange={(e) => setSiteConfig({ ...siteConfig, analytics: e.target.value })} 
         />
       </label>
 
@@ -72,8 +66,8 @@ export default function ConfiguracoesInputs() {
         <input 
           type="text" 
           name="webhook" 
-          defaultValue={siteConfig.webhook || ""} 
-          onChange={handleChange} 
+          value={siteConfig.webhook || ""} 
+          onChange={(e) => setSiteConfig({ ...siteConfig, webhook: e.target.value })} 
         />
       </label>
 
@@ -82,8 +76,8 @@ export default function ConfiguracoesInputs() {
         <input 
           type="text" 
           name="product_title" 
-          defaultValue={siteConfig.product_title || ""} 
-          onChange={handleChange} 
+          value={siteConfig.product_title || ""} 
+          onChange={(e) => setSiteConfig({ ...siteConfig, product_title: e.target.value })} 
         />
       </label>
 
@@ -92,8 +86,8 @@ export default function ConfiguracoesInputs() {
         <input 
           type="text" 
           name="product_subtitle" 
-          defaultValue={siteConfig.product_subtitle || ""} 
-          onChange={handleChange} 
+          value={siteConfig.product_subtitle || ""} 
+          onChange={(e) => setSiteConfig({ ...siteConfig, product_subtitle: e.target.value })} 
         />
       </label>
     </div>

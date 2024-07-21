@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components"
-import { stateOpenModalEditarUsuario } from "../../../../common/states/atom";
+import { stateEditarUsuario, stateOpenModalEditarUsuario, stateUsuarioInfoTable } from "../../../../common/states/atom";
 
 const Table = styled.table`
   width: 100%;
@@ -108,37 +108,43 @@ const Table = styled.table`
 
 export default function UsuariosTable() {
   const [openModalEditarUsuario, setOpenModalEditarUsuario] = useRecoilState(stateOpenModalEditarUsuario);
+  const novoUsuarioInfoTable = useRecoilValue(stateUsuarioInfoTable);
+  const setEditarUsuario  = useSetRecoilState(stateEditarUsuario);
 
-  const userItems = [
-    {
-      name: "Ana Lima",
-      phone: "(43) 99640-3859",
-      email: "anaplima2001@gmail.com",
-      status: "administrador",
-      date: "15/04/24 15:02"
-    },
-    {
-      name: "Ana Lima",
-      phone: "(43) 99640-3859",
-      email: "anaplima2001@gmail.com",
-      status: "usuario",
-      date: "15/04/24 15:02"
-    },
-    {
-      name: "Ana Lima",
-      phone: "(43) 99640-3859",
-      email: "anaplima2001@gmail.com",
-      status: "suporte",
-      date: "15/04/24 15:02"
-    },
-    {
-      name: "Ana Lima",
-      phone: "(43) 99640-3859",
-      email: "anaplima2001@gmail.com",
-      status: "superadmin",
-      date: "15/04/24 15:02"
-    }
-  ];
+  //   {
+  //     name: "Ana Lima",
+  //     phone: "(43) 99640-3859",
+  //     email: "anaplima2001@gmail.com",
+  //     status: "administrador",
+  //     date: "15/04/24 15:02"
+  //   },
+  //   {
+  //     name: "Ana Lima",
+  //     phone: "(43) 99640-3859",
+  //     email: "anaplima2001@gmail.com",
+  //     status: "usuario",
+  //     date: "15/04/24 15:02"
+  //   },
+  //   {
+  //     name: "Ana Lima",
+  //     phone: "(43) 99640-3859",
+  //     email: "anaplima2001@gmail.com",
+  //     status: "suporte",
+  //     date: "15/04/24 15:02"
+  //   },
+  //   {
+  //     name: "Ana Lima",
+  //     phone: "(43) 99640-3859",
+  //     email: "anaplima2001@gmail.com",
+  //     status: "superadmin",
+  //     date: "15/04/24 15:02"
+  //   }
+  // ];
+  
+  const handleModalId = (cliente) => {
+    setEditarUsuario(cliente);
+    setOpenModalEditarUsuario(!openModalEditarUsuario)
+  }
   
   return (
     <div className="">
@@ -155,7 +161,7 @@ export default function UsuariosTable() {
         </thead>
 
         <tbody>
-          {userItems.map((item, index) => (
+          {novoUsuarioInfoTable.map((item, index) => (
             <tr key={index} className="raffle-item">
               <td>{item.name}</td>
               <td align="center">{item.phone}</td>
@@ -163,9 +169,9 @@ export default function UsuariosTable() {
               <td align="center">
                 <span 
                   className={`status-tag ${
-                    item.status === 'administrador' ? 'status-pago' :
-                    item.status === 'usuario' ? 'status-rescued' :
-                    item.status === 'suporte' ? 'button-dashboard' :
+                    item.status === 'admin' ? 'status-pago' :
+                    item.status === 'user' ? 'status-rescued' :
+                    item.status === 'support' ? 'button-dashboard' :
                     item.status === 'superadmin' ? 'button-divergente' :
                     ''
                   }`}
@@ -178,7 +184,7 @@ export default function UsuariosTable() {
                 <div className="button-group">
                   <a
                     className="button-edit"
-                    onClick={() => setOpenModalEditarUsuario(!openModalEditarUsuario)}
+                    onClick={() => handleModalId(item)}
                   >
                     <i className="fas fa-edit"></i> Editar
                   </a>

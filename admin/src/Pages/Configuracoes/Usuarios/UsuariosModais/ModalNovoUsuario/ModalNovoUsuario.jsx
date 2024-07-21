@@ -1,6 +1,7 @@
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components"
-import { stateNovoUsuario } from "../../../../../common/states/atom";
+import { stateNovoUsuario, stateOpenModalAdicionarUsuario, stateUserLogin, stateUsuarioInfoTable } from "../../../../../common/states/atom";
+import { postDados } from "../../../../../common/http/http";
 
 const Form = styled.form`
   font-size: .9rem;
@@ -59,30 +60,35 @@ const Form = styled.form`
 `;
 
 export default function ModalNovoUsuario() {
+  const setOpenModalAdicionarUsuario = useSetRecoilState(stateOpenModalAdicionarUsuario);
   const [novoUsuario, setNovoUsuario] = useRecoilState(stateNovoUsuario);
+  const userLogin = useRecoilValue(stateUserLogin);
+  const setUsuarioInfoTable = useSetRecoilState(stateUsuarioInfoTable);
 
-
-  // Função para atualizar o estado do formulário ao digitar nos inputs
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setNovoUsuario((prevFormState) => ({
-      ...prevFormState,
-      [name]: value,
-    }));
-  };
-
-  // Função para lidar com o envio do formulário
-  const handleSubmit = (e) => {
+  console.log(novoUsuario)
+  
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Aqui você pode enviar os dados para o backend, utilizar o novoUsuario
-    // Lógica para enviar para o backend aqui
+
+    try {
+      const response = await postDados('/admin/dashboard/pacote/cadastrar', novoUsuario, userLogin);
+      console.log('aqui dentro', response)
+      setUsuarioInfoTable(response.data)
+      setOpenModalAdicionarUsuario(false)
+      
+    } catch (error) {
+      console.error('Erro ao fazer POST:', error);
+    }
   };
 
   return (
     <Form action="" id="frmAddPack" method="POST" onSubmit={handleSubmit}>
       <label htmlFor="name">
         Nome
-        <input type="text" name="name" onChange={handleChange} required />
+        <input type="text" name="name" required 
+          value={novoUsuario.name || ''} 
+          onChange={(e) => setNovoUsuario({ ...novoUsuario, name: e.target.value })} 
+        />
       </label>
 
       <label htmlFor="phone">
@@ -92,14 +98,18 @@ export default function ModalNovoUsuario() {
           id="phone"
           name="phone"
           maxLength="15"
-          onChange={handleChange}
+          value={novoUsuario.cell_phone  || ''} 
+          onChange={(e) => setNovoUsuario({ ...novoUsuario, cell_phone: e.target.value })} 
           required
         />
       </label>
 
       <label htmlFor="email">
         E-Mail
-        <input type="text" name="email" onChange={handleChange} required />
+        <input type="text" name="email" required
+          value={novoUsuario.email  || ''}  
+          onChange={(e) => setNovoUsuario({ ...novoUsuario, email: e.target.value })} 
+        />
       </label>
 
       <label htmlFor="password">
@@ -109,14 +119,20 @@ export default function ModalNovoUsuario() {
           name="password"
           minLength="8"
           maxLength="20"
-          onChange={handleChange}
+          value={novoUsuario.senha  || ''} 
+          onChange={(e) => setNovoUsuario({ ...novoUsuario, senha: e.target.value })} 
           required
         />
       </label>
 
       <label htmlFor="access_level">
         Perfil de acesso
-        <select name="access_level" id="access_level" onChange={handleChange}>
+        <select name="access_level" id="access_level"
+          value={novoUsuario.status  || ''} 
+          onChange={(e) => setNovoUsuario({ ...novoUsuario, status: e.target.value })} 
+          required
+        >
+          <option value="">Selecione</option>
           <option value="admin">Administrador</option>
           <option value="user">Usuário</option>
           <option value="support">Suporte</option>

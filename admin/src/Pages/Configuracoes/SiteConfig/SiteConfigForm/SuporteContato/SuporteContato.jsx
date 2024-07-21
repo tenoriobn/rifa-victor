@@ -1,16 +1,9 @@
 import { useRecoilState } from "recoil";
 import { stateSiteConfig } from "../../../../../common/states/atom";
+import { PatternFormat } from "react-number-format";
 
 export default function SuporteContato() {
   const [siteConfig, setSiteConfig] = useRecoilState(stateSiteConfig);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setSiteConfig((prevConfig) => ({
-      ...prevConfig,
-      [name]: value
-    }));
-  };
 
   return (
     <div className="category">
@@ -18,11 +11,12 @@ export default function SuporteContato() {
 
       <label htmlFor="whatsapp">
         Whatsapp (Somente números)
-        <input 
+        <PatternFormat
+          format="(##) #####-####" 
           type="text" 
           name="whatsapp" 
-          defaultValue={siteConfig.whatsapp || ""} 
-          onChange={handleChange} 
+          value={siteConfig.whatsapp || ""} 
+          onChange={(e) => setSiteConfig({ ...siteConfig, whatsapp: e.target.value })}
           placeholder="55XXXXXXXX" 
         />
       </label>
@@ -32,8 +26,8 @@ export default function SuporteContato() {
         <input 
           type="text" 
           name="whatsapp_group" 
-          defaultValue={siteConfig.whatsapp_group || ""} 
-          onChange={handleChange} 
+          value={siteConfig.whatsapp_group || ""} 
+          onChange={(e) => setSiteConfig({ ...siteConfig, whatsapp_group: e.target.value })}
         />
       </label>
 
@@ -42,8 +36,8 @@ export default function SuporteContato() {
         <input 
           type="text" 
           name="instagram" 
-          defaultValue={siteConfig.instagram || ""} 
-          onChange={handleChange} 
+          value={siteConfig.instagram || ""} 
+          onChange={(e) => setSiteConfig({ ...siteConfig, instagram: e.target.value })}
         />
       </label>
 
@@ -52,18 +46,18 @@ export default function SuporteContato() {
         <input 
           type="text" 
           name="helpdesk" 
-          defaultValue={siteConfig.helpdesk || ""} 
-          onChange={handleChange} 
+          value={siteConfig.helpdesk || ""} 
+          onChange={(e) => setSiteConfig({ ...siteConfig, helpdesk: e.target.value })}
         />
       </label>
 
       <label htmlFor="mail">
         E-mail
         <input 
-          type="text" 
-          name="mail" 
-          defaultValue={siteConfig.mail || ""} 
-          onChange={handleChange} 
+          type="email" 
+          name="email" 
+          value={siteConfig.email || ""} 
+          onChange={(e) => setSiteConfig({ ...siteConfig, email: e.target.value })}
         />
       </label>
     </div>

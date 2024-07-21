@@ -1,6 +1,7 @@
 import styled from "styled-components"
-import { stateNovoUsuario } from "../../../../../common/states/atom";
-import { useRecoilState } from "recoil";
+import { stateEditarUsuario, stateOpenModalEditarUsuario, stateUserLogin } from "../../../../../common/states/atom";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { putDados } from "../../../../../common/http/http";
 
 const Form = styled.form`
   font-size: .9rem;
@@ -59,22 +60,22 @@ const Form = styled.form`
 `;
 
 export default function ModalEditarUsuario() {
-  const [novoUsuario, setNovoUsuario] = useRecoilState(stateNovoUsuario);
+  const [editarUsuario, setEditarUsuario] = useRecoilState(stateEditarUsuario);
+  const setOpenModalEditarUsuario = useSetRecoilState(stateOpenModalEditarUsuario);
+  const userLogin = useSetRecoilState(stateUserLogin);
 
+  console.log(editarUsuario)
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setNovoUsuario((prevFormState) => ({
-      ...prevFormState,
-      [name]: value,
-    }));
-  };
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-  // Função para lidar com o envio do formulário
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Aqui você pode enviar os dados para o backend, utilizando novoUsuario
-    // Lógica para enviar para o backend aqui
+    try {
+      await putDados(`admin/dashboard/editar/cliente`, editarUsuario, userLogin);
+      setOpenModalEditarUsuario(false);
+
+    } catch (error) {
+      console.error("Erro ao enviar dados:", error);
+    }
   };
 
   return (
@@ -84,8 +85,8 @@ export default function ModalEditarUsuario() {
         <input
           type="text"
           name="name"
-          value={novoUsuario.name || ''}
-          onChange={handleChange}
+          value={editarUsuario.name || ''}
+          onChange={(e) => setEditarUsuario({ ...editarUsuario, name: e.target.value })} 
           required
         />
       </label>
@@ -97,8 +98,8 @@ export default function ModalEditarUsuario() {
           id="phone"
           name="phone"
           maxLength="15"
-          value={novoUsuario.phone || ''}
-          onChange={handleChange}
+          value={editarUsuario.phone || ''}
+          onChange={(e) => setEditarUsuario({ ...editarUsuario, phone: e.target.value })} 
           required
         />
       </label>
@@ -108,8 +109,8 @@ export default function ModalEditarUsuario() {
         <input
           type="text"
           name="email"
-          value={novoUsuario.email || ''}
-          onChange={handleChange}
+          value={editarUsuario.email || ''}
+          onChange={(e) => setEditarUsuario({ ...editarUsuario, email : e.target.value })} 
           required
         />
       </label>
@@ -121,8 +122,8 @@ export default function ModalEditarUsuario() {
           name="password"
           minLength="8"
           maxLength="20"
-          value={novoUsuario.password || ''}
-          onChange={handleChange}
+          value={editarUsuario.password || ''}
+          onChange={(e) => setEditarUsuario({ ...editarUsuario, password: e.target.value })} 
           required
         />
       </label>
@@ -132,8 +133,8 @@ export default function ModalEditarUsuario() {
         <select
           name="access_level"
           id="access_level"
-          value={novoUsuario.access_level || ''}
-          onChange={handleChange}
+          value={editarUsuario.status || ''}
+          onChange={(e) => setEditarUsuario({ ...editarUsuario, status: e.target.value })} 
         >
           <option value="admin">Administrador</option>
           <option value="user">Usuário</option>

@@ -85,8 +85,6 @@ const Button = styled.button`
 export default function FormularioSorteio() {
   const [filtroSorteio, setFiltroSorteio] = useRecoilState(stateFiltroSorteio);
 
-
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFiltroSorteio((prevFiltro) => ({

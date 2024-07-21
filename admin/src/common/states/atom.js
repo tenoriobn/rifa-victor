@@ -204,6 +204,15 @@ export const stateNovoUsuario = atom({
   default: {},
 })
 
+export const stateEditarUsuario = atom({
+  key: 'stateEditarUsuario',
+  default: {},
+})
+
+export const stateUsuarioInfoTable = atom({
+  key: 'stateUsuarioInfoTable',
+  default: [],
+})
 export const stateFiltroSorteio = atom({
   key: 'stateFiltroSorteio',
   default: {},

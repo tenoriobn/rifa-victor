@@ -1,9 +1,10 @@
-import { useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import ConfiguracoesInputs from "./ConfiguracoesInputs/ConfiguracoesInputs";
 import SiteConfigSeo from "./SiteConfigSeo/SiteConfigSeo";
 import SuporteContato from "./SuporteContato/SuporteContato";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { stateSiteConfig } from "../../../../common/states/atom";
 
 const CategoryContainer = styled.div`
@@ -71,9 +72,28 @@ const CategoryContainer = styled.div`
 `;
 
 export default function SiteConfigForm() {
-  const [siteConfig, setSiteConfig] = useRecoilState(stateSiteConfig);
+  const setSiteConfig = useSetRecoilState(stateSiteConfig);
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    setSiteConfig(
+      {
+        "app_title": "Overz",
+        "empresa": "OVERZ a Plataforma Líder em Gestão de Sorteios!",
+        "product_title": "Overz",
+        "product_subtitle": "Overz",
+        "author": "Ana Lima",
+        "tags": "Sorteio",
+        "og_title": "Sorteio",
+        "og_image": "Sorteio",
+        "og_description": "Sorteio",
+        "whatsapp": "(11) 99999-9999",
+        "whatsapp_group": "https://api.whatsapp.com/send?phone=5599999999999",
+        "instagram": "https://www.instagram.com/ana_limapremios",
+        "email": "analima@gmail.com"
+      }
+    )
+  }, [])
 
   const handleSaveChanges = async (event) => {
     event.preventDefault();

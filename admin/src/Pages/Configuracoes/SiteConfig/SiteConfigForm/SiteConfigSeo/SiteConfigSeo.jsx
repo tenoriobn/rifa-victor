@@ -4,14 +4,6 @@ import { stateSiteConfig } from "../../../../../common/states/atom";
 export default function SiteConfigSeo() {
   const [siteConfig, setSiteConfig] = useRecoilState(stateSiteConfig);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setSiteConfig((prevConfig) => ({
-      ...prevConfig,
-      [name]: value
-    }));
-  };
-
   return (
     <div className="category">
       <h3>SEO</h3>
@@ -21,8 +13,8 @@ export default function SiteConfigSeo() {
         <input 
           type="text" 
           name="author" 
-          defaultValue={siteConfig.author || ""} 
-          onChange={handleChange} 
+          value={siteConfig.author || ""} 
+          onChange={(e) => setSiteConfig({ ...siteConfig, author: e.target.value })} 
         />
       </label>
 
@@ -31,8 +23,8 @@ export default function SiteConfigSeo() {
         <input 
           type="text" 
           name="tags" 
-          defaultValue={siteConfig.tags || ""} 
-          onChange={handleChange} 
+          value={siteConfig.tags || ""} 
+          onChange={(e) => setSiteConfig({ ...siteConfig, tags: e.target.value })} 
         />
       </label>
 
@@ -41,8 +33,8 @@ export default function SiteConfigSeo() {
         <input 
           type="text" 
           name="og_title" 
-          defaultValue={siteConfig.og_title || ""} 
-          onChange={handleChange} 
+          value={siteConfig.og_title || ""} 
+          onChange={(e) => setSiteConfig({ ...siteConfig, og_title: e.target.value })} 
         />
       </label>
 
@@ -51,8 +43,8 @@ export default function SiteConfigSeo() {
         <input 
           type="text" 
           name="og_image" 
-          defaultValue={siteConfig.og_image || ""} 
-          onChange={handleChange} 
+          value={siteConfig.og_image || ""} 
+          onChange={(e) => setSiteConfig({ ...siteConfig, og_image: e.target.value })} 
         />
       </label>
 
@@ -63,8 +55,8 @@ export default function SiteConfigSeo() {
           name="og_description" 
           cols="50" 
           rows="5" 
-          defaultValue={siteConfig.og_description || ""} 
-          onChange={handleChange} 
+          value={siteConfig.og_description || ""} 
+          onChange={(e) => setSiteConfig({ ...siteConfig, og_description: e.target.value })} 
         />
       </label>
     </div>
