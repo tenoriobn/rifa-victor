@@ -144,7 +144,7 @@ export default function RankingTable() {
               )}
               {isibilidadeColunaTabelaRanking.total && (
                 <td align="center" className="total">
-                  <b> R$ {(parseFloat(item.total_numbers) * parseFloat(item.rifa.price)).toFixed(2)}</b>
+                  <b> R$ {(parseFloat(item.total_numbers) * parseFloat(item?.rifa?.price)).toFixed(2)}</b>
                 </td>
               )}
               {isibilidadeColunaTabelaRanking.acoes && (
