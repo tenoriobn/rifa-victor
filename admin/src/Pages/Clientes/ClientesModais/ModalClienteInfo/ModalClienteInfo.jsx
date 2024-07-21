@@ -29,7 +29,7 @@ export default function ModalClienteInfo() {
   return (
     <ClientInfoModalContainer>
       <label htmlFor="customerName"><b>Nome</b></label>
-      <p name="customerName" id="customerName">{clienteInfoModal?.nome} {clienteInfoModal?.surname}</p>
+      <p name="customerName" id="customerName">{clienteInfoModal?.name} {clienteInfoModal?.surname}</p>
       <p>&nbsp;</p>
 
       <label htmlFor="customerPhone">

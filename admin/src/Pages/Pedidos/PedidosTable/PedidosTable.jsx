@@ -1,8 +1,10 @@
 /* eslint-disable react/prop-types */
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { stateOpenModalVerCota, statePedidosInfoModal, statePedidosInfo } from "../../../common/states/atom";
-import { deleteDados, fetchDados } from "../../../common/http/http";
+import { deleteDados } from "../../../common/http/http";
+import useFormattedDate from "../../../common/states/Hook/useFormattedDate";
+import useCurrencyFormatTable from "../../../common/states/Hook/useCurrencyFormatTable/useCurrencyFormatTable";
 
 export const Table = styled.table`
   width: 100%;
@@ -123,78 +125,25 @@ export const Table = styled.table`
 
 export default function PedidosTable() {
   const [openModalVerCota, setOpenModalVerCota] = useRecoilState(stateOpenModalVerCota);
-  const setPedidosInfoModal = useRecoilState(statePedidosInfoModal);
+  const setPedidosInfoModal = useSetRecoilState(statePedidosInfoModal);
   const pedidosInfo =  useRecoilValue(statePedidosInfo);
-
-  // const pedidosInfo = [
-  //   {
-  //     id: 1,
-  //     number: "2386050",
-  //     name: "Vanessa Aparecida dos Santos de Souza",
-  //     whatsapp: "5543988066387",
-  //     vehicle: "SAVEIRO CROSS DOS SONHOS",
-  //     quantity: 70,
-  //     price: "R$ 7,00",
-  //     dateStart: "07/07 16:50",
-  //     dateEnd: "07/07 16:52",
-  //     status: "aprovado",
-  //     cancelUrl: "http://localhost/dashboard/pedidos/cancelar/2386050",
-  //   },
-  //   {
-  //     id: 2,
-  //     number: "2386050",
-  //     name: "Vanessa Aparecida dos Santos de Souza",
-  //     whatsapp: "5543988066387",
-  //     vehicle: "SAVEIRO CROSS DOS SONHOS",
-  //     quantity: 70,
-  //     price: "R$ 7,00",
-  //     dateStart: "07/07 16:50",
-  //     dateEnd: "07/07 16:52",
-  //     status: "divergente",
-  //     cancelUrl: "http://localhost/dashboard/pedidos/cancelar/2386050"
-  //   },
-  //   {
-  //     id: 3,
-  //     number: "2386050",
-  //     name: "Vanessa Aparecida dos Santos de Souza",
-  //     whatsapp: "5543988066387",
-  //     vehicle: "SAVEIRO CROSS DOS SONHOS",
-  //     quantity: 70,
-  //     price: "R$ 7,00",
-  //     dateStart: "07/07 16:50",
-  //     dateEnd: "07/07 16:52",
-  //     status: "pendente",
-  //     cancelUrl: "http://localhost/dashboard/pedidos/cancelar/2386050"
-  //   },
-  //   {
-  //     id: 4,
-  //     number: "2386050",
-  //     name: "Vanessa Aparecida dos Santos de Souza",
-  //     whatsapp: "5543988066387",
-  //     vehicle: "SAVEIRO CROSS DOS SONHOS",
-  //     quantity: 70,
-  //     price: "R$ 7,00",
-  //     dateStart: "07/07 16:50",
-  //     dateEnd: "07/07 16:52",
-  //     status: "cancelado",
-  //     cancelUrl: "http://localhost/dashboard/pedidos/cancelar/2386050"
-  //   },
-  // ];
+  const { formattedDate } = useFormattedDate();
+  const { formatCurrency } = useCurrencyFormatTable();
 
   const formatPhoneNumber = (number) => {
+    if (!number) return '';
     // Remove tudo que não é número
-    const cleanedNumber = number?.replace(/\D/g, '');
+    const cleanedNumber = number.replace(/\D/g, '');
   
     // Adiciona o código do país (ex: 55 para Brasil)
     return `55${cleanedNumber}`;
   };
 
-  const formattedPhoneNumber = formatPhoneNumber(pedidosInfo?.client?.cellphone);
-
-  const handleButtonId = async (id) => {
+  const handleButtonId = async (item) => {
     setOpenModalVerCota(!openModalVerCota)
+
     // const response = await fetchDados(`admin/dashboard/pacote/${id}`);
-    // setPedidosInfoModal(response.data);
+    setPedidosInfoModal(item);
   }
 
   const handleDeletar = async (idPedido) => {
@@ -226,16 +175,16 @@ export default function PedidosTable() {
               <td>#{item.id}</td>
               <td>{item.pix_id}</td>
               <td>
-                <a href="#">{item?.client?.name} {item?.client?.surname}</a>
-                <a id="whplnk" href={`https://api.whatsapp.com/send?phone=${formattedPhoneNumber}`} target="_blank">
-                  <i className="fa-brands fa-whatsapp"></i>
+                <a href={`https://api.whatsapp.com/send?phone=${formatPhoneNumber(item?.client?.cellphone)}`} target="_blank">{item?.client?.name} {item?.client?.surname}</a>
+                <a id="whplnk" href={`https://api.whatsapp.com/send?phone=${formatPhoneNumber(item?.client?.cellphone)}`} target="_blank">&nbsp;
+                  &nbsp;<i className="fa-brands fa-whatsapp"></i>
                 </a>
               </td>
               <td>{item?.rifa?.title}</td>
               <td>{item?.qntd_number}</td>
-              <td>{item?.value}</td>
-              <td>{item.created_at}</td>
-              <td>{item.updated_at}</td>
+              <td>{formatCurrency(item?.value)}</td>
+              <td>{formattedDate(item.created_at)}</td>
+              <td>{formattedDate(item.updated_at)}</td>
               <td>
                 <span 
                   // className={`status-tag status-${item.status.toLowerCase()}`}
@@ -252,7 +201,7 @@ export default function PedidosTable() {
               </td>
               <td>
                 <div className="button-group">
-                  <button className="button-view" onClick={() => handleButtonId(item.id)}>
+                  <button className="button-view" onClick={() => handleButtonId(item)}>
                     <i className="fas fa-eye"></i> VER
                   </button>
                   <a href={item.cancelUrl} className="button-delete" onClick={() => handleDeletar(item.id)}>

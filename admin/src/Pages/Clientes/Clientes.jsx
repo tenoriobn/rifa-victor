@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { Main } from "../../components/AdminLayout/AdminLayout";
 import Header from "../../components/Header/Header";

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { Main } from "../../components/AdminLayout/AdminLayout";
 import Header from "../../components/Header/Header";
@@ -18,7 +19,6 @@ export default function Pedidos() {
   const obterDados = async () => {
     const response = await fetchDados(`/admin/dashboard/pedidos`);
     setPedidosInfo (response.data);
-    console.log('response.data', response.data);
   };
 
   useEffect(() => {

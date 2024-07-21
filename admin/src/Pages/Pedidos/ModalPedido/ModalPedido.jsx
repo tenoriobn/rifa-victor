@@ -1,4 +1,8 @@
 import styled from "styled-components"
+import { statePedidosInfoModal } from "../../../common/states/atom";
+import { useRecoilValue } from "recoil";
+import useFormattedDate from "../../../common/states/Hook/useFormattedDate";
+import useCurrencyFormatTable from "../../../common/states/Hook/useCurrencyFormatTable/useCurrencyFormatTable";
 // import { useRecoilValue } from "recoil";
 // import { statePedidosInfoModal } from "../../../common/states/atom";
 
@@ -74,41 +78,59 @@ const Table = styled.table`
 `;
 
 export default function ModalCotaPremiada() {
-  // const pedidosInfoModal = useRecoilValue(statePedidosInfoModal);
+  const pedidosInfoModal = useRecoilValue(statePedidosInfoModal);
+  const { formattedDate } = useFormattedDate();
+  const { formatCurrency } = useCurrencyFormatTable();
 
-  const pedidosInfoModal = {
-    id: "2386050",
-    data: "07/07 16:50",
-    cliente: "Vanessa Aparecida dos Santos de Souza",
-    gatewayPagamento: "mercadopago",
-    transacao: "82285938684",
-    sorteio: "SAVEIRO CROSS DOS SONHOS",
-    quantidade: 70,
-    total: "R$ 7,00",
-    dataPagamento: "07/07 16:52",
-    cotas: [
-      "261288", "113772", "421120", "611708",
-      "261288", "113772", "421120", "611708"
-    ],
-    status: "aprovado"
-  };
+  console.log('pedidosInfoModalId', pedidosInfoModal)
+  console.log('pedidosInfoModalId', pedidosInfoModal?.rifa_number?.numbers)
+
+  const numbersArray = (() => {
+    try {
+      // Verifica se `pedidosInfoModal.rifa_number.numbers` é uma string e não é `null` ou `undefined`
+      if (typeof pedidosInfoModal?.rifa_number?.numbers === 'string') {
+        return JSON.parse(pedidosInfoModal.rifa_number.numbers);
+      }
+      return []; // Retorna um array vazio se não for uma string
+    } catch (e) {
+      console.error('Erro ao analisar a string JSON:', e);
+      return []; // Retorna um array vazio em caso de erro de análise
+    }
+  })();
+
+  // const pedidosInfoModal = {
+  //   id: "2386050",
+  //   data: "07/07 16:50",
+  //   cliente: "Vanessa Aparecida dos Santos de Souza",
+  //   gatewayPagamento: "mercadopago",
+  //   transacao: "82285938684",
+  //   sorteio: "SAVEIRO CROSS DOS SONHOS",
+  //   quantidade: 70,
+  //   total: "R$ 7,00",
+  //   dataPagamento: "07/07 16:52",
+  //   cotas: [
+  //     "261288", "113772", "421120", "611708",
+  //     "261288", "113772", "421120", "611708"
+  //   ],
+  //   status: "aprovado"
+  // };
 
   return (
     <Table>
       <tbody>
         <tr>
           <td id="itens-titulo"><b>ID</b></td>
-          <td><p name="pedidoID" id="pedidoID">{pedidosInfoModal.id}</p></td>
+          <td><p name="pedidoID" id="pedidoID">{pedidosInfoModal.pix_id}</p></td>
         </tr>
         <tr>
           <td id="itens-titulo"><b>Data</b></td>
-          <td><p name="pedidoData" id="pedidoData">{pedidosInfoModal.data}</p></td>
+          <td><p name="pedidoData" id="pedidoData">{formattedDate(pedidosInfoModal.created_at)}</p></td>
         </tr>
         <tr>
           <td id="itens-titulo"><b>Cliente</b></td>
-          <td><p name="pedidoCustomer" id="pedidoCustomer">{pedidosInfoModal.cliente}</p></td>
+          <td><p name="pedidoCustomer" id="pedidoCustomer">{pedidosInfoModal?.client?.name} {pedidosInfoModal?.client?.surname}</p></td>
         </tr>
-        {pedidosInfoModal.status.toLowerCase() === "aprovado" &&
+        {pedidosInfoModal.status === 1 &&
           <>
             <tr>
               <td><b>Gateway Pagamento</b></td>
@@ -123,29 +145,33 @@ export default function ModalCotaPremiada() {
         }
         <tr>
           <td><b>Sorteio</b></td>
-          <td><p name="pedidoSorteio" id="pedidoSorteio">{pedidosInfoModal.sorteio}</p></td>
+          <td><p name="pedidoSorteio" id="pedidoSorteio">{pedidosInfoModal?.rifa?.title}</p></td>
         </tr>
         <tr>
           <td><b>Quantidade</b></td>
-          <td><p name="pedidoQuantidade" id="pedidoQuantidade">{pedidosInfoModal.quantidade}</p></td>
+          <td><p name="pedidoQuantidade" id="pedidoQuantidade">{pedidosInfoModal?.qntd_number}</p></td>
         </tr>
         <tr>
           <td><b>Total</b></td>
-          <td><p name="pedidoPrice" id="pedidoPrice">{pedidosInfoModal.total}</p></td>
+          <td><p name="pedidoPrice" id="pedidoPrice">{formatCurrency(pedidosInfoModal?.value)}</p></td>
         </tr>
-        {pedidosInfoModal.status.toLowerCase() === "aprovado" &&
+        {pedidosInfoModal.status === 1 &&
             <>
             <tr>
               <td><b>Data Pagamento</b></td>
-              <td><p name="pedidoPagto" id="pedidoPagto">{pedidosInfoModal.dataPagamento}</p></td>
+              <td><p name="pedidoPagto" id="pedidoPagto">{formattedDate(pedidosInfoModal.updated_at)}</p></td>
             </tr>
 
             <tr>
               <td id="itens-titulo"><b>Cotas</b></td>
               <td id="pedidoNumeros" className="numbers">
-                {pedidosInfoModal.cotas.map((cota, index) => (
-                  <div key={index} className="number">{cota}</div>
-                ))}
+                {numbersArray.length > 0 ? (
+                  numbersArray.map((cota, index) => (
+                    <div key={index} className="number">{cota}</div>
+                  ))
+                ) : (
+                  <div>Nenhuma cota disponível</div>
+                )}
               </td>
             </tr>
           </>
@@ -157,14 +183,19 @@ export default function ModalCotaPremiada() {
               name="pedidoStatus" 
               id="pedidoStatus" 
               className={`status-tag ${
-                pedidosInfoModal.status === 'aprovado' ? 'status-pago' :
+                pedidosInfoModal.status === 1 ? 'status-pago' :
                 pedidosInfoModal.status === 'divergente' ? 'button-dashboard' :
-                pedidosInfoModal.status === 'pendente' ? 'button-divergente' :
-                pedidosInfoModal.status === 'cancelado' ? 'status-cancelado' :
+                pedidosInfoModal.status === 0 ? 'button-divergente' :
+                pedidosInfoModal.status === 2 ? 'status-cancelado' :
                 ''
               }`}
             >
-              {pedidosInfoModal.status}
+              {
+                pedidosInfoModal.status === 1 ? 'Aprovado' :
+                pedidosInfoModal.status === 'divergente' ? 'button-dashboard' :
+                pedidosInfoModal.status === 0 ? 'Pendente' :
+                pedidosInfoModal.status === 2 ? 'Cancelado' : ''
+              }
             </span>
           </td>
         </tr>
