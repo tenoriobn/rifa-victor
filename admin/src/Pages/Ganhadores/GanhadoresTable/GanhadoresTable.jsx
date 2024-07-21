@@ -1,8 +1,9 @@
 /* eslint-disable react/prop-types */
 import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components"
-import { stateOpenModalEditarGanhador, stateNovoGanhadorInfo, stateIdModal } from "../../../common/states/atom";
+import { stateOpenModalEditarGanhador, stateNovoGanhadorInfo, stateIdModal, stateUserLogin } from "../../../common/states/atom";
 import useFormattedDate from "../../../common/states/Hook/useFormattedDate";
+import { deleteDados } from "../../../common/http/http";
 
 const Table = styled.table`
   width: 100%;
@@ -27,6 +28,7 @@ const Table = styled.table`
     padding: .9375rem .625rem;
     background-color: #2e2e36;
     vertical-align: middle;
+    text-transform: uppercase;
   }
 
   td:first-child {
@@ -43,6 +45,7 @@ const Table = styled.table`
   .ganhador img {
     max-width: 200px;
     width: 100%;
+    border-radius: .375rem;
   }
 
   .status-tag {
@@ -92,40 +95,31 @@ const Table = styled.table`
     opacity: .8;
   }
 
-  @media (max-width: 1366px) {
+  @media (max-width: 767px) {
     overflow-x: auto;
     white-space: nowrap;
     display: block;
   }
 `;
 
-// const ganhadoresData = [
-//   {
-//     imagem: "https://imagedelivery.net/TuyDlh37fwpu3jSKwZ3-9g/06f43084-aa29-480e-c4d9-36dfaaab8f00/thumb",
-//     name: "Juliano Oliveira Amaral",
-//     raffle: "F250 OU 50K NO PIX",
-//     number: "007149",
-//     date: "17/04/2024"
-//   },
-//   {
-//     imagem: "https://imagedelivery.net/TuyDlh37fwpu3jSKwZ3-9g/06f43084-aa29-480e-c4d9-36dfaaab8f00/thumb",
-//     name: "Fernanda Silva",
-//     raffle: "SAVEIRO CROSS DOS SONHOS",
-//     number: "005432",
-//     date: "18/04/2024"
-//   },
-//   // Adicione mais objetos conforme necessário
-// ];
-
 export default function GanhadoresTable() {  
   const [openModalEditarGanhador, setOpenModalEditarGanhador] = useRecoilState(stateOpenModalEditarGanhador);
-  const novoGanhadorInfo = useRecoilValue(stateNovoGanhadorInfo);
+  const [novoGanhadorInfo, setNovoGanhdorInfo] = useRecoilState(stateNovoGanhadorInfo);
   const setIdModal = useSetRecoilState(stateIdModal);
   const { formattedDate } = useFormattedDate();
+  const userLogin = useRecoilValue(stateUserLogin);
 
   const handleModalId = (id) => {
     setIdModal(id)
     setOpenModalEditarGanhador(!openModalEditarGanhador)
+  }
+
+  const handleDeletar = async (ganhadorId) => {
+    const response = await deleteDados(`admin/dashboard/bilhete-premiado/delete/${ganhadorId}`, userLogin);
+    setNovoGanhdorInfo(response.data);
+
+    console.log()
+    console.log('ganhadorId', ganhadorId)
   }
 
   return (
@@ -158,7 +152,7 @@ export default function GanhadoresTable() {
                     <a href="#" className="button-edit" onClick={() => handleModalId(ganhador.id)}>
                       <i className="fas fa-edit"></i> Editar
                     </a>
-                    <a className="button-delete" href="">
+                    <a className="button-delete" href="" onClick={() => handleDeletar(ganhador.id)}>
                       <i className="fas fa-trash-alt"></i> Excluir
                     </a>
                   </div>

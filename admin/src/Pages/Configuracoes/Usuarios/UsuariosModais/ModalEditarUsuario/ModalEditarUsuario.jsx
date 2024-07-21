@@ -2,6 +2,7 @@ import styled from "styled-components"
 import { stateEditarUsuario, stateOpenModalEditarUsuario, stateUserLogin } from "../../../../../common/states/atom";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { putDados } from "../../../../../common/http/http";
+import { PatternFormat } from "react-number-format";
 
 const Form = styled.form`
   font-size: .9rem;
@@ -93,11 +94,11 @@ export default function ModalEditarUsuario() {
 
       <label htmlFor="phone">
         Telefone
-        <input
+        <PatternFormat
+          format="(##) #####-####"
           type="text"
           id="phone"
           name="phone"
-          maxLength="15"
           value={editarUsuario.phone || ''}
           onChange={(e) => setEditarUsuario({ ...editarUsuario, phone: e.target.value })} 
           required

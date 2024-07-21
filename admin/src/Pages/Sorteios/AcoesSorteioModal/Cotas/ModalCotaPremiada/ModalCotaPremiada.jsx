@@ -19,6 +19,7 @@ const Table = styled.table`
   td {
       padding: 2px 8px;
       border-bottom: 1px solid #444;
+      text-transform: uppercase;
   }
 
   .status-tag {

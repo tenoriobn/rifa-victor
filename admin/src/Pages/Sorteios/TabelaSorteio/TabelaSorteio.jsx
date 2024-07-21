@@ -36,6 +36,7 @@ const Table = styled.table`
     padding: .9375rem .625rem;
     background-color: #2e2e36;
     vertical-align: middle;
+    text-transform: uppercase;
   }
 
   td:first-child {

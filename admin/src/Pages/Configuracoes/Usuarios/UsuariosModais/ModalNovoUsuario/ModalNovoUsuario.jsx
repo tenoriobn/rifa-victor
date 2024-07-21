@@ -2,6 +2,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components"
 import { stateNovoUsuario, stateOpenModalAdicionarUsuario, stateUserLogin, stateUsuarioInfoTable } from "../../../../../common/states/atom";
 import { postDados } from "../../../../../common/http/http";
+import { PatternFormat } from "react-number-format";
 
 const Form = styled.form`
   font-size: .9rem;
@@ -93,11 +94,11 @@ export default function ModalNovoUsuario() {
 
       <label htmlFor="phone">
         Telefone
-        <input
+        <PatternFormat
+          format="(##) #####-####"
           type="text"
           id="phone"
           name="phone"
-          maxLength="15"
           value={novoUsuario.cell_phone  || ''} 
           onChange={(e) => setNovoUsuario({ ...novoUsuario, cell_phone: e.target.value })} 
           required

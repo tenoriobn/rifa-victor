@@ -35,6 +35,7 @@ export const Table = styled.table`
     padding: .9375rem .625rem;
     background-color: #2e2e36;
     vertical-align: middle;
+    text-transform: uppercase;
   }
 
   td:first-child {
@@ -126,7 +127,7 @@ export const Table = styled.table`
 export default function PedidosTable() {
   const [openModalVerCota, setOpenModalVerCota] = useRecoilState(stateOpenModalVerCota);
   const setPedidosInfoModal = useSetRecoilState(statePedidosInfoModal);
-  const pedidosInfo =  useRecoilValue(statePedidosInfo);
+  const [pedidosInfo, setPedidosInfo] =  useRecoilState(statePedidosInfo);
   const { formattedDate } = useFormattedDate();
   const { formatCurrency } = useCurrencyFormatTable();
 
@@ -148,7 +149,7 @@ export default function PedidosTable() {
 
   const handleDeletar = async (idPedido) => {
     // const response = await deleteDados(`admin/dashboard/bilhete-premiado/delete/${idPedido}/${id}`, userLogin);
-    // setTabelaCotasInfo(response.data);
+    // setPedidosInfo(response.data);
   }
 
   return (

@@ -25,6 +25,7 @@ const Table = styled.table`
   td {
       padding: 2px 8px;
       border-bottom: 1px solid #444;
+      text-transform: uppercase;
   }
 
   .numbers .number {
@@ -134,7 +135,7 @@ export default function ModalCotaPremiada() {
           <>
             <tr>
               <td><b>Gateway Pagamento</b></td>
-              <td><p name="pedidoGateway" id="pedidoGateway">{pedidosInfoModal.rifa.rifa_payment.gateway}</p></td>
+              <td><p name="pedidoGateway" id="pedidoGateway">{pedidosInfoModal.rifa?.rifa_payment?.gateway}</p></td>
             </tr>
 
             <tr>

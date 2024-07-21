@@ -26,6 +26,7 @@ const Table = styled.table`
     padding: .9375rem .625rem;
     background-color: #2e2e36;
     vertical-align: middle;
+    text-transform: uppercase;
   }
 
   td:first-child {
@@ -86,10 +87,10 @@ const Table = styled.table`
     opacity: .8;
   }
 
-  @media (max-width: 1366px) {
+  @media (max-width: 767px) {
     overflow-x: auto;
-    /* white-space: nowrap; */
-    width: 100%;
+    white-space: nowrap;
+    display: block;
   }
 `;
 

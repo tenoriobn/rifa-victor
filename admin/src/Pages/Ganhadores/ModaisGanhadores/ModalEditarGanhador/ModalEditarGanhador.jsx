@@ -4,6 +4,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import useImageUpload from "../../../../common/states/Hook/useImageUpload";
 import { useEffect } from "react";
 import { fetchDados, putDados } from "../../../../common/http/http";
+import { PatternFormat } from "react-number-format";
 
 const Form = styled.form`
   font-size: .9rem;
@@ -134,12 +135,25 @@ export default function ModalEditarGanhador() {
       </label>
 
       <label htmlFor="">
-        Telefone
+        Sobrenome
         <input 
+          type="text" 
+          name="name" 
+          id="name" 
+          defaultValue={novoGanhador?.client?.surname || ""}  
+          onChange={(e) => setNovoGanhador({ ...novoGanhador, surname: e.target.value })} 
+          required
+        />
+      </label>
+
+      <label htmlFor="">
+        Telefone
+        <PatternFormat
+          format="(##) #####-####"
           type="text" 
           name="cellphone" 
           id="name" 
-          defaultValue={novoGanhador.cellphone || ""}  
+          value={novoGanhador?.client?.cellphone || ""}  
           onChange={(e) => setNovoGanhador({ ...novoGanhador, cellphone: e.target.value })} 
           required
         />

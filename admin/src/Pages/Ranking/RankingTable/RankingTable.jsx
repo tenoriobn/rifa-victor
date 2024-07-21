@@ -54,7 +54,7 @@ export const Table = styled.table`
     cursor: pointer;
   }
 
-  @media (max-width: 1366px) {
+  @media (max-width: 767px) {
     overflow-x: auto;
     white-space: nowrap;
     display: block;

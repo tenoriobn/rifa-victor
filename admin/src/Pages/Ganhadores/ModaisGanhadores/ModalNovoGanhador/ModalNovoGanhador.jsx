@@ -4,6 +4,7 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import useImageUpload from "../../../../common/states/Hook/useImageUpload";
 import { fetchDados, postDados } from "../../../../common/http/http";
 import { useEffect } from "react";
+import { PatternFormat } from "react-number-format";
 // import { useState } from "react";
 
 const Form = styled.form`
@@ -117,7 +118,8 @@ export default function ModalNovoGanhador() {
 
       <label htmlFor="">
         Telefone
-        <input 
+        <PatternFormat
+          format="(##) #####-####"
           type="text" 
           name="cellphone" 
           id="name" 
