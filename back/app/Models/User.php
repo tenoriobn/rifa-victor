@@ -51,7 +51,7 @@ class User extends Authenticatable
         $data['password'] = hash::make($data['password']);
         return self::create($data);
     }
-    public static function getOneUsers($id)
+    public static function getOneUser($id)
     {
         return self::where('id', $id)->first();
     }

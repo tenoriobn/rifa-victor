@@ -307,6 +307,18 @@ class AdminController extends Controller
             return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
         }
     }
+    public function getOneUser($id) {
+        try {
+            $user = User::getOneUser($id);
+            if (!$user) {
+                return response()->json(["success" => false, "msg" => "Usarios não encontrados"], 404);
+            }
+
+            return response()->json(["success" => true, "data"=> $user], 200);
+        } catch (Exception $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
+        }
+    }
     public function editarUsers(Request $request) {
         try {
             $validatedData = $request->validate([
@@ -317,7 +329,7 @@ class AdminController extends Controller
                 'email' => 'sometimes|email|max:191',
             ]);
 
-            $user = User::getOneUsers($request->id);
+            $user = User::getOneUser($request->id);
             if (!$user) {
                 return response()->json(["success" => false, "msg" => "Usuário não encontrado"], 404);
             }
@@ -331,7 +343,7 @@ class AdminController extends Controller
     }
     public function destroyUsers(Request $request) {
         try {
-            $user = User::getOneUsers($request->id);
+            $user = User::getOneUser($request->id);
             if (!$user) {
                 return response()->json(["success" => false, "msg" => "Usuário não encontrado"], 404);
             }

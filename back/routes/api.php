@@ -89,6 +89,7 @@
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/ranking-geral", [AdminController::class, "rankingGeral"])->name('admin.ranking.cliente');
 
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/todos/usuarios", [AdminController::class, "getAllUsers"])->name('admin.usuarios');
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/usuario/{id}", [AdminController::class, "getOneUser"])->name('admin.usuarios');
 
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->put("/dashboard/usuarios/editar", [AdminController::class, "editarUsers"])->name('admin.editar.usuarios');
 
