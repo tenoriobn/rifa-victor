@@ -49,8 +49,21 @@ const Form = styled.form`
 
 export default function ClientesForm() {
   const [filtro, setFiltro] = useState({});
+  // const [tabelaPacotesInfo, setTabelaPacotesInfo] = useRecoilState(stateTabelaPacotesInfo);
 
   console.log('filtro', filtro)
+
+  // const handleSubmit = async (e) => {
+  //   if (e) e.preventDefault();
+  //   try {
+  //     const response = await postDados('/admin/dashboard/ rota aqui', orderFilter);
+  //     setTabelaPacotesInfo(response);
+  //   } catch (error) {
+  //     console.error("There was an error fetching the data!", error);
+  //   }
+  // };
+
+  // console.log(tabelaPacotesInfo)
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -66,6 +79,7 @@ export default function ClientesForm() {
   };
 
   return (
+        // onSubmit={handleSubmit}
     <Form onSubmit={handleSubmit} method="POST" action="/dashboard/rifas/cotas/174">
       <div className="filter-item">
         <label htmlFor="customer_id">ID:</label>

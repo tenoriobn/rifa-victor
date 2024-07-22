@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
 import { Main } from "../../../components/AdminLayout/AdminLayout";
 import Header, { LinkItem } from "../../../components/Header/Header";
 import Modal from "../../../components/Modal/Modal";
@@ -16,7 +16,7 @@ import { useParams } from "react-router-dom";
 export default function Pacotes() {
   const [openModalAdicionarPacote, setOpenModalAdicionarPacote] = useRecoilState(stateOpenModalAdicionarPacote);
   const [openModalEditarPacote, setOpenModalEditarPacote] = useRecoilState(stateOpenModalEditarPacote);
-  const [tabelaPacotesInfo, setTabelaPacotesInfo] = useRecoilState(stateTabelaPacotesInfo)
+  const setTabelaPacotesInfo = useSetRecoilState(stateTabelaPacotesInfo)
   const userLogin = useRecoilValue(stateUserLogin);
   const { id } = useParams();
   const resetPacote = useResetRecoilState(statePacote);

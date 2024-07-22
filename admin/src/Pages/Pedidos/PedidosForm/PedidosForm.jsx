@@ -91,10 +91,24 @@ const Form = styled.form`
 export default function PedidosForm() {
   const [showFilters, setShowFilters] = useState(false);
   const [orderFilter, setOrderFilter] = useState({});
+  // const [pedidosInfo, setPedidosInfo] =  useRecoilState(statePedidosInfo);
 
   console.log(orderFilter)
 
+    // const handleSubmit = async (e) => {
+  //   if (e) e.preventDefault();
+  //   try {
+  //     const response = await postDados('/admin/dashboard/ rota aqui', orderFilter);
+  //     setPedidosInfo(response);
+  //   } catch (error) {
+  //     console.error("There was an error fetching the data!", error);
+  //   }
+  // };
+
+  // console.log(pedidosInfo)
+
   return (
+        // onSubmit={handleSubmit}
     <Form method="POST" action="/dashboard/rifas/cotas/174">
       <div className="filter-item-row">
         <div className="filter-item" style={{minWidth: "260px"}}>

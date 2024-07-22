@@ -51,10 +51,24 @@ const Form = styled.form`
 
 export default function CotasForm() {
   const [orderFilter, setOrderFilter] = useState({});
+  // const [tabelaCotasInfo, setTabelaCotasInfo] = useRecoilState(stateTabelaCotasInfo);
 
   console.log(orderFilter)
 
+  // const handleSubmit = async (e) => {
+  //   if (e) e.preventDefault();
+  //   try {
+  //     const response = await postDados('/admin/dashboard/ rota aqui', orderFilter);
+  //     setTabelaCotasInfo(response);
+  //   } catch (error) {
+  //     console.error("There was an error fetching the data!", error);
+  //   }
+  // };
+
+  // console.log(tabelaCotasInfo)
+    
   return (
+    // onSubmit={handleSubmit}
     <Form method="POST" action="/dashboard/rifas/cotas/174">
       <div className="filter-item" style={{ minWidth: "260px"}}>
         <label htmlFor="init_date">Mostrar no site:</label>

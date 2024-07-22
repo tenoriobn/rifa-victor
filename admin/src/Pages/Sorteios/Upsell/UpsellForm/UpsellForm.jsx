@@ -51,10 +51,24 @@ const Form = styled.form`
 
 export default function UpsellForm() {
   const [orderFilter, setOrderFilter] = useState({});
+  // const [tabelaUpsellInfo, setTabelaUpsellInfo] = useRecoilState(state....);
 
   console.log(orderFilter)
 
+    // const handleSubmit = async (e) => {
+  //   if (e) e.preventDefault();
+  //   try {
+  //     const response = await postDados('/admin/dashboard/ rota aqui', orderFilter);
+  //     setTabelaUpsellInfo(response);
+  //   } catch (error) {
+  //     console.error("There was an error fetching the data!", error);
+  //   }
+  // };
+
+  // console.log(tabelaUpsellInfo)
+
   return (
+        // onSubmit={handleSubmit}
     <Form method="POST" action="/dashboard/rifas/cotas/174">
       <div className="filter-item">
         <label htmlFor="init_date">Localização:</label>

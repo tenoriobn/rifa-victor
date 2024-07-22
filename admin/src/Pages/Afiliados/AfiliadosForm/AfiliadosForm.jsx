@@ -46,20 +46,25 @@ const Form = styled.form`
 
 export default function AfiliadosForm() {
   const [orderFilter, setOrderFilter] = useState({});
+  // const [tabelaAfiliadosInfo, setTabelaAfiliadosInfo] = useRecoilState(stateTabelaAfiliadoInfo);
 
   console.log('data', orderFilter)
 
-  // const [value, setValue] = useState({ 
-  //   startDate: null, 
-  //   endDate: null 
-  //   }); 
-    
-  // const handleValueChange = (newValue) => {
-  //   console.log("newValue:", newValue); 
-  //   setValue(newValue); 
-  // } 
+  // const handleSubmit = async (e) => {
+  //   if (e) e.preventDefault();
+  //   try {
+  //     const response = await postDados('/admin/dashboard/ rota aqui', orderFilter);
+  //     setTabelaPacotesInfo(response);
+  //   } catch (error) {
+  //     console.error("There was an error fetching the data!", error);
+  //   }
+  // };
+
+  // console.log(tabelaAfiliadosInfo)
 
   return (
+    // onSubmit={handleSubmit}
+
     <Form>
       <div className="filter-item">
         <label htmlFor="init_date">Data:</label>

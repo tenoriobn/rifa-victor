@@ -63,10 +63,24 @@ const Form = styled.form`
 
 export default function FormPacotes() {
   const [orderFilter, setOrderFilter] = useState({});
+  // const [tabelaPacotesInfo, setTabelaPacotesInfo] = useRecoilState(stateTabelaPacotesInfo);
 
   console.log('orderFilter', orderFilter)
 
+  // const handleSubmit = async (e) => {
+  //   if (e) e.preventDefault();
+  //   try {
+  //     const response = await postDados('/admin/dashboard/ rota aqui', orderFilter);
+  //     setTabelaPacotesInfo(response);
+  //   } catch (error) {
+  //     console.error("There was an error fetching the data!", error);
+  //   }
+  // };
+
+  // console.log(tabelaPacotesInfo)
+
   return (
+    // onSubmit={handleSubmit}
     <Form method="POST" action="/dashboard/rifas/cotas/174">
       <div className="filter-item">
         <label htmlFor="cod_promo">Cod. Promocional</label>

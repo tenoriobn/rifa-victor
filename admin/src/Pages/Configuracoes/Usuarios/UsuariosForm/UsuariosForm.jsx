@@ -57,6 +57,7 @@ const Button = styled.button`
 
 export default function UsuariosForm() {
   const [orderFilter, setOrderFilter] = useState({});
+    // const [novoUsuarioInfoTable, setNovoUsuarioInfoTable] = useRecoilState(stateUsuarioInfoTable);
 
   console.log(orderFilter)
 
@@ -64,6 +65,18 @@ export default function UsuariosForm() {
     e.preventDefault();
     // Lógica para enviar o valor para o backend aqui
   };
+
+  // const handleSubmit = async (e) => {
+  //   if (e) e.preventDefault();
+  //   try {
+  //     const response = await postDados('/admin/dashboard/ rota aqui', orderFilter);
+  //     setNovoUsuarioInfoTable(response);
+  //   } catch (error) {
+  //     console.error("There was an error fetching the data!", error);
+  //   }
+  // };
+
+  // console.log(novoUsuarioInfoTable)
 
   return (
     <form onSubmit={handleSubmit}>
