@@ -94,6 +94,17 @@
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->put("/dashboard/usuarios/editar", [AdminController::class, "editarUsers"])->name('admin.editar.usuarios');
 
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->delete("/dashboard/usuarios/deletar", [AdminController::class, "destroyUsers"])->name('admin.editar.usuarios');
+
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/payment", [AdminController::class, "getAllGateway"])->name('admin.get.gateway');
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/payment/{id}", [AdminController::class, "showGateway"])->name('admin.get.one.gateway');
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/payment/make", [AdminController::class, "storeGateway"])->name('admin.make.gateway');
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->put("/dashboard/payment/update", [AdminController::class, "updateGateway"])->name('admin.editar.gateway');
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->delete("/dashboard/payment/delete", [AdminController::class, "destroyGateway"])->name('admin.editar.gateway');
+
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/site-settings", [AdminController::class, "getConfigSite"])->name('admin.get.site-config');
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/site-settings/editar", [AdminController::class, "storeConfigSite"])->name('admin.edit.site-config');
+
+
     });
 
     Route::group(['prefix' => 'produtos'], function () {
