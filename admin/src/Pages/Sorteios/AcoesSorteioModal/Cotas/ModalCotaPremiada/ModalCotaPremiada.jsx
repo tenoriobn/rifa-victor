@@ -54,7 +54,7 @@ export default function ModalCotaPremiada() {
             <td><p name="cotaNumero" id="cotaNumero">989812</p></td>
         </tr>
         <tr>
-            <td><b>Státus:</b></td>
+            <td><b>Status:</b></td>
             <td><span name="cotaSt" id="cotaSt" className="status-tag status-rescued">Resgatada</span></td>
         </tr>
         <tr>

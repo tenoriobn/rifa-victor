@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styled from "styled-components";
 
 const Form = styled.form`
@@ -61,42 +62,58 @@ const Form = styled.form`
 `;
 
 export default function FormPacotes() {
+  const [orderFilter, setOrderFilter] = useState({});
+
+  console.log('orderFilter', orderFilter)
+
   return (
     <Form method="POST" action="/dashboard/rifas/cotas/174">
       <div className="filter-item">
         <label htmlFor="cod_promo">Cod. Promocional</label>
-        <input type="text" className="frm_add_pkg" name="cod_promo" defaultValue="" />
+        <input type="text" className="frm_add_pkg" name="cod_promo" 
+          onChange={(e) => setOrderFilter({ ...orderFilter, codPromo: e.target.value })} 
+          value={orderFilter.codPromo || ''}
+        />
       </div>
 
       <div className="filter-item">
         <label htmlFor="init_date">Mais Popular:</label>
-        <select name="most_popular">
-          <option defaultValue="">- Todos -</option>
-          <option defaultValue="sim">Sim</option>
-          <option defaultValue="nao">Não</option>
+        <select name="most_popular"
+          onChange={(e) => setOrderFilter({ ...orderFilter, maisPopular: e.target.value })} 
+          value={orderFilter.maisPopular || ''}
+        >
+          <option value="">- Todos -</option>
+          <option value="sim">Sim</option>
+          <option value="nao">Não</option>
         </select>
       </div>
 
       <div className="filter-item">
-        <label htmlFor="init_date">Státus:</label>
-        <select name="st">
-          <option defaultValue="">- Todos -</option>
-          <option defaultValue="A">Ativo</option>
-          <option defaultValue="F">Finalizado</option>
+        <label htmlFor="init_date">Status:</label>
+        <select name="st"
+          onChange={(e) => setOrderFilter({ ...orderFilter, status: e.target.value })} 
+          value={orderFilter.status || ''}
+        >
+          <option value="">- Todos -</option>
+          <option value="A">Ativo</option>
+          <option value="F">Finalizado</option>
         </select>
       </div>
 
       <div className="filter-item">
         <label htmlFor="orderby">Ordem:</label>
-        <select name="orderby" id="orderby">
-          <option defaultValue="qtdAsc">Qtd. Menor - Maior</option>
-          <option defaultValue="qtdDesc">Qtd. Maior - Menor</option>
-          <option defaultValue="faturadoAsc">Faturamento Menor - Maior</option>
-          <option defaultValue="faturadoDesc">Faturamento Maior - Menor</option>
-          <option defaultValue="totalAsc">Total Menor - Maior</option>
-          <option defaultValue="totalDesc">Total Maior - Menor</option>
-          <option defaultValue="created">Criado em - Novo</option>
-          <option defaultValue="updated">Alterado em - Novo</option>
+        <select name="orderby" id="orderby"
+          onChange={(e) => setOrderFilter({ ...orderFilter, ordem: e.target.value })} 
+          value={orderFilter.ordem || ''}
+        >
+          <option value="qtdAsc">Qtd. Menor - Maior</option>
+          <option value="qtdDesc">Qtd. Maior - Menor</option>
+          <option value="faturadoAsc">Faturamento Menor - Maior</option>
+          <option value="faturadoDesc">Faturamento Maior - Menor</option>
+          <option value="totalAsc">Total Menor - Maior</option>
+          <option value="totalDesc">Total Maior - Menor</option>
+          <option value="created">Criado em - Novo</option>
+          <option value="updated">Alterado em - Novo</option>
         </select>
       </div>
 

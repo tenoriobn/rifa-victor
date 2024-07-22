@@ -132,7 +132,7 @@ export default function PacoteTable() {
             <th>Popular</th>
             <th>Cod. Promocional</th>
             <th>Faturado</th>
-            <th>Státus</th>
+            <th>Status</th>
             <th>Criado em</th>
             <th>Alterado em</th>
             <th>Ações</th>

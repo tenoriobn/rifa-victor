@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { PatternFormat } from "react-number-format";
 import styled from "styled-components";
 
 const Form = styled.form`
@@ -39,27 +40,17 @@ const Form = styled.form`
     border-radius: 5px;
     padding: 10px 15px;
     cursor: pointer;
-    height: 38px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
   }
 `;
 
 export default function ClientesForm() {
-  const [filtro, setFiltro] = useState({
-    customer_id: "",
-    name: "",
-    cpf: "",
-    phone: "",
-    email: "",
-  });
+  const [filtro, setFiltro] = useState({});
 
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFiltro((prevFiltro) => ({
-      ...prevFiltro,
-      [name]: value,
-    }));
-  };
+  console.log('filtro', filtro)
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -82,8 +73,9 @@ export default function ClientesForm() {
           type="text"
           name="customer_id"
           placeholder="ID Cliente"
-          value={filtro.customer_id}
-          onChange={handleChange}
+
+          onChange={(e) => setFiltro({ ...filtro, customer_id: e.target.value })} 
+          value={filtro.customer_id || ''}
           autoComplete="off"
         />
       </div>
@@ -94,20 +86,21 @@ export default function ClientesForm() {
           type="text"
           name="name"
           placeholder="Pesquise pelo nome"
-          value={filtro.name}
-          onChange={handleChange}
+          onChange={(e) => setFiltro({ ...filtro, name: e.target.value })} 
+          value={filtro.name || ''}
           autoComplete="off"
         />
       </div>
 
       <div className="filter-item">
         <label htmlFor="phone">Telefone:</label>
-        <input
+        <PatternFormat
+          format="(##) #####-####"
           type="text"
           name="phone"
           placeholder="Pesquise pelo telefone"
-          value={filtro.phone}
-          onChange={handleChange}
+          onChange={(e) => setFiltro({ ...filtro, phone: e.target.value })} 
+          value={filtro.phone || ''}
           autoComplete="off"
         />
       </div>

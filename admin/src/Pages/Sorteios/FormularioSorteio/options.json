@@ -1,5 +1,5 @@
 [
-  { "value": "", "label": "" },
+  { "value": "", "label": "selecione" },
   { "value": "A", "label": "Ativo" },
   { "value": "F", "label": "Finalizado" },
   { "value": "I", "label": "Inativo" }

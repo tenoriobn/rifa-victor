@@ -145,7 +145,7 @@ export default function AdicionarCota() {
       </label>
 
       <label htmlFor="frm_add_st">
-        Státus
+        Status
         <select
           name="status"
           id="frm_add_st"

@@ -90,16 +90,9 @@ const Form = styled.form`
 
 export default function PedidosForm() {
   const [showFilters, setShowFilters] = useState(false);
+  const [orderFilter, setOrderFilter] = useState({});
 
-  const [value, setValue] = useState({ 
-    startDate: null, 
-    endDate: null 
-    }); 
-    
-  const handleValueChange = (newValue) => {
-    console.log("newValue:", newValue); 
-    setValue(newValue); 
-  } 
+  console.log(orderFilter)
 
   return (
     <Form method="POST" action="/dashboard/rifas/cotas/174">
@@ -113,8 +106,8 @@ export default function PedidosForm() {
           i18n={"pt-br"} 
           displayFormat={"DD/MM/YYYY"}
           showFooter={true} 
-          value={value} 
-          onChange={handleValueChange} 
+          value={orderFilter.data} 
+          onChange={(newValue) => setOrderFilter(prevOrderFilter => ({ ...prevOrderFilter, data: newValue }))}
           configs={{
               shortcuts: {
               today: "Hoje", 
@@ -134,22 +127,31 @@ export default function PedidosForm() {
 
         <div className="filter-item">
           <label htmlFor="id">Pedido:</label>
-          <input type="text" name="id" placeholder="NUMERO DO PEDIDO" defaultValue="" autoComplete="off" />
+          <input type="text" name="id" placeholder="NUMERO DO PEDIDO" autoComplete="off" 
+            onChange={(e) => setOrderFilter({ ...orderFilter, pedido: e.target.value })} 
+            value={orderFilter.pedido || ''}
+          />
         </div>
 
         <div className="filter-item">
           <label htmlFor="id_customer">ID Cliente:</label>
-          <input type="text" name="id_customer" placeholder="ID DO CLIENTE" defaultValue="" autoComplete="off" />
+          <input type="text" name="id_customer" placeholder="ID DO CLIENTE" autoComplete="off" 
+            onChange={(e) => setOrderFilter({ ...orderFilter, idCliente: e.target.value })} 
+            value={orderFilter.idCliente || ''}
+          />
         </div>
 
         <div className="filter-item">
           <label htmlFor="status">Status:</label>
-          <select name="status" id="">
-            <option defaultValue="">STATUS: Todos</option>
-            <option defaultValue="F">Aprovado</option>
-            <option defaultValue="FI">Divergente</option>
-            <option defaultValue="A">Pendente</option>
-            <option defaultValue="C">Cancelado</option>
+          <select name="status" id=""
+            onChange={(e) => setOrderFilter({ ...orderFilter, status: e.target.value })} 
+            value={orderFilter.status || ''}
+          >
+            <option value="">STATUS: Todos</option>
+            <option value="F">Aprovado</option>
+            <option value="FI">Divergente</option>
+            <option value="A">Pendente</option>
+            <option value="C">Cancelado</option>
           </select>
         </div>
 
@@ -167,14 +169,20 @@ export default function PedidosForm() {
           <div className="filter-item-row filtro" id="filtro1" style={{display: "flex"}}>
               <div className="filter-item">
                 <label htmlFor="id_raffle">Sorteio:</label>
-                <select name="id_raffle" id="">
+                <select name="id_raffle" id=""
+                  onChange={(e) => setOrderFilter({ ...orderFilter, sorteio: e.target.value })} 
+                  value={orderFilter.sorteio || ''}
+                >
                   <option defaultValue="">- Todos -</option>
                   <option defaultValue="174">SAVEIRO CROSS DOS SONHOS</option>
                 </select>
               </div>
               <div className="filter-item">
                 <label htmlFor="orderby">Ordem:</label>
-                <select name="orderby" id="orderby">
+                <select name="orderby" id="orderby"
+                  onChange={(e) => setOrderFilter({ ...orderFilter, ordem: e.target.value })} 
+                  value={orderFilter.ordem || ''}
+                >
                   <option defaultValue="DESC">Novos</option>
                   <option defaultValue="ASC">Antigos</option>
                   <option defaultValue="priceAsc">Valor Menor - Maior</option>
@@ -185,7 +193,10 @@ export default function PedidosForm() {
               </div>
               <div className="filter-item">
                 <label htmlFor="itemsPerPage">Registros por Página:</label>
-                <select name="itemsPerPage" id="itemsPerPage">
+                <select name="itemsPerPage" id="itemsPerPage"
+                  onChange={(e) => setOrderFilter({ ...orderFilter, registroPagina: e.target.value })} 
+                  value={orderFilter.registroPagina || ''}
+                >
                   <option defaultValue="1">1</option>
                   <option defaultValue="10">10</option>
                   <option defaultValue="20">20</option>
@@ -196,37 +207,58 @@ export default function PedidosForm() {
               </div>
               <div className="filter-item">
                 <label htmlFor="number">Cota:</label>
-                <input type="text" name="number" placeholder="COTA" defaultValue="" autoComplete="off" />
+                <input type="text" name="number" placeholder="COTA"autoComplete="off" 
+                  onChange={(e) => setOrderFilter({ ...orderFilter, cota: e.target.value })} 
+                  value={orderFilter.cota || ''}
+                />
               </div>
           </div>
 
           <div className="filter-item-row filtro" id="filtro2" style={{display: "flex"}}>
             <div className="filter-item">
               <label htmlFor="id_affiliate">Qtd. Inicial:</label>
-              <input type="text" className="qtd" name="qtd_init" placeholder="Qtd. Inicial" defaultValue="" autoComplete="off" maxLength="10" />
+              <input type="text" className="qtd" name="qtd_init" placeholder="Qtd. Inicial" autoComplete="off" maxLength="10" 
+                onChange={(e) => setOrderFilter({ ...orderFilter, qtdInicial: e.target.value })} 
+                value={orderFilter.qtdInicial || ''}
+              />
             </div>
             <div className="filter-item">
               <label htmlFor="id_affiliate">Qtd. Final:</label>
-              <input type="text" className="qtd" name="qtd_fim" placeholder="Qtd. Final" defaultValue="" autoComplete="off" maxLength="10" />
+              <input type="text" className="qtd" name="qtd_fim" placeholder="Qtd. Final" autoComplete="off" maxLength="10" 
+                onChange={(e) => setOrderFilter({ ...orderFilter, qtdFinal: e.target.value })} 
+                value={orderFilter.qtdFinal || ''}
+              />
             </div>
             <div className="filter-item">
               <label htmlFor="id_affiliate">Valor Inicial:</label>
-              <input type="text" className="price" name="val_init" placeholder="Valor Inicial" defaultValue="" autoComplete="off" />
+              <input type="text" className="price" name="val_init" placeholder="Valor Inicial" autoComplete="off" 
+                onChange={(e) => setOrderFilter({ ...orderFilter, valorInicial: e.target.value })} 
+                value={orderFilter.valorInicial || ''}
+              />
             </div>
             <div className="filter-item">
               <label htmlFor="id_affiliate">Valor Final:</label>
-              <input type="text" className="price" name="val_fim" placeholder="Valor Final" defaultValue="" autoComplete="off" />
+              <input type="text" className="price" name="val_fim" placeholder="Valor Final" autoComplete="off" 
+                onChange={(e) => setOrderFilter({ ...orderFilter, valorFinal: e.target.value })} 
+                value={orderFilter.valorFinal || ''}
+              />
             </div>
           </div>
 
           <div className="filter-item-row filtro" id="filtro3" style={{display: "flex"}}>
             <div className="filter-item">
               <label htmlFor="id_affiliate">ID Afiliado:</label>
-              <input type="text" name="id_affiliate" placeholder="ID DO AFILIADO" defaultValue="" autoComplete="off" />
+              <input type="text" name="id_affiliate" placeholder="ID DO AFILIADO" autoComplete="off" 
+                onChange={(e) => setOrderFilter({ ...orderFilter, idAfiliado: e.target.value })} 
+                value={orderFilter.idAfiliado || ''}
+              />
             </div>
             <div className="filter-item">
               <label htmlFor="transacao">Transação:</label>
-              <input type="text" name="transacao" placeholder="ID DA TRANSAÇÃO" defaultValue="" autoComplete="off" />
+              <input type="text" name="transacao" placeholder="ID DA TRANSAÇÃO" autoComplete="off" 
+                onChange={(e) => setOrderFilter({ ...orderFilter, transacao: e.target.value })} 
+                value={orderFilter.transacao || ''}
+              />
             </div>
           </div>
         </>

@@ -85,13 +85,7 @@ const Button = styled.button`
 export default function FormularioSorteio() {
   const [filtroSorteio, setFiltroSorteio] = useRecoilState(stateFiltroSorteio);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFiltroSorteio((prevFiltro) => ({
-      ...prevFiltro,
-      [name]: value,
-    }));
-  };
+  console.log(filtroSorteio)
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -109,8 +103,8 @@ export default function FormularioSorteio() {
             id="nome"
             name="nome"
             placeholder="Nome"
-            onChange={handleChange}
-            defaultValue={filtroSorteio.nome || ''}
+            onChange={(e) => setFiltroSorteio({ ...filtroSorteio, name: e.target.value })} 
+            value={filtroSorteio.nome || ''}
           />
         </FilterInputContainer>
 
@@ -119,8 +113,8 @@ export default function FormularioSorteio() {
           <select
             id="status"
             name="status"
-            onChange={handleChange}
-            defaultValue={filtroSorteio.status || 'A'}
+            onChange={(e) => setFiltroSorteio({ ...filtroSorteio, status: e.target.value })} 
+            value={filtroSorteio.status || ''}
           >
             {options.map((option, index) => (
               <option key={index} value={option.value}>

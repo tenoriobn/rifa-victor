@@ -52,7 +52,9 @@ export default function VendasForm() {
   const [value, setValue] = useState({ 
     startDate: null, 
     endDate: null 
-    }); 
+  }); 
+
+  console.log('data', value)
     
   const handleValueChange = (newValue) => {
     console.log("newValue:", newValue); 

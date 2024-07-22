@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styled from "styled-components";
 
 const Form = styled.form`
@@ -49,26 +50,36 @@ const Form = styled.form`
 `;
 
 export default function CotasForm() {
+  const [orderFilter, setOrderFilter] = useState({});
+
+  console.log(orderFilter)
+
   return (
     <Form method="POST" action="/dashboard/rifas/cotas/174">
       <div className="filter-item" style={{ minWidth: "260px"}}>
         <label htmlFor="init_date">Mostrar no site:</label>
-        <select name="visible">
-          <option defaultValue="" >- Todos -</option>
-          <option defaultValue="sim">Sim</option>
-          <option defaultValue="nao">Não</option>
+        <select name="visible"
+          onChange={(e) => setOrderFilter({ ...orderFilter, mostraSite: e.target.value })} 
+          value={orderFilter.mostraSite || ''}
+        >
+          <option value="" >- Todos -</option>
+          <option value="sim">Sim</option>
+          <option value="nao">Não</option>
         </select>
       </div>
 
       <div className="filter-item">
-        <label htmlFor="init_date">Státus:</label>
-        <select name="st" id="frm_st">
-          <option defaultValue="" >- Todos -</option>
-          <option defaultValue="disponivel">Disponivel</option>
-          <option defaultValue="bloqueada">Bloqueada</option>
-          <option defaultValue="imediato">Imediato</option>
-          <option defaultValue="confirmada">Confirmada</option>
-          <option defaultValue="resgatada">Resgatada</option>
+        <label htmlFor="init_date">Status:</label>
+        <select name="st" id="frm_st"
+          onChange={(e) => setOrderFilter({ ...orderFilter, status: e.target.value })}
+          value={orderFilter.status || ''}
+        >
+          <option value="" >- Todos -</option>
+          <option value="disponivel">Disponivel</option>
+          <option value="bloqueada">Bloqueada</option>
+          <option value="imediato">Imediato</option>
+          <option value="confirmada">Confirmada</option>
+          <option value="resgatada">Resgatada</option>
         </select>
       </div>
 

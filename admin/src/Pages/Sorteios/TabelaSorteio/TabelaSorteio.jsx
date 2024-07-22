@@ -79,6 +79,10 @@ const Table = styled.table`
     border-radius: .3125rem;
     padding: .625rem .9375rem;
     cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    gap: 4px;
   }
 
   .button-group {
@@ -104,6 +108,10 @@ const Table = styled.table`
     border-radius: .3125rem;
     padding: .625rem .9375rem;
     cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    gap: 4px;
   }
 
   .button-edit {
@@ -113,6 +121,10 @@ const Table = styled.table`
     border-radius: .3125rem;
     padding: .625rem .9375rem;
     cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    gap: 4px;
   }
 
   .button-group a, .button-group button {

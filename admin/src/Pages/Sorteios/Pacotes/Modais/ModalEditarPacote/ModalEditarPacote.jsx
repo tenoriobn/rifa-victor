@@ -161,7 +161,7 @@ export default function ModalEditarPacote() {
       </label>
 
       <label htmlFor="">
-        Státus
+        Status
         <select 
           name="status" 
           id="frm_st"
