@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styled from "styled-components";
 
 const Form = styled.form`
@@ -49,23 +50,33 @@ const Form = styled.form`
 `;
 
 export default function UpsellForm() {
+  const [orderFilter, setOrderFilter] = useState({});
+
+  console.log(orderFilter)
+
   return (
     <Form method="POST" action="/dashboard/rifas/cotas/174">
       <div className="filter-item">
         <label htmlFor="init_date">Localização:</label>
-        <select name="position">
-          <option defaultValue="">- Todos -</option>
-          <option defaultValue="checkout">No Checkout</option>
-          <option defaultValue="paid">Após Pagto</option>
+        <select name="position"
+          onChange={(e) => setOrderFilter({ ...orderFilter, localizacao: e.target.value })} 
+          value={orderFilter.localizacao || ''}
+        >
+          <option value="">- Todos -</option>
+          <option value="checkout">No Checkout</option>
+          <option value="paid">Após Pagto</option>
         </select>
       </div>
 
       <div className="filter-item">
-        <label htmlFor="init_date">Státus:</label>
-        <select name="st" id="frm_st">
-            <option defaultValue="">- Todos -</option>
-            <option defaultValue="A">Ativo</option>
-            <option defaultValue="F">Finalizado</option>
+        <label htmlFor="init_date">Status:</label>
+        <select name="st" id="frm_st"
+          onChange={(e) => setOrderFilter({ ...orderFilter, status: e.target.value })} 
+          value={orderFilter.status || ''}
+        >
+            <option value="">- Todos -</option>
+            <option value="A">Ativo</option>
+            <option value="F">Finalizado</option>
         </select>
       </div>
 

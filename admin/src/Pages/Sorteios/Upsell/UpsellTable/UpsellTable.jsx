@@ -127,7 +127,7 @@ export default function UpsellTable() {
             <th>Qtd. Min.</th>
             <th>Qtd. Máx.</th>
             <th>Localização</th>
-            <th>Státus</th>
+            <th>Status</th>
             <th>Criado em</th>
             <th>Alterado em</th>
             <th>Ações</th>

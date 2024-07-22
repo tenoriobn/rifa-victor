@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { stateOpenModalVerInfoCliente, stateRankingInfoTable } from "../../common/states/atom";
 import { Main } from "../../components/AdminLayout/AdminLayout";

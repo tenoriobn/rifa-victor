@@ -56,12 +56,9 @@ const Button = styled.button`
 `;
 
 export default function UsuariosForm() {
-  const [searchValue, setSearchValue] = useState('');
+  const [orderFilter, setOrderFilter] = useState({});
 
-
-  const handleChange = (e) => {
-    setSearchValue(e.target.value);
-  };
+  console.log(orderFilter)
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -76,8 +73,8 @@ export default function UsuariosForm() {
           <input
             type="text"
             name="search"
-            value={searchValue}
-            onChange={handleChange}
+            onChange={(e) => setOrderFilter({ ...orderFilter, filter: e.target.value })}
+            value={orderFilter.filter || ''}
             placeholder="Pesquise pelo nome ou e-mail"
           />
         </FilterInputContainer>

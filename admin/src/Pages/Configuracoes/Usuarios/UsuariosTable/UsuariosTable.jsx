@@ -177,7 +177,15 @@ export default function UsuariosTable() {
                     ''
                   }`}
                 >
-                  {item.status}
+                  {/* {item.status} */}
+
+                  {
+                    item.status === 'admin' ? 'ADMINISTRADOR' :
+                    item.status === 'user' ? 'USUÁRIO' :
+                    item.status === 'support' ? 'SUPORTE' :
+                    item.status === 'superadmin' ? 'SUPER ADMINISTRADOR' :
+                    ''
+                  }
                 </span>
               </td>
               <td align="center">{item.date}</td>

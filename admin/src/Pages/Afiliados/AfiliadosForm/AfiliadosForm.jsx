@@ -45,15 +45,19 @@ const Form = styled.form`
 `;
 
 export default function AfiliadosForm() {
-  const [value, setValue] = useState({ 
-    startDate: null, 
-    endDate: null 
-    }); 
+  const [orderFilter, setOrderFilter] = useState({});
+
+  console.log('data', orderFilter)
+
+  // const [value, setValue] = useState({ 
+  //   startDate: null, 
+  //   endDate: null 
+  //   }); 
     
-  const handleValueChange = (newValue) => {
-    console.log("newValue:", newValue); 
-    setValue(newValue); 
-  } 
+  // const handleValueChange = (newValue) => {
+  //   console.log("newValue:", newValue); 
+  //   setValue(newValue); 
+  // } 
 
   return (
     <Form>
@@ -66,8 +70,9 @@ export default function AfiliadosForm() {
           i18n={"pt-br"} 
           displayFormat={"DD/MM/YYYY"}
           showFooter={true} 
-          value={value} 
-          onChange={handleValueChange} 
+          // onChange={(e) => setOrderFilter({data: e.target.value})} 
+          onChange={(newValue) => setOrderFilter(newValue)}
+          value={orderFilter.data || ''}
           configs={{
               shortcuts: {
               today: "Hoje", 

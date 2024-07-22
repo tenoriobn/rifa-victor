@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styled from "styled-components";
 
 const Form = styled.form`
@@ -33,10 +34,17 @@ const Form = styled.form`
 `;
 
 export default function ConsultaCotaForm() {
+  const [orderFilter, setOrderFilter] = useState({});
+
+  console.log(orderFilter)
+
   return (
     <Form>
       <div className="row-input">
-        <input className="1numero" name="numero" placeholder="Pesquise pelo número sorteado" defaultValue="" required="" minLength="1" maxLength="6" />
+        <input className="1numero" name="numero" placeholder="Pesquise pelo número sorteado" required="" minLength="1" maxLength="6" 
+          onChange={(e) => setOrderFilter({ ...orderFilter, numero: e.target.value })} 
+          value={orderFilter.numero || ''}
+        />
       </div>
       <div style={{height: "10px"}}></div>
 

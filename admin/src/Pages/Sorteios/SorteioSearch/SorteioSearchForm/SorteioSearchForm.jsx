@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Datepicker from "react-tailwindcss-datepicker";
 import { useState } from "react";
+import estados from "./options.json"
 
 const Form = styled.form`
   display: flex;
@@ -31,10 +32,6 @@ const Form = styled.form`
   input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
-  }
-
-  input[type="number"] {
-    -moz-appearance: textfield;
   }
 
   .filter-item label {
@@ -73,29 +70,23 @@ const Form = styled.form`
 `;
 
 export default function SorteioSearchForm() {
-  const [value, setValue] = useState({ 
-    startDate: null, 
-    endDate: null 
-    }); 
-    
-  const handleValueChange = (newValue) => {
-    console.log("newValue:", newValue); 
-    setValue(newValue); 
-  } 
+  const [orderFilter, setOrderFilter] = useState({});
+
+  console.log('orderFilter: ', orderFilter)
 
   return (
     <Form method="POST" action="/dashboard/rifas/cotas/174">
       <div className="filter-item" style={{maxWidth: "300px"}}>
         <label>Periodo de Data:</label>
-        {/* <input type="text" name="datetimes" defaultValue="" /> */}
+        {/* <input type="text" name="datetimes" value="" /> */}
 
         <Datepicker 
           toggleClassName="hidden"
           i18n={"pt-br"} 
           displayFormat={"DD/MM/YYYY"}
           showFooter={true} 
-          value={value} 
-          onChange={handleValueChange} 
+          value={orderFilter.data} 
+          onChange={(newValue) => setOrderFilter(prevOrderFilter => ({ ...prevOrderFilter, data: newValue }))}
           configs={{
               shortcuts: {
               today: "Hoje", 
@@ -114,51 +105,43 @@ export default function SorteioSearchForm() {
 
       <div className="filter-item" style={{maxWidth: "180px"}}>
         <label htmlFor="status">Qtd Sortear:</label>
-        <input type="number" name="qtd" min="1" max="10" defaultValue="" />
+        <input type="number" name="qtd" min="1" max="10" 
+          onChange={(e) => setOrderFilter({ ...orderFilter, qtdSortear: e.target.value })} 
+          value={orderFilter.qtdSortear || ''}
+        />
       </div>
 
       <div className="filter-item">
         <label htmlFor="qtd_cotas">Qtd Cotas &gt;=:</label>
-        <input type="text" id="qtd_cotas" name="qtd_cotas" maxLength="4" defaultValue="" />
+        <input type="text" id="qtd_cotas" name="qtd_cotas" maxLength="4"
+          onChange={(e) => setOrderFilter({ ...orderFilter, qtdCotas: e.target.value })}
+          value={orderFilter.qtdCotas || ''}
+        />
       </div>
 
       <div className="filter-item">
         <label htmlFor="tipo">TIPO:</label>
-        <select id="tipo" name="tipo">
-          <option defaultValue="">SELECIONE</option>
-          <option defaultValue="PP">Por Pedido</option>
-          <option defaultValue="TC">Soma dos Pedidos</option>
+        <select id="tipo" name="tipo"
+          onChange={(e) => setOrderFilter({ ...orderFilter, tipo: e.target.value })}
+          value={orderFilter.tipo || ''}
+        >
+          <option value="">SELECIONE</option>
+          <option value="PP">Por Pedido</option>
+          <option value="TC">Soma dos Pedidos</option>
         </select>
       </div>
 
       <div className="filter-item">
         <label htmlFor="state">Estado:</label>
-        <select id="state" name="state">
-          <option defaultValue="">SELECIONE</option>
-          <option defaultValue="Paraná">Paraná</option>
-          <option defaultValue="São Paulo">São Paulo</option>
-          <option defaultValue="Santa Catarina">Santa Catarina</option>
-          <option defaultValue="Mato Grosso do Sul">Mato Grosso do Sul</option>
-          <option defaultValue="Pernambuco">Pernambuco</option>
-          <option defaultValue="Paraíba">Paraíba</option>
-          <option defaultValue="Pará">Pará</option>
-          <option defaultValue="Rio Grande do Sul">Rio Grande do Sul</option>
-          <option defaultValue="Mato Grosso">Mato Grosso</option>
-          <option defaultValue="Bahia">Bahia</option>
-          <option defaultValue="Federal District">Federal District</option>
-          <option defaultValue="Minas Gerais">Minas Gerais</option>
-          <option defaultValue="Rondônia">Rondônia</option>
-          <option defaultValue="Rio de Janeiro">Rio de Janeiro</option>
-          <option defaultValue="Tocantins">Tocantins</option>
-          <option defaultValue="Espírito Santo">Espírito Santo</option>
-          <option defaultValue="Goiás">Goiás</option>
-          <option defaultValue="Maranhão">Maranhão</option>
-          <option defaultValue="Rio Grande do Norte">Rio Grande do Norte</option>
-          <option defaultValue="Alagoas">Alagoas</option>
-          <option defaultValue="Piauí">Piauí</option>
-          <option defaultValue="Ceará">Ceará</option>
-          <option defaultValue="Amazonas">Amazonas</option>
-          <option defaultValue="Acre">Acre</option>
+        <select id="state" name="state"
+          onChange={(e) => setOrderFilter({ ...orderFilter, estado: e.target.value })}
+          value={orderFilter.estado || ''}
+        >
+          <option value="">SELECIONE</option>
+
+          {estados.map((estado, index) => (
+            <option key={index} value={estado}>{estado}</option>
+          ))}
         </select>
       </div>
 
