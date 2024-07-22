@@ -30,6 +30,32 @@ const GlobalStyles = createGlobalStyle`
       cursor: pointer;
     }
   }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #292727;
+    padding: 10px;
+    border-radius: 10px;
+    transition: all .3s ease-in-out;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #292727;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0);
+    border-radius: 10px;
+  }
+
+  ::-moz-scrollbar-thumb:hover {
+    background: #070707;
+    width: 8px;
+  }
 `;
 
 export default GlobalStyles;

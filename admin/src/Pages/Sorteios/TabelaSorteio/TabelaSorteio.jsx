@@ -140,6 +140,11 @@ const Table = styled.table`
     white-space: nowrap;
     display: block;
   }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 6px;
+  }
 `;
 
 export default function TabelaSorteio() {

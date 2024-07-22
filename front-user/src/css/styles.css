@@ -71,8 +71,6 @@
   border-radius: 10px;
 }
 
-
-/* Opcional: Estilizar a barra de rolagem ao passar o mouse no Firefox */
 ::-moz-scrollbar-thumb:hover {
   background: #070707;
   width: 8px;
