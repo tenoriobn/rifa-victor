@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
+use App\Models\PaymentInfo;
+use App\Models\SiteSetting;
 use App\Models\V1\{Clients, Rifas, RifaWinner, RifaPay};
 use App\Models\V1\RifaNumber;
 use Exception;
@@ -355,6 +357,108 @@ class AdminController extends Controller
             return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
         }
     }
+
+    public function getAllGateway() {
+        try {
+            $paymentInfos = PaymentInfo::all();
+            return response()->json(["success" => true, "data" => $paymentInfos], 200);
+        } catch (Exception $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
+        }
+    }
+    public function showGateway($id) {
+        try {
+            $paymentInfo = PaymentInfo::findOrFail($id);
+            return response()->json(["success" => true, "data" => $paymentInfo], 200);
+        } catch (Exception $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
+        }
+    }
+    public function storeGateway(Request $request) {
+        try {
+            $data = $request->validate([
+                'name' => 'sometimes|required|max:255',
+                'gateway' => 'sometimes|required|max:255',
+                'token' => 'sometimes|required|max:255',
+                'public_key' => 'sometimes|required|max:255',
+                'billing_name' => 'sometimes|required|max:255',
+            ]);
+
+            $paymentInfo = PaymentInfo::create($data);
+
+            return response()->json(["success" => true, "data" => $paymentInfo], 201);
+        } catch (Exception $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
+        }
+
+    }
+    public function updateGateway(Request $request) {
+        try {
+            $paymentInfo = PaymentInfo::findOrFail($request->id);
+
+            $data = $request->validate([
+                'name' => 'sometimes|required|max:255',
+                'gateway' => 'sometimes|required|max:255',
+                'token' => 'sometimes|required|max:255',
+                'public_key' => 'sometimes|required|max:255',
+                'billing_name' => 'sometimes|required|max:255',
+            ]);
+
+            $paymentInfo->update($data);
+
+            return response()->json(["success" => true, "data" => $paymentInfo], 200);
+        } catch (Exception $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
+        }
+
+    }
+    public function destroyGateway($id) {
+        try {
+            $paymentInfo = PaymentInfo::findOrFail($id);
+            $paymentInfo->delete();
+
+            return response()->json(["success" => true, "msg" => "Registro deletado com sucesso"], 200);
+        } catch (Exception $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
+        }
+
+    }
+
+    public function getConfigSite() {
+        try {
+            $settings = SiteSetting::first();
+            return response()->json(["success" => true, "data" => $settings], 200);
+        } catch (Exception $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
+        }
+
+    }
+
+    public function storeConfigSite(Request $request)
+    {
+        try {
+            $data = $request->all();
+
+            if (isset($request->id)) {
+                $config = SiteSetting::find($request->id);
+
+                if (!$config) {
+                    return response()->json(["success" => false, "msg" => "Configuração não encontrada"], 404);
+                }
+
+                $config->update($data);
+                $setting = $config;
+            } else {
+                $setting = SiteSetting::create($data);
+            }
+
+            return response()->json(["success" => true, "data" => $setting], 201);
+        } catch (Exception $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
+        }
+    }
+
+
 
 
     public function me(Request $request) {
