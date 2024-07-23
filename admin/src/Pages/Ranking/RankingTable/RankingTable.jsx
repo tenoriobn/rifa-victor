@@ -55,6 +55,14 @@ export const Table = styled.table`
     cursor: pointer;
   }
 
+  .button-view {
+    transition: all .3s ease-in-out;
+  }
+
+  .button-view:hover {
+    opacity: .8;
+  }
+
   @media (max-width: 767px) {
     overflow-x: auto;
     white-space: nowrap;

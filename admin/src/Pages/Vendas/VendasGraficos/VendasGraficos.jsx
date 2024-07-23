@@ -23,9 +23,13 @@ export const ContainerCharts = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 0px;
   box-sizing: border-box;
   padding: 20px;
+
+  @media (min-width: 992px) {
+    margin-bottom: 0px;
+  }
 `;
 
 export default function VendasGraficos() {

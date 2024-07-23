@@ -82,6 +82,14 @@ export const Table = styled.table`
     align-items: center;
   }
 
+  .button-group a, .button-group button {
+    transition: all .3s ease-in-out;
+  }
+
+  .button-group a:hover, .button-group button:hover {
+    opacity: .8;
+  }
+
   .button-view {
     background-color: #4e73df;
     color: white;
