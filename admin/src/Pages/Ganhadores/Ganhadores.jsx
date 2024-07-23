@@ -6,13 +6,14 @@ import { stateOpenModalNovoGanhador, stateOpenModalEditarGanhador, stateNovoGanh
 import ModalEditarGanhador from "./ModaisGanhadores/ModalEditarGanhador/ModalEditarGanhador";
 import ModalNovoGanhador from "./ModaisGanhadores/ModalNovoGanhador/ModalNovoGanhador";
 import Modal from "../../components/Modal/Modal";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { fetchDados } from "../../common/http/http";
 
 export default function Ganhadores() {
   const [openModalNovoGanhador, setOpenModalNovoGanhador] = useRecoilState(stateOpenModalNovoGanhador);
   const [openModalEditarGanhador, setOpenModalEditarGanhador] = useRecoilState(stateOpenModalEditarGanhador);
   const [novoGanhadorInfo, setNovoGanhadorInfo] = useRecoilState(stateNovoGanhadorInfo);
+  const [atualizaTabela, setAtualizaTabela] = useState(false);
 
   const obterDados = async () => {
     const response = await fetchDados(`/produtos/todos/ganhadores/`);
@@ -25,8 +26,11 @@ export default function Ganhadores() {
   }, []);
 
   useEffect(() => {
-    console.log('Ganhadores.jsx', novoGanhadorInfo);
-  }, [novoGanhadorInfo]);
+    if(atualizaTabela) {
+      obterDados();
+      setAtualizaTabela(false)
+    }
+  }, [atualizaTabela]);
 
   return (
     <section>
@@ -43,11 +47,11 @@ export default function Ganhadores() {
       </Main>
 
       <Modal title="NOVO GANHADOR" openState={openModalNovoGanhador} setOpenState={setOpenModalNovoGanhador}>
-        <ModalNovoGanhador />
+        <ModalNovoGanhador  setAtualizaTabela={setAtualizaTabela} />
       </Modal>
 
       <Modal title="EDITAR GANHADOR" openState={openModalEditarGanhador} setOpenState={setOpenModalEditarGanhador}>
-        <ModalEditarGanhador />
+        <ModalEditarGanhador setAtualizaTabela={setAtualizaTabela} />
       </Modal>
     </section>
   )

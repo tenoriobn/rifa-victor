@@ -1,5 +1,9 @@
-import { useState } from "react";
 import styled from "styled-components";
+import { putDados } from "../../../../common/http/http";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { stateUserDate, stateUserLogin } from "../../../../common/states/atom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const CategoryContainer = styled.div`
   display: flex;
@@ -65,22 +69,20 @@ const CategoryContainer = styled.div`
 `;
 
 export default function MeusDadosForm() {
-  const [formDadosUsuario, setFormDadosUsuarios] = useState({
-    name: "Ana Lima",
-    email: "anaplima2001@gmail.com",
-    phone: "43996403859",
-    document: "01219599964"
-  });
-
-  console.log(formDadosUsuario);
-
+  const [formDadosUsuario, setFormDadosUsuarios] = useRecoilState(stateUserDate);
+  const userLogin = useRecoilValue(stateUserLogin);
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // try {
-    //   // const response = await postDados("http://127.0.0.1:5173/dashboard/clients/save/27", formDadosUsuario);
-    // } catch (error) {
-    //   console.error("Erro ao atualizar dados:", error);
-    // }
+    try {
+      const response = await putDados("admin/dashboard/usuarios/editar", formDadosUsuario, userLogin);
+      toast.success('Dados atualizadas!');
+
+      console.log(response)
+    } catch (error) {
+      console.error("Erro ao atualizar dados:", error);
+      toast.error(error.response.data.response || 'Erro ao atualizar Dados!');
+    }
   };
 
   return (
@@ -94,7 +96,7 @@ export default function MeusDadosForm() {
             <input 
               type="text" 
               name="name" 
-              value={formDadosUsuario.name} 
+              value={formDadosUsuario.name || ''} 
               onChange={(e) => setFormDadosUsuarios({ ...formDadosUsuario, name: e.target.value })} 
               required 
             />
@@ -105,7 +107,7 @@ export default function MeusDadosForm() {
             <input 
               type="text" 
               name="email" 
-              value={formDadosUsuario.email} 
+              value={formDadosUsuario.email || ''} 
               onChange={(e) => setFormDadosUsuarios({ ...formDadosUsuario, email: e.target.value })} 
               required 
             />
@@ -118,8 +120,8 @@ export default function MeusDadosForm() {
               maxLength="15" 
               id="phone" 
               name="phone" 
-              value={formDadosUsuario.phone} 
-              onChange={(e) => setFormDadosUsuarios({ ...formDadosUsuario, phone: e.target.value })} 
+              value={formDadosUsuario.cellphone || ''} 
+              onChange={(e) => setFormDadosUsuarios({ ...formDadosUsuario, cellphone: e.target.value })} 
               required 
             />
           </label>
@@ -131,8 +133,8 @@ export default function MeusDadosForm() {
               maxLength="14" 
               id="document" 
               name="document" 
-              value={formDadosUsuario.document} 
-              onChange={(e) => setFormDadosUsuarios({ ...formDadosUsuario, document: e.target.value })} 
+              value={formDadosUsuario.cpf || ''} 
+              onChange={(e) => setFormDadosUsuarios({ ...formDadosUsuario, cpf: e.target.value })} 
               required 
             />
           </label>
@@ -146,6 +148,8 @@ export default function MeusDadosForm() {
           ATUALIZAR
         </button>
       </CategoryContainer>
+
+      <ToastContainer theme="colored"/>
     </form>
   );
 }

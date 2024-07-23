@@ -28,35 +28,35 @@ export default function SiteConfigSeo() {
         />
       </label>
 
-      <label htmlFor="og_title">
+      <label htmlFor="share_title">
         Título Compartilhamento
         <input 
           type="text" 
-          name="og_title" 
-          value={siteConfig.og_title || ""} 
-          onChange={(e) => setSiteConfig({ ...siteConfig, og_title: e.target.value })} 
+          name="share_title" 
+          value={siteConfig.share_title || ""} 
+          onChange={(e) => setSiteConfig({ ...siteConfig, share_title: e.target.value })} 
         />
       </label>
 
-      <label htmlFor="og_image">
+      <label htmlFor="share_image">
         Imagem Compartilhamento
         <input 
           type="text" 
-          name="og_image" 
-          value={siteConfig.og_image || ""} 
-          onChange={(e) => setSiteConfig({ ...siteConfig, og_image: e.target.value })} 
+          name="share_image" 
+          value={siteConfig.share_image || ""} 
+          onChange={(e) => setSiteConfig({ ...siteConfig, share_image: e.target.value })} 
         />
       </label>
 
-      <label htmlFor="og_description">
+      <label htmlFor="share_description">
         Descrição Compartilhamento
         <textarea 
-          id="og_description" 
-          name="og_description" 
+          id="share_description" 
+          name="share_description" 
           cols="50" 
           rows="5" 
-          value={siteConfig.og_description || ""} 
-          onChange={(e) => setSiteConfig({ ...siteConfig, og_description: e.target.value })} 
+          value={siteConfig.share_description || ""} 
+          onChange={(e) => setSiteConfig({ ...siteConfig, share_description: e.target.value })} 
         />
       </label>
     </div>

@@ -1,7 +1,9 @@
 /* eslint-disable react/prop-types */
 import styled from "styled-components";
-import { stateOpenModalEditarUpsell } from "../../../../common/states/atom";
-import { useRecoilState } from "recoil";
+import { stateOpenModalEditarUpsell, stateUpsellInfo, stateUpsellInfoTable } from "../../../../common/states/atom";
+import { useRecoilState, useRecoilValue } from "recoil";
+import useFormattedDate from "../../../../common/states/Hook/useFormattedDate";
+import useCurrencyFormatTable from "../../../../common/states/Hook/useCurrencyFormatTable/useCurrencyFormatTable";
 
 export const Table = styled.table`
   width: 100%;
@@ -113,6 +115,17 @@ export const Table = styled.table`
 
 export default function UpsellTable() {
   const [openModalEditarUpsell, setOpenModalEditarUpsell] = useRecoilState(stateOpenModalEditarUpsell);
+  const upsellInfoTable = useRecoilValue(stateUpsellInfoTable);
+  const [upsellInfo, setUpsellInfo] = useRecoilState(stateUpsellInfo)
+  const { formattedDate } = useFormattedDate();
+  const { formatCurrency } = useCurrencyFormatTable();
+
+  console.log('upsellInfo', upsellInfo)
+
+  const handleModalInfo = (upsell) => {
+    setUpsellInfo(upsell)
+    setOpenModalEditarUpsell(!openModalEditarUpsell)
+  }
 
   return (
     <div>
@@ -135,26 +148,40 @@ export default function UpsellTable() {
         </thead>
 
         <tbody>
-        <tr className="raffle-item">
-          <td>#1</td>
-          <td>148</td>
-          <td>100</td>
-          <td>R$ 25,00</td>
-          <td>R$ 0,25</td>
-          <td>30</td>
-          <td>300</td>
-          <td><span className="status-tag status-rescued">Após Pagto</span></td>
-          <td><span className="status-tag status-pago">Ativo</span></td>
-          <td>15/04/24 16:07</td>
-          <td>21/04/24 16:18</td>
-          <td>
-            <div className="button-group">
-              <a className="button-edit" onClick={() => setOpenModalEditarUpsell(!openModalEditarUpsell)}>
-                <i className="fas fa-edit"></i> Editar
-              </a>
-            </div>
-          </td>
-          </tr>
+          {upsellInfoTable && upsellInfoTable.length > 0 && (
+            upsellInfoTable.map((item, index) => (
+              <tr key={index} className="raffle-item">
+                <td>#{index + 1}</td>
+                <td>{item.id}</td>
+                <td>{item.qntd_cota}</td>
+                <td>{formatCurrency(item.price_total)}</td>
+                <td>{formatCurrency(item.price_cota)}</td>
+                <td>{item.qntd_min}</td>
+                <td>{item.qntd_max}</td>
+                <td>
+                  <span 
+                    className={`status-tag ${item.localizacao === "paid" ? 'status-pago' : item.localizacao === "checkout" ? 'status-rescued' : ''}`}
+                  >
+                    {
+                      item.localizacao === "paid" ? "Após Pagto" 
+                      : item.localizacao === "checkout" 
+                      ? "No checkout" : ""
+                    }
+                  </span>
+                </td>
+                <td><span className={`status-tag ${item.status === 'ativo' ? 'status-available' : 'status-reserved'}`}>{item.status}</span></td>
+                <td>{formattedDate(item.created_at)}</td>
+                <td>{formattedDate(item.updated_at)}</td>
+                <td>
+                  <div className="button-group">
+                    <a className="button-edit" onClick={() => handleModalInfo(item)}>
+                      <i className="fas fa-edit"></i> Editar
+                    </a>
+                  </div>
+                </td>
+              </tr>
+            ))
+          )}
         </tbody>
       </Table>
     </div>

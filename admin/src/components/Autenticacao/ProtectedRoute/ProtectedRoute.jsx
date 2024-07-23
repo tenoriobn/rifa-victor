@@ -18,6 +18,7 @@ export default function ProtectedRoute({ element }) {
     }
   }, [setUserLogin, navigate]);
 
+
   if (!userLogin) {
     return null; // Retorna null ou qualquer mensagem de acesso negado conforme necessário
   }

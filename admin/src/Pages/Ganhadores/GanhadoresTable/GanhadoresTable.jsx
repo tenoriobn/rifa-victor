@@ -44,6 +44,8 @@ const Table = styled.table`
 
   .ganhador img {
     max-width: 200px;
+    max-height: 139px;
+    object-fit: cover;
     width: 100%;
     border-radius: .375rem;
   }
@@ -109,17 +111,14 @@ export default function GanhadoresTable() {
   const { formattedDate } = useFormattedDate();
   const userLogin = useRecoilValue(stateUserLogin);
 
-  const handleModalId = (id) => {
-    setIdModal(id)
+  const handleModalId = (ganhador) => {
+    setIdModal(ganhador)
     setOpenModalEditarGanhador(!openModalEditarGanhador)
   }
 
   const handleDeletar = async (ganhadorId) => {
-    const response = await deleteDados(`admin/dashboard/bilhete-premiado/delete/${ganhadorId}`, userLogin);
+    const response = await deleteDados(`admin/dashboard/delete/ganhador/${ganhadorId}`, userLogin);
     setNovoGanhdorInfo(response.data);
-
-    console.log()
-    console.log('ganhadorId', ganhadorId)
   }
 
   return (
@@ -149,12 +148,12 @@ export default function GanhadoresTable() {
                 <td>{formattedDate(ganhador?.updated_at)}</td>
                 <td>
                   <div className="button-group">
-                    <a href="#" className="button-edit" onClick={() => handleModalId(ganhador.id)}>
+                    <button className="button-edit" onClick={() => handleModalId(ganhador)}>
                       <i className="fas fa-edit"></i> Editar
-                    </a>
-                    <a className="button-delete" href="" onClick={() => handleDeletar(ganhador.id)}>
+                    </button>
+                    <button className="button-delete" onClick={() => handleDeletar(ganhador.id)}>
                       <i className="fas fa-trash-alt"></i> Excluir
-                    </a>
+                    </button>
                   </div>
                 </td>
               </tr>

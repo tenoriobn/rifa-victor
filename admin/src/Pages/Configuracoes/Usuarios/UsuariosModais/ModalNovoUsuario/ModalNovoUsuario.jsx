@@ -1,6 +1,7 @@
+/* eslint-disable react/prop-types */
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components"
-import { stateNovoUsuario, stateOpenModalAdicionarUsuario, stateUserLogin, stateUsuarioInfoTable } from "../../../../../common/states/atom";
+import { stateNovoUsuario, stateOpenModalAdicionarUsuario, stateUserLogin } from "../../../../../common/states/atom";
 import { postDados } from "../../../../../common/http/http";
 import { PatternFormat } from "react-number-format";
 
@@ -60,11 +61,10 @@ const Form = styled.form`
   }
 `;
 
-export default function ModalNovoUsuario() {
+export default function ModalNovoUsuario({setAtualizaTabela}) {
   const setOpenModalAdicionarUsuario = useSetRecoilState(stateOpenModalAdicionarUsuario);
   const [novoUsuario, setNovoUsuario] = useRecoilState(stateNovoUsuario);
   const userLogin = useRecoilValue(stateUserLogin);
-  const setUsuarioInfoTable = useSetRecoilState(stateUsuarioInfoTable);
 
   console.log(novoUsuario)
   
@@ -72,11 +72,11 @@ export default function ModalNovoUsuario() {
     e.preventDefault();
 
     try {
-      const response = await postDados('/admin/dashboard/pacote/cadastrar', novoUsuario, userLogin);
+      const response = await postDados('/admin/user/register', novoUsuario, userLogin);
       console.log('aqui dentro', response)
-      setUsuarioInfoTable(response.data)
       setOpenModalAdicionarUsuario(false)
-      
+      setAtualizaTabela(true);
+      setNovoUsuario('');
     } catch (error) {
       console.error('Erro ao fazer POST:', error);
     }
@@ -99,8 +99,8 @@ export default function ModalNovoUsuario() {
           type="text"
           id="phone"
           name="phone"
-          value={novoUsuario.cell_phone  || ''} 
-          onChange={(e) => setNovoUsuario({ ...novoUsuario, cell_phone: e.target.value })} 
+          value={novoUsuario.cellphone  || ''} 
+          onChange={(e) => setNovoUsuario({ ...novoUsuario, cellphone: e.target.value })} 
           required
         />
       </label>
@@ -120,8 +120,8 @@ export default function ModalNovoUsuario() {
           name="password"
           minLength="8"
           maxLength="20"
-          value={novoUsuario.senha  || ''} 
-          onChange={(e) => setNovoUsuario({ ...novoUsuario, senha: e.target.value })} 
+          value={novoUsuario.password  || ''} 
+          onChange={(e) => setNovoUsuario({ ...novoUsuario, password: e.target.value })} 
           required
         />
       </label>
@@ -129,8 +129,8 @@ export default function ModalNovoUsuario() {
       <label htmlFor="access_level">
         Perfil de acesso
         <select name="access_level" id="access_level"
-          value={novoUsuario.status  || ''} 
-          onChange={(e) => setNovoUsuario({ ...novoUsuario, status: e.target.value })} 
+          value={novoUsuario.role  || ''} 
+          onChange={(e) => setNovoUsuario({ ...novoUsuario, role: e.target.value })} 
           required
         >
           <option value="">Selecione</option>

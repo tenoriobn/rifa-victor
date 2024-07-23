@@ -1,64 +1,130 @@
+/* eslint-disable react/prop-types */
+import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components"
+import { stateConfigPagamento, stateOpenModalAdicionarConfPagamento } from "../../../../../common/states/atom";
+import { postDados } from "../../../../../common/http/http";
 
-const ModalBody = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 370px;
+const Form = styled.form`
+  font-size: .9rem;
+  width: 100%;
 
-  .btn-pag {
-    color: white;
-    border: none;
+  label {
+    display: block;
+  }
+
+  input {
+    display: block;
+    margin-bottom: 10px;
+    width: 100%;
+    height: 40px;
     border-radius: 5px;
-    padding: 10px 15px;
-    cursor: pointer;
+    background: #41414b;
+    border: none;
+    outline: 0;
+    margin-top: 10px;
+    padding: 10px 5px;
+    color: #fff;
     box-sizing: border-box;
   }
 
-  .button-export {
-    background-color: #36b9cc;
+  select {
+    display: block;
+    margin-bottom: 10px;
+    width: 100%;
+    height: 40px;
+    border-radius: 5px;
+    background-color: #41414b;
+    border: none;
+    outline: 0;
+    margin-top: 10px;
+    padding: 10px 5px;
+    color: #fff;
   }
 
-  .button-view {
-    background-color: #4e73df;
+  input[type=submit] {
+    background-color: #07b353;
+    color: #fff;
+    font-weight: 700;
+    width: 100%;
+    height: 40px;
+    border-radius: 5px;
+    outline: 0;
+    border: none;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: all .3s ease-in-out;
+  }
+
+  input[type=submit]:hover {
+    opacity: .8;
   }
 `;
 
-export default function ModalAdicionarPagamento() {
+export default function ModalAdicionarPagamento({setAtualizaTabela}) {
+  const setOpenModalAdicionarConfPagamento = useSetRecoilState(stateOpenModalAdicionarConfPagamento);
+  const [formConfigPagamento, setFormConfigPagamento] = useRecoilState(stateConfigPagamento);
+
+  const handleSaveChanges = async (event) => {
+    event.preventDefault();
+
+    try {
+      const response = await postDados("admin/dashboard/payment/make", formConfigPagamento);
+
+      setAtualizaTabela(true);
+      
+      console.log('response', response)
+
+      setOpenModalAdicionarConfPagamento(false);
+
+    } catch (error) {
+      console.error("Erro ao enviar dados:", error);
+    }
+  };
+
   return (
-    <ModalBody action="" id="frmAddPack" method="POST">
-      <a 
-        id="btn_edit" 
-        className="btn-pag button-export" 
-        style={{marginBottom: "10px", width: "200px", alignItems: "center"}}
-      >
-        <i className="fa-brands fa-pix"></i> <b>Mercado Pago</b>
-      </a>
+    <Form action="" id="frmAddPack" method="POST" onSubmit={handleSaveChanges}>
+      <label htmlFor="">
+        Gateway
+        <input type="text" id="gateway" name="gateway"
+          value={formConfigPagamento.gateway || ''}  
+          onChange={(e) => setFormConfigPagamento({ ...formConfigPagamento, gateway: e.target.value })} 
+        />
+      </label>
 
-      <a 
-        id="btn_edit" 
-        className="btn-pag button-view" 
-        style={{marginBottom: "10px", width: "200px", alignItems: "center"}}
-      >
-        <i className="fa-brands fa-pix"></i> <b>PixCred</b>
-      </a>
+      <label htmlFor="">
+        Nome
+        <input 
+          type="text" id="MPname" name="name" required=""
+          value={formConfigPagamento.name || ''} 
+          onChange={(e) => setFormConfigPagamento({ ...formConfigPagamento, name: e.target.value })} 
+        />
+      </label>
 
-      <a 
-        id="btn_edit" 
-        className="btn-pag button-export" 
-        style={{marginBottom: "10px", width: "200px", alignItems: "center"}}
-      >
-        <i className="fa-brands fa-pix"></i> <b>Paggue</b>
-      </a>
+      <label htmlFor="">
+        Token
+        <input 
+          type="text" id="MPtoken" name="token" required="" 
+          value={formConfigPagamento.token || ''} 
+          onChange={(e) => setFormConfigPagamento({ ...formConfigPagamento, token: e.target.value })}   
+        />
+      </label>
 
-      <a 
-        id="btn_edit " 
-        className="btn-pag button-view" 
-        style={{marginBottom: "10px", width: "200px", alignItems: "center"}}
-      >
-        <i className="fa-brands fa-pix"></i> <b>Pay2M</b>
-      </a>
-    </ModalBody>
+      <label htmlFor="">
+        Public Key
+        <input type="text" id="MPpublic_key" name="public_key" required="" 
+          value={formConfigPagamento.public_key || ''} 
+          onChange={(e) => setFormConfigPagamento({ ...formConfigPagamento, public_key: e.target.value })} 
+        />
+      </label>
+
+      <label htmlFor="">
+        Nome na Fatura
+        <input type="text" id="MPstatement_descriptor" name="statement_descriptor"
+          value={formConfigPagamento.billing_name || ''}  
+          onChange={(e) => setFormConfigPagamento({ ...formConfigPagamento, billing_name: e.target.value })} 
+        />
+      </label>
+      <input id="sendEditPack" type="submit" value="Atualizar" />
+    </Form>
   )
 }

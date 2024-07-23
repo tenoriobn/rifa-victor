@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { stateOpenModalVerCota, statePedidosInfoModal, statePedidosInfo } from "../../../common/states/atom";
-import { deleteDados } from "../../../common/http/http";
+import { stateOpenModalVerCota, statePedidosInfoModal, statePedidosInfo, stateUserLogin } from "../../../common/states/atom";
+import { putDados } from "../../../common/http/http";
 import useFormattedDate from "../../../common/states/Hook/useFormattedDate";
 import useCurrencyFormatTable from "../../../common/states/Hook/useCurrencyFormatTable/useCurrencyFormatTable";
 
@@ -124,12 +124,13 @@ export const Table = styled.table`
   }
 `;
 
-export default function PedidosTable() {
+export default function PedidosTable({setAtualizaTabela}) {
   const [openModalVerCota, setOpenModalVerCota] = useRecoilState(stateOpenModalVerCota);
   const setPedidosInfoModal = useSetRecoilState(statePedidosInfoModal);
   const [pedidosInfo, setPedidosInfo] =  useRecoilState(statePedidosInfo);
   const { formattedDate } = useFormattedDate();
   const { formatCurrency } = useCurrencyFormatTable();
+  const userLogin = useRecoilValue(stateUserLogin);
 
   const formatPhoneNumber = (number) => {
     if (!number) return '';
@@ -148,8 +149,11 @@ export default function PedidosTable() {
   }
 
   const handleDeletar = async (idPedido) => {
-    // const response = await deleteDados(`admin/dashboard/bilhete-premiado/delete/${idPedido}/${id}`, userLogin);
+    await putDados(`admin/dashboard/pedido/${idPedido}`, userLogin);
+    setAtualizaTabela(true);
     // setPedidosInfo(response.data);
+
+    console.log(pedidosInfo)
   }
 
   return (
@@ -172,9 +176,9 @@ export default function PedidosTable() {
 
         <tbody>
           {pedidosInfo.map(item => (
-            <tr key={item.id} className="raffle-item">
-              <td>#{item.id}</td>
-              <td>{item.pix_id}</td>
+            <tr key={item?.id} className="raffle-item">
+              <td>#{item?.id}</td>
+              <td>{item?.pix_id}</td>
               <td>
                 <a href={`https://api.whatsapp.com/send?phone=${formatPhoneNumber(item?.client?.cellphone)}`} target="_blank">{item?.client?.name} {item?.client?.surname}</a>
                 <a id="whplnk" href={`https://api.whatsapp.com/send?phone=${formatPhoneNumber(item?.client?.cellphone)}`} target="_blank">&nbsp;
@@ -184,20 +188,23 @@ export default function PedidosTable() {
               <td>{item?.rifa?.title}</td>
               <td>{item?.qntd_number}</td>
               <td>{formatCurrency(item?.value)}</td>
-              <td>{formattedDate(item.created_at)}</td>
-              <td>{formattedDate(item.updated_at)}</td>
+              <td>{formattedDate(item?.created_at)}</td>
+              <td>{formattedDate(item?.updated_at)}</td>
               <td>
                 <span 
-                  // className={`status-tag status-${item.status.toLowerCase()}`}
+                  // className={`status-tag status-${item?.status.toLowerCase()}`}
                   className={`status-tag ${
-                    item.status === '1' ? 'status-pago' :
-                    item.status === 'divergente' ? 'status-cancelado' :
-                    item.status === '0' ? 'button-divergente' :
-                    item.status === '2' ? 'button-dashboard' :
+                    item?.status === '1' ? 'status-pago' :
+                    item?.status === '0' ? 'button-divergente' :
+                    item?.status === '2' ? 'button-dashboard' :
                     ''
                   }`}
                 >
-                  {item.status}
+                  {
+                    item?.status === 1 ? 'Aprovado' :
+                    item?.status === 0 ? 'Pendente' :
+                    item?.status === 2 ? 'Cancelado' : ''
+                  }
                 </span>
               </td>
               <td>
@@ -205,9 +212,12 @@ export default function PedidosTable() {
                   <button className="button-view" onClick={() => handleButtonId(item)}>
                     <i className="fas fa-eye"></i> VER
                   </button>
-                  <a href={item.cancelUrl} className="button-delete" onClick={() => handleDeletar(item.id)}>
-                    <i className="fas fa-ban"></i> Cancelar
-                  </a>
+                  {
+                    item?.status !== 2 &&
+                    <a href={item?.cancelUrl} className="button-delete" onClick={() => handleDeletar(item?.id)}>
+                      <i className="fas fa-ban"></i> Cancelar
+                    </a>
+                  }
                 </div>
               </td>
             </tr>

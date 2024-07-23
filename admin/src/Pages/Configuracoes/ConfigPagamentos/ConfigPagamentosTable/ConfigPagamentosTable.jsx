@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
-import { useRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components"
-import { stateOpenModalEditarConfPagamento } from "../../../../common/states/atom";
+import { stateConfigPagamento, stateConfigPagamentoTable, stateOpenModalEditarConfPagamento } from "../../../../common/states/atom";
 
 const Table = styled.table`
   width: 100%;
@@ -95,7 +95,16 @@ const Table = styled.table`
 `;
 
 export default function ConfigPagamentosTable() {
-  const [openModalEditarConfPagamento, setOpenModalEditarConfPagamento] = useRecoilState(stateOpenModalEditarConfPagamento);
+  const setOpenModalEditarConfPagamento = useSetRecoilState(stateOpenModalEditarConfPagamento);
+  const setFormConfigPagamento = useSetRecoilState(stateConfigPagamento);
+  const configPagamentoTable = useRecoilValue(stateConfigPagamentoTable);
+
+  console.log('configPagamentoTable', configPagamentoTable);
+
+  const handleModalInfo = (ganhador) => {
+    setFormConfigPagamento(ganhador)
+    setOpenModalEditarConfPagamento(true)
+  }
   
   return (
     <Table>
@@ -108,15 +117,19 @@ export default function ConfigPagamentosTable() {
       </thead>
 
       <tbody>
-        <tr className="raffle-item">
-          <td>Mercado Pago</td>
-          <td align="center">mercadopago</td>
-          <td align="center">
-            <button className="button-edit" onClick={() => setOpenModalEditarConfPagamento(!openModalEditarConfPagamento)}>
-              <i className="fas fa-edit"></i> Editar
-            </button>
-          </td>
-        </tr>
+        {configPagamentoTable && configPagamentoTable.length > 0 && (
+          configPagamentoTable.map((item, index) => (
+            <tr key={index} className="raffle-item">
+              <td>{item?.gateway}</td>
+              <td align="center">{item?.name}</td>
+              <td align="center">
+                <button className="button-edit" onClick={() => handleModalInfo(item)}>
+                  <i className="fas fa-edit"></i> Editar
+                </button>
+              </td>
+            </tr>
+          ))
+        )}
       </tbody>
     </Table>
   )

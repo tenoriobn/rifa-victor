@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import styled from "styled-components"
 import { stateNovoGanhador, stateOpenModalNovoGanhador, stateNovoGanhadorInfo, stateOptionsRifa } from "../../../../common/states/atom";
 import { useRecoilState, useSetRecoilState } from "recoil";
@@ -69,7 +70,7 @@ const Form = styled.form`
   }
 `;
 
-export default function ModalNovoGanhador() {
+export default function ModalNovoGanhador({setAtualizaTabela}) {
   const setOpenModalNovoGanhador = useSetRecoilState(stateOpenModalNovoGanhador);
   const [novoGanhador, setNovoGanhador] = useRecoilState(stateNovoGanhador);
   const [novoGanhadorInfo, setNovoGanhadorInfo] = useRecoilState(stateNovoGanhadorInfo);
@@ -95,6 +96,8 @@ export default function ModalNovoGanhador() {
 
       setNovoGanhadorInfo((prevGanhadorInfo) => [...prevGanhadorInfo, response.data]);
       setNovoGanhador('');
+
+      setAtualizaTabela(true);
 
       setOpenModalNovoGanhador(false);
 

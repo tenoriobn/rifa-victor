@@ -313,6 +313,22 @@ class RifasController extends Controller
         }
     }
 
+    public function getUpsellRifa($id) {
+        try {
+            $upsell = RifaUpsell::getAllUpsellRifa( $id);
+
+            if (!$upsell) {
+                return response()->json(["success" => false, "msg" => "Upsell não encontrado"], 404);
+            }
+
+            return response()->json(['response' => true, 'data' => $upsell], 200);
+
+        } catch (Exception $e) {
+            return response()->json(["response" => false, "msg" => "Ocorreu um erro interno ao cadastrar a rifa", "error" => $e->getMessage()], 500);
+        }
+
+    }
+
     public function storeUpsell(Request $request) {
         try {
             $rifaId = $request->rifas_id;
@@ -322,13 +338,13 @@ class RifasController extends Controller
                 return response()->json(['response' => false, 'msg' => 'Rifa não encontrada'], 404);
             }
 
-            $upsell = RifaUpsell::createUpsell( $request->qntd_cota, $request->price_cota, $request->price_total, $request->qntd_min, $request->qntd_max, $request->localizacao, $rifaId);
+            $upsell = RifaUpsell::createUpsell( $request->id ?? null, $request->qntd_cota, $request->price_cota, $request->price_total, $request->qntd_min, $request->qntd_max, $request->localizacao, $request->status ?? 'ativo', $rifaId);
 
-            if ($upsell) {
-                return response()->json(["success" => true, "msg" => "Pacote criado com sucesso"], 200);
+            if (!$upsell) {
+                return response()->json(['response' => false, 'msg' => 'Erro ao criar o pacote'], 500);
+
             }
-
-            return response()->json(['response' => false, 'msg' => 'Erro ao criar o pacote'], 500);
+            return response()->json(["success" => true, "msg" => "Pacote criado com sucesso"], 200);
 
         } catch (Exception $e) {
             return response()->json(["response" => false, "msg" => "Ocorreu um erro interno ao cadastrar a rifa", "error" => $e->getMessage()], 500);

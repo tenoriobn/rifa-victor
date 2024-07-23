@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import styled from "styled-components"
 import { stateEditarUsuario, stateOpenModalEditarUsuario, stateUserLogin } from "../../../../../common/states/atom";
 import { useRecoilState, useSetRecoilState } from "recoil";
@@ -60,7 +61,7 @@ const Form = styled.form`
   }
 `;
 
-export default function ModalEditarUsuario() {
+export default function ModalEditarUsuario({setAtualizaTabela}) {
   const [editarUsuario, setEditarUsuario] = useRecoilState(stateEditarUsuario);
   const setOpenModalEditarUsuario = useSetRecoilState(stateOpenModalEditarUsuario);
   const userLogin = useSetRecoilState(stateUserLogin);
@@ -71,8 +72,9 @@ export default function ModalEditarUsuario() {
     event.preventDefault();
 
     try {
-      await putDados(`admin/dashboard/editar/cliente`, editarUsuario, userLogin);
+      await putDados(`admin/dashboard/usuarios/editar`, editarUsuario, userLogin);
       setOpenModalEditarUsuario(false);
+      setAtualizaTabela(true);
 
     } catch (error) {
       console.error("Erro ao enviar dados:", error);
@@ -99,8 +101,8 @@ export default function ModalEditarUsuario() {
           type="text"
           id="phone"
           name="phone"
-          value={editarUsuario.phone || ''}
-          onChange={(e) => setEditarUsuario({ ...editarUsuario, phone: e.target.value })} 
+          value={editarUsuario.cellphone || ''}
+          onChange={(e) => setEditarUsuario({ ...editarUsuario, cellphone: e.target.value })} 
           required
         />
       </label>
@@ -134,8 +136,8 @@ export default function ModalEditarUsuario() {
         <select
           name="access_level"
           id="access_level"
-          value={editarUsuario.status || ''}
-          onChange={(e) => setEditarUsuario({ ...editarUsuario, status: e.target.value })} 
+          value={editarUsuario.role || ''}
+          onChange={(e) => setEditarUsuario({ ...editarUsuario, role: e.target.value })} 
         >
           <option value="admin">Administrador</option>
           <option value="user">Usuário</option>

@@ -30,7 +30,6 @@
         Route::post("/user/register", [AdminController::class, "storeUser"])->name('admin.create.user');
         Route::post("/user/login", [AdminController::class, "login"])->name('admin.login.user');
         Route::middleware('auth:sanctum')->post("/user/logout", [AdminController::class, "logout"])->name('admin.logout.user');
-        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->delete("/user/delete", [AdminController::class, "destroyUser"])->name('admin.delete.user');
 
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/todas-rifas", [RifasController::class, "getAllRifasAdmin"])->name('admin.all.rifas');
 
@@ -56,6 +55,7 @@
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/rifa/imagens/cadastrar", [RifasController::class, "storeImagem"])->name('admin.create.rifa.imagem');
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->delete("/dashboard/rifa/imagens/deletar/{id}/", [RifasController::class, "destroyImagem"])->where(['id' => '[0-9]+'])->name('admin.deletar.rifa.imagem');
 
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/upsell/{id}", [RifasController::class, "getUpsellRifa"])->name('admin.get.rifa.upsell');
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/upsell/cadastrar", [RifasController::class, "storeUpsell"])->name('admin.create.rifa.upsell');
 
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->put("/dashboard/rifa/finalizar/{id}", [RifasController::class, "finalizarRifa"])->name('admin.finalizar.rifa');
@@ -70,7 +70,7 @@
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/cadastrar/ganhador/{id}", [AdminController::class, "getOneGanhador"])->name('admin.pegar.um.ganhador');
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/cadastrar/ganhador", [AdminController::class, "cadastrarGanhador"])->name('admin.cadastrar.ganhador');
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->put("/dashboard/editar/ganhador", [AdminController::class, "editarGanhador"])->name('admin.editar.ganhador');
-        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->delete("/dashboard/delete/ganhador", [AdminController::class, "destroyGanhador"])->name('admin.delete.ganhador');
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->delete("/dashboard/delete/ganhador/{id}", [AdminController::class, "destroyGanhador"])->name('admin.delete.ganhador');
 
 
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/client/rifa/adicionar-numero", [AdminController::class, "adicionarNumerosRifas"])->name('admin.adicionar.numero');
@@ -93,7 +93,7 @@
 
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->put("/dashboard/usuarios/editar", [AdminController::class, "editarUsers"])->name('admin.editar.usuarios');
 
-        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->delete("/dashboard/usuarios/deletar", [AdminController::class, "destroyUsers"])->name('admin.editar.usuarios');
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->delete("/dashboard/usuarios/deletar/{id}", [AdminController::class, "destroyUser"])->name('admin.editar.usuarios');
 
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/payment", [AdminController::class, "getAllGateway"])->name('admin.get.gateway');
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/payment/{id}", [AdminController::class, "showGateway"])->name('admin.get.one.gateway');

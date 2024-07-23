@@ -10,11 +10,12 @@ import { stateOpenModalVerCota, statePedidosInfo } from "../../common/states/ato
 import Modal from "../../components/Modal/Modal";
 import ModalPedido from "./ModalPedido/ModalPedido";
 import { fetchDados } from "../../common/http/http";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function Pedidos() {
   const [openModalVerCota, setOpenModalVerCota] = useRecoilState(stateOpenModalVerCota);
   const setPedidosInfo =  useSetRecoilState(statePedidosInfo);
+  const [atualizaTabela, setAtualizaTabela] = useState(false);
 
   const obterDados = async () => {
     const response = await fetchDados(`/admin/dashboard/pedidos`);
@@ -25,6 +26,13 @@ export default function Pedidos() {
     obterDados();
   }, []);
 
+  useEffect(() => {
+    if(atualizaTabela) {
+      obterDados();
+      setAtualizaTabela(false)
+    }
+  }, [atualizaTabela]);
+
   return (
     <section>
       <Header>
@@ -34,7 +42,7 @@ export default function Pedidos() {
       <Main>
         <Titulo titulo="Filtros de Busca" />
         <PedidosForm />
-        <PedidosTable />
+        <PedidosTable setAtualizaTabela={setAtualizaTabela} />
         <PedidosPagination />
       </Main>
 

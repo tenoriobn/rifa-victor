@@ -1,7 +1,9 @@
 /* eslint-disable react/prop-types */
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components"
-import { stateEditarUsuario, stateOpenModalEditarUsuario, stateUsuarioInfoTable } from "../../../../common/states/atom";
+import { stateEditarUsuario, stateOpenModalEditarUsuario, stateUserLogin, stateUsuarioInfoTable } from "../../../../common/states/atom";
+import useFormattedDate from "../../../../common/states/Hook/useFormattedDate";
+import { deleteDados } from "../../../../common/http/http";
 
 const Table = styled.table`
   width: 100%;
@@ -107,40 +109,17 @@ const Table = styled.table`
   }
 `;
 
-export default function UsuariosTable() {
+export default function UsuariosTable({setAtualizaTabela}) {
   const [openModalEditarUsuario, setOpenModalEditarUsuario] = useRecoilState(stateOpenModalEditarUsuario);
-  const novoUsuarioInfoTable = useRecoilValue(stateUsuarioInfoTable);
   const setEditarUsuario  = useSetRecoilState(stateEditarUsuario);
+  const usuarioInfoTable = useRecoilValue(stateUsuarioInfoTable);
+  const { formattedDate } = useFormattedDate();
+  const userLogin = useRecoilValue(stateUserLogin);
 
-  //   {
-  //     name: "Ana Lima",
-  //     phone: "(43) 99640-3859",
-  //     email: "anaplima2001@gmail.com",
-  //     status: "administrador",
-  //     date: "15/04/24 15:02"
-  //   },
-  //   {
-  //     name: "Ana Lima",
-  //     phone: "(43) 99640-3859",
-  //     email: "anaplima2001@gmail.com",
-  //     status: "usuario",
-  //     date: "15/04/24 15:02"
-  //   },
-  //   {
-  //     name: "Ana Lima",
-  //     phone: "(43) 99640-3859",
-  //     email: "anaplima2001@gmail.com",
-  //     status: "suporte",
-  //     date: "15/04/24 15:02"
-  //   },
-  //   {
-  //     name: "Ana Lima",
-  //     phone: "(43) 99640-3859",
-  //     email: "anaplima2001@gmail.com",
-  //     status: "superadmin",
-  //     date: "15/04/24 15:02"
-  //   }
-  // ];
+  const handleDeletar = async (usuario) => {
+    await deleteDados(`admin/dashboard/usuarios/deletar/${usuario}`, userLogin);
+    setAtualizaTabela(true);
+  }
   
   const handleModalId = (cliente) => {
     setEditarUsuario(cliente);
@@ -162,44 +141,42 @@ export default function UsuariosTable() {
         </thead>
 
         <tbody>
-          {novoUsuarioInfoTable.map((item, index) => (
+          {usuarioInfoTable.map((item, index) => (
             <tr key={index} className="raffle-item">
               <td>{item.name}</td>
-              <td align="center">{item.phone}</td>
+              <td align="center">{item.cellphone}</td>
               <td align="center">{item.email}</td>
               <td align="center">
                 <span 
                   className={`status-tag ${
-                    item.status === 'admin' ? 'status-pago' :
-                    item.status === 'user' ? 'status-rescued' :
-                    item.status === 'support' ? 'button-dashboard' :
-                    item.status === 'superadmin' ? 'button-divergente' :
+                    item.role === 'admin' ? 'status-pago' :
+                    item.role === 'user' ? 'status-rescued' :
+                    item.role === 'support' ? 'button-dashboard' :
+                    item.role === 'superadmin' ? 'button-divergente' :
                     ''
                   }`}
                 >
-                  {/* {item.status} */}
-
                   {
-                    item.status === 'admin' ? 'ADMINISTRADOR' :
-                    item.status === 'user' ? 'USUÁRIO' :
-                    item.status === 'support' ? 'SUPORTE' :
-                    item.status === 'superadmin' ? 'SUPER ADMINISTRADOR' :
+                    item.role === 'admin' ? 'ADMINISTRADOR' :
+                    item.role === 'user' ? 'USUÁRIO' :
+                    item.role === 'support' ? 'SUPORTE' :
+                    item.role === 'superadmin' ? 'SUPER ADMIN' :
                     ''
                   }
                 </span>
               </td>
-              <td align="center">{item.date}</td>
+              <td align="center">{formattedDate(item.created_at)}</td>
               <td align="center">
                 <div className="button-group">
-                  <a
+                  <button
                     className="button-edit"
                     onClick={() => handleModalId(item)}
                   >
                     <i className="fas fa-edit"></i> Editar
-                  </a>
-                  <a href="#" className="button-delete">
+                  </button>
+                  <button href="#" className="button-delete" onClick={() => handleDeletar(item.id)}>
                     <i className="fas fa-trash-alt"></i> Excluir
-                  </a>
+                  </button>
                 </div>
               </td>
             </tr>

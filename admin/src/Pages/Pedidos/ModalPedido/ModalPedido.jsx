@@ -99,29 +99,12 @@ export default function ModalCotaPremiada() {
     }
   })();
 
-  // const pedidosInfoModal = {
-  //   id: "2386050",
-  //   data: "07/07 16:50",
-  //   cliente: "Vanessa Aparecida dos Santos de Souza",
-  //   gatewayPagamento: "mercadopago",
-  //   transacao: "82285938684",
-  //   sorteio: "SAVEIRO CROSS DOS SONHOS",
-  //   quantidade: 70,
-  //   total: "R$ 7,00",
-  //   dataPagamento: "07/07 16:52",
-  //   cotas: [
-  //     "261288", "113772", "421120", "611708",
-  //     "261288", "113772", "421120", "611708"
-  //   ],
-  //   status: "aprovado"
-  // };
-
   return (
     <Table>
       <tbody>
         <tr>
           <td id="itens-titulo"><b>ID</b></td>
-          <td><p name="pedidoID" id="pedidoID">{pedidosInfoModal.pix_id}</p></td>
+          <td><p name="pedidoID" id="pedidoID">{pedidosInfoModal.id}</p></td>
         </tr>
         <tr>
           <td id="itens-titulo"><b>Data</b></td>
@@ -140,7 +123,7 @@ export default function ModalCotaPremiada() {
 
             <tr>
               <td><b>Transação</b></td>
-              <td><p name="pedidoPaymentReference" id="pedidoPaymentReference">{pedidosInfoModal.transacao}</p></td>
+              <td><p name="pedidoPaymentReference" id="pedidoPaymentReference">{pedidosInfoModal.pix_id}</p></td>
             </tr>
           </>
         }

@@ -5,6 +5,8 @@ import { PatternFormat } from "react-number-format";
 export default function SuporteContato() {
   const [siteConfig, setSiteConfig] = useRecoilState(stateSiteConfig);
 
+  console.log('siteconfig', siteConfig)
+
   return (
     <div className="category">
       <h3>SUPORTE / CONTATO</h3>
@@ -21,13 +23,13 @@ export default function SuporteContato() {
         />
       </label>
 
-      <label htmlFor="whatsapp_group">
+      <label htmlFor="whatsapp_group_url">
         Grupo Whatsapp (URL)
         <input 
           type="text" 
-          name="whatsapp_group" 
-          value={siteConfig.whatsapp_group || ""} 
-          onChange={(e) => setSiteConfig({ ...siteConfig, whatsapp_group: e.target.value })}
+          name="whatsapp_group_url" 
+          value={siteConfig.whatsapp_group_url || ""} 
+          onChange={(e) => setSiteConfig({ ...siteConfig, whatsapp_group_url: e.target.value })}
         />
       </label>
 
@@ -41,13 +43,13 @@ export default function SuporteContato() {
         />
       </label>
 
-      <label htmlFor="helpdesk">
+      <label htmlFor="helpdesk_url">
         Helpdesk (URL)
         <input 
           type="text" 
-          name="helpdesk" 
-          value={siteConfig.helpdesk || ""} 
-          onChange={(e) => setSiteConfig({ ...siteConfig, helpdesk: e.target.value })}
+          name="helpdesk_url" 
+          value={siteConfig.helpdesk_url || ""} 
+          onChange={(e) => setSiteConfig({ ...siteConfig, helpdesk_url: e.target.value })}
         />
       </label>
 

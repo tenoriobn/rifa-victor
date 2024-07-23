@@ -1,15 +1,36 @@
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { Main } from "../../../components/AdminLayout/AdminLayout";
 import Header, { LinkItem } from "../../../components/Header/Header";
 import ConfigPagamentosTable from "./ConfigPagamentosTable/ConfigPagamentosTable";
-import { stateOpenModalAdicionarConfPagamento, stateOpenModalEditarConfPagamento } from "../../../common/states/atom";
+import { stateConfigPagamentoTable, stateOpenModalAdicionarConfPagamento, stateOpenModalEditarConfPagamento } from "../../../common/states/atom";
 import ModalAdicionarPagamento from "./ModaisConfigPagamentos/ModalAdicionarPagamento/ModalAdicionarPagamento";
 import ModalEditarPagamento from "./ModaisConfigPagamentos/ModalEditarPagamento/ModalEditarPagamento";
 import Modal from "../../../components/Modal/Modal";
+import { fetchDados } from "../../../common/http/http";
+import { useEffect, useState } from "react";
 
 export default function ConfigPagamentos() {
   const [openModalAdicionarConfPagamento, setOpenModalAdicionarConfPagamento] = useRecoilState(stateOpenModalAdicionarConfPagamento);
   const [openModalEditarConfPagamento, setOpenModalEditarConfPagamento] = useRecoilState(stateOpenModalEditarConfPagamento);
+  const setConfigPagamentoTable = useSetRecoilState(stateConfigPagamentoTable);
+
+  const [atualizaTabela, setAtualizaTabela] = useState(false);
+
+  const obterDados = async () => {
+    const response = await fetchDados(`admin/dashboard/payment`);
+    setConfigPagamentoTable(response.data);
+  };
+
+  useEffect(() => {
+    obterDados();
+  }, []);
+
+  useEffect(() => {
+    if(atualizaTabela) {
+      obterDados();
+      setAtualizaTabela(false)
+    }
+  }, [atualizaTabela]);
 
   return (
     <div>
@@ -25,11 +46,11 @@ export default function ConfigPagamentos() {
       </Main>
 
       <Modal title="NOVO PAGAMENTO" openState={openModalAdicionarConfPagamento} setOpenState={setOpenModalAdicionarConfPagamento}>
-        <ModalAdicionarPagamento />
+        <ModalAdicionarPagamento setAtualizaTabela={setAtualizaTabela} />
       </Modal>
 
       <Modal title="EDITAR GATEWAY" openState={openModalEditarConfPagamento} setOpenState={setOpenModalEditarConfPagamento}>
-        <ModalEditarPagamento />
+        <ModalEditarPagamento setAtualizaTabela={setAtualizaTabela} />
       </Modal>
     </div>
   )

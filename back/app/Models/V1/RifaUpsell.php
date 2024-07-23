@@ -11,8 +11,9 @@ class RifaUpsell extends Model
 
     protected $fillable = [ 'qntd_cota', 'price_cota', 'price_total', 'qntd_min', 'qntd_max', 'localizacao', 'status', 'rifas_id' ];
 
-    public static function createUpsell($qntdCota, $priceCota, $priceTotal, $qntdMin, $qntdMax, $local, $rifaId) {
+    public static function createUpsell($id, $qntdCota, $priceCota, $priceTotal, $qntdMin, $qntdMax, $local, $status, $rifaId) {
         $result  = self::updateOrCreate(
+            ['id' => $id],
             [
                 'qntd_cota' => $qntdCota,
                 'price_cota' => $priceCota,
@@ -20,11 +21,15 @@ class RifaUpsell extends Model
                 'qntd_min' => $qntdMin,
                 'qntd_max' => $qntdMax,
                 'localizacao' => $local,
-                'status' => 'ativo',
+                'status' => $status,
                 'rifas_id' => $rifaId,
-
             ]);
 
             return $result ? true : false;
+    }
+
+    public static function getAllUpsellRifa($id) {
+        return self::where('rifas_id', $id)->get();
+
     }
 }

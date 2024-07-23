@@ -21,6 +21,8 @@ class UserRequest extends FormRequest {
         return [
             "name" => ["required", "max:255"],
             "role" => ["required", "max:255"],
+            "cellphone" => ["nullable", "max:255"],
+            "cpf" => ["nullable", "max:255"],
             "email" => ["required", "email"],
             "password" => ["required", "min:5", "max:255"],
         ];

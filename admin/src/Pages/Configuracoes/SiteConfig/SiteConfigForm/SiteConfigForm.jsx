@@ -4,8 +4,11 @@ import styled from "styled-components";
 import ConfiguracoesInputs from "./ConfiguracoesInputs/ConfiguracoesInputs";
 import SiteConfigSeo from "./SiteConfigSeo/SiteConfigSeo";
 import SuporteContato from "./SuporteContato/SuporteContato";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { stateSiteConfig } from "../../../../common/states/atom";
+import { fetchDados, postDados } from "../../../../common/http/http";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const CategoryContainer = styled.div`
   display: flex;
@@ -72,44 +75,41 @@ const CategoryContainer = styled.div`
 `;
 
 export default function SiteConfigForm() {
-  const setSiteConfig = useSetRecoilState(stateSiteConfig);
+  const [siteConfig, setSiteConfig] = useRecoilState(stateSiteConfig);
   const [loading, setLoading] = useState(false);
+  const [atualizaTabela, setAtualizaTabela] = useState(false);
+
+  const obterDados = async () => {
+    const response = await fetchDados(`/admin/dashboard/site-settings`);
+    setSiteConfig(response.data);
+  };
 
   useEffect(() => {
-    setSiteConfig(
-      {
-        "app_title": "Overz",
-        "empresa": "OVERZ a Plataforma Líder em Gestão de Sorteios!",
-        "product_title": "Overz",
-        "product_subtitle": "Overz",
-        "author": "Ana Lima",
-        "tags": "Sorteio",
-        "og_title": "Sorteio",
-        "og_image": "Sorteio",
-        "og_description": "Sorteio",
-        "whatsapp": "(11) 99999-9999",
-        "whatsapp_group": "https://api.whatsapp.com/send?phone=5599999999999",
-        "instagram": "https://www.instagram.com/ana_limapremios",
-        "email": "analima@gmail.com"
-      }
-    )
-  }, [])
+    obterDados();
+  }, []);
 
   const handleSaveChanges = async (event) => {
     event.preventDefault();
 
     try {
       setLoading(true);
-
-      // const response = await postDados("http://seu-backend.com/api/site/config", siteConfig);
-      // setSiteConfig(response.data)
-
+      await postDados("admin/dashboard/site-settings/editar", siteConfig);
+      setAtualizaTabela(true);
+      toast.success('Configurações atualizadas!');
     } catch (error) {
       console.error("Erro ao enviar dados:", error);
+      toast.error(error.response.data.response || 'Erro ao atualizar configurações');
     } finally {
       setLoading(false);
     }
   };
+
+    useEffect(() => {
+    if(atualizaTabela) {
+      obterDados();
+      setAtualizaTabela(false)
+    }
+  }, [atualizaTabela]);
 
   return (
     <form onSubmit={handleSaveChanges} action="http://127.0.0.1:5173/dashboard/rifas/add" id="frmRaffle" className="dropzone" method="POST">
@@ -127,6 +127,8 @@ export default function SiteConfigForm() {
           {loading ? "Salvando..." : "ADICIONAR"}
         </button>
       </CategoryContainer>
+
+      <ToastContainer theme="colored"/>
     </form>
   );
 }

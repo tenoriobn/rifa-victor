@@ -1,5 +1,8 @@
-import { useState } from "react";
+/* eslint-disable react/prop-types */
 import styled from "styled-components"
+import { useRecoilState, useSetRecoilState, useRecoilValue } from "recoil";
+import { stateConfigPagamento, stateOpenModalEditarConfPagamento, stateUserLogin } from "../../../../../common/states/atom";
+import { putDados } from "../../../../../common/http/http";
 
 const Form = styled.form`
   font-size: .9rem;
@@ -57,50 +60,75 @@ const Form = styled.form`
   }
 `;
 
-export default function ModalEditarPagamento() {
-  const [formDadosUsuario, setFormDadosUsuarios] = useState({
-    name: "Ana Lima",
-    token: "132456",
-    publicKey: "12",
-    nomeFatura: "Overz"
-  });
+export default function ModalEditarPagamento({setAtualizaTabela}) {
+  const [formConfigPagamento, setFormConfigPagamento] = useRecoilState(stateConfigPagamento);
+  const setOpenModalEditarConfPagamento = useSetRecoilState(stateOpenModalEditarConfPagamento);
+  const userLogin = useRecoilValue(stateUserLogin);
+
+  const handleSaveChanges = async (event) => {
+    event.preventDefault();
+
+    try {
+      const response = await putDados("admin/dashboard/payment/update", formConfigPagamento, userLogin);
+      console.log('response', response)
+
+      console.log('DADOS ENVIADOS:', formConfigPagamento)
+
+      setFormConfigPagamento('');
+
+      setAtualizaTabela(true);
+
+      setOpenModalEditarConfPagamento(false);
+
+    } catch (error) {
+      console.error("Erro ao enviar dados:", error);
+      console.log('DADOS ENVIADOS:', formConfigPagamento)
+    }
+  };
 
   return (
-    <Form action="" id="frmAddPack" method="POST">
+    <Form action="" id="frmAddPack" method="POST" onSubmit={handleSaveChanges}>
+      <label htmlFor="">
+        Gateway
+        <input type="text" id="gateway" name="gateway" required
+          value={formConfigPagamento.gateway || ''}  
+          onChange={(e) => setFormConfigPagamento({ ...formConfigPagamento, gateway: e.target.value })} 
+        />
+      </label>
+
       <label htmlFor="">
         Nome
         <input 
-          type="text" id="MPname" name="name" required=""
-          value={formDadosUsuario.name} 
-          onChange={(e) => setFormDadosUsuarios({ ...formDadosUsuario, name: e.target.value })} 
+          type="text" id="MPname" name="name" required
+          value={formConfigPagamento.name || ''} 
+          onChange={(e) => setFormConfigPagamento({ ...formConfigPagamento, name: e.target.value })} 
         />
       </label>
 
       <label htmlFor="">
         Token
         <input 
-          type="text" id="MPtoken" name="token" required="" 
-          value={formDadosUsuario.token} 
-          onChange={(e) => setFormDadosUsuarios({ ...formDadosUsuario, token: e.target.value })}   
+          type="text" id="MPtoken" name="token" required 
+          value={formConfigPagamento.token || ''} 
+          onChange={(e) => setFormConfigPagamento({ ...formConfigPagamento, token: e.target.value })}   
         />
       </label>
 
       <label htmlFor="">
         Public Key
-        <input type="text" id="MPpublic_key" name="public_key" required="" 
-          value={formDadosUsuario.publicKey} 
-          onChange={(e) => setFormDadosUsuarios({ ...formDadosUsuario, publicKey: e.target.value })} 
+        <input type="text" id="MPpublic_key" name="public_key" required 
+          value={formConfigPagamento.public_key || ''} 
+          onChange={(e) => setFormConfigPagamento({ ...formConfigPagamento, public_key: e.target.value })} 
         />
       </label>
 
       <label htmlFor="">
         Nome na Fatura
         <input type="text" id="MPstatement_descriptor" name="statement_descriptor"
-          value={formDadosUsuario.nomeFatura}  
-          onChange={(e) => setFormDadosUsuarios({ ...formDadosUsuario, nomeFatura: e.target.value })} 
+          value={formConfigPagamento.billing_name || ''}  
+          onChange={(e) => setFormConfigPagamento({ ...formConfigPagamento, billing_name: e.target.value })} 
         />
       </label>
-
       <input id="sendEditPack" type="submit" value="Atualizar" />
     </Form>
   )

@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import styled from "styled-components"
 import { stateNovoGanhador, stateIdModal, stateNovoGanhadorInfo, stateOpenModalEditarGanhador, stateUserLogin } from "../../../../common/states/atom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
@@ -68,22 +69,26 @@ const Form = styled.form`
   }
 `;
 
-export default function ModalEditarGanhador() {
+export default function ModalEditarGanhador({setAtualizaTabela}) {
   const setOpenModalEditarGanhador = useSetRecoilState(stateOpenModalEditarGanhador);
   const [novoGanhador, setNovoGanhador] = useRecoilState(stateNovoGanhador);
   const { handleFileChange } = useImageUpload(setNovoGanhador, novoGanhador);
   const idModal = useRecoilValue(stateIdModal);
-  const [novoGanhadorInfo, setNovoGanhadorInfo] = useRecoilState(stateNovoGanhadorInfo);
+  const setNovoGanhadorInfo = useSetRecoilState(stateNovoGanhadorInfo);
   const userLogin = useRecoilValue(stateUserLogin);
 
   console.log('DADOS EDITADOS', novoGanhador)
+
+  console.log(idModal.client.cellphone)
   
 
   useEffect(() => {
     const obterDados = async () => {
-      const response = await fetchDados(`/admin/dashboard/cadastrar/ganhador/${idModal}`);
+      const response = await fetchDados(`/admin/dashboard/cadastrar/ganhador/${idModal.id}`);
 
-      setNovoGanhador(response.data);
+      const data = response.data;
+
+      setNovoGanhador({...data, cellphone: idModal.client.cellphone});
     };  
 
     obterDados();
@@ -98,8 +103,10 @@ export default function ModalEditarGanhador() {
 
       console.log('DADOS ENVIADOS:', novoGanhador)
 
-      setNovoGanhadorInfo((prevGanhadorInfo) => [...prevGanhadorInfo, response.data]);
+      setNovoGanhadorInfo(response.data);
       setNovoGanhador('');
+
+      setAtualizaTabela(true);
 
       setOpenModalEditarGanhador(false);
 

@@ -1,5 +1,10 @@
 import { atom } from "recoil";
 
+export const stateUserDate = atom({
+  key: 'stateUserDate',
+  default: {}
+})
+
 export const stateMenuActive = atom({
   key: 'menuActive',
   default: false,
@@ -184,7 +189,6 @@ export const stateSiteConfig = atom({
 })
 
 
-
 export const stateVisibilidadeColunaTabelaRanking = atom({
   key: 'stateVisibilidadeColunaTabelaRanking',
   default: {
@@ -338,3 +342,23 @@ export const stateOptionsRifa = atom({
   key: 'stateOptionsRifa',
   default: [],
 });
+
+export const stateConfigPagamento = atom({
+  key: ' stateConfigPagamento',
+  default: {},
+})
+
+export const stateConfigPagamentoTable = atom({
+  key: ' stateConfigPagamentoTable',
+  default: {},
+})
+
+export const stateUpsellInfo = atom({
+  key: 'stateUpsellInfo',
+  default: {},
+})
+
+export const stateUpsellInfoTable = atom({
+  key: 'stateUpsellInfoTable',
+  default: [],
+})

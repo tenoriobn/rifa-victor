@@ -34,9 +34,9 @@ class AdminController extends Controller
             return response()->json(['response' => 'Ocorreu um erro interno', 'error' => $e->getMessage()], 500);
         }
     }
-    public function destroyUser(UserRequest $request) {
+    public function destroyUser($id) {
         try {
-            $user = User::find($request->id);
+            $user = User::find($id);
             if (!$user ) {
                 return response()->json(["success" => false, "msg" =>"Usuario não encontrado"], 404);
             }
@@ -137,14 +137,15 @@ class AdminController extends Controller
         }
     }
     public function editarGanhador(Request $request) {
-
+        // return $request->all();
         try {
             $winner = RifaWinner::findWinner($request->id);
             if (!$winner ) {
                 return response()->json(["success" => false, "msg" =>"Vencedor não encontrado"], 404);
             }
 
-            $client = Clients::findClient( $request->cellphone);
+            // $tel = $request->cellphone ?? $request->client->cellphone;
+            $client = Clients::findClient($request->cellphone);
             if (!$client ) {
                 return response()->json(["success" => false, "msg" =>"Cliente não encontrado"], 404);
             }
@@ -158,21 +159,22 @@ class AdminController extends Controller
             }
 
 
-
-            return response()->json(["success" => true, "data" => $winner], 200);
+            $winners = RifaWinner::getAllWinners();
+            return response()->json(["success" => true, "data" => $winners], 200);
         } catch (Exception $e) {
             return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
         }
     }
 
-    public function destroyGanhador(Request $request) {
+    public function destroyGanhador($id) {
         try {
-            $winner = RifaWinner::findWinner($request->winner_id);
+            $winner = RifaWinner::findWinner($id);
             if (!$winner ) {
                 return response()->json(["success" => false, "msg" =>"Vencedor não encontrado"], 404);
             }
             $winner->delete();
-            return response()->json(["success" => true, "data" => "Ganhador excluído com sucesso!"], 201);
+            $winners = RifaWinner::getAllWinners();
+            return response()->json(["success" => true, "msg" => "Ganhador excluído com sucesso!", "data" =>$winners], 201);
         } catch (Exception $e) {
             return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
         }
@@ -326,7 +328,8 @@ class AdminController extends Controller
             $validatedData = $request->validate([
                 'id' => 'required|integer|exists:users,id',
                 'name' => 'sometimes|string|max:191',
-                'cellphone' => 'sometimes|nullable|string|max:191',
+                'cpf' => 'sometimes|nullable|max:191',
+                'cellphone' => 'sometimes|nullable|max:191',
                 'role' => 'sometimes|nullable|string|max:191',
                 'email' => 'sometimes|email|max:191',
             ]);
@@ -339,20 +342,6 @@ class AdminController extends Controller
             $user->update($validatedData);
 
             return response()->json(["success" => true, "data"=> "Usuário editado com sucesso"], 200);
-        } catch (Exception $e) {
-            return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
-        }
-    }
-    public function destroyUsers(Request $request) {
-        try {
-            $user = User::getOneUser($request->id);
-            if (!$user) {
-                return response()->json(["success" => false, "msg" => "Usuário não encontrado"], 404);
-            }
-
-            $user->delete();
-
-            return response()->json(["success" => true, "data"=> "Usuário excluido com sucesso"], 200);
         } catch (Exception $e) {
             return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
         }

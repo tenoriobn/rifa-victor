@@ -4,70 +4,68 @@ import { stateSiteConfig } from "../../../../../common/states/atom";
 export default function ConfiguracoesInputs() {
   const [siteConfig, setSiteConfig] = useRecoilState(stateSiteConfig);
 
-  console.log(siteConfig)
-
   return (
     <div className="category">
       <h3>CONFIGURAÇÕES</h3>
 
-      <label htmlFor="app_title">
+      <label htmlFor="site_title">
         Título do site
         <input 
           type="text" 
-          name="app_title" 
-          value={siteConfig.app_title || ""} 
-          onChange={(e) => setSiteConfig({ ...siteConfig, app_title: e.target.value })} 
+          name="site_title" 
+          value={siteConfig.site_title || ""} 
+          onChange={(e) => setSiteConfig({ ...siteConfig, site_title: e.target.value })} 
           required 
         />
       </label>
 
-      <label htmlFor="logo">
+      <label htmlFor="logo_dark">
         Logo (para fundo escuro)
         <input 
           type="text" 
-          name="logo" 
-          value={siteConfig.logo || ""} 
-          onChange={(e) => setSiteConfig({ ...siteConfig, logo: e.target.value })} 
+          name="logo_dark" 
+          value={siteConfig.logo_dark || ""} 
+          onChange={(e) => setSiteConfig({ ...siteConfig, logo_dark: e.target.value })} 
         />
       </label>
 
-      <label htmlFor="logo_white">
+      <label htmlFor="logo_light">
         Logo (para fundo branco)
         <input 
           type="text" 
-          name="logo_white" 
-          value={siteConfig.logo_white || ""} 
-          onChange={(e) => setSiteConfig({ ...siteConfig, logo_white: e.target.value })} 
+          name="logo_light" 
+          value={siteConfig.logo_light || ""} 
+          onChange={(e) => setSiteConfig({ ...siteConfig, logo_light: e.target.value })} 
         />
       </label>
 
-      <label htmlFor="empresa">
+      <label htmlFor="footer_company">
         Empresa no rodapé
         <input 
           type="text" 
-          name="empresa" 
-          value={siteConfig.empresa || ""} 
-          onChange={(e) => setSiteConfig({ ...siteConfig, empresa: e.target.value })} 
+          name="footer_company" 
+          value={siteConfig.footer_company || ""} 
+          onChange={(e) => setSiteConfig({ ...siteConfig, footer_company: e.target.value })} 
         />
       </label>
 
-      <label htmlFor="analytics">
+      <label htmlFor="google_analytics">
         Google Analytics
         <input 
           type="text" 
-          name="analytics" 
-          value={siteConfig.analytics || ""} 
-          onChange={(e) => setSiteConfig({ ...siteConfig, analytics: e.target.value })} 
+          name="google_analytics" 
+          value={siteConfig.google_analytics || ""} 
+          onChange={(e) => setSiteConfig({ ...siteConfig, google_analytics: e.target.value })} 
         />
       </label>
 
-      <label htmlFor="webhook">
+      <label htmlFor="webhook_url">
         URL Webhook
         <input 
           type="text" 
-          name="webhook" 
-          value={siteConfig.webhook || ""} 
-          onChange={(e) => setSiteConfig({ ...siteConfig, webhook: e.target.value })} 
+          name="webhook_url" 
+          value={siteConfig.webhook_url || ""} 
+          onChange={(e) => setSiteConfig({ ...siteConfig, webhook_url: e.target.value })} 
         />
       </label>
 
