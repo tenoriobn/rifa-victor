@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components"
-import { stateNovoUsuario, stateOpenModalAdicionarUsuario, stateUserLogin } from "../../../../../common/states/atom";
+import { stateNovoUsuario, stateOpenModalAdicionarUsuario, stateUserDate, stateUserLogin } from "../../../../../common/states/atom";
 import { postDados } from "../../../../../common/http/http";
 import { PatternFormat } from "react-number-format";
 
@@ -65,6 +65,7 @@ export default function ModalNovoUsuario({setAtualizaTabela}) {
   const setOpenModalAdicionarUsuario = useSetRecoilState(stateOpenModalAdicionarUsuario);
   const [novoUsuario, setNovoUsuario] = useRecoilState(stateNovoUsuario);
   const userLogin = useRecoilValue(stateUserLogin);
+  const userDate = useRecoilValue(stateUserDate);
 
   console.log(novoUsuario)
   
@@ -137,7 +138,9 @@ export default function ModalNovoUsuario({setAtualizaTabela}) {
           <option value="admin">Administrador</option>
           <option value="user">Usuário</option>
           <option value="support">Suporte</option>
-          <option value="superadmin">Super Administrador</option>
+          {userDate.role === "superadmin" && 
+            <option value="superadmin">Super Administrador</option>
+          }
         </select>
       </label>
 

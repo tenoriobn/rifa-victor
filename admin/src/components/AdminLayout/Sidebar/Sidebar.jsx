@@ -174,29 +174,33 @@ export default function Sidebar() {
 
         </ul>
       </MenuBody>
+
+        {userDate.role === "superadmin" &&
+          <MenuSuperAdmin>
+            <ul>
+              <li className="dropdown">
+                <a href="#" onClick={toggleSuperAdmin}>
+                  <i className="fas fa-cogs"></i> SUPER ADMIN
+                </a>
+              </li>
+                {superAdminActive &&  
+                  <>
+                    {linksSuperAdmin.map((link, index) => (
+                      <li key={index}>
+                        <NavLink className="menu-config" to={link.href} end onClick={() => setMenuActive(!menuActive)}>
+                          <i className={link.iconClass}></i> {link.text}
+                        </NavLink>
+                      </li>
+                    ))}
+
+                  </>
+                }
+            </ul>
+          </MenuSuperAdmin>
+        }
       
     
-        <MenuSuperAdmin>
-          <ul>
-            <li className="dropdown">
-              <a href="#" onClick={toggleSuperAdmin}>
-                <i className="fas fa-cogs"></i> SUPER ADMIN
-              </a>
-            </li>
-              {superAdminActive &&  
-                <>
-                  {linksSuperAdmin.map((link, index) => (
-                    <li key={index}>
-                      <NavLink className="menu-config" to={link.href} end onClick={() => setMenuActive(!menuActive)}>
-                        <i className={link.iconClass}></i> {link.text}
-                      </NavLink>
-                    </li>
-                  ))}
 
-                </>
-              }
-          </ul>
-        </MenuSuperAdmin>
 
     </ContainerSidebar>
   );
