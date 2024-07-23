@@ -13,7 +13,7 @@ export default function SiteConfigSeo() {
         <input 
           type="text" 
           name="author" 
-          value={siteConfig.author || ""} 
+          value={siteConfig?.author || ""} 
           onChange={(e) => setSiteConfig({ ...siteConfig, author: e.target.value })} 
         />
       </label>
@@ -23,7 +23,7 @@ export default function SiteConfigSeo() {
         <input 
           type="text" 
           name="tags" 
-          value={siteConfig.tags || ""} 
+          value={siteConfig?.tags || ""} 
           onChange={(e) => setSiteConfig({ ...siteConfig, tags: e.target.value })} 
         />
       </label>
@@ -33,7 +33,7 @@ export default function SiteConfigSeo() {
         <input 
           type="text" 
           name="share_title" 
-          value={siteConfig.share_title || ""} 
+          value={siteConfig?.share_title || ""} 
           onChange={(e) => setSiteConfig({ ...siteConfig, share_title: e.target.value })} 
         />
       </label>
@@ -43,7 +43,7 @@ export default function SiteConfigSeo() {
         <input 
           type="text" 
           name="share_image" 
-          value={siteConfig.share_image || ""} 
+          value={siteConfig?.share_image || ""} 
           onChange={(e) => setSiteConfig({ ...siteConfig, share_image: e.target.value })} 
         />
       </label>
@@ -55,7 +55,7 @@ export default function SiteConfigSeo() {
           name="share_description" 
           cols="50" 
           rows="5" 
-          value={siteConfig.share_description || ""} 
+          value={siteConfig?.share_description || ""} 
           onChange={(e) => setSiteConfig({ ...siteConfig, share_description: e.target.value })} 
         />
       </label>

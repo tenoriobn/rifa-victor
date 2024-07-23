@@ -13,7 +13,7 @@ export default function ConfiguracoesInputs() {
         <input 
           type="text" 
           name="site_title" 
-          value={siteConfig.site_title || ""} 
+          value={siteConfig?.site_title || ""} 
           onChange={(e) => setSiteConfig({ ...siteConfig, site_title: e.target.value })} 
           required 
         />
@@ -24,7 +24,7 @@ export default function ConfiguracoesInputs() {
         <input 
           type="text" 
           name="logo_dark" 
-          value={siteConfig.logo_dark || ""} 
+          value={siteConfig?.logo_dark || ""} 
           onChange={(e) => setSiteConfig({ ...siteConfig, logo_dark: e.target.value })} 
         />
       </label>
@@ -34,7 +34,7 @@ export default function ConfiguracoesInputs() {
         <input 
           type="text" 
           name="logo_light" 
-          value={siteConfig.logo_light || ""} 
+          value={siteConfig?.logo_light || ""} 
           onChange={(e) => setSiteConfig({ ...siteConfig, logo_light: e.target.value })} 
         />
       </label>
@@ -44,7 +44,7 @@ export default function ConfiguracoesInputs() {
         <input 
           type="text" 
           name="footer_company" 
-          value={siteConfig.footer_company || ""} 
+          value={siteConfig?.footer_company || ""} 
           onChange={(e) => setSiteConfig({ ...siteConfig, footer_company: e.target.value })} 
         />
       </label>
@@ -54,7 +54,7 @@ export default function ConfiguracoesInputs() {
         <input 
           type="text" 
           name="google_analytics" 
-          value={siteConfig.google_analytics || ""} 
+          value={siteConfig?.google_analytics || ""} 
           onChange={(e) => setSiteConfig({ ...siteConfig, google_analytics: e.target.value })} 
         />
       </label>
@@ -64,7 +64,7 @@ export default function ConfiguracoesInputs() {
         <input 
           type="text" 
           name="webhook_url" 
-          value={siteConfig.webhook_url || ""} 
+          value={siteConfig?.webhook_url || ""} 
           onChange={(e) => setSiteConfig({ ...siteConfig, webhook_url: e.target.value })} 
         />
       </label>
@@ -74,7 +74,7 @@ export default function ConfiguracoesInputs() {
         <input 
           type="text" 
           name="product_title" 
-          value={siteConfig.product_title || ""} 
+          value={siteConfig?.product_title || ""} 
           onChange={(e) => setSiteConfig({ ...siteConfig, product_title: e.target.value })} 
         />
       </label>
@@ -84,7 +84,7 @@ export default function ConfiguracoesInputs() {
         <input 
           type="text" 
           name="product_subtitle" 
-          value={siteConfig.product_subtitle || ""} 
+          value={siteConfig?.product_subtitle || ""} 
           onChange={(e) => setSiteConfig({ ...siteConfig, product_subtitle: e.target.value })} 
         />
       </label>

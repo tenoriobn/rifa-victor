@@ -17,7 +17,7 @@ export default function SuporteContato() {
           format="(##) #####-####" 
           type="text" 
           name="whatsapp" 
-          value={siteConfig.whatsapp || ""} 
+          value={siteConfig?.whatsapp || ""} 
           onChange={(e) => setSiteConfig({ ...siteConfig, whatsapp: e.target.value })}
           placeholder="55XXXXXXXX" 
         />
@@ -28,7 +28,7 @@ export default function SuporteContato() {
         <input 
           type="text" 
           name="whatsapp_group_url" 
-          value={siteConfig.whatsapp_group_url || ""} 
+          value={siteConfig?.whatsapp_group_url || ""} 
           onChange={(e) => setSiteConfig({ ...siteConfig, whatsapp_group_url: e.target.value })}
         />
       </label>
@@ -38,7 +38,7 @@ export default function SuporteContato() {
         <input 
           type="text" 
           name="instagram" 
-          value={siteConfig.instagram || ""} 
+          value={siteConfig?.instagram || ""} 
           onChange={(e) => setSiteConfig({ ...siteConfig, instagram: e.target.value })}
         />
       </label>
@@ -48,7 +48,7 @@ export default function SuporteContato() {
         <input 
           type="text" 
           name="helpdesk_url" 
-          value={siteConfig.helpdesk_url || ""} 
+          value={siteConfig?.helpdesk_url || ""} 
           onChange={(e) => setSiteConfig({ ...siteConfig, helpdesk_url: e.target.value })}
         />
       </label>
@@ -58,7 +58,7 @@ export default function SuporteContato() {
         <input 
           type="email" 
           name="email" 
-          value={siteConfig.email || ""} 
+          value={siteConfig?.email || ""} 
           onChange={(e) => setSiteConfig({ ...siteConfig, email: e.target.value })}
         />
       </label>

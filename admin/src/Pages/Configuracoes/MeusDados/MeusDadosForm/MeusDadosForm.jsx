@@ -4,6 +4,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { stateUserDate, stateUserLogin } from "../../../../common/states/atom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import {PatternFormat } from "react-number-format";
 
 const CategoryContainer = styled.div`
   display: flex;
@@ -115,9 +116,9 @@ export default function MeusDadosForm() {
 
           <label htmlFor="phone">
             Telefone
-            <input 
+            <PatternFormat
+              format="(##) #####-####"
               type="text" 
-              maxLength="15" 
               id="phone" 
               name="phone" 
               value={formDadosUsuario.cellphone || ''} 
