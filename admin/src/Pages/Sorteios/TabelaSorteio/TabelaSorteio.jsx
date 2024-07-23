@@ -114,6 +114,11 @@ const Table = styled.table`
     gap: 4px;
   }
 
+  .button-ativar:hover {
+    background-color: #28a745;
+    opacity: 1!important;
+  }
+
   .button-edit {
     background-color: #0d6efd;
     color: white;
@@ -270,7 +275,7 @@ export default function TabelaSorteio() {
                   )}
 
                   {sorteio.status === 'finalizadas' && (
-                  <button className="status-inactive">
+                  <button className="status-inactive button-ativar">
                     <ion-icon name="stats-chart" role="img" className="md hydrated"></ion-icon> Ativar
                   </button>
                   )}
