@@ -156,22 +156,23 @@ export default function Sidebar() {
             </li>
           ))}
 
-          <li className="dropdown">
-            <a href="#" onClick={toggleSubmenu}>
-              <i className="fas fa-cogs"></i> CONFIGURAÇÕES
-            </a>
-            <ul>
-              {linksConfiguracoes.map((link, index) => (
-                <li key={index}>
-                  <NavLink className="menu-config" to={link.href} end onClick={() => setMenuActive(!menuActive)}>
-                    <i className={link.iconClass}></i> {link.text}
-                  </NavLink>
-                </li>
-              ))}
-            </ul>
-          </li>
+          {(userDate.role === "superadmin" || userDate.role === "admin") &&
 
-
+            <li className="dropdown">
+              <a href="#" onClick={toggleSubmenu}>
+                <i className="fas fa-cogs"></i> CONFIGURAÇÕES
+              </a>
+              <ul>
+                {linksConfiguracoes.map((link, index) => (
+                  <li key={index}>
+                    <NavLink className="menu-config" to={link.href} end onClick={() => setMenuActive(!menuActive)}>
+                      <i className={link.iconClass}></i> {link.text}
+                    </NavLink>
+                  </li>
+                ))}
+              </ul>
+            </li>
+          }
         </ul>
       </MenuBody>
 
