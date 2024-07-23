@@ -69,6 +69,14 @@ const CategoryContainer = styled.div`
     width: 100%;
   }
 
+  .success {
+    transition: all .3s ease-in-out;
+  }
+
+  .success:hover {
+    opacity: .8;
+  }
+
   @media (max-width: 768px) {
     flex-direction: column;
   }

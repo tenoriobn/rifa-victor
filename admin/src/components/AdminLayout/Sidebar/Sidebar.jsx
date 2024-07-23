@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { useRecoilState } from "recoil";
-import { stateMenuActive } from "../../../common/states/atom";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { stateMenuActive, stateUserDate } from "../../../common/states/atom";
 import links from "./links.json";
 import linksConfiguracoes from "./linksConfiguracoes.json";
 import linksSuperAdmin from "./linksSuperAdmin.json";
@@ -104,6 +104,9 @@ export default function Sidebar() {
   const [submenuActive, setSubmenuActive] = useState(false);
   const [superAdminActive, setSuperAdminActive] = useState(false);
   const navigate = useNavigate();
+  const userDate = useRecoilValue(stateUserDate);
+
+  console.log('userDate', userDate)
 
   const handleLogout = () => {
     removerToken();
@@ -133,9 +136,8 @@ export default function Sidebar() {
           <i className="fas fa-external-link-alt" aria-hidden="true"></i> Sair
         </button>
         <div>
-          <p>Cliente: 27 - Ana</p>
-          <p>Site: 27 - Ana Lima Prêmios</p>
-          <p className="srv">SRV: 001</p>
+          <p>Cliente: {userDate.id} - {userDate.name}</p>
+          <p>Site: {userDate.id} - {userDate.email}</p>
         </div>
       </MenuHeader>
 
@@ -154,47 +156,52 @@ export default function Sidebar() {
             </li>
           ))}
 
-          <li className="dropdown">
-            <a href="#" onClick={toggleSubmenu}>
-              <i className="fas fa-cogs"></i> CONFIGURAÇÕES
-            </a>
-            <ul>
-              {linksConfiguracoes.map((link, index) => (
-                <li key={index}>
-                  <NavLink className="menu-config" to={link.href} end onClick={() => setMenuActive(!menuActive)}>
-                    <i className={link.iconClass}></i> {link.text}
-                  </NavLink>
-                </li>
-              ))}
-            </ul>
-          </li>
+          {(userDate.role === "superadmin" || userDate.role === "admin") &&
 
-
+            <li className="dropdown">
+              <a href="#" onClick={toggleSubmenu}>
+                <i className="fas fa-cogs"></i> CONFIGURAÇÕES
+              </a>
+              <ul>
+                {linksConfiguracoes.map((link, index) => (
+                  <li key={index}>
+                    <NavLink className="menu-config" to={link.href} end onClick={() => setMenuActive(!menuActive)}>
+                      <i className={link.iconClass}></i> {link.text}
+                    </NavLink>
+                  </li>
+                ))}
+              </ul>
+            </li>
+          }
         </ul>
       </MenuBody>
+
+        {userDate.role === "superadmin" &&
+          <MenuSuperAdmin>
+            <ul>
+              <li className="dropdown">
+                <a href="#" onClick={toggleSuperAdmin}>
+                  <i className="fas fa-cogs"></i> SUPER ADMIN
+                </a>
+              </li>
+                {superAdminActive &&  
+                  <>
+                    {linksSuperAdmin.map((link, index) => (
+                      <li key={index}>
+                        <NavLink className="menu-config" to={link.href} end onClick={() => setMenuActive(!menuActive)}>
+                          <i className={link.iconClass}></i> {link.text}
+                        </NavLink>
+                      </li>
+                    ))}
+
+                  </>
+                }
+            </ul>
+          </MenuSuperAdmin>
+        }
       
     
-        <MenuSuperAdmin>
-          <ul>
-            <li className="dropdown">
-              <a href="#" onClick={toggleSuperAdmin}>
-                <i className="fas fa-cogs"></i> SUPER ADMIN
-              </a>
-            </li>
-              {superAdminActive &&  
-                <>
-                  {linksSuperAdmin.map((link, index) => (
-                    <li key={index}>
-                      <NavLink className="menu-config" to={link.href} end onClick={() => setMenuActive(!menuActive)}>
-                        <i className={link.iconClass}></i> {link.text}
-                      </NavLink>
-                    </li>
-                  ))}
 
-                </>
-              }
-          </ul>
-        </MenuSuperAdmin>
 
     </ContainerSidebar>
   );

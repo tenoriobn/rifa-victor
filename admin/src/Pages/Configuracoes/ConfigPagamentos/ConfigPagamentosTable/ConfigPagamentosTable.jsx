@@ -79,11 +79,11 @@ const Table = styled.table`
     cursor: pointer;
   }
 
-  .button-group a, .button-group button {
+  .button-group a, .button-group button, .button-edit {
     transition: all .3s ease-in-out;
   }
 
-  .button-group a:hover, .button-group button:hover {
+  .button-group a:hover, .button-group button:hover, .button-edit:hover {
     opacity: .8;
   }
 
