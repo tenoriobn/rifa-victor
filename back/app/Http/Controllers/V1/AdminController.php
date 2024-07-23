@@ -35,6 +35,7 @@ class AdminController extends Controller
         }
     }
     public function destroyUser($id) {
+        $this->authorize('create', User::class);
         try {
             $user = User::find($id);
             if (!$user ) {
@@ -73,6 +74,7 @@ class AdminController extends Controller
     }
 
     public function procurarGanhadorPeloNumero(Request $request) {
+        $this->authorize('view', User::class);
         try {
             $ganhador = $this->rifaService->procurarGanhador($request->numeroWinner, $request->rifa_id);
 
@@ -87,6 +89,7 @@ class AdminController extends Controller
     }
 
     public function procurarClientCellphone(Request $request) {
+        $this->authorize('view', User::class);
         try {
 
             $client = Clients::findClient($request->cellphone);
@@ -101,6 +104,7 @@ class AdminController extends Controller
         }
     }
     public function definirGanhador(Request $request) {
+         $this->authorize('create', User::class);
         try {
             $ganhador = $this->rifaService->definirGanhador($request->numeroSorteado, $request->novoGanhadorPhone, $request->rifa_id);
 
@@ -110,6 +114,7 @@ class AdminController extends Controller
         }
     }
     public function cadastrarGanhador(Request $request) {
+        $this->authorize('create', User::class);
         try {
             $image = $this->rifaService->saveImage($request->img, $request->rifas_id);
             $client = Clients::findClient( $request->cellphone);
@@ -125,6 +130,7 @@ class AdminController extends Controller
         }
     }
     public function getOneGanhador($id) {
+        $this->authorize('view', User::class);
         try {
             $winner = RifaWinner::findWinner($id);
             if (!$winner ) {
@@ -137,7 +143,7 @@ class AdminController extends Controller
         }
     }
     public function editarGanhador(Request $request) {
-        // return $request->all();
+        $this->authorize('update', User::class);
         try {
             $winner = RifaWinner::findWinner($request->id);
             if (!$winner ) {
@@ -167,6 +173,7 @@ class AdminController extends Controller
     }
 
     public function destroyGanhador($id) {
+        $this->authorize('delete', User::class);
         try {
             $winner = RifaWinner::findWinner($id);
             if (!$winner ) {
@@ -180,6 +187,7 @@ class AdminController extends Controller
         }
     }
     public function adicionarNumerosRifas(Request $request) {
+        $this->authorize('create', User::class);
         try {
             $client = $this->rifaService->adicionarNumerosRifasClient($request->cellphone, $request->qntd_number, $request->rifa_id);
 
@@ -193,6 +201,7 @@ class AdminController extends Controller
         }
     }
     public function adicionarBilhetePremiado(Request $request) {
+        $this->authorize('create', User::class);
         try {
             $client = $this->rifaService->addBilhetePremiado($request->cellphone, $request->numero_premiado, $request->rifa_id);
 
