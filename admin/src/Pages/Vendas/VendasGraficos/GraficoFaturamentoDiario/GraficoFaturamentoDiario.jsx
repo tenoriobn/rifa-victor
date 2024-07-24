@@ -15,7 +15,7 @@ export default function GraficoFaturamentoDiario() {
       }
 
       chartRef.current = new Chart(ctx, {
-        type: 'bar', // ou 'line', 'pie', etc.
+        type: 'bar',
         data: {
           labels: ['10', '11', '16'],
           datasets: [

@@ -457,47 +457,22 @@ class AdminController extends Controller
         }
     }
 
-    public function vendas(Request $request) {
+    public function getVendas() {
         try {
-            // Obter os parâmetros de data do request
-            $dataInicio = $request->input('data_inicio');
-            $dataFim = $request->input('data_fim');
+            $totalPedido = RifaPay::getAllCompraAtivo()->sum('value');
+            $pedidosAprovados = RifaPay::getAllCompraAtivo()->count('status');
+            $pedidosAguardando = RifaPay::getAllCompraAguardando()->count('status');
+            $totalPedidoAguardando = RifaPay::getAllCompraAguardando()->sum('value');
 
-            // Converter as datas para Carbon
-            if ($dataInicio && $dataFim) {
-                $inicio = Carbon::parse($dataInicio)->startOfDay();
-                $fim = Carbon::parse($dataFim)->endOfDay();
-            } else {
-                // Usar intervalo padrão se as datas não forem fornecidas
-                $inicio = Carbon::now()->startOfDay();
-                $fim = Carbon::now()->endOfDay();
+            $horaDoDia = [];
+            $compraAtivo = RifaPay::getAllCompraAtivo();
+            foreach ($compraAtivo as $compra) {
+                $hora = Carbon::parse($compra->created_at)->format('H'); // Hora do dia (0-23)
+                if (!isset($horaDoDia[$hora])) {
+                    $horaDoDia[$hora] = 0;
+                }
+                $horaDoDia[$hora] += $compra->value;
             }
-
-            // Consultas filtradas pelas datas
-            $totalPedido = RifaPay::getAllCompraAtivo()
-                ->whereBetween('created_at', [$inicio, $fim])
-                ->sum('value');
-
-            $pedidosAprovados = RifaPay::getAllCompraAtivo()
-                ->whereBetween('created_at', [$inicio, $fim])
-                ->count('status');
-
-            $pedidosAguardando = RifaPay::getAllCompraAguardando()
-                ->whereBetween('created_at', [$inicio, $fim])
-                ->count('status');
-
-            $totalPedidoAguardando = RifaPay::getAllCompraAguardando()
-                ->whereBetween('created_at', [$inicio, $fim])
-                ->sum('value');
-
-            // Faturamento por Hora Atual
-            $horaAtual = Carbon::now()->format('H'); // Obtém a hora atual no formato 'H' (0-23)
-            $inicioHoraAtual = Carbon::now()->startOfHour(); // Início da hora atual
-            $fimHoraAtual = Carbon::now()->endOfHour(); // Fim da hora atual
-
-            $faturamentoHoraAtual = RifaPay::getAllCompraAtivo()
-                ->whereBetween('created_at', [$inicioHoraAtual, $fimHoraAtual])
-                ->sum('value');
 
             // Faturamento Semanal
             $inicioDaSemana = Carbon::now()->startOfWeek();
@@ -512,7 +487,63 @@ class AdminController extends Controller
                 ->where('created_at', '>=', $inicioDoDia)
                 ->sum('value');
 
-            // Responder com os dados
+            return response()->json(["success" => true, "data" => ['totalPedido' => $totalPedido, 'pedidosAprovados' =>  $pedidosAprovados, 'pedidosAguardando' => $pedidosAguardando, 'totalPedidoAguardando' => $totalPedidoAguardando,  'horaDoDia' => $horaDoDia, 'faturamentoSemanal' => $faturamentoSemanal, 'faturamentoDoDia' => $faturamentoDoDia]], 201);
+        } catch (\Throwable $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
+        }
+    }
+
+
+    public function vendas(Request $request) {
+        try {
+            // Parâmetros de data inicial e final
+            $dataInicio = $request->input('startDate');
+            $dataFim = $request->input('endDate');
+
+            // Verificar se os parâmetros são datas válidas
+            if (!strtotime($dataInicio) || !strtotime($dataFim)) {
+                return response()->json(["success" => false, "msg" => "Parâmetros de data inválidos"], 400);
+            }
+
+            // Converter as datas para objetos Carbon
+            $inicio = Carbon::parse($dataInicio)->startOfDay();
+            $fim = Carbon::parse($dataFim)->endOfDay();
+
+            // Filtrar pedidos entre as datas fornecidas
+            $comprasFiltradas = RifaPay::getAllCompraAtivo()
+                ->whereBetween('created_at', [$inicio, $fim]);
+
+            $totalPedido = $comprasFiltradas->sum('value');
+            $pedidosAprovados = $comprasFiltradas->count();
+            $pedidosAguardando = RifaPay::getAllCompraAguardando()
+                ->whereBetween('created_at', [$inicio, $fim])
+                ->count();
+            $totalPedidoAguardando = RifaPay::getAllCompraAguardando()
+                ->whereBetween('created_at', [$inicio, $fim])
+                ->sum('value');
+
+            $horaDoDia = [];
+            foreach ($comprasFiltradas as $compra) {
+                $hora = Carbon::parse($compra->created_at)->format('H'); // Hora do dia (0-23)
+                if (!isset($horaDoDia[$hora])) {
+                    $horaDoDia[$hora] = 0;
+                }
+                $horaDoDia[$hora] += $compra->value;
+            }
+
+            // Faturamento Semanal (considerando a semana da data inicial)
+            $inicioDaSemana = $inicio->copy()->startOfWeek();
+            $fimDaSemana = $inicio->copy()->endOfWeek();
+            $faturamentoSemanal = RifaPay::getAllCompraAtivo()
+                ->whereBetween('created_at', [$inicioDaSemana, $fimDaSemana])
+                ->sum('value');
+
+            // Faturamento do Dia Atual (considerando o dia inicial)
+            $inicioDoDia = $inicio->copy()->startOfDay();
+            $faturamentoDoDia = RifaPay::getAllCompraAtivo()
+                ->where('created_at', '>=', $inicioDoDia)
+                ->sum('value');
+
             return response()->json([
                 "success" => true,
                 "data" => [
@@ -520,7 +551,7 @@ class AdminController extends Controller
                     'pedidosAprovados' => $pedidosAprovados,
                     'pedidosAguardando' => $pedidosAguardando,
                     'totalPedidoAguardando' => $totalPedidoAguardando,
-                    'faturamentoHoraAtual' => $faturamentoHoraAtual,
+                    'horaDoDia' => $horaDoDia,
                     'faturamentoSemanal' => $faturamentoSemanal,
                     'faturamentoDoDia' => $faturamentoDoDia
                 ]
@@ -529,6 +560,9 @@ class AdminController extends Controller
             return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
         }
     }
+
+
+
 
 
 

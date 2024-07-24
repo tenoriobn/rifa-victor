@@ -32,6 +32,7 @@
         Route::middleware('auth:sanctum')->post("/user/logout", [AdminController::class, "logout"])->name('admin.logout.user');
 
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/todas-rifas", [RifasController::class, "getAllRifasAdmin"])->name('admin.all.rifas');
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/todas-rifas/filtro", [RifasController::class, "getAllRifasAdminFiltro"])->name('admin.all.rifas');
 
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/rifas/cadastrar", [RifasController::class, "storeRifa"])->name('admin.create.rifa');
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/rifa/editar/{id}", [RifasController::class, "getOneRifa"])->name('admin.get.edit.rifa');
@@ -104,9 +105,9 @@
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/site-settings", [AdminController::class, "getConfigSite"])->name('admin.get.site-config');
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/site-settings/editar", [AdminController::class, "storeConfigSite"])->name('admin.edit.site-config');
 
-        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/vendas", [AdminController::class, "vendas"])->name('admin.get.vendas');
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/vendas", [AdminController::class, "getVendas"])->name('admin.get.vendas');
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/vendas/filtro", [AdminController::class, "vendas"])->name('admin.filtro.vendas');
     });
-
     Route::group(['prefix' => 'produtos'], function () {
         Route::get("/", [RifasController::class, "allRifas"])->name('all.rifas');
         Route::get("/{slug}/{id}", [RifasController::class, "show"])->where(['slug' => '[a-zA-Z0-9\-_]+', 'id' => '[0-9]+'])->name('show.one.rifa');

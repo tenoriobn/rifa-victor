@@ -67,6 +67,47 @@ class RifasController extends Controller
             return response()->json(["success" => false, "msg" => $e->getMessage()], $this->serverError);
         }
     }
+
+    public function getAllRifasAdminFiltro(Request $request) {
+        try {
+            // Obtenha os parâmetros da consulta
+            $nome = $request->query('nome');
+            $status = $request->query('status');
+
+            // Inicie a consulta
+            $query = Rifas::with(['cota'])
+                ->withSum('rifaPayActiva as fat_total', 'value')
+                ->withSum('rifaPayToday as fat_hoje', 'value')
+                ->withCount(['rifaNumberActive as qntd_numeros' => function ($query) {
+                    $query->select(DB::raw("SUM(LENGTH(numbers) - LENGTH(REPLACE(numbers, ',', '')) + 1) as number_count"));
+                }])
+                ->withCount(['rifaNumberReservado as qntd_numeros_reservado' => function ($query) {
+                    $query->select(DB::raw("SUM(LENGTH(numbers) - LENGTH(REPLACE(numbers, ',', '')) + 1) as number_count"));
+                }])
+                ->latest();
+
+            // Aplique filtros se os parâmetros estiverem presentes
+            if ($nome) {
+                $query->where('nome', 'LIKE', "%$nome%");
+            }
+
+            if ($status) {
+                $query->where('status', $status);
+            }
+
+            // Execute a consulta
+            $rifasData = $query->get();
+
+            if ($rifasData->isEmpty()) {
+                return response()->json(["success" => false, "msg" => "Nenhuma rifa encontrada."], $this->notFound);
+            }
+
+            return response()->json(["success" => true, "data" => $rifasData], $this->success);
+        } catch (Exception $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], $this->serverError);
+        }
+    }
+
     public function allRifas() {
         try {
             $rifasData = Rifas::getAllRifas();

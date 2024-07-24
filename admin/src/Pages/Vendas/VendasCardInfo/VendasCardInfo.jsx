@@ -1,4 +1,9 @@
 import styled from "styled-components"
+import { fetchDados } from "../../../common/http/http";
+import { useEffect } from "react";
+import useCurrencyFormatTable from "../../../common/states/Hook/useCurrencyFormatTable/useCurrencyFormatTable";
+import { stateDadosVendas } from "../../../common/states/atom";
+import { useRecoilState } from "recoil";
 
 const DashboardItens = styled.div`
   display: flex;
@@ -86,79 +91,60 @@ const DashboardItens = styled.div`
   }
 `;
 
-const dashboardData = {
-  totalVendidos: {
-    title: "Total Vendidos",
-    value: "R$ 3.345,40",
-    iconClass: "fa-dollar-sign",
-    className: "profit"
-  },
-  pedidosAprovados: {
-    title: "Pedidos Aprovados",
-    value: "204",
-    iconClass: "fa-receipt",
-    className: "request"
-  },
-  ticketMedio: {
-    title: "Ticket Médio",
-    value: "R$ 16,40",
-    iconClass: "fa-ticket",
-    className: "ticket-medio"
-  },
-  pedidosAguardando: {
-    title: "Pedidos Aguardando",
-    value: "0",
-    iconClass: "fa-hourglass",
-    className: "pending_request"
-  },
-  pagamentoPendente: {
-    title: "Pagamento Pendente",
-    value: "R$ 0,00",
-    iconClass: "fa-dollar-sign",
-    className: "pending_entry"
-  }
-};
-
 export default function VendasCardInfo() {
+  const [dadosVendas, setDadosVendas] = useRecoilState(stateDadosVendas);
+  const { formatCurrency } = useCurrencyFormatTable();
+
+  const obterDados = async () => {
+    const response = await fetchDados(`/admin/dashboard/vendas`);
+    setDadosVendas(response.data); 
+  };
+
+  useEffect(() => {
+    obterDados();
+  }, []);
+
+  console.log('dashBoardData1', dadosVendas)
+
   return (
     <DashboardItens>
-      <div className={`dashboard-item ${dashboardData.totalVendidos.className} block-copy`}>
+      <div className="dashboard-item profit block-copy">
         <div className="dashboard-item-body">
-          <p>{dashboardData.totalVendidos.title}</p>
-          <p>{dashboardData.totalVendidos.value}</p>
-          <i className={`fa-solid ${dashboardData.totalVendidos.iconClass}`}></i>
+          <p>Total Vendidos</p>
+          <p>{formatCurrency(dadosVendas?.totalPedido)}</p>
+          <i className="fa-solid fa-dollar-sign"></i>
         </div>
       </div>
 
-      <div className={`dashboard-item ${dashboardData.pedidosAprovados.className} block-copy`}>
+      <div className="dashboard-item request block-copy">
         <div className="dashboard-item-body">
-          <p>{dashboardData.pedidosAprovados.title}</p>
-          <p>{dashboardData.pedidosAprovados.value}</p>
-          <i className={`fa-solid ${dashboardData.pedidosAprovados.iconClass}`}></i>
+          <p>Pedidos Aprovados</p>
+          <p>{dadosVendas?.pedidosAprovados}</p>
+          <i className="fa-solid fa-receipt"></i>
         </div>
       </div>
 
-      <div className={`dashboard-item ${dashboardData.ticketMedio.className} block-copy`}>
+      <div className="dashboard-item ticket-medio block-copy">
         <div className="dashboard-item-body">
-          <p>{dashboardData.ticketMedio.title}</p>
-          <p>{dashboardData.ticketMedio.value}</p>
-          <i className={`fa-solid ${dashboardData.ticketMedio.iconClass}`}></i>
+          <p>Ticket Médio</p>
+          <p>{dadosVendas?.ticketMedio}</p>
+          <i className="fa-solid fa-ticket"></i>
         </div>
       </div>
 
-      <div className={`dashboard-item ${dashboardData.pedidosAguardando.className} block-copy`}>
+      <div className="dashboard-item pending_request block-copy">
         <div className="dashboard-item-body">
-          <p>{dashboardData.pedidosAguardando.title}</p>
-          <p>{dashboardData.pedidosAguardando.value}</p>
-          <i className={`fa-solid ${dashboardData.pedidosAguardando.iconClass}`}></i>
+          <p>Pedidos Aguardando</p>
+          <p>{dadosVendas?.pedidosAguardando}</p>
+          <i className="fa-solid fa-hourglass}"></i>
         </div>
       </div>
 
-      <div className={`dashboard-item ${dashboardData.pagamentoPendente.className} block-copy`}>
+      <div className="dashboard-item pending_entry block-copy">
         <div className="dashboard-item-body">
-          <p>{dashboardData.pagamentoPendente.title}</p>
-          <p>{dashboardData.pagamentoPendente.value}</p>
-          <i className={`fa-solid ${dashboardData.pagamentoPendente.iconClass}`}></i>
+          <p>Pagamento Pendente</p>
+          <p>{formatCurrency(dadosVendas?.totalPedidoAguardando)}</p>
+          <i className="fa-solid fa-dollar-sign"></i>
         </div>
       </div>
     </DashboardItens>

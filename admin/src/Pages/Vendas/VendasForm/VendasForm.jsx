@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import Datepicker from "react-tailwindcss-datepicker"; 
-import { useState } from "react";
-// import { postDados } from "../../../common/http/http";
+import { postDados } from "../../../common/http/http";
+import { useRecoilState } from "recoil";
+import { stateVendasOrderFilter, stateDadosVendas } from "../../../common/states/atom";
 
 const Form = styled.form`
   display: flex;
@@ -50,24 +51,26 @@ const Form = styled.form`
 `;
 
 export default function VendasForm() {
-  const [orderFilter, setOrderFilter] = useState({});
+  const [vendasOrderFilter, setVendasOrderFilter] = useRecoilState(stateVendasOrderFilter);
+  const [dadosVendas, setDadosVendas] = useRecoilState(stateDadosVendas)
 
-  console.log('orderFilter', orderFilter)
+  console.log(dadosVendas)
 
-  // const handleSubmit = async (e) => {
-  //   if (e) e.preventDefault();
-  //   try {
-  //     const response = await postDados('/admin/dashboard/ rota aqui', orderFilter);
-  //     estadoQueAtualizaCardsEGráficos(response);
-  //   } catch (error) {
-  //     console.error("There was an error fetching the data!", error);
-  //   }
-  // };
+  console.log('vendasOrderFilter', vendasOrderFilter)
+
+  const handleSubmit = async (e) => {
+    if (e) e.preventDefault();
+    try {
+      const response = await postDados('/admin/dashboard/vendas/filtro', vendasOrderFilter);
+      setDadosVendas(response.data);
+    } catch (error) {
+      console.error("There was an error fetching the data!", error);
+    }
+  };
     
 
   return (
-    // <Form  onSubmit={handleSubmit}>
-    <Form>
+    <Form onSubmit={handleSubmit}>
       <div className="filter-item">
         <label htmlFor="init_date">Data:</label>
         {/* <input type="text" name="datetimes" /> */}
@@ -79,8 +82,8 @@ export default function VendasForm() {
           showShortcuts={true} 
           displayFormat={"DD/MM/YYYY"}
           showFooter={true} 
-          value={orderFilter.data} 
-          onChange={(newValue) => setOrderFilter(newValue)}
+          value={vendasOrderFilter} 
+          onChange={(newValue) => setVendasOrderFilter(newValue)}
           configs={{
               shortcuts: {
               today: "Hoje", 

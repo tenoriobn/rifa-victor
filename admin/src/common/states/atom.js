@@ -372,3 +372,13 @@ export const stateAtualizaTableConsultaCota = atom({
   key: 'stateAtualizaTableConsultaCota',
   default: [],
 })
+
+export const stateVendasOrderFilter = atom({
+  key: 'stateVendasOrderFilter',
+  default: {},
+})
+
+export const stateDadosVendas = atom({
+  key: 'stateDadosVenda',
+  default: {},
+})

@@ -58,6 +58,20 @@ const MenuHeader = styled.div`
   .srv {
     font-size: .625rem;
   }
+
+  .user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .info-site {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 228px;
+    text-align: center;
+  }
 `;
 
 const MenuBody = styled.div`
@@ -133,9 +147,9 @@ export default function Sidebar() {
         <button onClick={handleLogout}>
           <i className="fas fa-external-link-alt" aria-hidden="true"></i> Sair
         </button>
-        <div>
+        <div className="user-info">
           <p>Cliente: {userDate.id} - {userDate.name}</p>
-          <p>Site: {userDate.id} - {userDate.email}</p>
+          <p className="info-site">Site: {userDate.id} - {userDate.email}</p>
         </div>
       </MenuHeader>
 
