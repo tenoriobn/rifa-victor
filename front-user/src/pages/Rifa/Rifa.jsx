@@ -37,9 +37,18 @@ export default function Rifa() {
       setRifa(dados.data.rifa)
       setRanking(dados.data.ranking);
 
+      // console.log(dados.data.rifa.title)
+
+      document.title = dados.data.rifa.title;
     };
 
     obterDados();
+
+    return () => {
+      // Reverter o título quando o componente for desmontado
+      document.title = "Ana Lima Prêmios";
+    };
+    
   }, [slug, id]);
 
   if (loading) {

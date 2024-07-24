@@ -12,7 +12,7 @@ export default function InfoPedidos() {
   const informacoes = [
     { label: '🔢 Código:', value: checkoutInfo.cod },
     { label: '🛍 Total de Cotas:', value: checkoutInfo.qntd_number },
-    { label: '➕ Taxa:', value: formatCurrency(checkoutInfo.rifa.rifa_payment.service_charge) },
+    { label: '➕ Taxa:', value: formatCurrency(checkoutInfo?.rifa?.rifa_payment?.service_charge) },
     { label: '💲 Total:', value: formatCurrency(checkoutInfo.value), class: "font-bold" }
   ];
 
