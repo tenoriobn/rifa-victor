@@ -39,7 +39,7 @@ export default function DetalhesPedido() {
     <>
       <div className="aspect-[16/9] mb-4">
         <img 
-          src={`../../../public/imgRifas/${checkoutInfo.rifa.rifa_image[0]?.path}`}
+          src={`../../../public/imgRifas/${checkoutInfo?.rifa?.rifa_image[0]?.path}`}
           className="w-full h-full object-cover rounded-lg mb-4"
           alt="Imagem do Prêmio" 
         />
