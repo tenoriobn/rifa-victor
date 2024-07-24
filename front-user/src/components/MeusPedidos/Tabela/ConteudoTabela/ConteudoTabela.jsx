@@ -17,7 +17,7 @@ export default function ConteudoTabela() {
             <div className={`p-2 border-0 border-l-4 border-solid ${item.status === 0 ? "border-amber-400" : item.status === 1 ? "border-emerald-400" : "border-red-400"} `}>
               <img 
                 // src={item.imgSrc} 
-                src={`../../../public/imgRifas/${item.rifa.rifa_image[0]?.path}`}
+                src={`../../../public/imgRifas/${item.rifa?.rifa_image[0]?.path}`}
                 alt="" 
                 className="h-auto min-w-[64px] w-full aspect-[16/9] object-cover rounded-lg" 
               />
