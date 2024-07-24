@@ -60,4 +60,20 @@ class User extends Authenticatable
     {
         return self::get();
     }
+
+    public static function allUsersFiltro($query = null) {
+        $queryBuilder = self::query();
+
+        if ($query) {
+            $queryBuilder->where(function($q) use ($query) {
+                $q->where('email', 'like', '%' . $query . '%')
+                  ->orWhere('cellphone', 'like', '%' . $query . '%');
+            });
+        }
+
+        $result = $queryBuilder->get();
+
+        return $result ?? false;
+    }
+
 }

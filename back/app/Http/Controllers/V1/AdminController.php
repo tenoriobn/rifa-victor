@@ -240,6 +240,22 @@ class AdminController extends Controller
             return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
         }
     }
+
+    public function getPedidosFiltro(Request $request) {
+        try {
+            $filters = $request->all();
+            $buy = RifaPay::getPedidosFiltro($filters);
+
+            if (!$buy) {
+                return response()->json(["success" => false, "msg" => "Pedido não encontrado"], 404);
+            }
+
+            return response()->json(["success" => true, "data" => $buy], 200);
+        } catch (Exception $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
+        }
+    }
+
     public function getOnePedidos($idRifa, $idClient) {
         try {
             $buy = RifaPay::getOneCompraClientByRifa($idRifa, $idClient);
@@ -275,6 +291,36 @@ class AdminController extends Controller
             return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
         }
     }
+
+    public function allClientsFiltro(Request $request) {
+        try {
+            $query = Clients::query();
+
+            // Adiciona filtros se os parâmetros estiverem presentes
+            if ($request->has('id')) {
+                $query->where('id', $request->input('id'));
+            }
+
+            if ($request->has('name')) {
+                $query->where('name', 'like', '%' . $request->input('name') . '%');
+            }
+
+            if ($request->has('cellphone')) {
+                $query->where('cellphone', 'like', '%' . $request->input('cellphone') . '%');
+            }
+
+            $clientes = $query->get();
+
+            if ($clientes->isEmpty()) {
+                return response()->json(["success" => false, "msg" => "Clientes não encontrados"], 404);
+            }
+
+            return response()->json(["success" => true, "data" => $clientes], 200);
+        } catch (Exception $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
+        }
+    }
+
     public function getOneClient($id) {
         try {
             $clientes = Clients::findClientById($id);
@@ -309,6 +355,21 @@ class AdminController extends Controller
             return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
         }
     }
+
+    public function rankingGeralFiltro(Request $request) {
+        try {
+            $ranking = RifaNumber::getRankingRifaGeralFiltro($request->input('total_numbers'), $request->input('rifas_id'));
+
+            if (!$ranking) {
+                return response()->json(["success" => false, "msg" => "Ranking não atualizado"], 404);
+            }
+
+            return response()->json(["success" => true, "data" => $ranking], 200);
+        } catch (Exception $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
+        }
+    }
+
     public function getAllUsers() {
         try {
             $users = User::allUsers();
@@ -321,6 +382,22 @@ class AdminController extends Controller
             return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
         }
     }
+
+    public function getAllUsersFiltro(Request $request) {
+        try {
+            $input = $request->input('query');
+            $users = User::allUsersFiltro($input);
+
+            if (!$users) {
+                return response()->json(["success" => false, "msg" => "Usuários não encontrados"], 404);
+            }
+
+            return response()->json(["success" => true, "data" => $users], 200);
+        } catch (Exception $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
+        }
+    }
+
     public function getOneUser($id) {
         try {
             $user = User::getOneUser($id);

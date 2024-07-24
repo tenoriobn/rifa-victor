@@ -172,6 +172,28 @@ class RifaNumber extends Model {
             ->get();
         return $result ?? false;
     }
+
+    public static function getRankingRifaGeralFiltro($totalNumbers, $rifasId) {
+        $query = self::where('status', 1)
+            ->select('client_id', 'rifas_id', 'pay_id')
+            ->selectRaw('SUM(CASE WHEN JSON_VALID(numbers) THEN JSON_LENGTH(numbers) ELSE 0 END) as total_numbers')
+            ->with(['client', 'rifa', 'rifaPay'])
+            ->groupBy(['client_id', 'rifas_id'])
+            ->orderByRaw('SUM(CASE WHEN JSON_VALID(numbers) THEN JSON_LENGTH(numbers) ELSE 0 END) DESC');
+
+        if ($rifasId !== null) {
+            $query->where('rifas_id', $rifasId);
+        }
+
+        if ($totalNumbers !== null) {
+            $query->havingRaw('total_numbers >= ?', [$totalNumbers]);
+        }
+
+        $result = $query->get();
+
+        return $result ?? false;
+    }
+
     public static function cancelRifaNumber($ids) {
         return self::with(['rifa'])->whereIn('pay_id', $ids)
         ->update(['status' => 2, 'numbers' => null]);

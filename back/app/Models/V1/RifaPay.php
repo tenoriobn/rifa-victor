@@ -80,6 +80,57 @@ class RifaPay extends Model
     public static function getAllCompra() {
         return self::with(['rifaNumber', 'rifa.rifaPayment', 'rifa.cota', 'client'])->latest()->get();
     }
+    public static function getPedidosFiltro($filters = []) {
+        $query = self::with(['rifaNumber', 'rifa.rifaPayment', 'rifa.cota', 'client']);
+
+        if (isset($filters['start_date']) && isset($filters['end_date'])) {
+            $query->whereBetween('created_at', [$filters['start_date'], $filters['end_date']]);
+        }
+
+        if (isset($filters['id'])) {
+            $query->where('id', $filters['id']);
+        }
+
+        if (isset($filters['client_id'])) {
+            $query->where('client_id', $filters['client_id']);
+        }
+
+        if (isset($filters['status'])) {
+            $query->where('status', $filters['status']);
+        }
+
+        if (isset($filters['rifas_id'])) {
+            $query->where('rifas_id', $filters['rifas_id']);
+        }
+
+        if (isset($filters['qntd_number'])) {
+            $query->where('qntd_number', $filters['qntd_number']);
+        }
+
+        // Filtro para qntd_number com valores opcionais
+        if (isset($filters['qntd_number_start'])) {
+            $query->where('qntd_number', '>=', $filters['qntd_number_start']);
+        }
+        if (isset($filters['qntd_number_end'])) {
+            $query->where('qntd_number', '<=', $filters['qntd_number_end']);
+        }
+
+        // Filtro para value com valores opcionais
+        if (isset($filters['value_start'])) {
+            $query->where('value', '>=', $filters['value_start']);
+        }
+        if (isset($filters['value_end'])) {
+            $query->where('value', '<=', $filters['value_end']);
+        }
+
+        if (isset($filters['pix_id'])) {
+            $query->where('pix_id', $filters['pix_id']);
+        }
+
+        return $query->latest()->get();
+    }
+
+
     public static function getAllCompraAtivo() {
         return self::with(['rifaNumber', 'rifa.rifaPayment', 'rifa.cota', 'client'])->where('status', 1)->latest()->get();
     }

@@ -70,11 +70,6 @@ class RifasController extends Controller
 
     public function getAllRifasAdminFiltro(Request $request) {
         try {
-            // Obtenha os parâmetros da consulta
-            $nome = $request->query('nome');
-            $status = $request->query('status');
-
-            // Inicie a consulta
             $query = Rifas::with(['cota'])
                 ->withSum('rifaPayActiva as fat_total', 'value')
                 ->withSum('rifaPayToday as fat_hoje', 'value')
@@ -83,30 +78,29 @@ class RifasController extends Controller
                 }])
                 ->withCount(['rifaNumberReservado as qntd_numeros_reservado' => function ($query) {
                     $query->select(DB::raw("SUM(LENGTH(numbers) - LENGTH(REPLACE(numbers, ',', '')) + 1) as number_count"));
-                }])
-                ->latest();
+                }]);
 
-            // Aplique filtros se os parâmetros estiverem presentes
-            if ($nome) {
-                $query->where('nome', 'LIKE', "%$nome%");
+            // Adiciona filtros se os parâmetros estiverem presentes
+            if ($request->has('title')) {
+                $query->where('title', 'like', '%' . $request->input('title') . '%');
             }
 
-            if ($status) {
-                $query->where('status', $status);
+            if ($request->has('status')) {
+                $query->where('status', $request->input('status'));
             }
 
-            // Execute a consulta
-            $rifasData = $query->get();
+            $rifasData = $query->latest()->get();
 
-            if ($rifasData->isEmpty()) {
-                return response()->json(["success" => false, "msg" => "Nenhuma rifa encontrada."], $this->notFound);
+            if (!$rifasData) {
+                return response()->json(["success" => false, "msg" => "rifas não foram encontradas."], 404);
             }
 
-            return response()->json(["success" => true, "data" => $rifasData], $this->success);
+            return response()->json(["success" => true, "data" => $rifasData], 200);
         } catch (Exception $e) {
-            return response()->json(["success" => false, "msg" => $e->getMessage()], $this->serverError);
+            return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
         }
     }
+
 
     public function allRifas() {
         try {
