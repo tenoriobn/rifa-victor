@@ -99,6 +99,7 @@ const Table = styled.table`
     border-radius: .3125rem;
     padding: .625rem .9375rem;
     cursor: pointer;
+    width: max-content;
   }
 
   .button-dashboard {
@@ -112,6 +113,11 @@ const Table = styled.table`
     display: flex;
     align-items: center;
     gap: 4px;
+  }
+
+  .button-ativar:hover {
+    background-color: #28a745;
+    opacity: 1!important;
   }
 
   .button-edit {
@@ -270,7 +276,7 @@ export default function TabelaSorteio() {
                   )}
 
                   {sorteio.status === 'finalizadas' && (
-                  <button className="status-inactive">
+                  <button className="status-inactive button-ativar">
                     <ion-icon name="stats-chart" role="img" className="md hydrated"></ion-icon> Ativar
                   </button>
                   )}

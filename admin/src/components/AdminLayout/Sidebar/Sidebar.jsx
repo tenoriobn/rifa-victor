@@ -106,8 +106,6 @@ export default function Sidebar() {
   const navigate = useNavigate();
   const userDate = useRecoilValue(stateUserDate);
 
-  console.log('userDate', userDate)
-
   const handleLogout = () => {
     removerToken();
     navigate('/');

@@ -135,7 +135,7 @@ export const Table = styled.table`
 export default function PedidosTable({setAtualizaTabela}) {
   const [openModalVerCota, setOpenModalVerCota] = useRecoilState(stateOpenModalVerCota);
   const setPedidosInfoModal = useSetRecoilState(statePedidosInfoModal);
-  const [pedidosInfo, setPedidosInfo] =  useRecoilState(statePedidosInfo);
+  const pedidosInfo =  useRecoilValue(statePedidosInfo);
   const { formattedDate } = useFormattedDate();
   const { formatCurrency } = useCurrencyFormatTable();
   const userLogin = useRecoilValue(stateUserLogin);
@@ -202,9 +202,9 @@ export default function PedidosTable({setAtualizaTabela}) {
                 <span 
                   // className={`status-tag status-${item?.status.toLowerCase()}`}
                   className={`status-tag ${
-                    item?.status === '1' ? 'status-pago' :
-                    item?.status === '0' ? 'button-divergente' :
-                    item?.status === '2' ? 'button-dashboard' :
+                    item?.status === 1 ? 'status-pago' :
+                    item?.status === 0 ? 'button-divergente' :
+                    item?.status === 2 ? 'button-dashboard' :
                     ''
                   }`}
                 >

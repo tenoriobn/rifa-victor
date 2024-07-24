@@ -3,6 +3,7 @@ import Header from "../../../components/Header/Header";
 import SorteioSearchForm from "./SorteioSearchForm/SorteioSearchForm";
 import { Main } from "../../../components/AdminLayout/AdminLayout";
 import { useParams } from "react-router-dom";
+import FiltroSorteioTable from "./FiltroSorteioTable/FiltroSorteioTable";
 
 const SorteioSearchContainer = styled.div`
   display: flex;
@@ -51,8 +52,7 @@ export default function SorteioSearch() {
           </h2>
 
           <SorteioSearchForm />
-
-          <h2 className="result-info"><i className="fa-solid fa-circle-exclamation"></i> CLIQUE EM SORTEAR E VEJA O RESULTADO!</h2>
+          <FiltroSorteioTable />
         </SorteioSearchContainer>
       </Main>
     </section>

@@ -50,7 +50,10 @@ export default function MeusPedidos() {
             <>
               <Paginacao />
               <TabelaPedidos />
-              <Paginacao />
+
+              <div className="mt-5">
+                <Paginacao />
+              </div>
 
             </>
           ) : (
