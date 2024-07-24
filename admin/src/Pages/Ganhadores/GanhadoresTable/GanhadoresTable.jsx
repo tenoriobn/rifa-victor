@@ -25,7 +25,7 @@ const Table = styled.table`
 
   td {
     text-align: center;
-    padding: .9375rem .625rem;
+    padding: .6255rem .625rem;
     background-color: #2e2e36;
     vertical-align: middle;
     text-transform: uppercase;
