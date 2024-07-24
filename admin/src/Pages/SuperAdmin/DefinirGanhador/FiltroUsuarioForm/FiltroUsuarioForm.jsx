@@ -121,7 +121,7 @@ export default function FiltroUsuarioForm() {
             required
           >
             <option value="">SELECIONE O SORTEIO</option>
-              {optionsRifa.map((rifa) => (
+            {optionsRifa.map((rifa) => (
               <option key={rifa.id} value={rifa.id}>
                 {rifa.title}
               </option>

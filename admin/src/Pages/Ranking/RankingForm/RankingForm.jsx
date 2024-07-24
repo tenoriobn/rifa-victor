@@ -1,9 +1,10 @@
 import styled from "styled-components";
 import { useState } from "react";
-import { stateVisibilidadeColunaTabelaRanking } from "../../../common/states/atom";
-import { useRecoilState } from "recoil";
+import { stateOptionsRifa, stateRankingInfoTable, stateVisibilidadeColunaTabelaRanking } from "../../../common/states/atom";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import Datepicker from "react-tailwindcss-datepicker";
 import listaEstados from "./listaEstados.json";
+import { postDados } from "../../../common/http/http";
 
 const Form = styled.form`
   display: flex;
@@ -112,9 +113,10 @@ export default function RankingForm() {
   const [showFilters, setShowFilters] = useState(false);
   const [visibilidadeColunaTabelaRanking, setVisibilidadeColunaTabelaRanking] = useRecoilState(stateVisibilidadeColunaTabelaRanking);
   const [orderFilter, setOrderFilter] = useState({});
-  // const [rankingInfo, setRankingInfo] =  useRecoilState(stateRankingInfoTable);
+  const optionsRifa = useRecoilValue(stateOptionsRifa);
+  const setRankingInfo =  useSetRecoilState(stateRankingInfoTable);
 
-  console.log('orderFilter: ', orderFilter)
+  console.log('orderFilter', orderFilter)
   
   const handleCheckboxChange = (columnName) => {
     setVisibilidadeColunaTabelaRanking((prevVisibility) => ({
@@ -123,25 +125,21 @@ export default function RankingForm() {
     }));
   };
 
-  // const handleSubmit = async (e) => {
-  //   if (e) e.preventDefault();
-  //   try {
-  //     const response = await postDados('/admin/dashboard/ rota aqui', orderFilter);
-  //     setRankingInfo(response);
-  //   } catch (error) {
-  //     console.error("There was an error fetching the data!", error);
-  //   }
-  // };
-
-  // console.log(rankingInfo)
+  const handleSubmit = async (e) => {
+    if (e) e.preventDefault();
+    try {
+      const response = await postDados('/admin/dashboard/ranking-geral/filtro', orderFilter);
+      setRankingInfo(response.data);
+    } catch (error) {
+      console.error("There was an error fetching the data!", error);
+    }
+  };
     
   return (
-    // onSubmit={handleSubmit}
-    <Form method="POST" action="/dashboard/rifas/cotas/174">
+    <Form method="POST" onSubmit={handleSubmit}>
       <div className="filter-item-row">
         <div className="filter-item">
           <label htmlFor="data_de">Data:</label>
-          {/* <input type="text" name="datetimes" /> */}
 
           <Datepicker 
             toggleClassName="hidden"
@@ -167,21 +165,25 @@ export default function RankingForm() {
         </div>
 
         <div className="filter-item">
-          <label htmlFor="qtd">Quantidade:</label>
-          <input type="text" id="qtd" name="qtd" maxLength="2"
-            onChange={(e) => setOrderFilter({ ...orderFilter, quantidade: e.target.value })} 
-            value={orderFilter.quantidade || ''}
+          <label htmlFor="total_numbers">Quantidade:</label>
+          <input type="text" id="total_numbers" name="total_numbers" maxLength="3"
+            onChange={(e) => setOrderFilter({ ...orderFilter, total_numbers: e.target.value })} 
+            value={orderFilter.total_numbers || ''}
           />
         </div>
 
         <div className="filter-item">
           <label htmlFor="id_raffle">Sorteio:</label>
           <select name="id_raffle" id="id_raffle" required=""
-            onChange={(e) => setOrderFilter({ ...orderFilter, sorteio: e.target.value })}
-            value={orderFilter.sorteio || ''}
+            onChange={(e) => setOrderFilter({ ...orderFilter, rifas_id: e.target.value })}
+            value={orderFilter.rifas_id}
           >
             <option value="">SELECIONE O SORTEIO</option>
-            <option value="174">SAVEIRO CROSS DOS SONHOS </option>
+            {optionsRifa.map((rifa) => (
+              <option key={rifa.id} value={rifa.id}>
+                {rifa.title}
+              </option>
+            ))}
           </select>
         </div>
 

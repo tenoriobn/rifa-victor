@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import options from "./options.json"
-import { stateFiltroSorteio } from "../../../common/states/atom";
-import { useRecoilState } from "recoil";
+import { stateFiltroSorteio, stateTabelaSorteioInfo } from "../../../common/states/atom";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { postDados } from "../../../common/http/http";
 
 const FilterItemRow = styled.div`
   display: flex;
@@ -84,27 +85,33 @@ const Button = styled.button`
 
 export default function FormularioSorteio() {
   const [filtroSorteio, setFiltroSorteio] = useRecoilState(stateFiltroSorteio);
+  const setSorteios = useSetRecoilState(stateTabelaSorteioInfo);
 
   console.log(filtroSorteio)
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Lógica para usar o filtroSorteio, por exemplo, enviar para o backend
-  
+    try {
+      const response = await postDados('/admin/dashboard/todas-rifas/filtro', filtroSorteio);
+
+      setSorteios(response.data);
+    } catch (error) {
+      console.error("There was an error fetching the data!", error);
+    }
   };
 
   return (
     <form method="post" onSubmit={handleSubmit}>
       <FilterItemRow>
         <FilterInputContainer>
-          <Label htmlFor="nome">Nome:</Label>
+          <Label htmlFor="title">Nome:</Label>
           <input
             type="text"
-            id="nome"
-            name="nome"
+            id="title"
+            name="title"
             placeholder="Nome"
-            onChange={(e) => setFiltroSorteio({ ...filtroSorteio, name: e.target.value })} 
-            value={filtroSorteio.nome || ''}
+            onChange={(e) => setFiltroSorteio({ ...filtroSorteio, title: e.target.value })} 
+            value={filtroSorteio.title || ''}
           />
         </FilterInputContainer>
 

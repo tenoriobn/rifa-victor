@@ -142,10 +142,8 @@ export default function PedidosTable({setAtualizaTabela}) {
 
   const formatPhoneNumber = (number) => {
     if (!number) return '';
-    // Remove tudo que não é número
     const cleanedNumber = number.replace(/\D/g, '');
   
-    // Adiciona o código do país (ex: 55 para Brasil)
     return `55${cleanedNumber}`;
   };
 
@@ -160,8 +158,6 @@ export default function PedidosTable({setAtualizaTabela}) {
     await putDados(`admin/dashboard/pedido/${idPedido}`, userLogin);
     setAtualizaTabela(true);
     // setPedidosInfo(response.data);
-
-    console.log(pedidosInfo)
   }
 
   return (

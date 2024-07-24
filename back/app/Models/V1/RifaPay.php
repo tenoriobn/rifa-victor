@@ -83,8 +83,8 @@ class RifaPay extends Model
     public static function getPedidosFiltro($filters = []) {
         $query = self::with(['rifaNumber', 'rifa.rifaPayment', 'rifa.cota', 'client']);
 
-        if (isset($filters['start_date']) && isset($filters['end_date'])) {
-            $query->whereBetween('created_at', [$filters['start_date'], $filters['end_date']]);
+        if (isset($filters['startDate']) && isset($filters['endDate'])) {
+            $query->whereBetween('created_at', [$filters['startDate'], $filters['endDate']]);
         }
 
         if (isset($filters['id'])) {
@@ -104,7 +104,7 @@ class RifaPay extends Model
         }
 
         if (isset($filters['qntd_number'])) {
-            $query->where('qntd_number', $filters['qntd_number']);
+            $query->where('qntd_number',  $filters['qntd_number']);
         }
 
         // Filtro para qntd_number com valores opcionais
@@ -114,6 +114,7 @@ class RifaPay extends Model
         if (isset($filters['qntd_number_end'])) {
             $query->where('qntd_number', '<=', $filters['qntd_number_end']);
         }
+
 
         // Filtro para value com valores opcionais
         if (isset($filters['value_start'])) {
@@ -126,8 +127,26 @@ class RifaPay extends Model
         if (isset($filters['pix_id'])) {
             $query->where('pix_id', $filters['pix_id']);
         }
+        
 
-        return $query->latest()->get();
+        if (isset($filters['ordem']) && $filters['ordem'] == 'valor_menor') {
+            $query->orderBy('value', 'asc'); // Ordena de forma crescente
+        } 
+        
+        if (isset($filters['ordem']) && $filters['ordem'] == 'valor_maior') {
+            $query->orderBy('value', 'desc'); // Ordena de forma decrescente
+        }
+        
+        if (isset($filters['ordem']) && $filters['ordem'] == 'qntd_menor') {
+            $query->orderBy('qntd_number', 'asc'); // Ordena de forma crescente
+        }
+        
+        if (isset($filters['ordem']) && $filters['ordem'] == 'qntd_maior') {
+            $query->orderBy('qntd_number', 'desc'); // Ordena de forma decrescente
+        }
+        
+
+        return $query->get();
     }
 
 

@@ -306,6 +306,11 @@ export const stateOpenModalEditarInfoCliente = atom({
 //   default: []
 // })
 
+export const stateTabelaSorteioInfo = atom({
+  key: 'stateTabelaSorteioInfo',
+  default: [],
+});
+
 export const stateRankingInfoTable = atom({
   key: 'stateRankingInfoTable',
   default: []

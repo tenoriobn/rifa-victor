@@ -1,5 +1,8 @@
 import { useState } from "react";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
+import { stateUsuarioInfoTable } from "../../../../common/states/atom";
+import { postDados } from "../../../../common/http/http";
 
 const FilterItemRow = styled.div`
   display: flex;
@@ -57,26 +60,19 @@ const Button = styled.button`
 
 export default function UsuariosForm() {
   const [orderFilter, setOrderFilter] = useState({});
-    // const [novoUsuarioInfoTable, setNovoUsuarioInfoTable] = useRecoilState(stateUsuarioInfoTable);
+  const setUsuarioInfoTable = useSetRecoilState(stateUsuarioInfoTable);
 
-  console.log(orderFilter)
+  const handleSubmit = async (e) => {
+    if (e) e.preventDefault();
+    try {
+      const response = await postDados('/admin/dashboard/todos/usuarios/filtro', orderFilter);
+      setUsuarioInfoTable(response.data);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Lógica para enviar o valor para o backend aqui
+      console.log('response', response)
+    } catch (error) {
+      console.error("There was an error fetching the data!", error);
+    }
   };
-
-  // const handleSubmit = async (e) => {
-  //   if (e) e.preventDefault();
-  //   try {
-  //     const response = await postDados('/admin/dashboard/ rota aqui', orderFilter);
-  //     setNovoUsuarioInfoTable(response);
-  //   } catch (error) {
-  //     console.error("There was an error fetching the data!", error);
-  //   }
-  // };
-
-  // console.log(novoUsuarioInfoTable)
 
   return (
     <form onSubmit={handleSubmit}>
@@ -86,8 +82,8 @@ export default function UsuariosForm() {
           <input
             type="text"
             name="search"
-            onChange={(e) => setOrderFilter({ ...orderFilter, filter: e.target.value })}
-            value={orderFilter.filter || ''}
+            onChange={(e) => setOrderFilter({ ...orderFilter, query: e.target.value })}
+            value={orderFilter.query || ''}
             placeholder="Pesquise pelo nome ou e-mail"
           />
         </FilterInputContainer>

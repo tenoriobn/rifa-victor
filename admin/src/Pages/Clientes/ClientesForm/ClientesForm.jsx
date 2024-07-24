@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { PatternFormat } from "react-number-format";
 import styled from "styled-components";
+import { stateClientesInfo } from "../../../common/states/atom";
+import { useRecoilState } from "recoil";
+import { postDados } from "../../../common/http/http";
 
 const Form = styled.form`
   display: flex;
@@ -49,47 +52,34 @@ const Form = styled.form`
 
 export default function ClientesForm() {
   const [filtro, setFiltro] = useState({});
-  // const [tabelaPacotesInfo, setTabelaPacotesInfo] = useRecoilState(stateTabelaPacotesInfo);
+  const [clientesInfo, setClientesInfo] = useRecoilState(stateClientesInfo);
+
+  const handleSubmit = async (e) => {
+    if (e) e.preventDefault();
+    try {
+      const response = await postDados('/admin/dashboard/todos/clientes/filtro', filtro);
+      setClientesInfo(response.data)
+
+      console.log(response)
+    } catch (error) {
+      console.error("There was an error fetching the data!", error);
+    }
+  };
 
   console.log('filtro', filtro)
-
-  // const handleSubmit = async (e) => {
-  //   if (e) e.preventDefault();
-  //   try {
-  //     const response = await postDados('/admin/dashboard/ rota aqui', orderFilter);
-  //     setTabelaPacotesInfo(response);
-  //   } catch (error) {
-  //     console.error("There was an error fetching the data!", error);
-  //   }
-  // };
-
-  // console.log(tabelaPacotesInfo)
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    // Por exemplo:
-    // fetch("/api/filtrar-clientes", {
-    //   method: "POST",
-    //   body: JSON.stringify(filtro),
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    // });
-  };
+  console.log('clientesInfo', clientesInfo)
 
   return (
         // onSubmit={handleSubmit}
     <Form onSubmit={handleSubmit} method="POST" action="/dashboard/rifas/cotas/174">
       <div className="filter-item">
-        <label htmlFor="customer_id">ID:</label>
+        <label htmlFor="id">ID:</label>
         <input
           type="text"
-          name="customer_id"
+          name="id"
           placeholder="ID Cliente"
-
-          onChange={(e) => setFiltro({ ...filtro, customer_id: e.target.value })} 
-          value={filtro.customer_id || ''}
+          onChange={(e) => setFiltro({ ...filtro, id: e.target.value })} 
+          value={filtro.id || ''}
           autoComplete="off"
         />
       </div>
@@ -107,14 +97,14 @@ export default function ClientesForm() {
       </div>
 
       <div className="filter-item">
-        <label htmlFor="phone">Telefone:</label>
+        <label htmlFor="cellphone">Telefone:</label>
         <PatternFormat
           format="(##) #####-####"
           type="text"
-          name="phone"
+          name="cellphone"
           placeholder="Pesquise pelo telefone"
-          onChange={(e) => setFiltro({ ...filtro, phone: e.target.value })} 
-          value={filtro.phone || ''}
+          onChange={(e) => setFiltro({ ...filtro, cellphone: e.target.value })} 
+          value={filtro.cellphone || ''}
           autoComplete="off"
         />
       </div>

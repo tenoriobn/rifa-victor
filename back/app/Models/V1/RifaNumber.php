@@ -173,7 +173,7 @@ class RifaNumber extends Model {
         return $result ?? false;
     }
 
-    public static function getRankingRifaGeralFiltro($totalNumbers, $rifasId) {
+    public static function getRankingRifaGeralFiltro($totalNumbers = null , $rifasId = null) {
         $query = self::where('status', 1)
             ->select('client_id', 'rifas_id', 'pay_id')
             ->selectRaw('SUM(CASE WHEN JSON_VALID(numbers) THEN JSON_LENGTH(numbers) ELSE 0 END) as total_numbers')

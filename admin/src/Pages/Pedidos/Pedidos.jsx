@@ -6,7 +6,7 @@ import Titulo from "../../components/Titulo/Titulo";
 import PedidosForm from "./PedidosForm/PedidosForm";
 import PedidosPagination from "./PedidosPagination/PedidosPagination";
 import PedidosTable from "./PedidosTable/PedidosTable";
-import { stateOpenModalVerCota, statePedidosInfo } from "../../common/states/atom";
+import { stateOpenModalVerCota, stateOptionsRifa, statePedidosInfo } from "../../common/states/atom";
 import Modal from "../../components/Modal/Modal";
 import ModalPedido from "./ModalPedido/ModalPedido";
 import { fetchDados } from "../../common/http/http";
@@ -16,10 +16,14 @@ export default function Pedidos() {
   const [openModalVerCota, setOpenModalVerCota] = useRecoilState(stateOpenModalVerCota);
   const setPedidosInfo =  useSetRecoilState(statePedidosInfo);
   const [atualizaTabela, setAtualizaTabela] = useState(false);
+  const setOptionsRifa = useSetRecoilState(stateOptionsRifa);
 
   const obterDados = async () => {
     const response = await fetchDados(`/admin/dashboard/pedidos`);
     setPedidosInfo (response.data);
+
+    const responseOptions = await fetchDados(`/admin/dashboard/client/rifa/ativas`);
+    setOptionsRifa(responseOptions.data);
   };
 
   useEffect(() => {

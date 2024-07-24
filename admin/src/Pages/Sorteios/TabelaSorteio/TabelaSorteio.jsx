@@ -2,8 +2,8 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { stateIdModalAcoesSorteio, stateOpenModalAcoesSorteio, stateUserLogin } from "../../../common/states/atom";
-import { useEffect, useState } from "react";
+import { stateIdModalAcoesSorteio, stateOpenModalAcoesSorteio, stateTabelaSorteioInfo, stateUserLogin } from "../../../common/states/atom";
+import { useEffect } from "react";
 import { fetchDados, putDados } from "../../../common/http/http";
 import useFormattedDate from "../../../common/states/Hook/useFormattedDate";
 import useCurrencyFormatTable from "../../../common/states/Hook/useCurrencyFormatTable/useCurrencyFormatTable";
@@ -156,19 +156,16 @@ const Table = styled.table`
 export default function TabelaSorteio() {
   const [openModalAcoesSorteio, setOpenModalAcoesSorteio] = useRecoilState(stateOpenModalAcoesSorteio);
   const setIdModalAcoesSorteio = useSetRecoilState(stateIdModalAcoesSorteio);
-  const [sorteios, setSorteios] = useState([]);
+  const [sorteios, setSorteios] = useRecoilState(stateTabelaSorteioInfo);
   const userLogin = useRecoilValue(stateUserLogin)
   const { formattedDate } = useFormattedDate();
   const { formatCurrency } = useCurrencyFormatTable();
   const { formatPercentage } = useFormatPercentage();
 
-  console.log(sorteios)
-
   useEffect(() => {
     const obterDados = async () => {
       try {
         const response = await fetchDados('/admin/dashboard/todas-rifas', userLogin);
-
         setSorteios(response.data)
       } catch (error) {
         console.error('Erro ao fazer POST:', error);
@@ -238,7 +235,7 @@ export default function TabelaSorteio() {
               </td>
               <td>#{sorteio.id}</td>
               <td>
-                <a href="" target="_blank">
+                <a href={`https://alimaprojetos.com/${sorteio.slug}/${sorteio.id}`} target="_blank">
                   <i className="fa-solid fa-link"></i>
                 </a>
                 <b>{sorteio.title}</b>

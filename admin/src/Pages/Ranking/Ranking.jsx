@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { stateOpenModalVerInfoCliente, stateRankingInfoTable } from "../../common/states/atom";
+import { stateOpenModalVerInfoCliente, stateOptionsRifa, stateRankingInfoTable } from "../../common/states/atom";
 import { Main } from "../../components/AdminLayout/AdminLayout";
 import Header from "../../components/Header/Header";
 import Titulo from "../../components/Titulo/Titulo";
@@ -14,17 +14,20 @@ import { fetchDados } from "../../common/http/http";
 export default function Ranking() {
   const [openModalVerInfoCliente, setOpenModalVerInfoCliente] = useRecoilState(stateOpenModalVerInfoCliente);
     const setRankingInfo =  useSetRecoilState(stateRankingInfoTable);
+    const setOptionsRifa = useSetRecoilState(stateOptionsRifa);
 
   const obterDados = async () => {
     const response = await fetchDados(`/admin/dashboard/ranking-geral`);
     setRankingInfo (response.data);
-    console.log('response.data', response.data);
+
+    const responseOptions = await fetchDados(`/admin/dashboard/client/rifa/ativas`);
+    setOptionsRifa(responseOptions.data);
   };
 
   useEffect(() => {
     obterDados();
   }, []);
-
+  
   return (
     <section>
       <Header>
