@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import styled from "styled-components";
 import Sidebar from "./Sidebar/Sidebar";
 import { Outlet } from "react-router-dom";

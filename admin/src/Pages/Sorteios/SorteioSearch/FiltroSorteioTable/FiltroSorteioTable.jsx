@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { stateConsultaCota } from "../../../../common/states/atom";
@@ -95,7 +96,7 @@ const Table = styled.table`
   }
 `;
 
-export default function FiltroCotaTable() { 
+export default function FiltroSorteioTable() { 
   const consultaCota = useRecoilValue(stateConsultaCota);
   const { formattedDate } = useFormattedDate();
 
@@ -153,7 +154,8 @@ export default function FiltroCotaTable() {
       </Table>
     ) : (
       <h2 className="result-info">
-        <i className="fa-solid fa-circle-exclamation"></i> NENHUM RESULTADO ENCONTRADO
+        <i className="fa-solid fa-circle-exclamation"></i>&nbsp; 
+        CLIQUE EM SORTEAR E VEJA O RESULTADO!
       </h2>
     )}
   </div>

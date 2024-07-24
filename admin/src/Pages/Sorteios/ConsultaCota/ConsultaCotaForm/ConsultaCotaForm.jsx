@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { stateAtualizaTableInfoCotaSorteada, stateInfoCotaSorteada, stateOptionsRifa } from "../../../../common/states/atom";
+import { stateAtualizaTableConsultaCota, stateConsultaCota, stateOptionsRifa } from "../../../../common/states/atom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { postDados } from "../../../../common/http/http";
 
@@ -74,26 +74,26 @@ const Button = styled.button`
 export default function FiltroUsuarioForm() {
   const [search, setSearch] = useState('');
   const [selectSearch, setSelectSearch] = useState('');
-  const setInfoCotaSorteado = useSetRecoilState(stateInfoCotaSorteada);
-  const [atualizaTableInfoCotaSorteada, setAtualizaTableInfoCotaSorteada] = useRecoilState(stateAtualizaTableInfoCotaSorteada);
+  const setConsultaCota = useSetRecoilState(stateConsultaCota);
+  const [atualizaTableConsultaCota, setAtualizaTableConsultaCota] = useRecoilState(stateAtualizaTableConsultaCota);
   const optionsRifa = useRecoilValue(stateOptionsRifa);
 
   const handleSubmit = async (e) => {
     if (e) e.preventDefault();
     try {
       const response = await postDados('/admin/dashboard/rifa/procurar-numero-premiado/procurar-ganhador', { numeroWinner:search, rifa_id:selectSearch });
-      setInfoCotaSorteado({ data: response, search });
+      setConsultaCota({ data: response, search });
     } catch (error) {
       console.error("There was an error fetching the data!", error);
     }
   };
 
   useEffect(() => {
-    if (atualizaTableInfoCotaSorteada) {
-      setAtualizaTableInfoCotaSorteada(false)
+    if (atualizaTableConsultaCota) {
+      setAtualizaTableConsultaCota(false)
       handleSubmit();
     }
-  }, [atualizaTableInfoCotaSorteada]);
+  }, [atualizaTableConsultaCota]);
 
   return (
     <form onSubmit={handleSubmit}>

@@ -86,46 +86,79 @@ const DashboardItens = styled.div`
   }
 `;
 
+const dashboardData = {
+  totalVendidos: {
+    title: "Total Vendidos",
+    value: "R$ 3.345,40",
+    iconClass: "fa-dollar-sign",
+    className: "profit"
+  },
+  pedidosAprovados: {
+    title: "Pedidos Aprovados",
+    value: "204",
+    iconClass: "fa-receipt",
+    className: "request"
+  },
+  ticketMedio: {
+    title: "Ticket Médio",
+    value: "R$ 16,40",
+    iconClass: "fa-ticket",
+    className: "ticket-medio"
+  },
+  pedidosAguardando: {
+    title: "Pedidos Aguardando",
+    value: "0",
+    iconClass: "fa-hourglass",
+    className: "pending_request"
+  },
+  pagamentoPendente: {
+    title: "Pagamento Pendente",
+    value: "R$ 0,00",
+    iconClass: "fa-dollar-sign",
+    className: "pending_entry"
+  }
+};
+
 export default function VendasCardInfo() {
   return (
     <DashboardItens>
-      <div className="dashboard-item profit block-copy">
+      <div className={`dashboard-item ${dashboardData.totalVendidos.className} block-copy`}>
         <div className="dashboard-item-body">
-          <p>Total Vendidos</p>
-          <p>R$ 3.345,40</p>
-          <i className="fa-solid fa-dollar-sign"></i>
+          <p>{dashboardData.totalVendidos.title}</p>
+          <p>{dashboardData.totalVendidos.value}</p>
+          <i className={`fa-solid ${dashboardData.totalVendidos.iconClass}`}></i>
         </div>
       </div>
 
-      <div className="dashboard-item request block-copy">
+      <div className={`dashboard-item ${dashboardData.pedidosAprovados.className} block-copy`}>
         <div className="dashboard-item-body">
-          <p>Pedidos Aprovados</p>
-          <p>204</p>
-          <i className="fa-solid fa-receipt"></i>
+          <p>{dashboardData.pedidosAprovados.title}</p>
+          <p>{dashboardData.pedidosAprovados.value}</p>
+          <i className={`fa-solid ${dashboardData.pedidosAprovados.iconClass}`}></i>
         </div>
       </div>
 
-      <div className="dashboard-item ticket-medio block-copy ">
+      <div className={`dashboard-item ${dashboardData.ticketMedio.className} block-copy`}>
         <div className="dashboard-item-body">
-          <p>Ticket Médio</p>
-          <p>R$ 16,40</p>
-          <i className="fa-solid fa-ticket"></i>
+          <p>{dashboardData.ticketMedio.title}</p>
+          <p>{dashboardData.ticketMedio.value}</p>
+          <i className={`fa-solid ${dashboardData.ticketMedio.iconClass}`}></i>
         </div>
       </div>
 
-      <div className="dashboard-item pending_request block-copy ">
+      <div className={`dashboard-item ${dashboardData.pedidosAguardando.className} block-copy`}>
         <div className="dashboard-item-body">
-          <p>Pedidos Aguardando.</p>
-          <p>0</p>
-          <i className="fa-solid fa-hourglass"></i>
+          <p>{dashboardData.pedidosAguardando.title}</p>
+          <p>{dashboardData.pedidosAguardando.value}</p>
+          <i className={`fa-solid ${dashboardData.pedidosAguardando.iconClass}`}></i>
         </div>
       </div>
 
-      <div className="dashboard-item pending_entry block-copy">
+      <div className={`dashboard-item ${dashboardData.pagamentoPendente.className} block-copy`}>
         <div className="dashboard-item-body">
-          <p>Pagamento Pendente</p>
-          <p>R$ 0,00</p>
-          <i className="fa-solid fa-dollar-sign"></i>
+          <p>{dashboardData.pagamentoPendente.title}</p>
+          <p>{dashboardData.pagamentoPendente.value}</p>
+          <i className={`fa-solid ${dashboardData.pagamentoPendente.iconClass}`}></i>
         </div>
       </div>
     </DashboardItens>

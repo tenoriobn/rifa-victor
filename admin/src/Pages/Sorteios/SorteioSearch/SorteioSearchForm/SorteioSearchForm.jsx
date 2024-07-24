@@ -72,8 +72,6 @@ const Form = styled.form`
 export default function SorteioSearchForm() {
   const [orderFilter, setOrderFilter] = useState({});
 
-  console.log('orderFilter: ', orderFilter)
-
   return (
     <Form method="POST" action="/dashboard/rifas/cotas/174">
       <div className="filter-item" style={{maxWidth: "300px"}}>
