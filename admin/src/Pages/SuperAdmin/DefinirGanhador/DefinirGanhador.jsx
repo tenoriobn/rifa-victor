@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import FiltroUsuarioForm from "./FiltroUsuarioForm/FiltroUsuarioForm";
 import FiltroUsuarioTable from "./FiltroUsuarioTable/FiltroUsuarioTable";
 import ModalTrocarBilhete from "./ModalTrocarBilhete/ModalTrocarBilhete";
@@ -14,7 +14,7 @@ import { ToastContainer, toast } from 'react-toastify';
 
 export default function DefinirGanhador() {
   const [openModalNovoGanhador, setOpenModalNovoGanhador] = useRecoilState(stateOpenModalNovoGanhador);
-  const [optionsRifa, setOptionsRifa] = useRecoilState(stateOptionsRifa);
+  const setOptionsRifa = useSetRecoilState(stateOptionsRifa);
   
   useEffect(() => {
     const obterDados = async () => {

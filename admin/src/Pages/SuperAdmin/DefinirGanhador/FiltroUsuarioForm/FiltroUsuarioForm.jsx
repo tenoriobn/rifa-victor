@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
@@ -69,22 +70,6 @@ const Button = styled.button`
     background-color: #7a7b86;
   }
 `;
-
-// const usuarioFiltrado = {
-//   nome: "Juliano Oliveira Amaral",
-//   cota: "007149",
-//   data: "17/04/2024",
-//   rifas: [
-//     {
-//       name: "F250 OU 50K NO PIX",
-//       id: 1,
-//     },
-//     {
-//       name: "RIFA 2",
-//       id: 2,
-//     },
-//   ],
-// }
 
 export default function FiltroUsuarioForm() {
   const [search, setSearch] = useState('');

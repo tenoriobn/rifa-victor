@@ -1,18 +1,27 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import styled from "styled-components";
 import { Main } from "../../../components/AdminLayout/AdminLayout";
 import Header from "../../../components/Header/Header";
 import ConsultaCotaForm from "./ConsultaCotaForm/ConsultaCotaForm";
 import { useParams } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
+import { stateOptionsRifa } from "../../../common/states/atom";
+import { fetchDados } from "../../../common/http/http";
+import { useEffect } from "react";
+import FiltroCotaTable from "./FiltroCotaTable/FiltroCotaTable";
 
 const ConsultaCotaContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
 
-  h2 img {
+  .container-img {
+    align-self: center;
+  }
+
+  .container-img img {
     max-width: 400px;
     width: 100%;
+    align-self: center;
   }
 
   .title {
@@ -34,6 +43,17 @@ const ConsultaCotaContainer = styled.div`
 
 export default function ConsultaCota() {
   const { id } = useParams();
+  const setOptionsRifa = useSetRecoilState(stateOptionsRifa);
+
+  useEffect(() => {
+    const obterDados = async () => {
+      const response = await fetchDados(`/admin/dashboard/client/rifa/ativas`);
+
+      setOptionsRifa(response.data);
+    };
+  
+    obterDados();
+  }, []);
 
   return (
     <div>
@@ -47,15 +67,14 @@ export default function ConsultaCota() {
 
       <Main>
         <ConsultaCotaContainer>
-          <h2>
+          <div className="container-img">
             <img src="https://imagedelivery.net/TuyDlh37fwpu3jSKwZ3-9g/2a6e9600-32e1-44d2-8fff-801b4abe3e00/rifa?>" />
-          </h2>
+          </div>
 
           <h1 className="title">SAVEIRO CROSS DOS SONHOS </h1>
 
           <ConsultaCotaForm />
-
-          <h2 className="result-info"><i className="fa-solid fa-circle-exclamation"></i> NENHUM RESULTADO ENCONTRADO</h2>
+          <FiltroCotaTable />
         </ConsultaCotaContainer>
       </Main>
 
