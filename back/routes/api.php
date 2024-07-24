@@ -104,7 +104,7 @@
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/site-settings", [AdminController::class, "getConfigSite"])->name('admin.get.site-config');
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/site-settings/editar", [AdminController::class, "storeConfigSite"])->name('admin.edit.site-config');
 
-
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/vendas", [AdminController::class, "vendas"])->name('admin.get.vendas');
     });
 
     Route::group(['prefix' => 'produtos'], function () {

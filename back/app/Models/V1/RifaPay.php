@@ -78,7 +78,13 @@ class RifaPay extends Model
         return self::with(['rifaNumber', 'rifa.rifaPayment', 'rifa.cota'])->where('rifas_id', $idRifa)->where('client_id', $idClient)->first();
     }
     public static function getAllCompra() {
-        return self::with(['rifaNumber', 'rifa.rifaPayment', 'rifa.cota', 'client'])->get();
+        return self::with(['rifaNumber', 'rifa.rifaPayment', 'rifa.cota', 'client'])->latest()->get();
+    }
+    public static function getAllCompraAtivo() {
+        return self::with(['rifaNumber', 'rifa.rifaPayment', 'rifa.cota', 'client'])->where('status', 1)->latest()->get();
+    }
+    public static function getAllCompraAguardando() {
+        return self::with(['rifaNumber', 'rifa.rifaPayment', 'rifa.cota', 'client'])->where('status', 0)->latest()->get();
     }
     public static function cancelarCompra($id) {
         return self::where('id', $id)->update(['status' => 2]);

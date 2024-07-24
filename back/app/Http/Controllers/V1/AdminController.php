@@ -7,6 +7,7 @@ use App\Models\PaymentInfo;
 use App\Models\SiteSetting;
 use App\Models\V1\{Clients, Rifas, RifaWinner, RifaPay};
 use App\Models\V1\RifaNumber;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -35,6 +36,7 @@ class AdminController extends Controller
         }
     }
     public function destroyUser($id) {
+        $this->authorize('create', User::class);
         try {
             $user = User::find($id);
             if (!$user ) {
@@ -73,6 +75,7 @@ class AdminController extends Controller
     }
 
     public function procurarGanhadorPeloNumero(Request $request) {
+        $this->authorize('view', User::class);
         try {
             $ganhador = $this->rifaService->procurarGanhador($request->numeroWinner, $request->rifa_id);
 
@@ -87,6 +90,7 @@ class AdminController extends Controller
     }
 
     public function procurarClientCellphone(Request $request) {
+        $this->authorize('view', User::class);
         try {
 
             $client = Clients::findClient($request->cellphone);
@@ -101,6 +105,7 @@ class AdminController extends Controller
         }
     }
     public function definirGanhador(Request $request) {
+         $this->authorize('create', User::class);
         try {
             $ganhador = $this->rifaService->definirGanhador($request->numeroSorteado, $request->novoGanhadorPhone, $request->rifa_id);
 
@@ -110,6 +115,7 @@ class AdminController extends Controller
         }
     }
     public function cadastrarGanhador(Request $request) {
+        $this->authorize('create', User::class);
         try {
             $image = $this->rifaService->saveImage($request->img, $request->rifas_id);
             $client = Clients::findClient( $request->cellphone);
@@ -125,6 +131,7 @@ class AdminController extends Controller
         }
     }
     public function getOneGanhador($id) {
+        $this->authorize('view', User::class);
         try {
             $winner = RifaWinner::findWinner($id);
             if (!$winner ) {
@@ -137,7 +144,7 @@ class AdminController extends Controller
         }
     }
     public function editarGanhador(Request $request) {
-        // return $request->all();
+        $this->authorize('update', User::class);
         try {
             $winner = RifaWinner::findWinner($request->id);
             if (!$winner ) {
@@ -167,6 +174,7 @@ class AdminController extends Controller
     }
 
     public function destroyGanhador($id) {
+        $this->authorize('delete', User::class);
         try {
             $winner = RifaWinner::findWinner($id);
             if (!$winner ) {
@@ -180,6 +188,7 @@ class AdminController extends Controller
         }
     }
     public function adicionarNumerosRifas(Request $request) {
+        $this->authorize('create', User::class);
         try {
             $client = $this->rifaService->adicionarNumerosRifasClient($request->cellphone, $request->qntd_number, $request->rifa_id);
 
@@ -193,6 +202,7 @@ class AdminController extends Controller
         }
     }
     public function adicionarBilhetePremiado(Request $request) {
+        $this->authorize('create', User::class);
         try {
             $client = $this->rifaService->addBilhetePremiado($request->cellphone, $request->numero_premiado, $request->rifa_id);
 
@@ -447,6 +457,78 @@ class AdminController extends Controller
         }
     }
 
+    public function vendas(Request $request) {
+        try {
+            // Obter os parâmetros de data do request
+            $dataInicio = $request->input('data_inicio');
+            $dataFim = $request->input('data_fim');
+
+            // Converter as datas para Carbon
+            if ($dataInicio && $dataFim) {
+                $inicio = Carbon::parse($dataInicio)->startOfDay();
+                $fim = Carbon::parse($dataFim)->endOfDay();
+            } else {
+                // Usar intervalo padrão se as datas não forem fornecidas
+                $inicio = Carbon::now()->startOfDay();
+                $fim = Carbon::now()->endOfDay();
+            }
+
+            // Consultas filtradas pelas datas
+            $totalPedido = RifaPay::getAllCompraAtivo()
+                ->whereBetween('created_at', [$inicio, $fim])
+                ->sum('value');
+
+            $pedidosAprovados = RifaPay::getAllCompraAtivo()
+                ->whereBetween('created_at', [$inicio, $fim])
+                ->count('status');
+
+            $pedidosAguardando = RifaPay::getAllCompraAguardando()
+                ->whereBetween('created_at', [$inicio, $fim])
+                ->count('status');
+
+            $totalPedidoAguardando = RifaPay::getAllCompraAguardando()
+                ->whereBetween('created_at', [$inicio, $fim])
+                ->sum('value');
+
+            // Faturamento por Hora Atual
+            $horaAtual = Carbon::now()->format('H'); // Obtém a hora atual no formato 'H' (0-23)
+            $inicioHoraAtual = Carbon::now()->startOfHour(); // Início da hora atual
+            $fimHoraAtual = Carbon::now()->endOfHour(); // Fim da hora atual
+
+            $faturamentoHoraAtual = RifaPay::getAllCompraAtivo()
+                ->whereBetween('created_at', [$inicioHoraAtual, $fimHoraAtual])
+                ->sum('value');
+
+            // Faturamento Semanal
+            $inicioDaSemana = Carbon::now()->startOfWeek();
+            $fimDaSemana = Carbon::now()->endOfWeek();
+            $faturamentoSemanal = RifaPay::getAllCompraAtivo()
+                ->whereBetween('created_at', [$inicioDaSemana, $fimDaSemana])
+                ->sum('value');
+
+            // Faturamento do Dia Atual
+            $inicioDoDia = Carbon::now()->startOfDay();
+            $faturamentoDoDia = RifaPay::getAllCompraAtivo()
+                ->where('created_at', '>=', $inicioDoDia)
+                ->sum('value');
+
+            // Responder com os dados
+            return response()->json([
+                "success" => true,
+                "data" => [
+                    'totalPedido' => $totalPedido,
+                    'pedidosAprovados' => $pedidosAprovados,
+                    'pedidosAguardando' => $pedidosAguardando,
+                    'totalPedidoAguardando' => $totalPedidoAguardando,
+                    'faturamentoHoraAtual' => $faturamentoHoraAtual,
+                    'faturamentoSemanal' => $faturamentoSemanal,
+                    'faturamentoDoDia' => $faturamentoDoDia
+                ]
+            ], 201);
+        } catch (\Throwable $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
+        }
+    }
 
 
 
