@@ -133,3 +133,8 @@ export const estadoQrCode = atom({
   key: 'estadoQrCode',
   default: ['', ''],
 });
+
+export const stateSiteConfig = atom({
+  key: 'stateSiteConfig',
+  default: {},
+})

@@ -88,7 +88,7 @@ export default function SiteConfigForm() {
   const [atualizaTabela, setAtualizaTabela] = useState(false);
 
   const obterDados = async () => {
-    const response = await fetchDados(`/admin/dashboard/site-settings`);
+    const response = await fetchDados(`/dashboard/site-settings`);
     setSiteConfig(response.data);
   };
 

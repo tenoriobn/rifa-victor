@@ -137,9 +137,9 @@ export default function MeusDadosForm() {
 
           <label htmlFor="document">
             CPF
-            <input 
+            <PatternFormat
+              format="###.###.###-##"
               type="text" 
-              maxLength="14" 
               id="document" 
               name="document" 
               value={formDadosUsuario.cpf || ''} 

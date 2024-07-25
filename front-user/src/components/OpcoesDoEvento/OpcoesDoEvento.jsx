@@ -2,14 +2,13 @@
 import { useRecoilValue } from "recoil";
 import Compartilhar from "../../assets/Icons/compartilhar.svg?react";
 import Whatsapp from "../../assets/Icons/whatsapp.svg?react";
-import {  estadoRifa } from "../../common/state/atom";
+import { stateSiteConfig } from "../../common/state/atom";
 import useCompartilharRifa from "../../common/state/hooks/opcoesDoEvento/useCompartilharRifa";
 import ModalRegulamento from "./ModalRegulamento/ModalRegulamento";
 
 export default function OpcoesDoEvento({ display }) {
   const { compartilharRifa } = useCompartilharRifa();
-  const rifa = useRecoilValue(estadoRifa)
-  
+  const siteConfig = useRecoilValue(stateSiteConfig);
 
   return (
     <div className="mb-4 flex flex-wrap max-sm:justify-around gap-2">
@@ -28,7 +27,8 @@ export default function OpcoesDoEvento({ display }) {
       </button>
 
       <a 
-        href={rifa.rifa_others.whatsapp_group}
+        // href={rifa.rifa_others.whatsapp_group}
+        href={siteConfig.whatsapp_group_url}
         className={`relative inline-block group text-white rounded overflow-hidden shadow-transparent shadow-md hover:shadow-black/3 0 text-xs bg-green-500 ${display}`}
         target="_blank"
       >

@@ -21,8 +21,6 @@ export default function Rifa() {
   const renderizaComponenteCadastro = useRecoilValue(estadoRenderizaComponenteCadastro);
   const renderizaComponenteLogin = useRecoilValue(estadoRenderizaComponenteLogin);
   const renderizaInfoUsuario = useRecoilValue(estadoRenderizaInfoUsuario);
-
-
   const [produto, setProduto] = useRecoilState(estadoProdutos);
   const [loading, setLoading] = useState(true);
   const setRifa = useSetRecoilState(estadoRifa)
@@ -36,19 +34,9 @@ export default function Rifa() {
       setLoading(false); 
       setRifa(dados.data.rifa)
       setRanking(dados.data.ranking);
-
-      // console.log(dados.data.rifa.title)
-
-      document.title = dados.data.rifa.title;
     };
 
-    obterDados();
-
-    return () => {
-      // Reverter o título quando o componente for desmontado
-      document.title = "Ana Lima Prêmios";
-    };
-    
+    obterDados();    
   }, [slug, id]);
 
   if (loading) {

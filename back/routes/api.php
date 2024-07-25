@@ -107,7 +107,7 @@
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->put("/dashboard/payment/update", [AdminController::class, "updateGateway"])->name('admin.editar.gateway');
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->delete("/dashboard/payment/delete", [AdminController::class, "destroyGateway"])->name('admin.editar.gateway');
 
-        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/site-settings", [AdminController::class, "getConfigSite"])->name('admin.get.site-config');
+        
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/site-settings/editar", [AdminController::class, "storeConfigSite"])->name('admin.edit.site-config');
 
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/vendas", [AdminController::class, "getVendas"])->name('admin.get.vendas');
@@ -131,6 +131,8 @@
         Route::get("/latest", [RifasController::class, "latest"]);
         Route::get("/latest-winner", [RifasController::class, "getLatestWinner"]);
     });
+
+    Route::get("/dashboard/site-settings", [AdminController::class, "getConfigSite"])->name('admin.get.site-config');
 
     Route::post("/get-numbers", [ClientController::class, "getNumbers"]);
 

@@ -1,6 +1,6 @@
 import Whatsapp from "../../../assets/Icons/whatsapp.svg?react";
 import { useRecoilValue } from "recoil";
-import { estadoCheckoutInfo } from "../../../common/state/atom";
+import { estadoCheckoutInfo, stateSiteConfig } from "../../../common/state/atom";
 import useCurrencyFormat from "../../../common/state/hooks/useCurrencyFormat/useCurrencyFormat";
 import useFormattedDate from "../../../common/state/hooks/useFormattedDate/useFormattedDate ";
 
@@ -8,6 +8,7 @@ export default function InfoPedidos() {
   const checkoutInfo = useRecoilValue(estadoCheckoutInfo);
   const { formattedDate } = useFormattedDate();
   const { formatCurrency } = useCurrencyFormat();
+  const siteConfig = useRecoilValue(stateSiteConfig);
 
   const informacoes = [
     { label: '🔢 Código:', value: checkoutInfo.cod },
@@ -55,7 +56,7 @@ export default function InfoPedidos() {
         }
 
         <a 
-          href="https://chat.whatsapp.com/+5543996403859"
+          href={siteConfig.helpdesk_url}
           target="_blank"
           className="relative inline-block group text-white rounded overflow-hidden shadow-transparent shadow-md hover:shadow-black/3 0 text-xs bg-green-500"
         >

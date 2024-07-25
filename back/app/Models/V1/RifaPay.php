@@ -31,6 +31,7 @@ class RifaPay extends Model
             'value' => 0,
             'qntd_number' => $qntdNumero,
             'status' => 1,
+            'verify' => 0,
             'cod' => $cod,
             'checkout' => $checkout,
             'rifas_id' => $rifasId,

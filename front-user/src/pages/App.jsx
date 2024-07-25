@@ -13,33 +13,36 @@ import ProtectedRoute from "../components/ProtectedRoute/ProtectedRoute";
 import MeusPedidos from "../components/MeusPedidos/MeusPedidos";
 import MeusDados from "../components/MeusDados/MeusDados";
 import DetalhesPedido from "../components/DetalhesPedido/DetalhesPedido";
+import PageTitle from "../components/PageTitle/PageTitle";
 
 export default function App() {
   const location = useLocation();
 
   return (
     <AnimatePresence mode="wait">
-      <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<AppLayout />}>
-          <Route path="/" element={<ContentLayout />}>
-            <Route index element={<PaginaInicial />} />
-            <Route path="produtos" element={<Produtos />} />
-            <Route path="ganhadores" element={<Ganhadores />} />
-            <Route path=":slug/:id" element={<Rifa />} />
-            <Route path="cadastro" element={<Cadastro />} />
+      <PageTitle>
+        <Routes location={location} key={location.pathname}>
+          <Route path="/" element={<AppLayout />}>
+            <Route path="/" element={<ContentLayout />}>
+              <Route index element={<PaginaInicial />} />
+              <Route path="produtos" element={<Produtos />} />
+              <Route path="ganhadores" element={<Ganhadores />} />
+              <Route path=":slug/:id" element={<Rifa />} />
+              <Route path="cadastro" element={<Cadastro />} />
 
-            <Route path="usuario" element={<ProtectedRoute element={<Usuario />} />}>
-              <Route index element={<MeusDados />} />
-              <Route path="meu-perfil" element={<MeusDados />} />
-              <Route path="meus-pedidos" element={<MeusPedidos />} />
+              <Route path="usuario" element={<ProtectedRoute element={<Usuario />} />}>
+                <Route index element={<MeusDados />} />
+                <Route path="meu-perfil" element={<MeusDados />} />
+                <Route path="meus-pedidos" element={<MeusPedidos />} />
+              </Route>
+
+              <Route path="checkout/:id/:slug" element={<ProtectedRoute element={<DetalhesPedido />} />} />
             </Route>
 
-            <Route path="checkout/:id/:slug" element={<ProtectedRoute element={<DetalhesPedido />} />} />
+            <Route path="*" element={<NotFound />} />
           </Route>
-
-          <Route path="*" element={<NotFound />} />
-        </Route>
-      </Routes>
+        </Routes>
+      </PageTitle>
     </AnimatePresence>
   );
 }
