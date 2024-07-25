@@ -3,18 +3,28 @@ import MenuIcon from "../../assets/Icons/menu.svg?react"
 import Perfil from "../../assets/Icons/perfil-2.svg?react"
 import Menu from "./Menu/Menu"
 import { useRecoilState, useRecoilValue } from "recoil";
-import { estadoMenuAtivo, estadoUsuario } from "../../common/state/atom";
+import { estadoMenuAtivo, estadoUsuario, stateSiteConfig } from "../../common/state/atom";
 import useFormatarUsuario from "../../common/state/hooks/Cabecalho/useFormatarNome";
 
 export default function Cabecalho() {
   const [menuAtivo, setMenuAtivo] = useRecoilState(estadoMenuAtivo);
   const usuario = useRecoilValue(estadoUsuario);
   const { nomeFormatado, inicialNome } = useFormatarUsuario(usuario);
+  const siteConfig = useRecoilValue(stateSiteConfig);
+
+  const logoSrc = siteConfig?.logo_dark || siteConfig?.logo_light;
 
   return (
     <>    
       <div className="bg-neutral-950 text-neutral-200">
-        <div className="flex justify-end items-center max-w-2xl mx-auto pt-4 pb-8 px-4">
+        <div className="flex justify-between items-center max-w-2xl mx-auto pt-4 pb-8 px-4">
+          
+          {logoSrc ? (
+              <img src={logoSrc} alt="LogoTipo" className="max-h-[30px]" />
+            ) : (
+              <div />
+          )}
+
           <div className="flex items-center gap-2">
             {usuario ?             
               <Link 
