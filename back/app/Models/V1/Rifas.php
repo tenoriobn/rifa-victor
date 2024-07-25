@@ -139,4 +139,19 @@ class Rifas extends Model
         return self::where('status','ativas')->first();
     }
 
+    public static function updateStatusToActive($id) {
+        $rifa =  self::where("id", $id)->first();
+        $initialSaleDate =  Carbon::parse($rifa->initial_sale)->toDateString(); // Formatar a data para comparar apenas a data
+        $todayDate = Carbon::today()->toDateString(); // Data de hoje no formato correto
+        return [$initialSaleDate === $todayDate, $initialSaleDate , $todayDate];
+    
+        if ($initialSaleDate === $todayDate) {
+            $rifa->status = 'ativas';
+            return $rifa->save();
+        } 
+        // return $rifa->save(); // Salvar as alterações feitas no status e retornar o resultado da operação
+    }
+    
+    
+
 }

@@ -16,6 +16,7 @@ import TempoEncerrado from "../../assets/Icons/tempoEncerrado.svg?react";
 import { fetchDados } from "../../common/http/http";
 import { motion } from 'framer-motion';
 import { transicaoAnimada } from "../../common/util/transicaoAnimada";
+import useFormattedDate from "../../common/state/hooks/useFormattedDate/useFormattedDate ";
 
 export default function Rifa() {
   const renderizaComponenteCadastro = useRecoilValue(estadoRenderizaComponenteCadastro);
@@ -25,12 +26,16 @@ export default function Rifa() {
   const [loading, setLoading] = useState(true);
   const setRifa = useSetRecoilState(estadoRifa)
   const setRanking = useSetRecoilState(estadoRanking)
+  const { formattedDate } = useFormattedDate();
   const { slug, id } = useParams();
   
   useEffect(() => {
     const obterDados = async () => {
       const dados = await fetchDados(`/produtos/${slug}/${id}`);
       setProduto(dados.data.rifa);
+
+      console.log('dados', dados)
+
       setLoading(false); 
       setRifa(dados.data.rifa)
       setRanking(dados.data.ranking);
@@ -43,6 +48,8 @@ export default function Rifa() {
     return <div>Carregando...</div>; 
   }
   const renderizaComponente = produto.status === "ativas";
+  const renderizaComponenteFuturas = produto.status === "futuras";
+
   const animacao = transicaoAnimada();
 
   return (
@@ -56,10 +63,20 @@ export default function Rifa() {
           <h2>{produto.title}</h2>
         </div>
 
-        {!renderizaComponente && (
+        {(!renderizaComponente || renderizaComponenteFuturas) && (
           <div className="text-rose-500 flex items-center gap-1 text-xs">
-            <p className="text-rose-500 flex items-center gap-1 text-xs"> Sorteio encerrado </p>
-            <TempoEncerrado />
+            {produto.status === "futuras" ? 
+              <p className="text-green-500 flex items-center gap-1 text-xs"> 
+                {formattedDate(produto.initial_sale)}
+              </p>
+              : <>              
+                <p className="text-rose-500 flex items-center gap-1 text-xs"> 
+                  Sorteio encerrado
+                </p>
+
+                <TempoEncerrado />
+              </>
+            }
           </div>
         )}
       </motion.div> 

@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { fetchDados } from "../../common/http/http";
 import CardAviso from "../CardAviso/CardAviso";
 import AvisoCarregando from "../AvisoCarregando/AvisoCarregando";
+import useFormattedDate from "../../common/state/hooks/useFormattedDate/useFormattedDate ";
 
 export default function CardProdutos({ categoria }) {
   const [produtos, setProdutos] = useRecoilState(estadoProdutos);
@@ -18,6 +19,9 @@ export default function CardProdutos({ categoria }) {
   const setRenderizaComponenteCadastro = useSetRecoilState(estadoRenderizaComponenteCadastro);
   const setRenderizaComponenteLogin = useSetRecoilState(estadoRenderizaComponenteLogin);
   const [erroConexao, setErroConexao] = useState(false);
+  const { formattedDate } = useFormattedDate();
+
+  console.log('cardProdutos', produtosFiltrados)
 
   const [loading, setLoading] = useState(true);
 
@@ -103,7 +107,15 @@ export default function CardProdutos({ categoria }) {
                   {categoria === "finalizadas" && (
                     <div className='flex items-center gap-2'>
                       <Calendario className="icon text-amber-500" />
-                      <p className="text-sm font-semibold text-zinc-700">{formatarData(produto.end_sale)}</p>
+                      <p className="text-sm font-semibold text-zinc-700">{formatarData(produto.end_rifa)}</p>
+                    </div>
+                  )}
+
+                  {categoria === "futuras" && (
+                    <div className='flex items-center gap-2'>
+                      <Calendario className="icon text-amber-500" />
+                      <p className="text-sm font-semibold text-zinc-700">{formattedDate(produto.initial_sale)}</p>
+                      {  console.log('data', produto.end_sale)}
                     </div>
                   )}
 
@@ -133,14 +145,20 @@ export default function CardProdutos({ categoria }) {
           {categoria === "ativas" ? 
             <CardAviso 
               classes="border-yellow-600 bg-yellow-100 text-yellow-700"
-              subtitulo="Nada aqui..."
+              subtitulo="Nada aqui... "
               mensagem="Parece que estamos sem ofertas disponíveis no momento, mas não se preocupe, em breve teremos novidades! Fique ligado!"
             />
-            :
+            : categoria === "finalizadas" ?
             <CardAviso 
               classes="border-yellow-600 bg-yellow-100 text-yellow-700"
-              subtitulo="Nada aqui..."
+              subtitulo="Nada aqui... "
               mensagem="Parece que estamos sem ofertas finalizadas no momento, em breve teremos novidades! Fique ligado!"
+            />
+            : 
+            <CardAviso 
+              classes="border-yellow-600 bg-yellow-100 text-yellow-700"
+              subtitulo="Nada aqui... "
+              mensagem="Parece que estamos sem ofertas futuras no momento, em breve teremos novidades! Fique ligado!"
             />
           }
         </>

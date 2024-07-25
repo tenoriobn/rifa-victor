@@ -9,7 +9,8 @@ export default function Produtos() {
   const botoes = [
     { texto: "Ativas", categoria: "ativas" },
     { texto: "Finalizadas", categoria: "finalizadas" },
-    { texto: "Futuras", categoria: "futuras", disabled: true }
+    { texto: "Futuras", categoria: "futuras" }
+    // { texto: "Futuras", categoria: "futuras", disabled: true }
   ];
 
   return (

@@ -10,7 +10,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-
+use Carbon\Carbon;
 use App\Http\Requests\V1\{StoreRifasRequest, UpdateRifasRequest, PaymentRequest, OrderRifaRequest, WinnerRequest};
 use App\Http\Resources\V1\{RifasResource};
 use App\Models\V1\{Rifas, RifaWinner, RifaPay, AwardedQuota, DiscountPackage, RifaUpsell, RifaImage};
@@ -444,7 +444,8 @@ class RifasController extends Controller
             return response()->json(["response" => true, "msg" => "Nenhuma rifa encontrada."], 404);
         }
 
-        $rifa->update(['status' => 'finalizadas']);
+        $hoje = Carbon::now();
+        $rifa->update(['status' => 'finalizadas', 'end_rifa' =>  $hoje]);
         return response()->json(["response" => true, "msg" => "Rifa finalizada com sucesso."]);
     }
 
@@ -452,14 +453,23 @@ class RifasController extends Controller
     public function show($slug, $id) {
         try {
             $rifaData = Rifas::getOneRifa($id);
-
+    
             if (!$rifaData) {
                 return response()->json(["success" => false, "msg" => "Rifa has not been found."], $this->notFound);
             }
+    
+            // Obter as datas formatadas
+            $initialSaleDate = Carbon::parse($rifaData->initial_sale)->toDateString();
+            $todayDate = Carbon::today()->toDateString();
+    
+            if ($initialSaleDate <= $todayDate) {
+                Rifas::where('id', $id)->update(['status' => 'ativas']);
+            }
+    
             $ranking = RifaNumber::getRankingRifa($id);
-            $data = [ 'rifa' => $rifaData, 'ranking' => $ranking];
-
-            return response()->json(["success" => true, "data" => $data], $this->success);
+            $data = ['rifa' => $rifaData, 'ranking' => $ranking];
+    
+            return response()->json(["success" => true, "data" => $data, "aa" =>$initialSaleDate, 'aaaaa' => $todayDate], $this->success);
         } catch (Exception $e) {
             return response()->json(["success" => false, "msg" => $e->getMessage()], $this->serverError);
         }
