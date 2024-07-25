@@ -1,3 +1,4 @@
+import { PatternFormat } from 'react-number-format';
 import useFormState from '../../../../common/states/Hook/CriarRifa/CriarRifa';
 
 export default function Outros() {
@@ -9,7 +10,13 @@ export default function Outros() {
 
       <label htmlFor="wp_group">
         Grupo WhatsApp
-        <input type="text" id="wp_group" name="whatsapp_group" value={formState.whatsapp_group} onChange={handleChange} />
+        <PatternFormat 
+          format="(##) #####-####"
+          type="text" 
+          id="wp_group" 
+          name="whatsapp_group" 
+          value={formState.whatsapp_group} 
+          onChange={handleChange} />
       </label>
 
       <label htmlFor="link_download">
