@@ -51,7 +51,10 @@ const Table = styled.table`
   }
 
   td img {
-    width: 80px;
+    width: 74px;
+    height: 66px;
+    max-width: none;
+    object-fit: cover;
   }
 
   .status-tag {
@@ -88,7 +91,7 @@ const Table = styled.table`
   .button-group {
     display: flex;
     gap: .3125rem;
-    justify-content: center;
+    justify-content: end;
     align-items: center;
   }
 
@@ -162,6 +165,8 @@ export default function TabelaSorteio() {
   const { formatCurrency } = useCurrencyFormatTable();
   const { formatPercentage } = useFormatPercentage();
 
+  console.log('sorteios', sorteios)
+
   useEffect(() => {
     const obterDados = async () => {
       try {
@@ -183,6 +188,24 @@ export default function TabelaSorteio() {
         await putDados(`admin/dashboard/rifa/finalizar/${id}`, userLogin);
         setSorteios((prevSorteios) => prevSorteios.filter(sorteio => sorteio.id !== id));
         alert('Rifa finalizada com sucesso!');
+      } catch (error) {
+        console.error('Erro ao finalizar a rifa:', error);
+        alert('Erro ao finalizar a rifa. Tente novamente.');
+      }
+    }
+  };
+
+  const handleAtivar = async (id) => {
+    const confirmacao = window.confirm('Tem certeza que deseja ativar esta rifa?');
+    if (confirmacao) {
+      try {
+        await putDados(`admin/dashboard/rifa/ativar/${id}`, userLogin);
+        setSorteios((prevSorteios) => 
+          prevSorteios.map(sorteio => 
+            sorteio.id === id ? { ...sorteio, status: 'ativas' } : sorteio
+          )
+        );
+        alert('Rifa ativada com sucesso!');
       } catch (error) {
         console.error('Erro ao finalizar a rifa:', error);
         alert('Erro ao finalizar a rifa. Tente novamente.');
@@ -228,62 +251,69 @@ export default function TabelaSorteio() {
         </thead>
 
         <tbody>
-          {sorteios.map((sorteio, index) => (
+          {sorteios?.map((sorteio, index) => (
             <tr key={index}>
               <td className="spacing">
-                <img src={sorteio.imgSrc} alt="#" />
+              {sorteio?.rifa_image && sorteio?.rifa_image[0] && 
+                <img 
+                  src={`../../../../../public/imgRifas/${sorteio?.rifa_image[0]?.path}`} 
+                  alt="#" 
+                />
+              }
               </td>
-              <td>#{sorteio.id}</td>
+              <td>#{sorteio?.id}</td>
               <td>
-                <a href={`https://alimaprojetos.com/${sorteio.slug}/${sorteio.id}`} target="_blank">
+                <a href={`https://alimaprojetos.com/${sorteio?.slug}/${sorteio?.id}`} target="_blank">
                   <i className="fa-solid fa-link"></i>
                 </a>
-                <b>{sorteio.title}</b>
+                <b>{sorteio?.title}</b>
               </td>
-              <td>{formattedDate(sorteio.data_sortition)}</td>
-              <td>{formatCurrency(sorteio.fat_total)}</td>
-              <td>{formatCurrency(sorteio.fat_hoje)}</td>
-              <td>{sorteio.qntd_numeros}</td>
+              <td>{formattedDate(sorteio?.data_sortition)}</td>
+              <td>{formatCurrency(sorteio?.fat_total)}</td>
+              <td>{formatCurrency(sorteio?.fat_hoje)}</td>
+              <td>{sorteio?.qntd_numeros}</td>
               {/* <td><b>{formatPercentage((sorteio.qntd_numeros / sorteio.cota.qntd_cota * 100).toFixed(2))}%</b></td> */}
               <td>
                 <b>
-                  {sorteio.cota ? formatPercentage((sorteio.qntd_numeros / sorteio.cota.qntd_cota) * 100) : 'N/A'}
+                  {sorteio?.cota ? formatPercentage((sorteio?.qntd_numeros / sorteio?.cota?.qntd_cota) * 100) : '0,00%'}
                 </b>
               </td>
 
-              <td>{sorteio.qntd_numeros_reservado}</td>
+              <td>{sorteio?.qntd_numeros_reservado}</td>
               <td>
                 <span
                   className={`status-tag ${
-                    sorteio.status === 'finalizadas' ? 'status-cancelado' :
-                    sorteio.status === 'ativas' ? 'status-pago' :
-                    sorteio.status === 'inativos' ? 'status-inactive' :
+                    sorteio?.status === 'finalizadas' ? 'status-cancelado' :
+                    sorteio?.status === 'ativas' ? 'status-pago' :
+                    sorteio?.status === 'inativos' ? 'status-inactive' :
                     ''
                   }`}
                 >
-                  {getStatusLabel(sorteio.status)}
+                  {getStatusLabel(sorteio?.status)}
                 </span>
               </td>
               <td>
                 <div className="button-group">
-                  {sorteio.status !== 'finalizadas' && (
-                    <a className="button-delete" href="#" onClick={() => handleFinalizar(sorteio.id)} >
+                  {sorteio?.status !== 'finalizadas' && (
+                    <a className="button-delete" href="#" onClick={() => handleFinalizar(sorteio?.id)} >
                       <i className="fa-solid fa-toggle-on"></i> Finalizar
                     </a>
                   )}
 
-                  {sorteio.status === 'finalizadas' && (
-                  <button className="status-inactive button-ativar">
+                  {sorteio?.status === 'finalizadas' && (
+                  <button className="status-inactive button-ativar"
+                    onClick={() => handleAtivar(sorteio?.id)}
+                  >
                     <ion-icon name="stats-chart" role="img" className="md hydrated"></ion-icon> Ativar
                   </button>
                   )}
 
-                  <Link className="button-dashboard" to={`/dashboard/rifa/${sorteio.id}`}>
+                  <Link className="button-dashboard" to={`/dashboard/rifa/${sorteio?.id}`}>
                     <ion-icon name="stats-chart" role="img" className="md hydrated"></ion-icon> Dashboard
                   </Link>
                   <button 
                     className="button-edit" 
-                    onClick={() => handlePegaIdModal(sorteio.id)}
+                    onClick={() => handlePegaIdModal(sorteio?.id)}
                   >
                     <i className="fas fa-bars"></i> Ações
                   </button>

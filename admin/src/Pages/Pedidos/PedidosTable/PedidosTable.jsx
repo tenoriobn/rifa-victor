@@ -78,7 +78,7 @@ export const Table = styled.table`
   .button-group {
     display: flex;
     gap: 5px;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
   }
 

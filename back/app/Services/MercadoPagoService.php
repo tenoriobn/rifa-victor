@@ -20,27 +20,29 @@ class MercadoPagoService
         $client = new PaymentClient();
         $timeLimit = $rifa->rifa->rifaPayment->time_pay ?? 30;
         $expirationDate = now()->addMinutes($timeLimit)->setTimezone('UTC')->format('Y-m-d\TH:i:sP');
+        $value =  floatval($rifa->value);
+        $username = $rifa->client->name.'@gmail.com'; // Obter apenas o nome do usuário
         $request = [
-            "transaction_amount" => $rifa->value,
+            "transaction_amount" => $value,
             "description" => $description,
             // "date_of_expiration" =>  $expirationDate,
             "installments" => 1,
             "payment_method_id" => 'pix',
             "payer" => [
-                "email" => 'analima@projetos.com',
+                "email" => $username, // Enviar apenas o nome do usuário
             ]
         ];
-
+    
         $requestOptions = new RequestOptions();
         $requestOptions->setCustomHeaders(["X-Idempotency-Key: " . uniqid()]);
-
+    
         try {
             $payment = $client->create($request, $requestOptions);
-
+            
             return $payment;
-
+    
         } catch (MPApiException $e) {
-
+    
             return [
                 'status' => false,
                 'status_code' => $e->getApiResponse()->getStatusCode(),
@@ -51,6 +53,7 @@ class MercadoPagoService
             return ['status' => false, 'message' => $e->getMessage()];
         }
     }
+    
 
     public function checkPaymentStatus($paymentId)
     {

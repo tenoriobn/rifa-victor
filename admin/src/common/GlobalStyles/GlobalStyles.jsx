@@ -11,6 +11,7 @@ const GlobalStyles = createGlobalStyle`
     color: ${Theme.colors.white};
     font-family: ${Theme.font.montserrat};
     min-height: 100vh;
+    overflow-x: hidden;
 
     li {
       list-style-type: none;

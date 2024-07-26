@@ -13,9 +13,7 @@ export default function SlidePremio() {
   const produto= useRecoilValue(estadoProdutos);
   const renderizaComponente = produto.status === "ativas";
   const [imgPremioSlide, setImgPremioSlide] = useState(null);
-
   const animacao = transicaoAnimada();
-  
   const imagensRifa = rifa.rifa_image;
 
   useEffect(() => {

@@ -60,7 +60,7 @@ export default function CardGanhadores() {
               >
                 <img 
                   className="w-[80px] m-2 rounded-lg object-cover transition-all" 
-                  src={ganhadores.img}  
+                  src={`../../../public/imgRifas/${ganhadores.img}`}
                   alt="Foto do ganhador"
                 />
   

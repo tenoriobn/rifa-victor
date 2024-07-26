@@ -46,7 +46,7 @@ class RifasController extends Controller
     }
     public function getAllRifasAdmin() {
         try {
-            $rifasData = Rifas::with(['cota'])->withSum('rifaPayActiva as fat_total', 'value')
+            $rifasData = Rifas::with(['cota','rifaImage'])->withSum('rifaPayActiva as fat_total', 'value')
             ->withSum('rifaPayToday as fat_hoje', 'value')
             ->withCount(['rifaNumberActive as qntd_numeros' => function ($query) {
                 $query->select(DB::raw("SUM(LENGTH(numbers) - LENGTH(REPLACE(numbers, ',', '')) + 1) as number_count"));
@@ -70,7 +70,7 @@ class RifasController extends Controller
 
     public function getAllRifasAdminFiltro(Request $request) {
         try {
-            $query = Rifas::with(['cota'])
+            $query = Rifas::with(['cota', 'rifaImage'])
                 ->withSum('rifaPayActiva as fat_total', 'value')
                 ->withSum('rifaPayToday as fat_hoje', 'value')
                 ->withCount(['rifaNumberActive as qntd_numeros' => function ($query) {
@@ -448,6 +448,17 @@ class RifasController extends Controller
         $rifa->update(['status' => 'finalizadas', 'end_rifa' =>  $hoje]);
         return response()->json(["response" => true, "msg" => "Rifa finalizada com sucesso."]);
     }
+    public function ativarRifa($id)
+    {
+        $rifa = Rifas::where('id',$id);
+        if (!$rifa ) {
+            return response()->json(["response" => true, "msg" => "Nenhuma rifa encontrada."], 404);
+        }
+
+     
+        $rifa->update(['status' => 'ativas', 'end_rifa' => null]);
+        return response()->json(["response" => true, "msg" => "Rifa finalizada com sucesso."]);
+    }
 
 
     public function show($slug, $id) {
@@ -488,7 +499,7 @@ class RifasController extends Controller
                 return response()->json(["success" => false, "msg" => "Ocorreu um erro ao comprar"], 500);
             }
 
-            $rifaPayDetails = RifaPay::with(['rifa.cota', 'rifa.awardedQuota'])
+            $rifaPayDetails = RifaPay::with(['rifa.cota', 'rifa.awardedQuota', 'client'])
                 ->find($rifaPay->id);
 
             $result = RifaNumber::applyRifa($rifaPayDetails);
@@ -498,7 +509,7 @@ class RifasController extends Controller
                 return response()->json(["success" => false, "msg" => "Quantidade de número invalido"], 409 );
             }
 
-            $payment = $this->mercadoPagoService->createPayment($rifaPay, 'Rei do Pix, [Compra da rifa '.$rifaPayDetails->rifa->title. ']');
+            $payment = $this->mercadoPagoService->createPayment($rifaPayDetails, 'Rei do Pix, [Compra da rifa '.$rifaPayDetails->rifa->title. ']');
 
             if(!$payment) {
                 return response()->json(["success" => false, "msg" => [$payment['status_code'], $payment['content'], $payment['message']]], 500);
