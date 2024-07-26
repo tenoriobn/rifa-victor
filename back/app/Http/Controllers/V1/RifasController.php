@@ -455,7 +455,7 @@ class RifasController extends Controller
             return response()->json(["response" => true, "msg" => "Nenhuma rifa encontrada."], 404);
         }
 
-     
+
         $rifa->update(['status' => 'ativas', 'end_rifa' => null]);
         return response()->json(["response" => true, "msg" => "Rifa finalizada com sucesso."]);
     }
@@ -464,22 +464,22 @@ class RifasController extends Controller
     public function show($slug, $id) {
         try {
             $rifaData = Rifas::getOneRifa($id);
-    
+
             if (!$rifaData) {
                 return response()->json(["success" => false, "msg" => "Rifa has not been found."], $this->notFound);
             }
-    
+
             // Obter as datas formatadas
             $initialSaleDate = Carbon::parse($rifaData->initial_sale)->toDateString();
             $todayDate = Carbon::today()->toDateString();
-    
-            if ($initialSaleDate <= $todayDate) {
+
+            if ($initialSaleDate <= $todayDate && $rifaData->status == 'futuras') {
                 Rifas::where('id', $id)->update(['status' => 'ativas']);
             }
-    
+
             $ranking = RifaNumber::getRankingRifa($id);
             $data = ['rifa' => $rifaData, 'ranking' => $ranking];
-    
+
             return response()->json(["success" => true, "data" => $data, "aa" =>$initialSaleDate, 'aaaaa' => $todayDate], $this->success);
         } catch (Exception $e) {
             return response()->json(["success" => false, "msg" => $e->getMessage()], $this->serverError);
