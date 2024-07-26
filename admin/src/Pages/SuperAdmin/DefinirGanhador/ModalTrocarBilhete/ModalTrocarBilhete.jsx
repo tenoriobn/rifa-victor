@@ -96,7 +96,7 @@ export default function ModalTrocarBilhete({ onNotifySuccess, onNotifyError }) {
           id="cota"
           value={cota}
           onChange={(e) => setCota(e.target.value)}
-          disabled
+          // disabled
           required
         />
       </label>

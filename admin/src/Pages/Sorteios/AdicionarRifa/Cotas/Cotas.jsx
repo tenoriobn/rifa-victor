@@ -59,7 +59,7 @@ export default function Cotas({ mostrarCampo, mostrarQtdNumeros }) {
           onChange={handleQntdCotaChange}
           name="qntd_cota"
           maxLength="10"
-          disabled={mostrarQtdNumeros}
+          // disabled={mostrarQtdNumeros}
           required
         />
       </label>

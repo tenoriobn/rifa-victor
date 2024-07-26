@@ -143,7 +143,7 @@ export default function GanhadoresTable() {
                   <img src={`../../../../public/imgRifas/${ganhador?.img}`} alt="foto do ganhador" />
                 </td>
                 <td>{ganhador?.client?.name} {ganhador?.client?.surname}</td>
-                <td>{ganhador?.rifa.title}</td>
+                <td>{ganhador?.rifa?.title}</td>
                 <td>{ganhador?.ticket}</td>
                 <td>{formattedDate(ganhador?.updated_at)}</td>
                 <td>

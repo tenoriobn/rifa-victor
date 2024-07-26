@@ -102,7 +102,7 @@ export default function ModalEditarPacote() {
           name="valor_total"
           value={pacote.value_cota || ""}
           onChange={handleChange}
-          disabled
+          // disabled
         />
       </label>
 
@@ -116,7 +116,7 @@ export default function ModalEditarPacote() {
           value={pacote.qntd_cota || ""}
           onChange={handleChange}
           required
-          disabled
+          // disabled
         />
       </label>
 

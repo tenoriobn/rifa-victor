@@ -144,7 +144,7 @@ export default function ModalAdicionarPacote() {
           name="valor_total"
           value={pacote.valor_total || ""}
           onChange={(e) => setPacote((prevPacote) => ({...prevPacote, valor_total: e.target.value}))}
-          disabled
+          // disabled
         />
       </label>
 

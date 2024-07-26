@@ -143,7 +143,7 @@ export default function ModalAdicionarUpsell({setAtualizaTabela}) {
           name="price_total"
           value={upsellInfo.price_total || ""}
           onChange={(e) => setUpsellInfo((prevUpsell) => ({...prevUpsell, price_total: e.target.value}))}
-          disabled
+          // disabled
         />
       </label>
 
