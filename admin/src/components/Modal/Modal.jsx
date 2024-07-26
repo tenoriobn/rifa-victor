@@ -5,8 +5,8 @@ const ModalContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  /* position: fixed; */
-  position: absolute;
+  position: fixed;
+  /* position: absolute; */
   top: 0;
   right: 0;
   background-color: rgba(0, 0, 0, .5);
