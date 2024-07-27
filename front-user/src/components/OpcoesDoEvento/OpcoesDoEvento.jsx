@@ -14,8 +14,6 @@ export default function OpcoesDoEvento({ display }) {
   const { formatPhone } = usePhoneFormat();
   const formattedPhone = formatPhone(rifa.rifa_others.whatsapp_group);
 
-  console.log('rifaaaaa', rifa.rifa_others.whatsapp_group  )
-
   return (
     <div className="mb-4 flex flex-wrap max-sm:justify-around gap-2">
       <ModalRegulamento />

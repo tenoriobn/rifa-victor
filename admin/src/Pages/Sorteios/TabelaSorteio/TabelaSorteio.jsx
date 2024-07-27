@@ -17,6 +17,9 @@ const Table = styled.table`
   border-collapse: separate;
   border-spacing: 0 1em;
 
+  overflow-x: auto;
+  white-space: nowrap;
+
   tr {
     border: 0;
     margin: .3125rem;
@@ -76,7 +79,7 @@ const Table = styled.table`
   }
 
   .status-inactive {
-    background-color: #858796;
+    background-color: #28a745;
     color: white;
     border: none;
     border-radius: .3125rem;
@@ -120,7 +123,6 @@ const Table = styled.table`
 
   .button-ativar:hover {
     background-color: #28a745;
-    opacity: 1!important;
   }
 
   .button-edit {
@@ -144,12 +146,11 @@ const Table = styled.table`
     opacity: .8;
   }
 
-  @media (max-width: 1366px) {
-    overflow-x: auto;
-    white-space: nowrap;
+  @media (max-width: 1879px) {
     display: block;
   }
 
+  
   ::-webkit-scrollbar {
     width: 8px;
     height: 6px;

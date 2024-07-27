@@ -34,8 +34,6 @@ export default function Rifa() {
       const dados = await fetchDados(`/produtos/${slug}/${id}`);
       setProduto(dados.data.rifa);
 
-      console.log('dados', dados)
-
       setLoading(false); 
       setRifa(dados.data.rifa)
       setRanking(dados.data.ranking);

@@ -12,7 +12,6 @@ export default function CardGanhadores() {
   const [ganhadores, setGanhadores] = useRecoilState(estadoGanhadores);
   const [loading, setLoading] = useState(true);
   const [erroConexao, setErroConexao] = useState(false);
-
   const setProdutoSelecionado = useSetRecoilState(estadoProdutoSelecionado);
 
   useEffect(() => {
@@ -66,7 +65,7 @@ export default function CardGanhadores() {
   
                 <div className="flex grow flex-col bg-neutral-100 overflow-hidden p-2">
                   <p className="text-lg w-full font-semibold text-neutral-900 text-left truncate">
-                    {ganhadores?.client?.name}
+                    {ganhadores?.client?.name} {ganhadores?.client?.surname}
                   </p>
   
                   <p className="text-sm w-full text-neutral-600 text-left truncate">

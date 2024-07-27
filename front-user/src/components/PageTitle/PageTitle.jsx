@@ -8,8 +8,6 @@ const PageTitle = ({ children }) => {
   const siteConfig = useRecoilValue(stateSiteConfig);
   const rifa = useRecoilValue(estadoRifa)
   const location = useLocation();
-  console.log('rifa', rifa.title)
-  console.log(siteConfig)
 
   let description = siteConfig.share_description ;
   let image = siteConfig.share_image;

@@ -13,8 +13,6 @@ export default function AppLayout() {
   const setUsuario = useSetRecoilState(estadoUsuario);
   const [siteConfig, setSiteConfig] = useRecoilState(stateSiteConfig);
 
-  console.log('siteConfig', siteConfig)
-
   const obterDados = async () => {
     const response = await fetchDados(`/dashboard/site-settings`);
     setSiteConfig(response.data);

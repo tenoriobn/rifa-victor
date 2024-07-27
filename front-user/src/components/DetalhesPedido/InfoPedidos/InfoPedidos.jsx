@@ -13,8 +13,6 @@ export default function InfoPedidos() {
   const { formatPhone } = usePhoneFormat();
   const formattedPhone = formatPhone(siteConfig.helpdesk_url);
 
-  console.log('checkoutInfo', checkoutInfo)
-
   const informacoes = [
     { label: '🔢 Código:', value: checkoutInfo?.cod },
     { label: '🛍 Total de Cotas:', value: checkoutInfo?.qntd_number },
