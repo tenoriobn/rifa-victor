@@ -154,7 +154,7 @@ class RifasController extends Controller
             if (!$rifasData) {
                 return response()->json(["success" => false, "msg" => "Rifa não encontrada" ], 404);
             }
-
+ 
             $rifa = $this->rifaService->createRifas($request);
             return response()->json(["success" => true, "msg" => "Rifa editada com sucesso" ], $this->success);
 
@@ -473,7 +473,7 @@ class RifasController extends Controller
             $initialSaleDate = Carbon::parse($rifaData->initial_sale)->toDateString();
             $todayDate = Carbon::today()->toDateString();
     
-            if ($initialSaleDate <= $todayDate) {
+            if ($initialSaleDate <= $todayDate  && $rifaData->status == 'futuras') {
                 Rifas::where('id', $id)->update(['status' => 'ativas']);
             }
     

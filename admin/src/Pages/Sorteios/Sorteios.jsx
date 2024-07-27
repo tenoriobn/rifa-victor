@@ -17,7 +17,7 @@ export default function Sorteios() {
       <Header>
         <h2><i className="fa-solid fa-dice"></i> SORTEIOS</h2>
         <LinkItem to="/dashboard/rifas/adicionar" className="button-new"
-                    onClick={() => resetInputSorteio()}
+          onClick={() => resetInputSorteio()}
         >
           <i className="fas fa-plus"></i> Novo
         </LinkItem>

@@ -416,6 +416,7 @@ class AdminController extends Controller
                 'id' => 'required|integer|exists:users,id',
                 'name' => 'sometimes|string|max:191',
                 'cpf' => 'sometimes|nullable|max:191',
+                'password' => 'sometimes|nullable|max:191',
                 'cellphone' => 'sometimes|nullable|max:191',
                 'role' => 'sometimes|nullable|string|max:191',
                 'email' => 'sometimes|email|max:191',

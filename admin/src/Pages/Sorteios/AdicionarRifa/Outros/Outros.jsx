@@ -16,8 +16,8 @@ export default function Outros() {
           type="text" 
           id="wp_group" 
           name="whatsapp_group"
-          onChange={(e) => setFormState({ ...formState, whatsapp_group: e.target.value })} 
-          value={formState.whatsapp_group || ''}
+          onChange={(e) => setFormState({ ...formState, rifa_others: { ...formState?.rifa_others, whatsapp_group: e.target.value} })} 
+          value={formState?.rifa_others?.whatsapp_group || ''}
         />
       </label>
 
@@ -27,8 +27,8 @@ export default function Outros() {
           type="text" 
           id="link_download" 
           name="link_ebook" 
-          onChange={(e) => setFormState({ ...formState, link_ebook: e.target.value })} 
-          value={formState.link_ebook || ''}
+          onChange={(e) => setFormState({ ...formState, rifa_others: {...formState?.rifa_others, link_ebook: e.target.value} })} 
+          value={formState?.rifa_others?.link_ebook || ''}
         />
       </label>
 
@@ -37,8 +37,8 @@ export default function Outros() {
         <select 
           id="emit_nf" 
           name="nota_fiscal" 
-          onChange={(e) => setFormState({ ...formState, nota_fiscal: e.target.value })} 
-          value={formState.nota_fiscal || 'nao'}
+          onChange={(e) => setFormState({ ...formState, rifa_others: {...formState?.rifa_others, nota_fiscal: e.target.value} })} 
+          value={formState?.rifa_others?.nota_fiscal || 'nao'}
           required
         >
           <option value="sim">SIM</option>

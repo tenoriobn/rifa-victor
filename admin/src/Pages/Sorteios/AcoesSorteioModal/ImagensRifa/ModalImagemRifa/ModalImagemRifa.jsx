@@ -105,13 +105,11 @@ export default function ModalImagemRifa() {
   const handleSubmitImage = async () => {
     try {
       const rifaId = id;
-      const response = await postDados('/admin/dashboard/rifa/imagens/cadastrar', { imagem: imagemSelecionada, rifa_id: rifaId }, userLogin);
+      await postDados('/admin/dashboard/rifa/imagens/cadastrar', { imagem: imagemSelecionada, rifa_id: rifaId }, userLogin);
 
       setImagemSelecionada('');
 
       setImagemRifaUpload(true)
-
-      console.log('response: ', response)
 
     } catch (error) {
       console.error('Erro ao fazer POST:', error);

@@ -53,7 +53,6 @@ export default function CotasForm() {
   const [orderFilter, setOrderFilter] = useState({});
   // const [tabelaCotasInfo, setTabelaCotasInfo] = useRecoilState(stateTabelaCotasInfo);
 
-  console.log(orderFilter)
 
   // const handleSubmit = async (e) => {
   //   if (e) e.preventDefault();

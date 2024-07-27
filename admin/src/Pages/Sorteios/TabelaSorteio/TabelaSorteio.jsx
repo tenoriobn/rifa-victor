@@ -79,7 +79,7 @@ const Table = styled.table`
   }
 
   .status-inactive {
-    background-color: #28a745;
+    background-color: #1cc88a;
     color: white;
     border: none;
     border-radius: .3125rem;
@@ -283,7 +283,7 @@ export default function TabelaSorteio() {
                   className={`status-tag ${
                     sorteio?.status === 'finalizadas' ? 'status-cancelado' :
                     sorteio?.status === 'ativas' ? 'status-pago' :
-                    sorteio?.status === 'inativos' ? 'status-inactive' :
+                    sorteio?.status === 'futuras' ? 'status-inactive' :
                     ''
                   }`}
                 >

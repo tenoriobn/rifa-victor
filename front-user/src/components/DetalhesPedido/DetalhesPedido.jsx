@@ -15,6 +15,8 @@ export default function DetalhesPedido() {
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const setQrCode = useSetRecoilState(estadoQrCode);
+
+  console.log('checkoutInfo', checkoutInfo)
   
   useEffect(() => {
     const pegarDados = async () => {

@@ -20,7 +20,6 @@ const useCurrencyInput = (initialValue = '', onChangeCallback) => {
     const numberValue = Number(formattedValue.replace('R$', '').trim().replace(',', '.'));
     setUpsellInfo((prevPacote) => ({...prevPacote, price_cota: numberValue}))
 
-    console.log(formattedValue)
     if (onChangeCallback) {
       onChangeCallback(formattedValue);
     }

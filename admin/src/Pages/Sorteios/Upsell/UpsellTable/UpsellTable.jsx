@@ -120,8 +120,6 @@ export default function UpsellTable() {
   const { formattedDate } = useFormattedDate();
   const { formatCurrency } = useCurrencyFormatTable();
 
-  console.log('upsellInfo', upsellInfo)
-
   const handleModalInfo = (upsell) => {
     setUpsellInfo(upsell)
     setOpenModalEditarUpsell(!openModalEditarUpsell)

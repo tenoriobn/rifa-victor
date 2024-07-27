@@ -200,7 +200,7 @@ export default function PedidosTable({setAtualizaTabela}) {
                   className={`status-tag ${
                     item?.status === 1 ? 'status-pago' :
                     item?.status === 0 ? 'button-divergente' :
-                    item?.status === 2 ? 'button-dashboard' :
+                    item?.status === 2 ? 'status-cancelado' :
                     ''
                   }`}
                 >

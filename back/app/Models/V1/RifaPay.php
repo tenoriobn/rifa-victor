@@ -67,7 +67,7 @@ class RifaPay extends Model
     }
 
     public static function getOneCompra($id) {
-        return self::with(['rifaNumber', 'rifa.rifaPayment', 'rifa.rifaImage', 'rifa.rifaOthersgetAllCompraClient'])->where('id', $id)->first();
+        return self::with(['rifaNumber', 'rifa.rifaPayment', 'rifa.rifaImage', 'rifa.rifaOthers'])->where('id', $id)->first();
     }
     public static function getAllCompraClient($id) {
         return self::with(['rifaNumber', 'rifa.rifaPayment', 'rifa.rifaImage'])->where('client_id', $id)->orderByDesc('id')->paginate(20);

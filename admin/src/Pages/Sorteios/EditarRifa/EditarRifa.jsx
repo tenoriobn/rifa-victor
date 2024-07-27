@@ -27,30 +27,10 @@ export default function EditarRifa() {
   const [submitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
 
-  const flattenObject = (obj) => {
-    const flattened = {};
-
-    Object.keys(obj).forEach((key) => {
-      if (typeof obj[key] === 'object' && obj[key] !== null) {
-        Object.assign(flattened, flattenObject(obj[key]));
-      } else {
-        flattened[key] = obj[key];
-      }
-    });
-
-    return flattened;
-  };
-
   useEffect(() => {
     const obterDados = async () => {
       const response = await fetchDados(`/admin/dashboard/rifa/editar/${id}`, userLogin);
-
-      const flattenedData = flattenObject(response.data);
-      setFormState(flattenedData);
-
-      console.log('flattenedData: ', flattenedData)
-
-      console.log('response editar', response.data)
+      setFormState(response.data);
     };
     
     if (id) {

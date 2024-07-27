@@ -35,10 +35,9 @@ export default function Geral() {
         <select 
           id="hide" 
           name="show_site" 
-          required
-
           onChange={(e) => setFormState({ ...formState, show_site: e.target.value })} 
           value={formState.show_site || ''}
+          required
         >
           <option value="sim">SIM</option>
           <option value="nao">NÃO</option>

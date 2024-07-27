@@ -94,10 +94,7 @@ export default function ModalAdicionarPacote() {
     try {
       const response = await postDados('/admin/dashboard/pacote/cadastrar', pacote, userLogin);
 
-
-      console.log('aqui dentro', pacote)
-      
-      setTabelaPacotesInfo(response.data.data)
+      setTabelaPacotesInfo(response.data)
       setOpenModalAdicionarPacote(!openModalAdicionarPacote)
       
     } catch (error) {
@@ -106,8 +103,6 @@ export default function ModalAdicionarPacote() {
   };
 
   const { value: formattedPrice, handleChange: handlePriceChange, handleBlur: handlePriceBlur } = useCurrencyInputPacote(setQntdCota);
-
-  console.log(pacote)
 
   return (
     <Form id="frmAddPack" onSubmit={handleSubmit}>
@@ -144,7 +139,7 @@ export default function ModalAdicionarPacote() {
           name="valor_total"
           value={pacote.valor_total || ""}
           onChange={(e) => setPacote((prevPacote) => ({...prevPacote, valor_total: e.target.value}))}
-          // disabled
+          disabled
         />
       </label>
 

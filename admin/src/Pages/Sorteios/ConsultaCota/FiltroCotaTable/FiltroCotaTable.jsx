@@ -102,10 +102,6 @@ export default function FiltroCotaTable() {
   const infoCota = consultaCota.data?.data;
   const numeroVencedor = consultaCota.search;
 
-  console.log(infoCota)
-
-  console.log('infoCota', infoCota);
-
   const formatPhoneNumber = (number) => {
     if (!number) return '';
     // Remove tudo que não é número

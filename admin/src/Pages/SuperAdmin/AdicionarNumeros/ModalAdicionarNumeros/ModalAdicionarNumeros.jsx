@@ -69,17 +69,14 @@ export default function ModalAdicionarNumeros({ onNotifySuccess, onNotifyError }
   const telefoneVencedor = infoAdicionarNumeros.search;
   const rifaId = infoAdicionarNumeros.selectSearch.id;
 
-  console.log('dados', qntdNumero, telefoneVencedor, rifaId)
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await postDados("/admin/dashboard/client/rifa/adicionar-numero", { qntd_number: qntdNumero,  cellphone: telefoneVencedor, rifa_id : rifaId });
+      await postDados("/admin/dashboard/client/rifa/adicionar-numero", { qntd_number: qntdNumero,  cellphone: telefoneVencedor, rifa_id : rifaId });
       setOpenModalAdicionarNumeros(false);
       onNotifySuccess('Números adicionados com sucesso!');
 
-      console.log('response modal', response)
     } catch (error) {
       onNotifyError('Erro ao adicionar números:');
       console.error("Erro ao adicionar números:", error);

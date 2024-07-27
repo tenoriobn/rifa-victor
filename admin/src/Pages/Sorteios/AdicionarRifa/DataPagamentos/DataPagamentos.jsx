@@ -1,25 +1,25 @@
-import useFormState from '../../../../common/states/Hook/CriarRifa/CriarRifa';
-import usePercentageInput from '../../../../common/states/Hook/CriarRifa/usePercentageMask';
+// import useFormState from '../../../../common/states/Hook/CriarRifa/CriarRifa';
+// import usePercentageInput from '../../../../common/states/Hook/CriarRifa/usePercentageMask';
 import { useRecoilState } from "recoil";
 import { stateInfoRifaForm } from '../../../../common/states/atom';
+import { NumericFormat } from 'react-number-format';
 
 export default function DataPagamento() {
   const [formStateUm, setFormState] = useRecoilState(stateInfoRifaForm);
-  const { formState, handleChange: handleChangeFormState } = useFormState();
+  // const { formState, handleChange: handleChangeFormState } = useFormState();
 
-  const updateFormState = (name, formattedValue) => {
-    handleChangeFormState({
-      target: {
-        name,
-        value: formattedValue,
-      }
-    });
-  };
+  // const updateFormState = (name, formattedValue) => {
+  //   handleChangeFormState({
+  //     target: {
+  //       name,
+  //       value: formattedValue,
+  //     }
+  //   });
+  // };
 
-  const { value: formattedServiceCharge, handleChange: handleServiceChargeChange } = usePercentageInput(
-    formState.service_charge,
-    (formattedValue) => updateFormState('service_charge', formattedValue)
-  );
+  // const { value: formattedServiceCharge, handleChange: handleServiceChargeChange } = usePercentageInput(
+  //   formState.service_charge, (formattedValue) => updateFormState('service_charge', formattedValue)
+  // );
 
   return (
     <div className="category">
@@ -61,8 +61,8 @@ export default function DataPagamento() {
           type="number"
           className="expires_time"
           name="time_pay"
-          onChange={(e) => setFormState({ ...formStateUm, time_pay: e.target.value })} 
-          value={formStateUm.time_pay || ''}
+          onChange={(e) => setFormState({ ...formStateUm, rifa_payment: {...formStateUm?.rifa_payment, time_pay: e.target.value} })} 
+          value={formStateUm?.rifa_payment?.time_pay || ''}
 
           required
         />
@@ -73,8 +73,8 @@ export default function DataPagamento() {
         <select
           id="gateway"
           name="gateway"
-          onChange={(e) => setFormState({ ...formStateUm, gateway: e.target.value })} 
-          value={formStateUm.gateway || 'mercadopago'}
+          onChange={(e) => setFormState({ ...formStateUm, rifa_payment: {...formStateUm?.rifa_payment , gateway: e.target.value} })} 
+          value={formStateUm?.rifa_payment?.gateway || 'mercadopago'}
 
           required
         >
@@ -84,13 +84,18 @@ export default function DataPagamento() {
 
       <label htmlFor="tax">
         Taxa de Serviço
-        <input
+        <NumericFormat
           type="text"
           className="tax"
           name="service_charge"
           id="tax"
-          value={formattedServiceCharge}
-          onChange={handleServiceChargeChange}
+          suffix="%"
+          decimalSeparator=","
+          thousandSeparator="."
+          fixedDecimalScale
+          allowNegative={false}
+          onValueChange={(values) => setFormState((prevPacote) => ({...prevPacote, rifa_payment: {...prevPacote?.rifa_payment, service_charge: values.floatValue} }))}
+          value={formStateUm?.rifa_payment?.service_charge || ''}
         />
       </label>
 
@@ -100,8 +105,10 @@ export default function DataPagamento() {
           type="text"
           name="text_service_charge"
           maxLength="20"
-          onChange={(e) => setFormState({ ...formStateUm, text_service_charge: e.target.value })} 
-          value={formStateUm.text_service_charge || ''}
+          // onChange={(e) => setFormState({ ...formStateUm, text_service_charge: e.target.value })} 
+          value={formStateUm?.rifa_payment?.text_service_charge || ''}
+
+          onChange={(e) => setFormState({ ...formStateUm, rifa_payment: {...formStateUm?.rifa_payment, text_service_charge : e.target.value} })} 
         />
       </label>
     </div>

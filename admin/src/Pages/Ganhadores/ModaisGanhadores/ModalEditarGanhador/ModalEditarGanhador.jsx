@@ -75,12 +75,7 @@ export default function ModalEditarGanhador({setAtualizaTabela}) {
   const { handleFileChange } = useImageUpload(setNovoGanhador, novoGanhador);
   const idModal = useRecoilValue(stateIdModal);
   const setNovoGanhadorInfo = useSetRecoilState(stateNovoGanhadorInfo);
-  const userLogin = useRecoilValue(stateUserLogin);
-
-  console.log('DADOS EDITADOS', novoGanhador)
-
-  console.log(idModal.client.cellphone)
-  
+  const userLogin = useRecoilValue(stateUserLogin);  
 
   useEffect(() => {
     const obterDados = async () => {
@@ -101,8 +96,6 @@ export default function ModalEditarGanhador({setAtualizaTabela}) {
     try {
       const response = await putDados("admin/dashboard/editar/ganhador", novoGanhador, userLogin);
 
-      console.log('DADOS ENVIADOS:', novoGanhador)
-
       setNovoGanhadorInfo(response.data);
       setNovoGanhador('');
 
@@ -112,7 +105,6 @@ export default function ModalEditarGanhador({setAtualizaTabela}) {
 
     } catch (error) {
       console.error("Erro ao enviar dados:", error);
-      console.log('DADOS ENVIADOS:', novoGanhador)
     }
   };
 

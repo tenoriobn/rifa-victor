@@ -103,8 +103,6 @@ export default function FiltroUsuarioTable() {
   const infoCota = infoCotaSorteada.data?.data;
   const numeroVencedor = infoCotaSorteada.search;
 
-  console.log('infoCota', infoCota);
-
   return (
     <div className="">
       <Table>

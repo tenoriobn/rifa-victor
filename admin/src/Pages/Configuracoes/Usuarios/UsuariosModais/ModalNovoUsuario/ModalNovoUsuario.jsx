@@ -66,15 +66,12 @@ export default function ModalNovoUsuario({setAtualizaTabela}) {
   const [novoUsuario, setNovoUsuario] = useRecoilState(stateNovoUsuario);
   const userLogin = useRecoilValue(stateUserLogin);
   const userDate = useRecoilValue(stateUserDate);
-
-  console.log(novoUsuario)
   
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await postDados('/admin/user/register', novoUsuario, userLogin);
-      console.log('aqui dentro', response)
+      await postDados('/admin/user/register', novoUsuario, userLogin);
       setOpenModalAdicionarUsuario(false)
       setAtualizaTabela(true);
       setNovoUsuario('');

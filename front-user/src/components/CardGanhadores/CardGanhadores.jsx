@@ -7,12 +7,16 @@ import { useEffect, useState } from 'react';
 import { fetchDados } from '../../common/http/http';
 import CardAviso from '../CardAviso/CardAviso';
 import AvisoCarregando from '../AvisoCarregando/AvisoCarregando';
+import useFormattedDate from '../../common/state/hooks/useFormattedDate/useFormattedDate ';
 
 export default function CardGanhadores() {
   const [ganhadores, setGanhadores] = useRecoilState(estadoGanhadores);
   const [loading, setLoading] = useState(true);
   const [erroConexao, setErroConexao] = useState(false);
   const setProdutoSelecionado = useSetRecoilState(estadoProdutoSelecionado);
+  const { formattedDate } = useFormattedDate();
+
+  console.log('ganhadores', ganhadores)
 
   useEffect(() => {
     const obterDados = async () => {
@@ -58,7 +62,7 @@ export default function CardGanhadores() {
                 onClick={() => setProdutoSelecionado(ganhadores)}
               >
                 <img 
-                  className="w-[80px] m-2 rounded-lg object-fill transition-all" 
+                  className="w-[80px] h-20 m-2 rounded-lg object-fill transition-all" 
                   src={`../../../public/imgRifas/${ganhadores?.img}`}
                   alt="Foto do ganhador"
                 />
@@ -81,7 +85,7 @@ export default function CardGanhadores() {
                   <div className='flex items-center gap-2'>
                     <Calendario className="icon text-amber-500" />
                     <p className="text-sm text-neutral-600 text-left truncate">Data do Sorteio: </p>
-                    <p className="text-sm font-semibold text-zinc-700">{ganhadores?.draw_day}</p>
+                    <p className="text-sm font-semibold text-zinc-700">{formattedDate(ganhadores?.rifa?.end_rifa)}</p>
                   </div>
                 </div>
               </Link>

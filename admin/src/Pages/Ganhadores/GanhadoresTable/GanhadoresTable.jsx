@@ -44,7 +44,7 @@ const Table = styled.table`
 
   .ganhador img {
     max-width: 200px;
-    max-height: 139px;
+    max-height: 112px;
     object-fit: cover;
     width: 100%;
     border-radius: .375rem;

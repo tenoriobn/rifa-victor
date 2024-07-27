@@ -66,8 +66,6 @@ export default function ModalEditarPacote() {
   const setTabelaPacotesInfo = useSetRecoilState(stateTabelaPacotesInfo);
   const [openModalEditarPacote, setOpenModalEditarPacote] = useRecoilState(stateOpenModalEditarPacote);
 
-  console.log('pacote', pacote)
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setPacote((prevValues) => ({

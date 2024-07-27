@@ -68,11 +68,9 @@ export default function ModalAdicionarPagamento({setAtualizaTabela}) {
     event.preventDefault();
 
     try {
-      const response = await postDados("admin/dashboard/payment/make", formConfigPagamento);
+      await postDados("admin/dashboard/payment/make", formConfigPagamento);
 
       setAtualizaTabela(true);
-      
-      console.log('response', response)
 
       setOpenModalAdicionarConfPagamento(false);
 

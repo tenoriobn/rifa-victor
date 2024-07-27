@@ -8,8 +8,6 @@ import { NumericFormat } from "react-number-format";
 export default function Cotas() {
   const { formState, handleChange: handleChangeFormState } = useFormState();
   const [formStateUm, setFormState] = useRecoilState(stateInfoRifaForm);
-
-  console.log(formState)
   
   const updateFormState = (name, formattedValue) => {
     handleChangeFormState({
@@ -36,8 +34,9 @@ export default function Cotas() {
         <NumericFormat
           className="qtd"
           id="number_of_numbers"
-          value={formStateUm.qntd_cota || ""}
-          onValueChange={(values) => setFormState((prevPacote) => ({...prevPacote, qntd_cota: values.floatValue }))}
+          value={formStateUm?.cota?.qntd_cota || ""}
+          // onValueChange={(values) => setFormState((prevPacote) => ({...prevPacote, qntd_cota: values.floatValue }))}
+          onValueChange={(values) => setFormState((prevPacote) => ({...prevPacote, cota: {...prevPacote?.cota, qntd_cota: values.floatValue} }))}
           name="qntd_cota"
           maxLength="20"
           decimalScale={2}
@@ -47,6 +46,12 @@ export default function Cotas() {
           allowNegative={false}
           required
         />
+
+
+        {/* <input type="text" 
+          value={formStateUm?.cota?.qntd_cota || ""}
+          onChange={(e) => setFormState({...formStateUm, cota:{...formStateUm.cota, qntd_cota: e.target.value} })}
+        /> */}
       </label>
 
       <label htmlFor="price">
@@ -69,8 +74,8 @@ export default function Cotas() {
             className="qtd_max"
             name="qntd_cota_min_order"
             id="qntd_cota_min_order"
-            value={formStateUm.qntd_cota_min_order || ""}
-            onValueChange={(values) => setFormState((prevPacote) => ({...prevPacote, qntd_cota_min_order: values.floatValue }))}
+            value={formStateUm?.cota?.qntd_cota_min_order || ""}
+            onValueChange={(values) => setFormState((prevPacote) => ({...prevPacote, cota: {...prevPacote?.cota, qntd_cota_min_order: values.floatValue} }))}
             minLength="1"
             maxLength="6"
             decimalScale={2}
@@ -88,8 +93,10 @@ export default function Cotas() {
             className="qtd_max"
             name="qntd_cota_max_order"
             id="qntd_cota_max_order"
-            value={formStateUm.qntd_cota_max_order || ""}
-            onValueChange={(values) => setFormState((prevPacote) => ({...prevPacote, qntd_cota_max_order: values.floatValue }))}
+            value={formStateUm.cota?.qntd_cota_max_order || ""}
+            // onValueChange={(values) => setFormState((prevPacote) => ({...prevPacote, qntd_cota_max_order: values.floatValue }))}
+
+            onValueChange={(values) => setFormState((prevPacote) => ({...prevPacote, cota: {...prevPacote?.cota, qntd_cota_max_order: values.floatValue} }))}
             maxLength="6"
             minLength="1"
             decimalScale={2}
@@ -107,8 +114,10 @@ export default function Cotas() {
             className="qtd_max"
             name="qntd_cota_max_client"
             id="qntd_cota_max_client"
-            value={formStateUm.qntd_cota_max_client || ""}
-            onValueChange={(values) => setFormState((prevPacote) => ({...prevPacote, qntd_cota_max_client: values.floatValue }))}
+            value={formStateUm.cota?.qntd_cota_max_client || ""}
+            // onValueChange={(values) => setFormState((prevPacote) => ({...prevPacote, qntd_cota_max_client: values.floatValue }))}
+
+            onValueChange={(values) => setFormState((prevPacote) => ({...prevPacote, cota: {...prevPacote?.cota, qntd_cota_max_client: values.floatValue} }))}
             maxLength="10"
             minLength="1"
             decimalScale={2}

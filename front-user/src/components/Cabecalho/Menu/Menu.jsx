@@ -62,8 +62,8 @@ export default function Menu() {
                   key={to}
                   to={to}
                   onClick={() => {
-                    setEsmaecendoFechar(true);
-                    setTimeout(() => setMenuAtivo(false), 290);
+                    // setEsmaecendoFechar(true);
+                    setTimeout(() => setMenuAtivo(false), 0);
                   }}
                   className={`flex items-center gap-4 hover:text-neutral-100 transition-all duration-300 stroke-neutral-400 hover:stroke-neutral-100 ${
                     location.pathname === to ? 'text-neutral-100' : ''

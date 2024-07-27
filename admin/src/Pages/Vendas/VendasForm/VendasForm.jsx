@@ -54,10 +54,6 @@ export default function VendasForm() {
   const [vendasOrderFilter, setVendasOrderFilter] = useRecoilState(stateVendasOrderFilter);
   const [dadosVendas, setDadosVendas] = useRecoilState(stateDadosVendas)
 
-  console.log(dadosVendas)
-
-  console.log('vendasOrderFilter', vendasOrderFilter)
-
   const handleSubmit = async (e) => {
     if (e) e.preventDefault();
     try {

@@ -31,8 +31,6 @@ export default function RifasCotas() {
     const response = await fetchDados(`/admin/dashboard/bilhete-premiado/all/${id}?page=${page}`, userLogin);
     setTabelaCotasInfo(response.data.data);
 
-    console.log('response', response)
-
     setPagination(response.data);
   };
 
@@ -41,7 +39,6 @@ export default function RifasCotas() {
     if (id) {
       obterDados(currentPage);
     }
-    // console.log('response ',response.data);
   }, [currentPage]);
 
   const handleOpenModalAdicionarCota = () => {

@@ -13,8 +13,8 @@ export default function Campanhas() {
           type="text" 
           id="pixels" 
           name="facebook_pixel" 
-          onChange={(e) => setFormState({ ...formState, facebook_pixel: e.target.value })} 
-          value={formState.facebook_pixel || ''}
+          onChange={(e) => setFormState({ ...formState, rifa_others:{...formState?.rifa_others, facebook_pixel: e.target.value} })} 
+          value={formState?.rifa_others?.facebook_pixel || ''}
         />
       </label>
 
@@ -24,8 +24,8 @@ export default function Campanhas() {
           type="text" 
           id="fb_token" 
           name="facebook_token" 
-          onChange={(e) => setFormState({ ...formState, facebook_token: e.target.value })} 
-          value={formState.facebook_token || ''}
+          onChange={(e) => setFormState({ ...formState, rifa_others: {...formState?.rifa_others, facebook_token: e.target.value} })} 
+          value={formState?.rifa_others?.facebook_token || ''}
         />
       </label>
 
@@ -35,8 +35,8 @@ export default function Campanhas() {
           type="text" 
           id="tiktokpix" 
           name="tiktok_pixel" 
-          onChange={(e) => setFormState({ ...formState, tiktok_pixel: e.target.value })} 
-          value={formState.tiktok_pixel || ''}
+          onChange={(e) => setFormState({ ...formState, rifa_others: {...formState?.rifa_others, tiktok_pixel: e.target.value} })} 
+          value={formState?.rifa_others?.tiktok_pixel || ''}
         />
       </label>
     </div>

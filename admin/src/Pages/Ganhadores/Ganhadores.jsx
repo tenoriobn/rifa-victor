@@ -1,8 +1,9 @@
-import { useRecoilState } from "recoil";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useRecoilState, useSetRecoilState, useResetRecoilState } from "recoil";
 import { Main } from "../../components/AdminLayout/AdminLayout";
 import Header, { LinkItem } from "../../components/Header/Header";
 import GanhadoresTable from "./GanhadoresTable/GanhadoresTable";
-import { stateOpenModalNovoGanhador, stateOpenModalEditarGanhador, stateNovoGanhadorInfo } from "../../common/states/atom";
+import { stateOpenModalNovoGanhador, stateOpenModalEditarGanhador, stateNovoGanhadorInfo, stateNovoGanhador } from "../../common/states/atom";
 import ModalEditarGanhador from "./ModaisGanhadores/ModalEditarGanhador/ModalEditarGanhador";
 import ModalNovoGanhador from "./ModaisGanhadores/ModalNovoGanhador/ModalNovoGanhador";
 import Modal from "../../components/Modal/Modal";
@@ -12,13 +13,13 @@ import { fetchDados } from "../../common/http/http";
 export default function Ganhadores() {
   const [openModalNovoGanhador, setOpenModalNovoGanhador] = useRecoilState(stateOpenModalNovoGanhador);
   const [openModalEditarGanhador, setOpenModalEditarGanhador] = useRecoilState(stateOpenModalEditarGanhador);
-  const [novoGanhadorInfo, setNovoGanhadorInfo] = useRecoilState(stateNovoGanhadorInfo);
+  const setNovoGanhadorInfo = useSetRecoilState(stateNovoGanhadorInfo);
   const [atualizaTabela, setAtualizaTabela] = useState(false);
+  const resetInputSorteio = useResetRecoilState(stateNovoGanhador);
 
   const obterDados = async () => {
     const response = await fetchDados(`/produtos/todos/ganhadores/`);
     setNovoGanhadorInfo(response.data);
-    console.log('response.data', response.data);
   };
 
   useEffect(() => {
@@ -32,12 +33,17 @@ export default function Ganhadores() {
     }
   }, [atualizaTabela]);
 
+  const handleClearState = () => {
+    setOpenModalNovoGanhador(!openModalNovoGanhador);
+    resetInputSorteio();
+  }
+
   return (
     <section>
       <Header>
         <h2><i className="fa-solid fa-users"></i> GANHADORES</h2>
 
-        <LinkItem className="button-new" onClick={() => setOpenModalNovoGanhador(!openModalNovoGanhador)}>
+        <LinkItem className="button-new" onClick={() => handleClearState()}>
           <i className="fas fa-plus"></i> Novo
         </LinkItem>
       </Header>

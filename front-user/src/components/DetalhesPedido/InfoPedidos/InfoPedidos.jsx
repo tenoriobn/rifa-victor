@@ -1,6 +1,6 @@
 import Whatsapp from "../../../assets/Icons/whatsapp.svg?react";
 import { useRecoilValue } from "recoil";
-import { estadoCheckoutInfo, stateSiteConfig } from "../../../common/state/atom";
+import { estadoCheckoutInfo } from "../../../common/state/atom";
 import useCurrencyFormat from "../../../common/state/hooks/useCurrencyFormat/useCurrencyFormat";
 import useFormattedDate from "../../../common/state/hooks/useFormattedDate/useFormattedDate ";
 import usePhoneFormat from "../../../common/state/hooks/usePhoneFormat/usePhoneFormat";
@@ -9,9 +9,12 @@ export default function InfoPedidos() {
   const checkoutInfo = useRecoilValue(estadoCheckoutInfo);
   const { formattedDate } = useFormattedDate();
   const { formatCurrency } = useCurrencyFormat();
-  const siteConfig = useRecoilValue(stateSiteConfig);
+  // const siteConfig = useRecoilValue(stateSiteConfig);
   const { formatPhone } = usePhoneFormat();
-  const formattedPhone = formatPhone(siteConfig.helpdesk_url);
+
+  // console.log('checkoutInfo', checkoutInfo.rifa.rifa_others.whatsapp_group)
+
+  const formattedPhone = formatPhone(checkoutInfo.rifa.rifa_others.whatsapp_group);
 
   const informacoes = [
     { label: '🔢 Código:', value: checkoutInfo?.cod },

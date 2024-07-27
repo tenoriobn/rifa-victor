@@ -74,8 +74,7 @@ export default function ModalEditarCotaPremiada() {
 
       setOpenModalEditarCotaPremiada(!openModalEditarCotaPremiada)
       setTabelaCotasInfo(response.data.data)
-      
-      console.log(response.data)
+
     } catch (error) {
       console.error('Erro ao fazer POST:', error);
     }

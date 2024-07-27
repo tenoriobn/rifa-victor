@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react-hooks/exhaustive-deps */
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
@@ -96,7 +97,6 @@ export default function ModalAdicionarUpsell({setAtualizaTabela}) {
       const response = await postDados('/admin/dashboard/upsell/cadastrar', upsellInfo, userLogin);
 
       setAtualizaTabela(true);
-      console.log('aqui dentro', upsellInfo)
       
       setUpsellInfoTable(response.data)
       setOpenModalAdicionarUpsell(false)

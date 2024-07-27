@@ -127,15 +127,12 @@ export default function Login() {
       };
 
       const response = await postDados('/admin/user/login', dadosLogin);
-      
-      console.log('aqui')
-
+    
       if (response && response.token) {
         salvarToken(response.token); 
         setUserLogin(response.token); 
         navigate('/dashboard');
       } else {
-        console.log('aqui')
         throw new Error('Token não encontrado na resposta.');
       }
 

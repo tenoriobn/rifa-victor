@@ -80,8 +80,7 @@ export default function AdicionarCota() {
 
       setTabelaCotasInfo(response.data.data)
       setOpenModalAdicionarCota(!openModalAdicionarCota)
-      
-      console.log(response.data)
+
     } catch (error) {
       console.error('Erro ao fazer POST:', error);
     }

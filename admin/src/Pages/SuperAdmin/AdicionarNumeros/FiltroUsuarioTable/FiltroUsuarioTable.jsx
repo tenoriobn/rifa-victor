@@ -103,8 +103,6 @@ export default function FiltroUsuarioTable() {
   const { formattedDate } = useFormattedDate();
   // const tituloRifa = infoAdicionarNumeros.selectSearch.title;
 
-  console.log('infoAdicionarNumeros', infoAdicionarNumeros)
-
   return (
     <div className="">
       <Table>

@@ -67,8 +67,6 @@ export default function UsuariosForm() {
     try {
       const response = await postDados('/admin/dashboard/todos/usuarios/filtro', orderFilter);
       setUsuarioInfoTable(response.data);
-
-      console.log('response', response)
     } catch (error) {
       console.error("There was an error fetching the data!", error);
     }

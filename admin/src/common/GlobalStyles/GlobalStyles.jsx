@@ -34,18 +34,18 @@ const GlobalStyles = createGlobalStyle`
 
   ::-webkit-scrollbar {
     width: 8px;
-    height: 6px;
+    height: 10px;
   }
 
   ::-webkit-scrollbar-thumb {
-    background-color: #292727;
+    background-color: #2e2e36;
     padding: 10px;
     border-radius: 10px;
     transition: all .3s ease-in-out;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: #292727;
+    background: #2e2e36;
   }
 
   ::-webkit-scrollbar-track {

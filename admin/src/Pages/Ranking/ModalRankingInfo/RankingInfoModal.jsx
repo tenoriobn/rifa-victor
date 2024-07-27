@@ -20,8 +20,6 @@ const ClientInfoModalContainer = styled.div`
 export default function ModalRankingInfo() {
   const rankingInfoModal = useRecoilValue(stateRankingInfoModal);
 
-  console.log("whatsapp:", `https://wa.me/${rankingInfoModal?.client?.cellphone}`)
-
   const formatPhoneNumber = (number) => {
     const cleanedNumber = number.replace(/\D/g, '');
   
