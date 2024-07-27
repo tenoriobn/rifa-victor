@@ -155,8 +155,8 @@ export const stateInfoRifaForm = atom({
     text_service_charge: "",
 
     // SomenteEditar
-    double_quota: "nao",
-    double_quota_text: "",
+    cotas_double: "nao",
+    text_cotas_double: "",
     // SomenteEditar
     title_cotas_awarded: "",
     description_cotas_awarded: "",
@@ -169,7 +169,7 @@ export const stateInfoRifaForm = atom({
 
     whatsapp_group: "",
     link_ebook: "",
-    nota_fiscal: "sim",
+    nota_fiscal: "nao",
 
     description_product: "",
     description_sortition: "",

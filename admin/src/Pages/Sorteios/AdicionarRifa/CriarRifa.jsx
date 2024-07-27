@@ -109,7 +109,6 @@ export default function AdicionarRifa() {
 
     try {
       await postDados('/admin/dashboard/rifas/cadastrar', formState, userLogin);
-      // navigate("dashboard/rifas/")
 
       setTimeout(() => {
         navigate("/dashboard/rifas/");

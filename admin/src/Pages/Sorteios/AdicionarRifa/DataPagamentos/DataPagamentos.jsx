@@ -1,7 +1,10 @@
 import useFormState from '../../../../common/states/Hook/CriarRifa/CriarRifa';
 import usePercentageInput from '../../../../common/states/Hook/CriarRifa/usePercentageMask';
+import { useRecoilState } from "recoil";
+import { stateInfoRifaForm } from '../../../../common/states/atom';
 
 export default function DataPagamento() {
+  const [formStateUm, setFormState] = useRecoilState(stateInfoRifaForm);
   const { formState, handleChange: handleChangeFormState } = useFormState();
 
   const updateFormState = (name, formattedValue) => {
@@ -27,8 +30,8 @@ export default function DataPagamento() {
         <input
           type="datetime-local"
           name="data_sortition"
-          value={formState.data_sortition}
-          onChange={handleChangeFormState}
+          onChange={(e) => setFormState({ ...formStateUm, data_sortition: e.target.value })} 
+          value={formStateUm.data_sortition || ''}
         />
       </label>
 
@@ -37,8 +40,8 @@ export default function DataPagamento() {
         <input
           type="datetime-local"
           name="initial_sale"
-          value={formState.initial_sale}
-          onChange={handleChangeFormState}
+          onChange={(e) => setFormState({ ...formStateUm, initial_sale: e.target.value })} 
+          value={formStateUm.initial_sale || ''}
         />
       </label>
 
@@ -47,8 +50,8 @@ export default function DataPagamento() {
         <input
           type="datetime-local"
           name="end_sale"
-          value={formState.end_sale}
-          onChange={handleChangeFormState}
+          onChange={(e) => setFormState({ ...formStateUm, end_sale: e.target.value })} 
+          value={formStateUm.end_sale || ''}
         />
       </label>
 
@@ -58,8 +61,9 @@ export default function DataPagamento() {
           type="number"
           className="expires_time"
           name="time_pay"
-          value={formState.time_pay}
-          onChange={handleChangeFormState}
+          onChange={(e) => setFormState({ ...formStateUm, time_pay: e.target.value })} 
+          value={formStateUm.time_pay || ''}
+
           required
         />
       </label>
@@ -69,8 +73,9 @@ export default function DataPagamento() {
         <select
           id="gateway"
           name="gateway"
-          value={formState.gateway}
-          onChange={handleChangeFormState}
+          onChange={(e) => setFormState({ ...formStateUm, gateway: e.target.value })} 
+          value={formStateUm.gateway || 'mercadopago'}
+
           required
         >
           <option value="mercadopago">MercadoPago</option>
@@ -95,8 +100,8 @@ export default function DataPagamento() {
           type="text"
           name="text_service_charge"
           maxLength="20"
-          value={formState.text_service_charge}
-          onChange={handleChangeFormState}
+          onChange={(e) => setFormState({ ...formStateUm, text_service_charge: e.target.value })} 
+          value={formStateUm.text_service_charge || ''}
         />
       </label>
     </div>

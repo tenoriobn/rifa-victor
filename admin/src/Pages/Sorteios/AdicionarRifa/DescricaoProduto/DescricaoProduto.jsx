@@ -1,8 +1,9 @@
 import { Editor } from '@tinymce/tinymce-react';
-import useFormState from '../../../../common/states/Hook/CriarRifa/CriarRifa';
+import { stateInfoRifaForm } from '../../../../common/states/atom';
+import { useRecoilState } from "recoil";
 
 export default function DescricaoProduto() {
-  const { formState, handleChange } = useFormState();
+  const [formState, setFormState] = useRecoilState(stateInfoRifaForm);
 
   return (
     <div className="category">
@@ -33,7 +34,7 @@ export default function DescricaoProduto() {
           ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
         }}
         value={formState.description_product} // Use o valor do estado atual como valor
-        onEditorChange={(content) => handleChange({ target: { name: 'description_product', value: content } })} // Atualiza o estado usando handleChange
+        onEditorChange={(content) => setFormState({...formState, description_product: content })} // Atualiza o estado usando handleChange
       />
     </div>
   );

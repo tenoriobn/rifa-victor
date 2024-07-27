@@ -25,6 +25,8 @@ export default function ModalRegulamento() {
     return { __html: DOMPurify.sanitize(htmlString) };
   };
 
+  console.log('rifa.description_role', rifa.description_role)
+
 
   return (
     <>

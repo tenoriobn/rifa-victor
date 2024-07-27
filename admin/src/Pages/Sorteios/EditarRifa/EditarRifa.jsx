@@ -50,7 +50,7 @@ export default function EditarRifa() {
 
       console.log('flattenedData: ', flattenedData)
 
-      console.log('response', response.data)
+      console.log('response editar', response.data)
     };
     
     if (id) {
@@ -92,7 +92,7 @@ export default function EditarRifa() {
         <form action="" id="frmRaffle" className="dropzone" method="POST" onSubmit={handleSubmit}>
           <CategoryContainer className="category-container">
             <Geral />
-            <Cotas mostrarCampo={true} mostrarQtdNumeros={true} />
+            <Cotas />
             <DataPagamento />
             <Promocoes mostrarCampo={true} />
             <Campanhas />
