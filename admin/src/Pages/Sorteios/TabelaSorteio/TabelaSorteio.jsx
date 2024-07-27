@@ -150,7 +150,6 @@ const Table = styled.table`
     display: block;
   }
 
-  
   ::-webkit-scrollbar {
     width: 8px;
     height: 6px;
@@ -165,8 +164,6 @@ export default function TabelaSorteio() {
   const { formattedDate } = useFormattedDate();
   const { formatCurrency } = useCurrencyFormatTable();
   const { formatPercentage } = useFormatPercentage();
-
-  console.log('sorteios', sorteios)
 
   useEffect(() => {
     const obterDados = async () => {
