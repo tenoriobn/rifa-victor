@@ -13,11 +13,13 @@ export default function InfoPedidos() {
   const { formatPhone } = usePhoneFormat();
   const formattedPhone = formatPhone(siteConfig.helpdesk_url);
 
+  console.log('checkoutInfo', checkoutInfo)
+
   const informacoes = [
-    { label: '🔢 Código:', value: checkoutInfo.cod },
-    { label: '🛍 Total de Cotas:', value: checkoutInfo.qntd_number },
+    { label: '🔢 Código:', value: checkoutInfo?.cod },
+    { label: '🛍 Total de Cotas:', value: checkoutInfo?.qntd_number },
     { label: '➕ Taxa:', value: formatCurrency(checkoutInfo?.rifa?.rifa_payment?.service_charge) },
-    { label: '💲 Total:', value: formatCurrency(checkoutInfo.value), class: "font-bold" }
+    { label: '💲 Total:', value: formatCurrency(checkoutInfo?.value), class: "font-bold" }
   ];
 
   return (
@@ -30,28 +32,28 @@ export default function InfoPedidos() {
           </p>
         ))}
         
-        {checkoutInfo.status === 0 &&
+        {checkoutInfo?.status === 0 &&
           <div className="mt-4 flex gap-2 text-neutral-700">
             <p className="font-bold">⚠ Status:</p>
             <p className="text-amber-500">Aguardando pagamento</p>
           </div>
         }
 
-        {checkoutInfo.status === 1 &&
+        {checkoutInfo?.status === 1 &&
           <div className="mt-4 flex gap-2 text-neutral-700">
             <p className="font-bold">✅ Status:</p>
             <p className="text-emerald-500">Finalizado</p>
           </div>
         }
 
-        {checkoutInfo.status === 2 &&
+        {checkoutInfo?.status === 2 &&
           <div className="mt-4 flex gap-2 text-neutral-700">
             <p className="font-bold">❌ Status:</p>
             <p className="text-red-500">Cancelado</p>
           </div>
         }
 
-        {checkoutInfo.status === 1 &&
+        {checkoutInfo?.status === 1 &&
           <div className="flex gap-2 text-neutral-700">
             <div className="font-bold">🗓 Pago em:</div>
             <div>{formattedDate(checkoutInfo.updated_at)}</div>

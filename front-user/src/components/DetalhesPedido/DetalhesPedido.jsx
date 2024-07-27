@@ -48,11 +48,11 @@ export default function DetalhesPedido() {
 
         <InfoPedidos /> 
 
-      {checkoutInfo.status === 0 &&  
+      {checkoutInfo?.status === 0 &&  
         <ModoPagamento />
       }
 
-      {checkoutInfo.status === 1 &&  
+      {checkoutInfo?.status === 1 &&  
         <NumerosBilhetes />
       }
 
