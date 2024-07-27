@@ -66,8 +66,6 @@ export default function ModalEditarUsuario({setAtualizaTabela}) {
   const setOpenModalEditarUsuario = useSetRecoilState(stateOpenModalEditarUsuario);
   const userLogin = useSetRecoilState(stateUserLogin);
 
-  console.log(editarUsuario)
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -127,7 +125,6 @@ export default function ModalEditarUsuario({setAtualizaTabela}) {
           maxLength="20"
           value={editarUsuario.password || ''}
           onChange={(e) => setEditarUsuario({ ...editarUsuario, password: e.target.value })} 
-          required
         />
       </label>
 

@@ -69,11 +69,7 @@ export default function ModalEditarPagamento({setAtualizaTabela}) {
     event.preventDefault();
 
     try {
-      const response = await putDados("admin/dashboard/payment/update", formConfigPagamento, userLogin);
-      console.log('response', response)
-
-      console.log('DADOS ENVIADOS:', formConfigPagamento)
-
+      await putDados("admin/dashboard/payment/update", formConfigPagamento, userLogin);
       setFormConfigPagamento('');
 
       setAtualizaTabela(true);
@@ -82,7 +78,6 @@ export default function ModalEditarPagamento({setAtualizaTabela}) {
 
     } catch (error) {
       console.error("Erro ao enviar dados:", error);
-      console.log('DADOS ENVIADOS:', formConfigPagamento)
     }
   };
 

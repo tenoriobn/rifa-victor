@@ -1,5 +1,5 @@
-import { useRecoilState } from "recoil";
-import { stateOpenModalAcoesSorteio } from "../../common/states/atom";
+import { useRecoilState, useResetRecoilState } from "recoil";
+import { stateInfoRifaForm, stateOpenModalAcoesSorteio } from "../../common/states/atom";
 import { Main } from "../../components/AdminLayout/AdminLayout";
 import Header, { LinkItem } from "../../components/Header/Header";
 import Modal from "../../components/Modal/Modal";
@@ -10,12 +10,15 @@ import TabelaSorteio from "./TabelaSorteio/TabelaSorteio";
 
 export default function Sorteios() {
   const [openModalAcoesSorteio, setOpenModalAcoesSorteio] = useRecoilState(stateOpenModalAcoesSorteio);
+  const resetInputSorteio = useResetRecoilState(stateInfoRifaForm);
 
   return (
     <div>
       <Header>
         <h2><i className="fa-solid fa-dice"></i> SORTEIOS</h2>
-        <LinkItem to="/dashboard/rifas/adicionar" className="button-new">
+        <LinkItem to="/dashboard/rifas/adicionar" className="button-new"
+          onClick={() => resetInputSorteio()}
+        >
           <i className="fas fa-plus"></i> Novo
         </LinkItem>
       </Header>

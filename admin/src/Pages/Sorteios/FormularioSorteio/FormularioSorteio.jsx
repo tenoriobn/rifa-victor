@@ -87,8 +87,6 @@ export default function FormularioSorteio() {
   const [filtroSorteio, setFiltroSorteio] = useRecoilState(stateFiltroSorteio);
   const setSorteios = useSetRecoilState(stateTabelaSorteioInfo);
 
-  console.log(filtroSorteio)
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {

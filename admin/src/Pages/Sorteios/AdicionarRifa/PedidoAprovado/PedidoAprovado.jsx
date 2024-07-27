@@ -1,8 +1,11 @@
 import { Editor } from '@tinymce/tinymce-react';
-import useFormState from '../../../../common/states/Hook/CriarRifa/CriarRifa';
+// import useFormState from '../../../../common/states/Hook/CriarRifa/CriarRifa';
+import { stateInfoRifaForm } from '../../../../common/states/atom';
+import { useRecoilState } from "recoil";
 
 export default function PedidoAprovado() {
-  const { formState, handleChange } = useFormState();
+  // const { formState, handleChange } = useFormState();
+  const [formState, setFormState] = useRecoilState(stateInfoRifaForm);
 
   return (
     <div className="category full-width">
@@ -33,7 +36,8 @@ export default function PedidoAprovado() {
           ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
         }}
         value={formState.description_order_approve} // Use o valor do estado atual como valor inicial
-        onEditorChange={(content) => handleChange({ target: { name: 'description_order_approve', value: content } })} // Atualiza o estado usando handleChange
+        // onEditorChange={(content) => handleChange({ target: { name: 'description_order_approve', value: content } })} // Atualiza o estado usando handleChange
+        onEditorChange={(content) => setFormState({...formState, description_order_approve: content })} // Atualiza o estado usando handleChange
       />
     </div>
   );

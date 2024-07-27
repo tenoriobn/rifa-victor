@@ -79,11 +79,9 @@ export default function ModalAdicionarBilhetePremiado({ onNotifySuccess, onNotif
     e.preventDefault();
 
     try {
-      const response = await postDados("/admin/dashboard/client/rifa/adicionar/bilhete-premiado", { cellphone: telefoneVencedor, numero_premiado: cotaPremiada, rifa_id: rifaId });
+      await postDados("/admin/dashboard/client/rifa/adicionar/bilhete-premiado", { cellphone: telefoneVencedor, numero_premiado: cotaPremiada, rifa_id: rifaId });
       setOpenModalAdicionarBilhetePremiado(false)
       onNotifySuccess('Bilhete adicionado com sucesso!');
-
-      console.log(response)
 
     } catch (error) {
       onNotifyError('Erro ao adicionar Bilhete:');

@@ -1,8 +1,11 @@
 import { Editor } from '@tinymce/tinymce-react';
-import useFormState from '../../../../common/states/Hook/CriarRifa/CriarRifa';
+// import useFormState from '../../../../common/states/Hook/CriarRifa/CriarRifa';
+import { stateInfoRifaForm } from '../../../../common/states/atom';
+import { useRecoilState } from "recoil";
 
 export default function Regulamento() {
-  const { formState, handleChange } = useFormState();
+  const [formState, setFormState] = useRecoilState(stateInfoRifaForm);
+  // const { formState, handleChange } = useFormState();
 
   return (
     <div className="category full-width">
@@ -33,7 +36,7 @@ export default function Regulamento() {
           ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
         }}
         value={formState.description_role} // Use o valor do estado atual como valor inicial
-        onEditorChange={(content) => handleChange({ target: { name: 'description_role', value: content } })} // Atualiza o estado usando handleChange
+        onEditorChange={(content) => setFormState({...formState, description_role: content })} // Atualiza o estado usando handleChange
       />
     </div>
   );

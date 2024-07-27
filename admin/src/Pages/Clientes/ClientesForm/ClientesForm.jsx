@@ -59,15 +59,10 @@ export default function ClientesForm() {
     try {
       const response = await postDados('/admin/dashboard/todos/clientes/filtro', filtro);
       setClientesInfo(response.data)
-
-      console.log(response)
     } catch (error) {
       console.error("There was an error fetching the data!", error);
     }
   };
-
-  console.log('filtro', filtro)
-  console.log('clientesInfo', clientesInfo)
 
   return (
         // onSubmit={handleSubmit}

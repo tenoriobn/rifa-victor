@@ -83,9 +83,6 @@ export default function ModalCotaPremiada() {
   const { formattedDate } = useFormattedDate();
   const { formatCurrency } = useCurrencyFormatTable();
 
-  console.log('pedidosInfoModalId', pedidosInfoModal)
-  console.log('pedidosInfoModalId', pedidosInfoModal?.rifa_number?.numbers)
-
   const numbersArray = (() => {
     try {
       // Verifica se `pedidosInfoModal.rifa_number.numbers` é uma string e não é `null` ou `undefined`

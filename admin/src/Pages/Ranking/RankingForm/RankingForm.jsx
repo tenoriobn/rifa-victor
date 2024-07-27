@@ -115,8 +115,6 @@ export default function RankingForm() {
   const [orderFilter, setOrderFilter] = useState({});
   const optionsRifa = useRecoilValue(stateOptionsRifa);
   const setRankingInfo =  useSetRecoilState(stateRankingInfoTable);
-
-  console.log('orderFilter', orderFilter)
   
   const handleCheckboxChange = (columnName) => {
     setVisibilidadeColunaTabelaRanking((prevVisibility) => ({

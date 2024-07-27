@@ -10,7 +10,7 @@ class RifaService
 {
     public function createRifas($datas)
     {
-        $rifasId = $datas->rifas_id ?? null;
+        $rifasId = $datas->id ?? null;
         $datas->user_id = Auth::user()->id ?? null;
 
         $rifaResult = Rifas::rifaCreateOrUpdate($datas->title ?? '', Str::slug($datas->title ?? ''), $datas->description_resume ?? '', $datas->show_site ?? 1, $datas->emphasis ?? '', $datas->show_top ?? '', $datas->video ?? '', $this->status($datas->status, $datas->initial_sale), $datas->price ?? 0, $datas->description_sortition ?? '', $datas->description_product ?? '', $datas->description_role ?? '', $datas->description_order_approve ?? '', $datas->data_sortition ?? null, $datas->initial_sale ?? null, $datas->end_sale ?? null,  $datas->end_rifa ?? null, $datas->user_id ?? null, $rifasId );
@@ -18,26 +18,26 @@ class RifaService
         if (!$rifaResult) {
             return false;
         }
-
-        $cota = Cotas::cotaCreateOrUpdate( $datas->qntd_cota ?? 0, $datas->qntd_cota_digit ?? 0,$datas->qntd_cota_min_order ?? 0, $datas->qntd_cota_max_order ?? 0, $datas->qntd_cota_max_client ?? 0, $rifaResult ?? $rifasId);
+    
+        $cota = Cotas::cotaCreateOrUpdate($datas->cota['qntd_cota'] ?? 0, $datas->cota['qntd_cota_digit'] ?? 0, $datas->cota['qntd_cota_min_order'] ?? 0, $datas->cota['qntd_cota_max_order'] ?? 0, $datas->cota['qntd_cota_max_client']   ?? 0, $rifaResult ?? $rifasId);
 
         if (!$cota) {
             return false;
         }
 
-        $awarded = RifasAwarded::rifasAwardedCreateOrUpdate( $datas->cotas_double ?? '', $datas->text_cotas_double ?? '', $datas->title_cotas_awarded ?? '', $datas->description_cotas_awarded ?? '', $datas->title_upsell ?? '', $datas->description_upsell ?? '', $rifaResult ?? $rifasId);
+        $awarded = RifasAwarded::rifasAwardedCreateOrUpdate( $datas->rifa_awarded['cotas_double'] ?? '', $datas->rifa_awarded['text_cotas_double'] ?? '', $datas->rifa_awarded['title_cotas_awarded'] ?? '', $datas->rifa_awarded['description_cotas_awarded'] ?? '', $datas->rifa_awarded['title_upsell'] ?? '', $datas->rifa_awarded['description_upsell'] ?? '', $rifaResult ?? $rifasId);
 
         if (!$awarded) {
             return false;
         }
 
-        $others = RifasOthers::rifasOthersCreateOrUpdate( $datas->facebook_pixel ?? '', $datas->facebook_token ?? '', $datas->tiktok_pixel ?? '', $datas->whatsapp_group ?? '', $datas->link_ebook ?? '', $datas->nota_fiscal ?? '', $rifaResult ?? $rifasId);
+        $others = RifasOthers::rifasOthersCreateOrUpdate( $datas->rifa_others['facebook_pixel'] ?? '', $datas->rifa_others['facebook_token'] ?? '', $datas->rifa_others['tiktok_pixel'] ?? '', $datas->rifa_others['whatsapp_group'] ?? '', $datas->rifa_others['link_ebook'] ?? '', $datas->rifa_others['nota_fiscal'] ?? '', $rifaResult ?? $rifasId);
 
         if (!$others) {
             return false;
         }
 
-        $payment = RifasPayment::rifasPaymentCreateOrUpdate( $datas->time_pay ?? '', $datas->gateway ?? '',  $datas->service_charge ?? '', $datas->text_service_charge ?? '',  $rifaResult ?? $rifasId);
+        $payment = RifasPayment::rifasPaymentCreateOrUpdate( $datas->rifa_payment['time_pay'] ?? '', $datas->rifa_payment['gateway'] ?? '',  $datas->rifa_payment['service_charge'] ?? '', $datas->rifa_payment['text_service_charge'] ?? '',  $rifaResult ?? $rifasId);
 
         if (!$payment) {
             return false;

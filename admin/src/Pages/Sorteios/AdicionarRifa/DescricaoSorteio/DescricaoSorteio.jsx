@@ -1,8 +1,11 @@
 import { Editor } from '@tinymce/tinymce-react';
-import useFormState from '../../../../common/states/Hook/CriarRifa/CriarRifa';
+// import useFormState from '../../../../common/states/Hook/CriarRifa/CriarRifa';
+import { stateInfoRifaForm } from '../../../../common/states/atom';
+import { useRecoilState } from "recoil";
 
 export default function DescricaoSorteio() {
-  const { formState, handleChange } = useFormState();
+  // const { formState, handleChange } = useFormState();
+  const [formState, setFormState] = useRecoilState(stateInfoRifaForm);
 
   return (
     <div className="category">
@@ -33,7 +36,9 @@ export default function DescricaoSorteio() {
           ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
         }}
         value={formState.description_sortition} // Use o valor do estado atual como valor inicial
-        onEditorChange={(content) => handleChange({ target: { name: 'description_sortition', value: content } })} // Atualiza o estado usando handleChange
+        // onEditorChange={(content) => handleChange({ target: { name: 'description_sortition', value: content } })} // Atualiza o estado usando handleChange
+        onEditorChange={(content) => setFormState({...formState, description_sortition: content })} // Atualiza o estado usando handleChange
+
       />
     </div>
   );

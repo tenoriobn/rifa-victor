@@ -34,8 +34,6 @@ export default function AcessoUsuario() {
 
   }, [id]);
 
-  console.log('range: ', valorRange)
-
   useEffect(() => {
     if (usuario?.id && finalizarPedido) {
       const dadosParaEnviar = {
@@ -77,8 +75,6 @@ export default function AcessoUsuario() {
   const handleClick = () => {
     setFinalizarPedido(true);
   };
-
-  console.log(erroCadastro)
 
   return (
     <motion.div {...animacao}>

@@ -134,16 +134,12 @@ export default function TabelaCotas() {
   }
 
   const handleDeletar = async (idCotaPremiada) => {
-    const rifa = { rifas_id: id };
-
-    console.log(rifa)
+    // const rifa = { rifas_id: id };
 
     const response = await deleteDados(`admin/dashboard/bilhete-premiado/delete/${idCotaPremiada}/${id}`, userLogin);
-    setTabelaCotasInfo(response.data);
+    setTabelaCotasInfo(response.data.data);
     setIdModal(idCotaPremiada);
   }
-
-  console.log(tabelaCotasInfo)
 
   return (
     <div>
@@ -170,7 +166,7 @@ export default function TabelaCotas() {
               <td><b>{cota.number_cota}</b></td>
               <td>{cota.award}</td>
               <td>
-                <span className={`status-tag ${cota.status === 'disponivel' ? 'status-available' : cota.status === 'imediato' ? 'status-rescued' : 'status-reserved'}`}>
+                <span className={`status-tag ${cota.status === 'disponivel' ? 'status-available' : cota.status === 'imediato' ? 'status-rescued': cota.status === 'resgatada' ? 'button-delete' : 'status-reserved'}`}>
                   {cota.status}
                 </span>
               </td>
@@ -183,6 +179,18 @@ export default function TabelaCotas() {
               <td>{formattedDate(cota.updated_at)}</td>
               <td>
                 <div className="button-group">
+                  <button className="action-button button-edit" 
+                    onClick={() => handleEditar(cota.id)}
+                  >
+                    <i className="fas fa-edit"></i> Editar
+                  </button>
+
+                  <button className="action-button button-delete" 
+                    onClick={() => handleDeletar(cota.id)}
+                  >
+                    <i className="fas fa-check-square"></i> Excluir
+                  </button>
+
                   {cota.status === "resgatada" && 
                     <button 
                       className="action-button button-view" 
@@ -192,19 +200,6 @@ export default function TabelaCotas() {
                     </button>
                   }
 
-                  <button className="action-button button-edit" 
-                    onClick={() => handleEditar(cota.id)}
-                  >
-                    <i className="fas fa-edit"></i> Editar
-                  </button>
-
-                  {cota.status !== "resgatada" &&
-                    <button className="action-button button-delete" 
-                      onClick={() => handleDeletar(cota.id)}
-                    >
-                      <i className="fas fa-check-square"></i> Excluir
-                    </button>
-                  }
                 </div>
               </td>
             </tr>

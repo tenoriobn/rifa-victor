@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import styled from "styled-components"
 import { fetchDados } from "../../../common/http/http";
 import { useEffect } from "react";
@@ -103,8 +104,6 @@ export default function VendasCardInfo() {
   useEffect(() => {
     obterDados();
   }, []);
-
-  console.log('dashBoardData1', dadosVendas)
 
   return (
     <DashboardItens>

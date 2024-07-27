@@ -129,52 +129,64 @@ export const stateOpenModalAdicionarBilhetePremiado = atom({
 export const stateInfoRifaForm = atom({
   key: 'stateInfoRifaForm',
   default: {
-    title: "",
-    description_resume: "",
-    show_site: "sim",
-    emphasis: "",
-    show_top: "sim",
-    video: "",
+    emphasis: "nao",
+    show_site :  "sim",
+    show_top: "nao",
+    rifa_payment: {
+      gateway: "mercadopago"
+    },
+    rifa_awarded: {
+      cotas_double: "nao"
+    },
+    rifa_others: {
+      nota_fiscal: "nao"
+    }
+    // title: "",
+    // description_resume: "",
+    // show_site: "sim",
+    // emphasis: "",
+    // show_top: "sim",
+    // video: "",
     
-    // SomenteEditar
-    qtd_cotas_geral: "",
-    qtd_digit_cotas: "",
-    // SomenteEditar
-    qntd_cota: "",
-    price: "",
-    qntd_cota_min_order: "",
-    qntd_cota_max_order: "",
-    qntd_cota_max_client: "",
+    // // SomenteEditar
+    // qtd_cotas_geral: "",
+    // qtd_digit_cotas: "",
+    // // SomenteEditar
+    // qntd_cota: "",
+    // price: "",
+    // qntd_cota_min_order: "",
+    // qntd_cota_max_order: "",
+    // qntd_cota_max_client: "",
 
-    data_sortition: "",
-    initial_sale: "",
-    end_sale: "",
-    time_pay: "",
-    gateway: "mercadopago", 
-    service_charge: "", 
-    text_service_charge: "",
+    // data_sortition: "",
+    // initial_sale: "",
+    // end_sale: "",
+    // time_pay: "",
+    // gateway: "mercadopago", 
+    // service_charge: "", 
+    // text_service_charge: "",
 
-    // SomenteEditar
-    double_quota: "nao",
-    double_quota_text: "",
-    // SomenteEditar
-    title_cotas_awarded: "",
-    description_cotas_awarded: "",
-    title_upsell: "",
-    description_upsell: "",
+    // // SomenteEditar
+    // cotas_double: "nao",
+    // text_cotas_double: "",
+    // // SomenteEditar
+    // title_cotas_awarded: "",
+    // description_cotas_awarded: "",
+    // title_upsell: "",
+    // description_upsell: "",
 
-    facebook_pixel: "",
-    facebook_token: "",
-    tiktok_pixel: "",
+    // facebook_pixel: "",
+    // facebook_token: "",
+    // tiktok_pixel: "",
 
-    whatsapp_group: "",
-    link_ebook: "",
-    nota_fiscal: "sim",
+    // whatsapp_group: "",
+    // link_ebook: "",
+    // nota_fiscal: "nao",
 
-    description_product: "",
-    description_sortition: "",
-    description_role: "",
-    description_order_approve: "",
+    // description_product: "",
+    // description_sortition: "",
+    // description_role: "",
+    // description_order_approve: "",
   },
 });
 

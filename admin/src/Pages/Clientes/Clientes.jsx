@@ -11,21 +11,26 @@ import ModalClienteInfo from "./ClientesModais/ModalClienteInfo/ModalClienteInfo
 import ModalEditarCliente from "./ClientesModais/ModalEditarCliente/ModalEditarCliente";
 import { useEffect, useState } from "react";
 import { fetchDados } from "../../common/http/http";
+import PedidosPagination from "../Pedidos/PedidosPagination/PedidosPagination";
 
 export default function Clientes() {
   const [openModalVerInfoCliente, setOpenModalVerInfoCliente] = useRecoilState(stateOpenModalVerInfoCliente);
   const [openModalEditarInfoCliente, setOpenModalEditarInfoCliente] = useRecoilState(stateOpenModalEditarInfoCliente);
   const [atualizaTabela, setAtualizaTabela] = useState(false);
   const setClientesInfo = useSetRecoilState(stateClientesInfo);
+  const [pagination, setPagination] = useState(null)
+  const [currentPage, setCurrentPage] = useState(1);
+  
+  const obterDados = async (page = 1) => {
+    const response = await fetchDados(`/admin/dashboard/todos/clientes?page=${page}`);
+    setClientesInfo(response.data.data);
 
-  const obterDados = async () => {
-    const response = await fetchDados(`/admin/dashboard/todos/clientes`);
-    setClientesInfo(response.data);
+    setPagination(response.data);
   };
 
   useEffect(() => {
-    obterDados();
-  }, []);
+    obterDados(currentPage);
+  }, [currentPage]);
 
   useEffect(() => {
     if (atualizaTabela) {
@@ -44,6 +49,10 @@ export default function Clientes() {
         <Titulo titulo="Filtros de Busca" />
         <ClientesForm />
         <ClientesTable />
+        <PedidosPagination
+          pagination={pagination} 
+          onPageChange={(page) => setCurrentPage(page)}
+        />
       </Main>
 
       <Modal title="CLIENTE" openState={openModalVerInfoCliente} setOpenState={setOpenModalVerInfoCliente}>

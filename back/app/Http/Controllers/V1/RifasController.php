@@ -473,7 +473,7 @@ class RifasController extends Controller
             $initialSaleDate = Carbon::parse($rifaData->initial_sale)->toDateString();
             $todayDate = Carbon::today()->toDateString();
 
-            if ($initialSaleDate <= $todayDate && $rifaData->status == 'futuras') {
+            if ($initialSaleDate <= $todayDate) {
                 Rifas::where('id', $id)->update(['status' => 'ativas']);
             }
 

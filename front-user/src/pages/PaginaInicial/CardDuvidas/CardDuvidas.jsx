@@ -6,7 +6,7 @@ import usePhoneFormat from "../../../common/state/hooks/usePhoneFormat/usePhoneF
 export default function CardDuvidas() {
   const siteConfig = useRecoilValue(stateSiteConfig);
   const { formatPhone } = usePhoneFormat();
-  const formattedPhone = formatPhone(siteConfig.whatsapp);
+  const formattedPhone = formatPhone(siteConfig.helpdesk_url);
 
   return (
     <div className="flex items-center justify-center mb-4">

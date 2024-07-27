@@ -51,7 +51,7 @@ class Clients extends Authenticatable implements JWTSubject {
         return $client;
     }
     public static function getAllClient() {
-        return self::get();
+        return self::paginate(20);
     }
 
     public static function editarClient($date) {

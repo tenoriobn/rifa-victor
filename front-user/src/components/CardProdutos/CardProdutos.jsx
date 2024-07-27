@@ -21,8 +21,6 @@ export default function CardProdutos({ categoria }) {
   const [erroConexao, setErroConexao] = useState(false);
   const { formattedDate } = useFormattedDate();
 
-  console.log('cardProdutos', produtosFiltrados)
-
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -115,7 +113,6 @@ export default function CardProdutos({ categoria }) {
                     <div className='flex items-center gap-2'>
                       <Calendario className="icon text-amber-500" />
                       <p className="text-sm font-semibold text-zinc-700">{formattedDate(produto.initial_sale)}</p>
-                      {  console.log('data', produto.end_sale)}
                     </div>
                   )}
 

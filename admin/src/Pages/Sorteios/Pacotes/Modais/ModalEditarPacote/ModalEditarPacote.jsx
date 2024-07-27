@@ -79,11 +79,8 @@ export default function ModalEditarPacote() {
 
     try {
       const response = await putDados('/admin/dashboard/pacotes/editar', pacote, userLogin);
-
       setOpenModalEditarPacote(!openModalEditarPacote)
-      setTabelaPacotesInfo(response.data)
-      
-      console.log(response.data)
+      setTabelaPacotesInfo(response.data.data)
     } catch (error) {
       console.error('Erro ao fazer POST:', error);
     }
@@ -99,7 +96,7 @@ export default function ModalEditarPacote() {
           decimalSeparator=","
           prefix="R$ "
           decimalScale={2}
-          name="valor_total"
+          name="value_cota"
           value={pacote.value_cota || ""}
           onChange={handleChange}
           disabled

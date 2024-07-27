@@ -2,6 +2,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components"
 import { stateCotasPremiadas, stateOpenModalEditarCotaPremiada, stateUserLogin, stateTabelaCotasInfo } from "../../../../../common/states/atom";
 import { putDados } from "../../../../../common/http/http";
+import { PatternFormat } from "react-number-format";
 
 const Form = styled.form`
   font-size: .9rem;
@@ -62,19 +63,8 @@ const Form = styled.form`
 export default function ModalEditarCotaPremiada() {
   const userLogin = useRecoilValue(stateUserLogin);
   const [openModalEditarCotaPremiada, setOpenModalEditarCotaPremiada] = useRecoilState(stateOpenModalEditarCotaPremiada);
-  // const [cotaPremiada, setCotaPremiada] = useState({qntd_cota: '', award: '', show_site: 'Y', status: 'available', rifas_id: id});
   const [cotaPremiada, setCotaPremiada] = useRecoilState(stateCotasPremiadas);
   const setTabelaCotasInfo = useSetRecoilState(stateTabelaCotasInfo);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setCotaPremiada((prevValues) => ({
-      ...prevValues,
-      [name]: value,
-    }));
-
-    console.log('modalEditarHandle:', cotaPremiada);
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -83,9 +73,8 @@ export default function ModalEditarCotaPremiada() {
       const response = await putDados('/admin/dashboard/bilhete-premiado/editar/', cotaPremiada, userLogin);
 
       setOpenModalEditarCotaPremiada(!openModalEditarCotaPremiada)
-      setTabelaCotasInfo(response.data)
-      
-      console.log(response.data)
+      setTabelaCotasInfo(response.data.data)
+
     } catch (error) {
       console.error('Erro ao fazer POST:', error);
     }
@@ -95,16 +84,13 @@ export default function ModalEditarCotaPremiada() {
     <Form id="frmAddPack" onSubmit={handleSubmit}>
       <label htmlFor="frm_add_qtd" id="frm_lb_qtd">
         Cota
-        <input
-          type="number"
+
+        <PatternFormat
           className="number"
-          id="frm_add_qtd"
           name="number_cota"
-          min="1"
-          max="20"
           value={cotaPremiada.number_cota || ''}
-          onChange={handleChange}
-          required
+          onChange={(e) => setCotaPremiada({...cotaPremiada, number_cota: e.target.value})}
+          format="############" 
           disabled
         />
       </label>
@@ -117,9 +103,9 @@ export default function ModalEditarCotaPremiada() {
           name="award"
           maxLength="50"
           value={cotaPremiada.award || ''}
-          onChange={handleChange}
+          onChange={(e) => setCotaPremiada({...cotaPremiada, award: e.target.value})}
           required
-          disabled={cotaPremiada.status === "resgatada" ? true : false}
+          // disabled={cotaPremiada.status === "resgatada" ? true : false}
         />
       </label>
 
@@ -129,7 +115,7 @@ export default function ModalEditarCotaPremiada() {
           name="show_site"
           id="frm_add_visible"
           value={cotaPremiada.show_site || ''}
-          onChange={handleChange}
+          onChange={(e) => setCotaPremiada({...cotaPremiada, show_site: e.target.value})}
         >
           <option value="sim">SIM</option>
           <option value="nao">NÃO</option>
@@ -142,7 +128,7 @@ export default function ModalEditarCotaPremiada() {
           name="status"
           id="frm_add_st"
           value={cotaPremiada.status || ''}
-          onChange={handleChange}
+          onChange={(e) => setCotaPremiada({...cotaPremiada, status: e.target.value})}
         >
           {cotaPremiada.status === "resgatada" ? <option value="resgatada">Resgatada</option> : 
             <>

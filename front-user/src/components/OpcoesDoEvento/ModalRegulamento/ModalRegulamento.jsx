@@ -25,7 +25,6 @@ export default function ModalRegulamento() {
     return { __html: DOMPurify.sanitize(htmlString) };
   };
 
-
   return (
     <>
       <button 

@@ -99,8 +99,6 @@ export default function ConfigPagamentosTable() {
   const setFormConfigPagamento = useSetRecoilState(stateConfigPagamento);
   const configPagamentoTable = useRecoilValue(stateConfigPagamentoTable);
 
-  console.log('configPagamentoTable', configPagamentoTable);
-
   const handleModalInfo = (ganhador) => {
     setFormConfigPagamento(ganhador)
     setOpenModalEditarConfPagamento(true)

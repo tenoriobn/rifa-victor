@@ -77,7 +77,6 @@ export default function ImagensRifa() {
 
   const handleExcluirImagem = async (idImg) => {
     const response = await deleteDados(`admin/dashboard/rifa/imagens/deletar/${idImg}`, userLogin);
-    console.log('deleted: ', response)
     setImagemRifaDelete(response)
   };
 

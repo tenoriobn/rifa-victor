@@ -15,8 +15,6 @@ export default function AdicionarBilhetePremiado() {
   const [openModalAdicionarBilhetePremiado, setOpenModalAdicionarBilhetePremiado] = useRecoilState(stateOpenModalAdicionarBilhetePremiado);
   const [optionsRifa, setOptionsRifa] = useRecoilState(stateOptionsRifa);
 
-  console.log('optionsRifa', optionsRifa)
-
   useEffect(() => {
     const obterDados = async () => {
       const response = await fetchDados(`/admin/dashboard/client/rifa/ativas`);

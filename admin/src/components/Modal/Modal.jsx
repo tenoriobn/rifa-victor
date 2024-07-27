@@ -1,18 +1,20 @@
 /* eslint-disable react/prop-types */
+import { useRef } from "react";
+import { useEffect } from "react";
 import styled from "styled-components"
 
 const ModalContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  /* position: fixed; */
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
   background-color: rgba(0, 0, 0, .5);
   z-index: 99;
   width: 100%;
-  min-height: 100vh;
+  height: 100%;
+  overflow-y: auto;
 
   padding: 3rem 0;
 
@@ -67,10 +69,32 @@ const ModalContainer = styled.div`
 `;
 
 export default function Modal({ title, children, openState, setOpenState, maxWidth }) {
+  const modalRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (modalRef.current && !modalRef.current.contains(event.target)) {
+        setOpenState(false);
+      }
+    };
+
+    if (openState) {
+      document.body.style.overflow = 'hidden';
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.body.style.overflow = 'auto';
+    };
+  }, [openState, setOpenState]);
+
   return (
     openState && (
       <ModalContainer>
-        <div className="modal-content" style={maxWidth}>
+        <div className="modal-content" style={maxWidth} ref={modalRef}>
           <div className="modal-header">
             <h2 id="modalTitulo">{title}</h2>
 

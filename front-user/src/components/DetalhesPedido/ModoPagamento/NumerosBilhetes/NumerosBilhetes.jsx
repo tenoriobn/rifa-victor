@@ -3,8 +3,6 @@ import { estadoCheckoutInfo } from "../../../../common/state/atom";
 
 export default function NumerosBilhetes() {
   const checkoutInfo = useRecoilValue(estadoCheckoutInfo);
-
-  console.log(checkoutInfo)
   
   let numeros = [];
   const numbersValue = checkoutInfo.rifa_number.numbers;

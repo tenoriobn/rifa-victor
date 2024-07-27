@@ -5,8 +5,6 @@ import { PatternFormat } from "react-number-format";
 export default function SuporteContato() {
   const [siteConfig, setSiteConfig] = useRecoilState(stateSiteConfig);
 
-  console.log('siteconfig', siteConfig)
-
   return (
     <div className="category">
       <h3>SUPORTE / CONTATO</h3>

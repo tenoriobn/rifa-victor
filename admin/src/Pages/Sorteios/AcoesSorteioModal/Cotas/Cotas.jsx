@@ -13,6 +13,8 @@ import ModalEditarCotaPremiada from "./ModalEditarCotaPremiada/ModalEditarCotaPr
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { fetchDados } from "../../../../common/http/http";
+import PedidosPagination from "../../../Pedidos/PedidosPagination/PedidosPagination";
+import { useState } from "react";
 
 export default function RifasCotas() {
   const [openModalAdicionarCota, setOpenModalAdicionarCota] = useRecoilState(stateOpenModalAdicionarCota);
@@ -22,20 +24,22 @@ export default function RifasCotas() {
   const setTabelaCotasInfo = useSetRecoilState(stateTabelaCotasInfo);
   const userLogin = useRecoilValue(stateUserLogin);
   const resetCotaPremiada = useResetRecoilState(stateCotasPremiadas);
+  const [pagination, setPagination] = useState(null)
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const obterDados = async (page = 1) => {
+    const response = await fetchDados(`/admin/dashboard/bilhete-premiado/all/${id}?page=${page}`, userLogin);
+    setTabelaCotasInfo(response.data.data);
+
+    setPagination(response.data);
+  };
 
   useEffect(() => {
-    const obterDados = async () => {
-      const response = await fetchDados(`/admin/dashboard/bilhete-premiado/all/${id}`, userLogin);
-      setTabelaCotasInfo(response.data);
 
-      console.log(response);
-    
-    };
     if (id) {
-      obterDados();
+      obterDados(currentPage);
     }
-    // console.log('response ',response.data);
-  }, []);
+  }, [currentPage]);
 
   const handleOpenModalAdicionarCota = () => {
     setOpenModalAdicionarCota(!openModalAdicionarCota);
@@ -62,6 +66,11 @@ export default function RifasCotas() {
         <CotasForm />
 
         <TabelaCotas />
+
+        <PedidosPagination
+          pagination={pagination} 
+          onPageChange={(page) => setCurrentPage(page)}
+        />
       </Main>
 
       <Modal title="ADICIONAR COTA" openState={openModalAdicionarCota} setOpenState={setOpenModalAdicionarCota}>

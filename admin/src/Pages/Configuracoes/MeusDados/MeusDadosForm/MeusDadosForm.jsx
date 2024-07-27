@@ -84,10 +84,8 @@ export default function MeusDadosForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await putDados("admin/dashboard/usuarios/editar", formDadosUsuario, userLogin);
+      await putDados("admin/dashboard/usuarios/editar", formDadosUsuario, userLogin);
       toast.success('Dados atualizadas!');
-
-      console.log(response)
     } catch (error) {
       console.error("Erro ao atualizar dados:", error);
       toast.error(error.response.data.response || 'Erro ao atualizar Dados!');

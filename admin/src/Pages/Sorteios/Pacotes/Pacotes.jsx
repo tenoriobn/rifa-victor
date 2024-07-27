@@ -12,6 +12,8 @@ import ModalEditarPacote from "./Modais/ModalEditarPacote/ModalEditarPacote";
 import { useEffect } from "react";
 import { fetchDados } from "../../../common/http/http";
 import { useParams } from "react-router-dom";
+import PedidosPagination from "../../Pedidos/PedidosPagination/PedidosPagination";
+import { useState } from "react";
 
 export default function Pacotes() {
   const [openModalAdicionarPacote, setOpenModalAdicionarPacote] = useRecoilState(stateOpenModalAdicionarPacote);
@@ -20,18 +22,21 @@ export default function Pacotes() {
   const userLogin = useRecoilValue(stateUserLogin);
   const { id } = useParams();
   const resetPacote = useResetRecoilState(statePacote);
+  const [pagination, setPagination] = useState(null)
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const obterDados = async (page = 1) => {
+    const response = await fetchDados(`/admin/dashboard/todos-pacotes/${id}?page=${page}`, userLogin);
+    setTabelaPacotesInfo(response.data.data);
+  
+    setPagination(response.data);
+  };
 
   useEffect(() => {
-    const obterDados = async () => {
-      const response = await fetchDados(`/admin/dashboard/todos-pacotes/${id}`, userLogin);
-      setTabelaPacotesInfo(response.data);
-    
-    };
     if (id) {
-      obterDados();
+      obterDados(currentPage);
     }
-    // console.log('response ',response.data);
-  }, []);
+  }, [currentPage]);
 
   const handleOpenModalAdicionarPacote = () => {
     setOpenModalAdicionarPacote(!openModalAdicionarPacote)
@@ -56,6 +61,11 @@ export default function Pacotes() {
         <Titulo titulo="SAVEIRO CROSS DOS SONHOS" />
         <FormPacotes />
         <PacoteTable />
+
+        <PedidosPagination
+          pagination={pagination} 
+          onPageChange={(page) => setCurrentPage(page)}
+        />
       </Main>
 
       <Modal title="ADICIONAR PACOTE" openState={openModalAdicionarPacote} setOpenState={setOpenModalAdicionarPacote}>

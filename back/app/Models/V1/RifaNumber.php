@@ -169,7 +169,7 @@ class RifaNumber extends Model {
             ->with(['client', 'rifa', 'rifaPay'])
             ->groupBy(['client_id', 'rifas_id'])
             ->orderByRaw('SUM(CASE WHEN JSON_VALID(numbers) THEN JSON_LENGTH(numbers) ELSE 0 END) DESC')
-            ->get();
+            ->paginate(20);
         return $result ?? false;
     }
 

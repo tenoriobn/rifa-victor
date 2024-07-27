@@ -74,12 +74,10 @@ export default function ModalTrocarBilhete({ onNotifySuccess, onNotifyError }) {
     e.preventDefault();
 
     try {
-      const response = await postDados("/admin/dashboard/rifa/definir-ganhador", { numeroSorteado: cota, novoGanhadorPhone: number,  rifa_id: rifaId});
+      await postDados("/admin/dashboard/rifa/definir-ganhador", { numeroSorteado: cota, novoGanhadorPhone: number,  rifa_id: rifaId});
       setOpenModalNovoGanhador(false);
       onNotifySuccess('Ganhador definido com sucesso!');
       setAtualizaTableInfoCotaSorteada(true);
-      console.log('trocado', response)
-
     } catch (error) {
       onNotifyError('Erro ao definir ganhador:');
       console.error("Erro ao trocar bilhete:", error);
@@ -96,7 +94,7 @@ export default function ModalTrocarBilhete({ onNotifySuccess, onNotifyError }) {
           id="cota"
           value={cota}
           onChange={(e) => setCota(e.target.value)}
-          disabled
+          // disabled
           required
         />
       </label>

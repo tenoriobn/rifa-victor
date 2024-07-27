@@ -65,8 +65,6 @@ export default function FormPacotes() {
   const [orderFilter, setOrderFilter] = useState({});
   // const [tabelaPacotesInfo, setTabelaPacotesInfo] = useRecoilState(stateTabelaPacotesInfo);
 
-  console.log('orderFilter', orderFilter)
-
   // const handleSubmit = async (e) => {
   //   if (e) e.preventDefault();
   //   try {

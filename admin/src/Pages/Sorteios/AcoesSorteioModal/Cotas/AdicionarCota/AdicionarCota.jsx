@@ -63,10 +63,6 @@ const Form = styled.form`
     -webkit-appearance: none;
     margin: 0;
   }
-
-  input[type='number'] {
-    -moz-appearance: textfield;
-  }
 `;
 
 export default function AdicionarCota() {
@@ -74,28 +70,17 @@ export default function AdicionarCota() {
   const userLogin = useRecoilValue(stateUserLogin);
   const [openModalAdicionarCota, setOpenModalAdicionarCota] = useRecoilState(stateOpenModalAdicionarCota);
   const setTabelaCotasInfo = useSetRecoilState(stateTabelaCotasInfo);
-  // const [cotaPremiada, setCotaPremiada] = useState({qntd_cota: '', award: '', show_site: 'Y', status: 'available', rifas_id: id});
   const [cotaPremiada, setCotaPremiada] = useRecoilState(stateCotasPremiadas)
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setCotaPremiada((prevValues) => ({
-      ...prevValues,
-      [name]: value,
-      rifas_id: id
-    }));
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await postDados('/admin/dashboard/bilhete-premiado/cadastrar', cotaPremiada, userLogin);
+      const response = await postDados('/admin/dashboard/bilhete-premiado/cadastrar', {...cotaPremiada, rifas_id: id}, userLogin);
 
-      setTabelaCotasInfo(response.data)
+      setTabelaCotasInfo(response.data.data)
       setOpenModalAdicionarCota(!openModalAdicionarCota)
-      
-      console.log(response.data)
+
     } catch (error) {
       console.error('Erro ao fazer POST:', error);
     }
@@ -113,7 +98,7 @@ export default function AdicionarCota() {
           min="1"
           max="20"
           value={cotaPremiada.qntd_cota || ''}
-          onChange={handleChange}
+          onChange={(e) => setCotaPremiada({...cotaPremiada, qntd_cota: e.target.value})}
           required
         />
       </label>
@@ -126,7 +111,7 @@ export default function AdicionarCota() {
           name="award"
           maxLength="50"
           value={cotaPremiada.award || ''}
-          onChange={handleChange}
+          onChange={(e) => setCotaPremiada({...cotaPremiada, award: e.target.value})}
           required
         />
       </label>
@@ -137,7 +122,7 @@ export default function AdicionarCota() {
           name="show_site"
           id="frm_add_visible"
           value={cotaPremiada.show_site || ''}
-          onChange={handleChange}
+          onChange={(e) => setCotaPremiada({...cotaPremiada, show_site: e.target.value})}
         >
           <option value="sim">SIM</option>
           <option value="nao">NÃO</option>
@@ -150,7 +135,7 @@ export default function AdicionarCota() {
           name="status"
           id="frm_add_st"
           value={cotaPremiada.status || ''}
-          onChange={handleChange}
+          onChange={(e) => setCotaPremiada({...cotaPremiada, status: e.target.value})}
         >
           <option value="disponivel">Disponível</option>
           <option value="bloqueada">Bloqueada</option>

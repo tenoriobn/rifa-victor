@@ -15,6 +15,9 @@ export default function DetalhesPedido() {
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const setQrCode = useSetRecoilState(estadoQrCode);
+
+  console.log('checkoutInfo', checkoutInfo)
+  
   useEffect(() => {
     const pegarDados = async () => {
       try {
@@ -47,11 +50,11 @@ export default function DetalhesPedido() {
 
         <InfoPedidos /> 
 
-      {checkoutInfo.status === 0 &&  
+      {checkoutInfo?.status === 0 &&  
         <ModoPagamento />
       }
 
-      {checkoutInfo.status === 1 &&  
+      {checkoutInfo?.status === 1 &&  
         <NumerosBilhetes />
       }
 

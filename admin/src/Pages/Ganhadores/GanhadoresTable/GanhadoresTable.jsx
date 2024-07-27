@@ -44,7 +44,7 @@ const Table = styled.table`
 
   .ganhador img {
     max-width: 200px;
-    max-height: 139px;
+    max-height: 112px;
     object-fit: cover;
     width: 100%;
     border-radius: .375rem;
@@ -143,7 +143,7 @@ export default function GanhadoresTable() {
                   <img src={`../../../../public/imgRifas/${ganhador?.img}`} alt="foto do ganhador" />
                 </td>
                 <td>{ganhador?.client?.name} {ganhador?.client?.surname}</td>
-                <td>{ganhador?.rifa.title}</td>
+                <td>{ganhador?.rifa?.title}</td>
                 <td>{ganhador?.ticket}</td>
                 <td>{formattedDate(ganhador?.updated_at)}</td>
                 <td>

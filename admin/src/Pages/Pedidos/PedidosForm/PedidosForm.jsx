@@ -97,21 +97,16 @@ export default function PedidosForm() {
   const [pedidosInfo, setPedidosInfo] =  useRecoilState(statePedidosInfo);
   const optionsRifa = useRecoilValue(stateOptionsRifa);
 
-  console.log('orderFilter', orderFilter)
-
     const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await postDados('/admin/dashboard/pedidos/filtro', orderFilter);
       setPedidosInfo(response.data);
 
-      console.log('response aqui: ', response)
     } catch (error) {
       console.error("There was an error fetching the data!", error);
     }
   };
-
-  console.log(pedidosInfo)
 
   return (
     <Form method="POST" onSubmit={handleSubmit}>

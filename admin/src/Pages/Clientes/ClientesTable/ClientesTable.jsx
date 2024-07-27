@@ -113,8 +113,6 @@ export default function ClientesTable() {
   const clientesInfo = useRecoilValue(stateClientesInfo);
   const setClienteInfoModal = useSetRecoilState(stateClienteInfoModal);
 
-  console.log(clientesInfo)
-
   const handleButtonId = async (cliente) => {
     setOpenModalVerInfoCliente(!openModalVerInfoCliente)
     setClienteInfoModal(cliente);

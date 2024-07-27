@@ -17,18 +17,25 @@ export default function Pedidos() {
   const setPedidosInfo =  useSetRecoilState(statePedidosInfo);
   const [atualizaTabela, setAtualizaTabela] = useState(false);
   const setOptionsRifa = useSetRecoilState(stateOptionsRifa);
+  const [pagination, setPagination] = useState(null)
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const obterDados = async () => {
-    const response = await fetchDados(`/admin/dashboard/pedidos`);
-    setPedidosInfo (response.data);
+  const obterDados = async (page = 1) => {
+    try {
+      const response = await fetchDados(`/admin/dashboard/pedidos?page=${page}`);
+      setPedidosInfo(response.data.data);
+      setPagination(response.data);
 
-    const responseOptions = await fetchDados(`/admin/dashboard/client/rifa/ativas`);
-    setOptionsRifa(responseOptions.data);
+      const responseOptions = await fetchDados(`/admin/dashboard/client/rifa/ativas`);
+      setOptionsRifa(responseOptions.data);
+    } catch (error) {
+      console.error("Erro ao obter dados:", error);
+    }
   };
 
   useEffect(() => {
-    obterDados();
-  }, []);
+    obterDados(currentPage);
+  }, [currentPage]);
 
   useEffect(() => {
     if(atualizaTabela) {
@@ -47,7 +54,10 @@ export default function Pedidos() {
         <Titulo titulo="Filtros de Busca" />
         <PedidosForm />
         <PedidosTable setAtualizaTabela={setAtualizaTabela} />
-        <PedidosPagination />
+        <PedidosPagination 
+          pagination={pagination} 
+          onPageChange={(page) => setCurrentPage(page)}
+        />
       </Main>
 
       <Modal title="PEDIDO" openState={openModalVerCota} setOpenState={setOpenModalVerCota} maxWidth={{ maxWidth: '595px' }}>

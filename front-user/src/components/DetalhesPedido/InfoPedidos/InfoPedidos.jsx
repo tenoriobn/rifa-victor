@@ -1,20 +1,26 @@
 import Whatsapp from "../../../assets/Icons/whatsapp.svg?react";
 import { useRecoilValue } from "recoil";
-import { estadoCheckoutInfo, stateSiteConfig } from "../../../common/state/atom";
+import { estadoCheckoutInfo } from "../../../common/state/atom";
 import useCurrencyFormat from "../../../common/state/hooks/useCurrencyFormat/useCurrencyFormat";
 import useFormattedDate from "../../../common/state/hooks/useFormattedDate/useFormattedDate ";
+import usePhoneFormat from "../../../common/state/hooks/usePhoneFormat/usePhoneFormat";
 
 export default function InfoPedidos() {
   const checkoutInfo = useRecoilValue(estadoCheckoutInfo);
   const { formattedDate } = useFormattedDate();
   const { formatCurrency } = useCurrencyFormat();
-  const siteConfig = useRecoilValue(stateSiteConfig);
+  // const siteConfig = useRecoilValue(stateSiteConfig);
+  const { formatPhone } = usePhoneFormat();
+
+  // console.log('checkoutInfo', checkoutInfo.rifa.rifa_others.whatsapp_group)
+
+  const formattedPhone = formatPhone(checkoutInfo.rifa.rifa_others.whatsapp_group);
 
   const informacoes = [
-    { label: '🔢 Código:', value: checkoutInfo.cod },
-    { label: '🛍 Total de Cotas:', value: checkoutInfo.qntd_number },
+    { label: '🔢 Código:', value: checkoutInfo?.cod },
+    { label: '🛍 Total de Cotas:', value: checkoutInfo?.qntd_number },
     { label: '➕ Taxa:', value: formatCurrency(checkoutInfo?.rifa?.rifa_payment?.service_charge) },
-    { label: '💲 Total:', value: formatCurrency(checkoutInfo.value), class: "font-bold" }
+    { label: '💲 Total:', value: formatCurrency(checkoutInfo?.value), class: "font-bold" }
   ];
 
   return (
@@ -27,28 +33,28 @@ export default function InfoPedidos() {
           </p>
         ))}
         
-        {checkoutInfo.status === 0 &&
+        {checkoutInfo?.status === 0 &&
           <div className="mt-4 flex gap-2 text-neutral-700">
             <p className="font-bold">⚠ Status:</p>
             <p className="text-amber-500">Aguardando pagamento</p>
           </div>
         }
 
-        {checkoutInfo.status === 1 &&
+        {checkoutInfo?.status === 1 &&
           <div className="mt-4 flex gap-2 text-neutral-700">
             <p className="font-bold">✅ Status:</p>
             <p className="text-emerald-500">Finalizado</p>
           </div>
         }
 
-        {checkoutInfo.status === 2 &&
+        {checkoutInfo?.status === 2 &&
           <div className="mt-4 flex gap-2 text-neutral-700">
             <p className="font-bold">❌ Status:</p>
             <p className="text-red-500">Cancelado</p>
           </div>
         }
 
-        {checkoutInfo.status === 1 &&
+        {checkoutInfo?.status === 1 &&
           <div className="flex gap-2 text-neutral-700">
             <div className="font-bold">🗓 Pago em:</div>
             <div>{formattedDate(checkoutInfo.updated_at)}</div>
@@ -56,7 +62,7 @@ export default function InfoPedidos() {
         }
 
         <a 
-          href={siteConfig.whatsapp_group_url}
+          href={`https://wa.me/${formattedPhone}`}
           target="_blank"
           className="relative cursor-pointer inline-block group text-white rounded overflow-hidden shadow-transparent shadow-md hover:shadow-black/3 0 text-xs bg-green-500"
         >

@@ -1,8 +1,9 @@
 /* eslint-disable react/prop-types */
-import useFormState from "../../../../common/states/Hook/CriarRifa/CriarRifa";
+import { stateInfoRifaForm } from "../../../../common/states/atom";
+import { useRecoilState } from "recoil";
 
 export default function Promocoes({ mostrarCampo }) {
-  const { formState, handleChange } = useFormState();
+  const [formState, setFormState] = useRecoilState(stateInfoRifaForm);
 
   return (
     <div className="category">
@@ -17,8 +18,8 @@ export default function Promocoes({ mostrarCampo }) {
               id="highlighted" 
               name="cotas_double" 
               required
-              value={formState.cotas_double}
-              onChange={handleChange}
+              onChange={(e) => setFormState({ ...formState, rifa_awarded: {...formState?.rifa_awarded, cotas_double: e.target.value} })} 
+              value={formState?.rifa_awarded?.cotas_double || 'nao'}
             >
               <option value="sim">SIM</option>
               <option value="nao" selected>NAO</option>
@@ -31,8 +32,8 @@ export default function Promocoes({ mostrarCampo }) {
               type="text" 
               name="text_cotas_double" 
               maxLength="500"
-              value={formState.text_cotas_double}
-              onChange={handleChange}
+              onChange={(e) => setFormState({ ...formState, rifa_awarded: {...formState?.rifa_awarded, text_cotas_double: e.target.value} })} 
+              value={formState?.rifa_awarded?.text_cotas_double || ''}
             />
           </label>
         </>
@@ -44,8 +45,9 @@ export default function Promocoes({ mostrarCampo }) {
         <input
           type="text"
           name="title_cotas_awarded"
-          value={formState.title_cotas_awarded}
-          onChange={handleChange}
+          onChange={(e) => setFormState({ ...formState, rifa_awarded: {...formState?.rifa_awarded, title_cotas_awarded: e.target.value} })} 
+          value={formState?.rifa_awarded?.title_cotas_awarded || ''}
+
           maxLength="50"
         />
       </label>
@@ -55,8 +57,8 @@ export default function Promocoes({ mostrarCampo }) {
         <input
           type="text"
           name="description_cotas_awarded"
-          value={formState.description_cotas_awarded}
-          onChange={handleChange}
+          onChange={(e) => setFormState({ ...formState, rifa_awarded: {...formState?.rifa_awarded, description_cotas_awarded: e.target.value} })} 
+          value={formState?.rifa_awarded?.description_cotas_awarded || ''}
           maxLength="500"
         />
       </label>
@@ -66,8 +68,9 @@ export default function Promocoes({ mostrarCampo }) {
         <input
           type="text"
           name="title_upsell"
-          value={formState.title_upsell}
-          onChange={handleChange}
+          onChange={(e) => setFormState({ ...formState, rifa_awarded: {...formState?.rifa_awarded, title_upsell: e.target.value} })} 
+          value={formState?.rifa_awarded?.title_upsell || ''}
+          
           maxLength="50"
         />
       </label>
@@ -77,8 +80,9 @@ export default function Promocoes({ mostrarCampo }) {
         <input
           type="text"
           name="description_upsell"
-          value={formState.description_upsell}
-          onChange={handleChange}
+          onChange={(e) => setFormState({ ...formState, rifa_awarded: {...formState?.rifa_awarded, description_upsell: e.target.value} })} 
+          value={formState?.rifa_awarded?.description_upsell || ''}
+
           maxLength="500"
         />
       </label>

@@ -15,26 +15,29 @@ export default function MeusPedidos() {
   const [isLoading, setIsLoading] = useState(true);
   const usuario = useRecoilValue(estadoUsuario);
   const [erroConexao, setErroConexao] = useState(false);
-
+  const [pagination, setPagination] = useState(null)
+  const [currentPage, setCurrentPage] = useState(1);
+  
   const notify = () => toast.error('Erro ao carregar pedidos...');
 
-  useEffect(() => {
-    const pegarDados = async () => {
-      try {
-        const response = await fetchDados(`client/meus-pedidos/sorteios/${usuario.id}`, true);
-        setPedidosUsuario(response.data)
-        setErroConexao(false);
-      } catch (error) {
-        setErroConexao(true);
-        notify();
-        console.error('Erro ao comprar rifa:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  const pegarDados = async (page = 1) => {
+    try {
+      const response = await fetchDados(`client/meus-pedidos/sorteios/${usuario.id}?page=${page}`, true);
+      setPedidosUsuario(response.data.data)
+      setPagination(response.data);
+      setErroConexao(false);
+    } catch (error) {
+      setErroConexao(true);
+      notify();
+      console.error('Erro ao comprar rifa:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-    pegarDados();
-  }, []);
+  useEffect(() => {
+    pegarDados(currentPage);
+  }, [currentPage]);
 
   if (isLoading) {
     return <AvisoCarregando />; 
@@ -52,7 +55,10 @@ export default function MeusPedidos() {
               <TabelaPedidos />
 
               <div className="mt-5">
-                <Paginacao />
+                <Paginacao 
+                  pagination={pagination} 
+                  onPageChange={(page) => setCurrentPage(page)}
+                />
               </div>
 
             </>

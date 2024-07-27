@@ -1,9 +1,10 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react-hooks/exhaustive-deps */
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { postDados } from "../../../../../../common/http/http";
-import { stateUpsellInfo, stateUpsellInfoTable, stateUserLogin, stateOpenModalAdicionarUpsell, stateOpenModalEditarUpsell } 
+import { stateUpsellInfo, stateUpsellInfoTable, stateUserLogin, stateOpenModalEditarUpsell } 
 from "../../../../../../common/states/atom";
 import { NumericFormat } from 'react-number-format';
 import { useEffect, useState } from "react";
@@ -71,7 +72,7 @@ export default function ModalAdicionarUpsell({setAtualizaTabela}) {
   const userLogin = useRecoilValue(stateUserLogin);
   const setUpsellInfoTable = useSetRecoilState(stateUpsellInfoTable);
   const [upsellInfo, setUpsellInfo] = useRecoilState(stateUpsellInfo)
-  const setOpenModalAdicionarUpsell = useSetRecoilState(stateOpenModalAdicionarUpsell);
+  // const setOpenModalAdicionarUpsell = useSetRecoilState(stateOpenModalAdicionarUpsell);
   const [, setQntdCota] = useState();
   const { value: formattedPrice, handleChange: handlePriceChange, handleBlur: handlePriceBlur } = useCurrencyInputUpsell(setQntdCota);
 
@@ -98,7 +99,6 @@ export default function ModalAdicionarUpsell({setAtualizaTabela}) {
       const response = await postDados('/admin/dashboard/upsell/cadastrar', upsellInfo, userLogin);
 
       setAtualizaTabela(true);
-      console.log('aqui dentro', upsellInfo)
       
       setUpsellInfoTable(response.data)
       setOpenModalEditarUpsell(false)
@@ -143,7 +143,7 @@ export default function ModalAdicionarUpsell({setAtualizaTabela}) {
           name="price_total"
           value={upsellInfo.price_total || ""}
           onChange={(e) => setUpsellInfo((prevUpsell) => ({...prevUpsell, price_total: e.target.value}))}
-          disabled
+          // disabled
         />
       </label>
 

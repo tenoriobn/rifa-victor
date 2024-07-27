@@ -38,7 +38,7 @@ class DiscountPackage extends Model
 
 
     public static function getAllPacotes($id) {
-        return self::where('rifas_id', $id)->get();
+        return self::where('rifas_id', $id)->paginate(20);
     }
     public static function getOnePacote($id) {
         return self::where('id', $id)->first();

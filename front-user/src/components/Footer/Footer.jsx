@@ -9,8 +9,6 @@ export default function Footer() {
   const { formatPhone } = usePhoneFormat();
   const formattedPhone = formatPhone(siteConfig.whatsapp);
 
-  console.log(siteConfig)
-
   return (
     <footer className="border-0 border-t border-solid border-t-neutral-700 text-neutral-300">
       <div className="max-w-2xl m-auto relative text-center flex flex-col mt-2 mb-4">
