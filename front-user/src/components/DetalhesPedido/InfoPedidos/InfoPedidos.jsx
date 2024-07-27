@@ -3,12 +3,15 @@ import { useRecoilValue } from "recoil";
 import { estadoCheckoutInfo, stateSiteConfig } from "../../../common/state/atom";
 import useCurrencyFormat from "../../../common/state/hooks/useCurrencyFormat/useCurrencyFormat";
 import useFormattedDate from "../../../common/state/hooks/useFormattedDate/useFormattedDate ";
+import usePhoneFormat from "../../../common/state/hooks/usePhoneFormat/usePhoneFormat";
 
 export default function InfoPedidos() {
   const checkoutInfo = useRecoilValue(estadoCheckoutInfo);
   const { formattedDate } = useFormattedDate();
   const { formatCurrency } = useCurrencyFormat();
   const siteConfig = useRecoilValue(stateSiteConfig);
+  const { formatPhone } = usePhoneFormat();
+  const formattedPhone = formatPhone(siteConfig.helpdesk_url);
 
   const informacoes = [
     { label: '🔢 Código:', value: checkoutInfo.cod },
@@ -56,7 +59,7 @@ export default function InfoPedidos() {
         }
 
         <a 
-          href={siteConfig.whatsapp_group_url}
+          href={`https://wa.me/${formattedPhone}`}
           target="_blank"
           className="relative cursor-pointer inline-block group text-white rounded overflow-hidden shadow-transparent shadow-md hover:shadow-black/3 0 text-xs bg-green-500"
         >

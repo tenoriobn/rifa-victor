@@ -7,13 +7,15 @@ import { estadoRifa, stateSiteConfig } from '../../common/state/atom';
 const PageTitle = ({ children }) => {
   const siteConfig = useRecoilValue(stateSiteConfig);
   const rifa = useRecoilValue(estadoRifa)
-
+  const location = useLocation();
   console.log('rifa', rifa.title)
   console.log(siteConfig)
 
-  const location = useLocation();
+  let description = siteConfig.share_description ;
+  let image = siteConfig.share_image;
+  let url = window.location.href;
+  let title = siteConfig.share_title;
 
-  let title = siteConfig.site_title;
   if (location.pathname.match(/^\/[^/]+\/\d+$/)) {
     title = rifa.title;
   }
@@ -22,6 +24,11 @@ const PageTitle = ({ children }) => {
     <>
       <Helmet>
         <title>{title}</title>
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:image" content={image} />
+        <meta property="og:url" content={url} />
+        <meta property="og:type" content="website" />
       </Helmet>
       {children}
     </>
