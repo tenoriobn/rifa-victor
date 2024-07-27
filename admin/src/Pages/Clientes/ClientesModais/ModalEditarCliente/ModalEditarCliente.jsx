@@ -65,8 +65,6 @@ export default function ModalEditarCliente({setAtualizaTabela}) {
   const setOpenModalEditarInfoCliente = useSetRecoilState(stateOpenModalEditarInfoCliente);
   const userLogin = useSetRecoilState(stateUserLogin);
 
-  console.log('clienteInfo', clienteInfoModal)
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 

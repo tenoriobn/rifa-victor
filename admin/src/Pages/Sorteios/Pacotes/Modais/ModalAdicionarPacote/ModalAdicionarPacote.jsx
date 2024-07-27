@@ -97,7 +97,7 @@ export default function ModalAdicionarPacote() {
 
       console.log('aqui dentro', pacote)
       
-      setTabelaPacotesInfo(response.data)
+      setTabelaPacotesInfo(response.data.data)
       setOpenModalAdicionarPacote(!openModalAdicionarPacote)
       
     } catch (error) {

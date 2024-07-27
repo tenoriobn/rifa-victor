@@ -1,10 +1,17 @@
 import { useState, useEffect } from 'react';
 
 const useCurrencyInput = (initialValue = '', onChangeCallback) => {
-  const [value, setValue] = useState(initialValue);
+    const formatCurrency = (value) => {
+    if (!value) return 'R$ 0,00';
+
+    // Convert the value to float and format
+    const amount = parseFloat(value) / 100;
+    return amount.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  };
+  const [value, setValue] = useState(formatCurrency(initialValue));
 
   useEffect(() => {
-    setValue(initialValue);
+    setValue(formatCurrency(initialValue));
   }, [initialValue]);
 
   const handleChange = (event) => {
@@ -20,7 +27,7 @@ const useCurrencyInput = (initialValue = '', onChangeCallback) => {
 
     // Callback para atualizar o estado fora do hook, se fornecido
     if (onChangeCallback) {
-      onChangeCallback(formattedValue);
+      onChangeCallback(numericValue); // Envia o valor numérico para o callback
     }
   };
 
@@ -29,16 +36,6 @@ const useCurrencyInput = (initialValue = '', onChangeCallback) => {
     if (value === 'R$ 0,00' || value === '0' || value === '') {
       setValue('');
     }
-  };
-
-  const formatCurrency = (value) => {
-    if (!value) return 'R$ 0,00';
-
-    // Format with currency symbol and decimals
-    const amount = parseFloat(value.replace(/\D/g, '')) / 100;
-    const formatted = amount.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-
-    return formatted;
   };
 
   return {

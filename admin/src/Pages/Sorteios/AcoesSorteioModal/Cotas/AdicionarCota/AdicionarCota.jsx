@@ -78,7 +78,7 @@ export default function AdicionarCota() {
     try {
       const response = await postDados('/admin/dashboard/bilhete-premiado/cadastrar', {...cotaPremiada, rifas_id: id}, userLogin);
 
-      setTabelaCotasInfo(response.data)
+      setTabelaCotasInfo(response.data.data)
       setOpenModalAdicionarCota(!openModalAdicionarCota)
       
       console.log(response.data)

@@ -10,23 +10,29 @@ import Modal from "../../components/Modal/Modal";
 import ModalRankingInfo from "./ModalRankingInfo/RankingInfoModal";
 import { useEffect } from "react";
 import { fetchDados } from "../../common/http/http";
+import { useState } from "react";
+import PedidosPagination from "../Pedidos/PedidosPagination/PedidosPagination";
 
 export default function Ranking() {
   const [openModalVerInfoCliente, setOpenModalVerInfoCliente] = useRecoilState(stateOpenModalVerInfoCliente);
     const setRankingInfo =  useSetRecoilState(stateRankingInfoTable);
     const setOptionsRifa = useSetRecoilState(stateOptionsRifa);
+    const [pagination, setPagination] = useState(null)
+    const [currentPage, setCurrentPage] = useState(1);
 
-  const obterDados = async () => {
-    const response = await fetchDados(`/admin/dashboard/ranking-geral`);
-    setRankingInfo (response.data);
+  const obterDados = async (page = 1) => {
+    const response = await fetchDados(`/admin/dashboard/ranking-geral?page=${page}`);
+    setRankingInfo (response.data.data);
+
+    setPagination(response.data);
 
     const responseOptions = await fetchDados(`/admin/dashboard/client/rifa/ativas`);
     setOptionsRifa(responseOptions.data);
   };
 
   useEffect(() => {
-    obterDados();
-  }, []);
+    obterDados(currentPage);
+  }, [currentPage]);
   
   return (
     <section>
@@ -38,6 +44,10 @@ export default function Ranking() {
         <Titulo titulo="Filtros de Busca" />
         <RankingForm />
         <RankingTable />
+        <PedidosPagination
+          pagination={pagination} 
+          onPageChange={(page) => setCurrentPage(page)}
+        />
       </Main>
 
       <Modal title="CLIENTE" openState={openModalVerInfoCliente} setOpenState={setOpenModalVerInfoCliente}>

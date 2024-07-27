@@ -139,7 +139,7 @@ export default function TabelaCotas() {
     console.log(rifa)
 
     const response = await deleteDados(`admin/dashboard/bilhete-premiado/delete/${idCotaPremiada}/${id}`, userLogin);
-    setTabelaCotasInfo(response.data);
+    setTabelaCotasInfo(response.data.data);
     setIdModal(idCotaPremiada);
   }
 

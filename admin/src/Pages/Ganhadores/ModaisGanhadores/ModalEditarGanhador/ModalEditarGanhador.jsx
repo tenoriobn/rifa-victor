@@ -138,6 +138,7 @@ export default function ModalEditarGanhador({setAtualizaTabela}) {
           defaultValue={novoGanhador?.client?.name || ""}  
           onChange={(e) => setNovoGanhador({ ...novoGanhador, name: e.target.value })} 
           required
+          disabled
         />
       </label>
 
@@ -150,6 +151,7 @@ export default function ModalEditarGanhador({setAtualizaTabela}) {
           defaultValue={novoGanhador?.client?.surname || ""}  
           onChange={(e) => setNovoGanhador({ ...novoGanhador, surname: e.target.value })} 
           required
+          disabled
         />
       </label>
 

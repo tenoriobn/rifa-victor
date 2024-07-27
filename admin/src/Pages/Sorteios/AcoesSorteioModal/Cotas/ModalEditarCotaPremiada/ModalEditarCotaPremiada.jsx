@@ -73,7 +73,7 @@ export default function ModalEditarCotaPremiada() {
       const response = await putDados('/admin/dashboard/bilhete-premiado/editar/', cotaPremiada, userLogin);
 
       setOpenModalEditarCotaPremiada(!openModalEditarCotaPremiada)
-      setTabelaCotasInfo(response.data)
+      setTabelaCotasInfo(response.data.data)
       
       console.log(response.data)
     } catch (error) {

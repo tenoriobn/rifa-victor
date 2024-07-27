@@ -9,7 +9,7 @@ import UsuariosTable from "./UsuariosTable/UsuariosTable";
 import Modal from "../../../components/Modal/Modal";
 import ModalEditarUsuario from "./UsuariosModais/ModalEditarUsuario/ModalEditarUsuario";
 import ModalNovoUsuario from "./UsuariosModais/ModalNovoUsuario/ModalNovoUsuario";
-import UsuariosPaginacao from "./UsuariosPaginacao/UsuariosPaginacao";
+// import UsuariosPaginacao from "./UsuariosPaginacao/UsuariosPaginacao";
 import { useEffect, useState } from "react";
 import { fetchDados } from "../../../common/http/http";
 
@@ -49,7 +49,7 @@ export default function Usuarios() {
         <Titulo titulo={"Filtros de Busca"} />
         <UsuariosForm />
         <UsuariosTable setAtualizaTabela={setAtualizaTabela} />
-        <UsuariosPaginacao />
+        {/* <UsuariosPaginacao /> */}
       </Main>
 
       <Modal title="NOVO USUÁRIO" openState={openModalAdicionarUsuario} setOpenState={setOpenModalAdicionarUsuario}>
