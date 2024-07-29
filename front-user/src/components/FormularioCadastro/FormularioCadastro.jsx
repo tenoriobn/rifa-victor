@@ -61,7 +61,7 @@ export default function FormularioCadastro() {
             name="name" 
             id="name" 
             className="border text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full px-2 py-1 bg-gray-100 border-gray-500 placeholder-gray-400 text-neutral-900" 
-            placeholder="Nome Completo" 
+            placeholder="Nome" 
             value={nome}
             onChange={(e) => setNome(e.target.value)}
             required=""
@@ -77,7 +77,7 @@ export default function FormularioCadastro() {
             name="surname" 
             id="sobrenome" 
             className="border text-sm rounded focus:ring-blue-500 focus:border-blue-500 w-full block px-2 py-1 bg-gray-100 border-gray-500 placeholder-gray-400 text-neutral-900" 
-            placeholder="Nome Completo" 
+            placeholder="Sobrenome" 
             value={sobrenome}
             onChange={(e) => setSobrenome(e.target.value)}
             required=""

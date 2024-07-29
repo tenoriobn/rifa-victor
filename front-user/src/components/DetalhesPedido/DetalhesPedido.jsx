@@ -15,6 +15,7 @@ export default function DetalhesPedido() {
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const setQrCode = useSetRecoilState(estadoQrCode);
+  const baseURL = import.meta.env.VITE_BASE_URL;
 
   console.log('checkoutInfo', checkoutInfo)
   
@@ -42,7 +43,7 @@ export default function DetalhesPedido() {
     <>
       <div className="aspect-[16/9] mb-4">
         <img 
-          src={`../../../public/imgRifas/${checkoutInfo?.rifa?.rifa_image[0]?.path}`}
+          src={`${baseURL}/img/rifas/${checkoutInfo?.rifa?.rifa_image[0]?.path}`}
           className="w-full h-full object-cover rounded-lg mb-4"
           alt="Imagem do Prêmio" 
         />

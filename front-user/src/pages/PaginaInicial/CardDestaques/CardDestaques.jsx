@@ -13,6 +13,7 @@ export default function CardDestaques() {
   const [produto, setProdutos] = useRecoilState(estadoProdutos);
   const setProdutoSelecionado = useSetRecoilState(estadoProdutoSelecionado);
   const [erroConexao, setErroConexao] = useState(false);
+  const baseURL = import.meta.env.VITE_BASE_URL;
 
   const obterDados = async () => {
     try {
@@ -65,7 +66,7 @@ export default function CardDestaques() {
           className="flex w-auto overflow-hidden rounded-lg bg-neutral-200 hover:shadow-[4px_4px_4px_#0002] border border-solid border-neutral-400 ring-0 ring-amber-500/60 hover:ring-offset-4 hover:ring-2 transition-all duration-300 flex-col mb-6 cursor-pointer"
         >
           <img 
-            src={`../../../public/imgRifas/${produto.rifa_image[0]?.path}`}            
+            src={`${baseURL}/img/rifas/${produto.rifa_image[0]?.path}`}            
             alt="Foto do Prêmio" 
             className="aspect-[16/9] w-full max-h-[200px] object-cover transition-all"
           />

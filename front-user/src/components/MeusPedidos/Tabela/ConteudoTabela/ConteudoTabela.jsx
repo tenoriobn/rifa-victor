@@ -8,6 +8,7 @@ export default function ConteudoTabela() {
   const dadosTabela = useRecoilValue(estadoPedidosUsuario);
   const { formattedDate } = useFormattedDate();
   const { formatCurrency } = useCurrencyFormat();
+  const baseURL = import.meta.env.VITE_BASE_URL;
 
   return (
     <tbody>
@@ -16,8 +17,7 @@ export default function ConteudoTabela() {
           <td>
             <div className={`p-2 border-0 border-l-4 border-solid ${item.status === 0 ? "border-amber-400" : item.status === 1 ? "border-emerald-400" : "border-red-400"} `}>
               <img 
-                // src={item.imgSrc} 
-                src={`../../../public/imgRifas/${item.rifa?.rifa_image[0]?.path}`}
+                src={`${baseURL}/img/rifas/${item.rifa?.rifa_image[0]?.path}`}
                 alt="" 
                 className="h-auto min-w-[64px] w-full aspect-[16/9] object-cover rounded-lg" 
               />

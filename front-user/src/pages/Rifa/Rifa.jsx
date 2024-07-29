@@ -48,8 +48,6 @@ export default function Rifa() {
   const renderizaComponente = produto.status === "ativas";
   const renderizaComponenteFuturas = produto.status === "futuras";
 
-  console.log(produto)
-
   const animacao = transicaoAnimada();
 
   return (

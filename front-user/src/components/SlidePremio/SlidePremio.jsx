@@ -15,11 +15,11 @@ export default function SlidePremio() {
   const [imgPremioSlide, setImgPremioSlide] = useState(null);
   const animacao = transicaoAnimada();
   const imagensRifa = rifa.rifa_image;
+  const baseURL = import.meta.env.VITE_BASE_URL;
 
   useEffect(() => {
     setImgPremioSlide(imagensRifa[0]?.path)
   }, [])
-
 
   return (
     <motion.div
@@ -28,7 +28,7 @@ export default function SlidePremio() {
       <div className="aspect-[16/9] mb-4">
         {imgPremioSlide && (
           <img 
-            src={`../../../public/imgRifas/${imgPremioSlide}`}
+            src={`${baseURL}/img/rifas/${imgPremioSlide}`}
             className="w-full h-full object-cover rounded-lg mb-4"
             alt="Imagem do Prêmio" 
           />
@@ -40,7 +40,7 @@ export default function SlidePremio() {
           {imagensRifa.map((imagem, index) => (
             <img 
               key={index}
-              src={`../../../public/imgRifas/${imagem.path}`}
+              src={`${baseURL}/img/rifas/${imagem.path}`}
               className={`w-16 h-16 object-cover rounded-lg mb-4 transition-all duration-300 cursor-pointer ${imagem.id !== index ? 'hover:scale-110' : ''}`}
               alt={`Miniatura ${index}`}
               onClick={() => setImgPremioSlide(imagem.path)}
