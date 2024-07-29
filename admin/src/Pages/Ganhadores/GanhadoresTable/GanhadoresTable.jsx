@@ -110,6 +110,7 @@ export default function GanhadoresTable() {
   const setIdModal = useSetRecoilState(stateIdModal);
   const { formattedDate } = useFormattedDate();
   const userLogin = useRecoilValue(stateUserLogin);
+  const baseURL = import.meta.env.VITE_BASE_URL;
 
   const handleModalId = (ganhador) => {
     setIdModal(ganhador)
@@ -140,7 +141,7 @@ export default function GanhadoresTable() {
             novoGanhadorInfo.map((ganhador, index) => (
               <tr key={index} className="raffle-item">
                 <td className="ganhador">
-                  <img src={`../../../../public/imgRifas/${ganhador?.img}`} alt="foto do ganhador" />
+                  <img src={`${baseURL}/img/rifas/${ganhador?.img}`} alt="foto do ganhador" />
                 </td>
                 <td>{ganhador?.client?.name} {ganhador?.client?.surname}</td>
                 <td>{ganhador?.rifa?.title}</td>

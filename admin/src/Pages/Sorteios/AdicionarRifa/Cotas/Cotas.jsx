@@ -8,6 +8,8 @@ import { NumericFormat } from "react-number-format";
 export default function Cotas() {
   const { formState, handleChange: handleChangeFormState } = useFormState();
   const [formStateUm, setFormState] = useRecoilState(stateInfoRifaForm);
+
+  console.log('formState', formState)
   
   const updateFormState = (name, formattedValue) => {
     handleChangeFormState({

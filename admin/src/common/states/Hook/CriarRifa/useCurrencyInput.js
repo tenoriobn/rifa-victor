@@ -23,6 +23,8 @@ const useCurrencyInput = (initialValue = '', onChangeCallback) => {
     // Format with currency symbol and commas
     const formattedValue = formatCurrency(numericValue);
 
+    console.log('numericValue', inputValue)
+
     setValue(formattedValue);
 
     // Callback para atualizar o estado fora do hook, se fornecido
