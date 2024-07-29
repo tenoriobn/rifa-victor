@@ -399,3 +399,23 @@ export const stateDadosVendas = atom({
   key: 'stateDadosVenda',
   default: {},
 })
+
+export const stateOpenModalAdicionarAfiliados = atom({
+  key: 'stateOpenModalAdicionarAfiliados',
+  default: false,
+});
+
+export const stateOpenModalVerAfiliados = atom({
+  key: 'stateOpenModalVerAfiliados',
+  default: false,
+});
+
+export const stateOpenModalEditarAfiliados = atom({
+  key: 'stateOpenModalEditarAfiliados',
+  default: false,
+});
+
+export const stateAfiliadosInfoModal = atom({
+  key: 'stateAfiliadosInfoModal',
+  default: {},
+});

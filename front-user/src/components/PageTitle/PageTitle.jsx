@@ -12,7 +12,7 @@ const PageTitle = ({ children }) => {
   let description = siteConfig.share_description ;
   let image = siteConfig.share_image;
   let url = window.location.href;
-  let title = siteConfig.share_title;
+  let title = siteConfig.site_title;
 
   if (location.pathname.match(/^\/[^/]+\/\d+$/)) {
     title = rifa.title;

@@ -62,7 +62,7 @@ export default function CardGanhadores() {
                 onClick={() => setProdutoSelecionado(ganhadores)}
               >
                 <img 
-                  className="w-[80px] h-20 m-2 rounded-lg object-fill transition-all" 
+                  className="w-[80px] h-[80px] items-center m-2 rounded-lg object-fill transition-all" 
                   src={`../../../public/imgRifas/${ganhadores?.img}`}
                   alt="Foto do ganhador"
                 />
