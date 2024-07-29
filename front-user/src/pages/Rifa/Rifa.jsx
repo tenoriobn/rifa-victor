@@ -48,6 +48,8 @@ export default function Rifa() {
   const renderizaComponente = produto.status === "ativas";
   const renderizaComponenteFuturas = produto.status === "futuras";
 
+  console.log(produto)
+
   const animacao = transicaoAnimada();
 
   return (
@@ -110,7 +112,7 @@ export default function Rifa() {
         </motion.div>
       )}
 
-      {(renderizaComponenteCadastro || renderizaComponenteLogin || renderizaInfoUsuario ? <AcessoUsuario /> : null)}
+      {((renderizaComponenteCadastro || renderizaComponenteLogin || renderizaInfoUsuario) && renderizaComponente ? <AcessoUsuario /> : null)}
     </section>
   )
 }
