@@ -55,7 +55,7 @@ class AwardedQuota extends Model
     }
 
     public static function getAllBilhetePremiado($rifaId) {
-        return self::where('rifas_id', $rifaId)->paginate(20);
+        return self::with('client')->where('rifas_id', $rifaId)->paginate(20);
     }
     public static function getOneBilhetePremiado($rifaId) {
         return self::where('id', $rifaId)->first();

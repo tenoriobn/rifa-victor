@@ -266,7 +266,7 @@ export default function TabelaSorteio() {
               <td>
                 <a href={`https://alimaprojetos.com/${sorteio?.slug}/${sorteio?.id}`} target="_blank">
                   <i className="fa-solid fa-link"></i>
-                </a>
+                </a> &nbsp;
                 <b>{sorteio?.title}</b>
               </td>
               <td>{formattedDate(sorteio?.data_sortition)}</td>

@@ -1,4 +1,7 @@
 import styled from "styled-components"
+import { stateIdModal } from "../../../../../common/states/atom";
+import { useRecoilValue } from "recoil";
+import useFormattedDate from "../../../../../common/states/Hook/useFormattedDate";
 
 const Table = styled.table`
   border-collapse: separate;
@@ -39,6 +42,11 @@ const Table = styled.table`
 `;
 
 export default function ModalCotaPremiada() {
+  const modalInfo = useRecoilValue(stateIdModal);
+  const { formattedDate } = useFormattedDate();
+
+  console.log('modalInfo', modalInfo)
+
   return (
     <Table>
       <tbody>
@@ -46,54 +54,59 @@ export default function ModalCotaPremiada() {
           <td align="center" colSpan="2"><br/><b>COTA</b></td>
         </tr>
         <tr>
-            <td width="30%"><b>ID:</b></td>
-            <td width="70%"><p name="cotaID" id="cotaID">714</p></td>
+          <td width="30%"><b>ID:</b></td>
+          <td width="70%"><p name="cotaID" id="cotaID">{modalInfo.client_id}</p></td>
         </tr>
         <tr>
-            <td><b>Numero:</b></td>
-            <td><p name="cotaNumero" id="cotaNumero">989812</p></td>
+          <td><b>Numero:</b></td>
+          <td><p name="cotaNumero" id="cotaNumero">{modalInfo.number_cota}</p></td>
         </tr>
         <tr>
-            <td><b>Status:</b></td>
-            <td><span name="cotaSt" id="cotaSt" className="status-tag status-rescued">Resgatada</span></td>
+          <td><b>Status:</b></td>
+          <td><span name="cotaSt" id="cotaSt" className="status-tag status-rescued">{modalInfo.status}</span></td>
         </tr>
         <tr>
-            <td><b>Resgatada em:</b></td>
-            <td><span name="cotaUpdate" id="cotaUpdate">03/06 22:28</span></td>
+          <td><b>Resgatada em:</b></td>
+          <td><span name="cotaUpdate" id="cotaUpdate">{formattedDate(modalInfo.created_at)}</span></td>
         </tr>
         <tr>
-            <td align="center" colSpan="2"><br/><b>CLIENTE</b></td>
+          <td align="center" colSpan="2"><br/><b>CLIENTE</b></td>
         </tr>
         <tr>
-            <td><b>Nome:</b></td>
-            <td><p name="cotaCustomer" id="cotaCustomer">Izaquel diogo Ito</p></td>
+          <td><b>Nome:</b></td>
+          <td><p name="cotaCustomer" id="cotaCustomer">{modalInfo.client.name} {modalInfo.client.surname}</p></td>
         </tr>
         <tr>
-            <td><b>Telefone:</b></td>
-            <td><a id="whplnk" href="https://wa.me/5543991040203" target="_blank"><i className="fa-brands fa-whatsapp"></i></a> <span name="cotaCustomerPhone" id="cotaCustomerPhone">(43) 99104-0203</span></td>
+          <td><b>Telefone:</b></td>
+          <td><a id="whplnk" href="https://wa.me/5543991040203" target="_blank"><i className="fa-brands fa-whatsapp"></i></a> <span name="cotaCustomerPhone" id="cotaCustomerPhone">{modalInfo.client.cellphone}</span></td>
         </tr>
         <tr>
             <td align="center" colSpan="2"><br/><b>PEDIDO</b></td>
         </tr>
         <tr>
-            <td><b>Numero:</b></td>
-            <td><p name="cotaPedido" id="cotaPedido">1508695</p></td>
+          <td><b>Numero:</b></td>
+          <td><p name="cotaPedido" id="cotaPedido"></p></td>
+          {/* <td><p name="cotaPedido" id="cotaPedido">1508695</p></td> */}
         </tr>
         <tr>
-            <td><b>Data:</b></td>
-            <td><p name="cotaPedidoData" id="cotaPedidoData">03/06 22:23</p></td>
+          <td><b>Data:</b></td>
+          {/* <td><p name="cotaPedidoData" id="cotaPedidoData">03/06 22:23</p></td> */}
+          <td><p name="cotaPedidoData" id="cotaPedidoData"></p></td>
         </tr>
         <tr>
-            <td><b>Pago em:</b></td>
-            <td><p name="cotaPedidoPaid" id="cotaPedidoPaid">03/06 22:27</p></td>
+          <td><b>Pago em:</b></td>
+          {/* <td><p name="cotaPedidoPaid" id="cotaPedidoPaid">03/06 22:27</p></td> */}
+          <td><p name="cotaPedidoPaid" id="cotaPedidoPaid"></p></td>
         </tr>
         <tr>
-            <td><b>Total:</b></td>
-            <td><p name="cotaPedidoPrice" id="cotaPedidoPrice">R$ 95,00</p></td>
+          <td><b>Total:</b></td>
+          {/* <td><p name="cotaPedidoPrice" id="cotaPedidoPrice">R$ 95,00</p></td> */}
+          <td><p name="cotaPedidoPrice" id="cotaPedidoPrice"></p></td>
         </tr>
         <tr>
-            <td><b>Quantidade:</b></td>
-            <td><p name="cotaPedidoQuantidade" id="cotaPedidoQuantidade">500</p></td>
+          <td><b>Quantidade:</b></td>
+          {/* <td><p name="cotaPedidoQuantidade" id="cotaPedidoQuantidade">500</p></td> */}
+          <td><p name="cotaPedidoQuantidade" id="cotaPedidoQuantidade"></p></td>
         </tr>
       </tbody>
     </Table>
