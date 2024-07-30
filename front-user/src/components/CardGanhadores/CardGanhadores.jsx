@@ -15,6 +15,7 @@ export default function CardGanhadores() {
   const [erroConexao, setErroConexao] = useState(false);
   const setProdutoSelecionado = useSetRecoilState(estadoProdutoSelecionado);
   const { formattedDate } = useFormattedDate();
+  const baseURL = import.meta.env.VITE_BASE_URL;
 
   console.log('ganhadores', ganhadores)
 
@@ -62,8 +63,8 @@ export default function CardGanhadores() {
                 onClick={() => setProdutoSelecionado(ganhadores)}
               >
                 <img 
-                  className="w-[80px] h-20 m-2 rounded-lg object-fill transition-all" 
-                  src={`../../../public/imgRifas/${ganhadores?.img}`}
+                  className="w-[80px] h-[80px] items-center m-2 rounded-lg object-cover transition-all" 
+                  src={`${baseURL}/img/rifas/${ganhadores?.img}`}
                   alt="Foto do ganhador"
                 />
   

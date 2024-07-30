@@ -124,6 +124,13 @@ export default function TabelaCotas() {
   const { id } = useParams();
   const { formattedDate } = useFormattedDate();
 
+  const handleButtonId = async (item) => {
+    setOpenModalCotaPremiada(!openModalCotaPremiada)
+
+    // const response = await fetchDados(`admin/dashboard/pacote/${id}`);
+    setIdModal(item);
+  }
+
   const handleEditar = async (idModal) => {
     setOpenModalEditarCotaPremiada(!openModalEditarCotaPremiada)
 
@@ -149,7 +156,7 @@ export default function TabelaCotas() {
             <th>#</th>
             <th>ID</th>
             <th>Cota</th>
-            <th>Prêmioaa</th>
+            <th>Prêmiada</th>
             <th className="status">Status</th>
             <th>Mostrar</th>
             <th>Criado em</th>
@@ -194,7 +201,8 @@ export default function TabelaCotas() {
                   {cota.status === "resgatada" && 
                     <button 
                       className="action-button button-view" 
-                      onClick={() => setOpenModalCotaPremiada(!openModalCotaPremiada)}
+                      // onClick={() => setOpenModalCotaPremiada(!openModalCotaPremiada)}
+                      onClick={() => handleButtonId(cota)}
                     >
                       <i className="fas fa-eye"></i> VER
                     </button>

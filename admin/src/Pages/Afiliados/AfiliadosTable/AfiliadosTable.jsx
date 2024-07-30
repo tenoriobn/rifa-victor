@@ -1,4 +1,6 @@
+import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
+import { stateAfiliadosInfoModal, stateIdModal, stateOpenModalEditarAfiliados, stateOpenModalVerAfiliados } from "../../../common/states/atom";
 
 const Table = styled.table`
   width: 100%;
@@ -81,8 +83,17 @@ const Table = styled.table`
     cursor: pointer;
   }
 
+  .button-view {
+    background-color: #4e73df;
+    color: white;
+    border: none;
+    border-radius: .3125rem;
+    padding: .625rem .9375rem;
+    cursor: pointer;
+  }
+
   .button-edit {
-    background-color: #0d6efd;
+    background-color: #f4b400;
     color: white;
     border: none;
     border-radius: .3125rem;
@@ -106,6 +117,56 @@ const Table = styled.table`
 `;
 
 export default function AfiliadosTable() {
+  const setOpenModalEditarAfiliados = useSetRecoilState(stateOpenModalEditarAfiliados);
+  const [openModalVerAfiliados, setOpenModalVerAfiliados] = useRecoilState(stateOpenModalVerAfiliados);
+  const setAfiliadosInfo = useSetRecoilState(stateAfiliadosInfoModal);
+  const setIdModal = useSetRecoilState(stateIdModal);
+
+  const handleAfiliadoInfo = async (afiliado) => {
+    setOpenModalVerAfiliados(!openModalVerAfiliados);
+    setAfiliadosInfo(afiliado);
+  }
+
+  const handleEditar = async (id) => {
+    setOpenModalEditarAfiliados(true)
+    setIdModal(id)
+  }
+
+
+  const afiliados = [
+    {
+      id: 75,
+      name: 'Jessica',
+      percentual: '15,00%',
+      cellphone: '(43) 99672-6935',
+      tipo: 'Afiliado',
+      pedidos: 188,
+      faturamento: 'R$ 4.361,53',
+      comissao: 'R$ 654,23'
+    },
+    {
+      id: 76,
+      name: 'Carlos',
+      percentual: '10,00%',
+      cellphone: '(11) 98765-4321',
+      tipo: 'Afiliado',
+      pedidos: 250,
+      faturamento: 'R$ 7.200,00',
+      comissao: 'R$ 720,00'
+    },
+    {
+      id: 77,
+      name: 'Ana',
+      percentual: '12,00%',
+      cellphone: '(21) 91234-5678',
+      tipo: 'Afiliado',
+      pedidos: 300,
+      faturamento: 'R$ 8.400,00',
+      comissao: 'R$ 1.008,00'
+    },
+  ];
+
+
   return (
     <Table>
       <thead>
@@ -119,20 +180,36 @@ export default function AfiliadosTable() {
           <th>Pedidos</th>
           <th><b>Faturamento</b></th>
           <th>Comissão</th>
+          <th>Ações</th>
         </tr>
       </thead>
       <tbody>
-        <tr className="raffle-item">
-          <td>#1</td>
-          <td>75</td>
-          <td>Jessica</td>
-          <td>15,00%</td>
-          <td>(43) 99672-6935</td>
-          <td><span className="status-tag status-inconsistente">Afiliado</span></td>
-          <td>188</td>
-          <td>R$ 4.361,53</td>
-          <td>R$ 654,23</td>
-        </tr>
+        {afiliados.map((afiliado, index) => (
+          <tr className="raffle-item" key={afiliado.id}>
+            <td>#{index + 1}</td>
+            <td>{afiliado.id}</td>
+            <td>{afiliado.name}</td>
+            <td>{afiliado.percentual}</td>
+            <td>{afiliado.cellphone}</td>
+            <td><span className="status-tag status-inconsistente">{afiliado.tipo}</span></td>
+            <td>{afiliado.pedidos}</td>
+            <td>{afiliado.faturamento}</td>
+            <td>{afiliado.comissao}</td>
+            <td>
+              <div className="button-group">
+                <button
+                  className="action-button button-view"
+                  onClick={() => handleAfiliadoInfo(afiliado)}
+                >
+                  <i className="fas fa-eye"></i> VER
+                </button>
+                <a className="button-edit" onClick={() => handleEditar(afiliado.id)}>
+                  <i className="fas fa-edit"></i> Editar
+                </a>
+              </div>
+            </td>
+          </tr>
+        ))}
       </tbody>
     </Table>
   )

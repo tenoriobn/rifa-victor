@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import { estadoUsuario, stateSiteConfig } from "../state/atom";
 import { fetchDados } from "../http/http";
+import Cookies from 'js-cookie';
 
 export default function AppLayout() {
   const setUsuario = useSetRecoilState(estadoUsuario);
@@ -24,7 +25,8 @@ export default function AppLayout() {
 
   useEffect(() => {
     const verificarTokenJWT = async () => {
-      const token = localStorage.getItem('access_token');
+      // const token = localStorage.getItem('access_token');
+      const token = Cookies.get('access_token');
       if (token) {
         try {
           const decoded = jwtDecode(token);

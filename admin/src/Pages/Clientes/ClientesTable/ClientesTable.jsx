@@ -98,7 +98,7 @@ export const Table = styled.table`
 
   .button-edit {
     background-color: #f4b400;
-}
+  }
 
   @media (max-width: 767px) {
     overflow-x: auto;

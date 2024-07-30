@@ -74,6 +74,7 @@ export default function ImagensRifa() {
   const [imagemRifaUpload, setImagemRifaUpload] = useRecoilState(stateImagemRifaUpload);
   const [imagemRifaDelete, setImagemRifaDelete] = useState('')
   const [isLoading, setIsLoading] = useState(true);
+  const baseURL = import.meta.env.VITE_BASE_URL;
 
   const handleExcluirImagem = async (idImg) => {
     const response = await deleteDados(`admin/dashboard/rifa/imagens/deletar/${idImg}`, userLogin);
@@ -85,6 +86,7 @@ export default function ImagensRifa() {
       try {
         setIsLoading(true);
         const response = await fetchDados(`/admin/dashboard/rifa/imagens/${id}`, userLogin);
+        
         if (response.data && response.data.length > 0) {
           setImagensRifa(response.data);
         } else {
@@ -138,7 +140,7 @@ export default function ImagensRifa() {
           ) : imagensRifa.length > 0 ? (
             imagensRifa.map((imagem, index) => (
               <div className="product" key={index}>
-                <img src={`../../../../../public/imgRifas/${imagem.path}`} alt={`Imagem ${index + 1}`} />
+                <img src={`${baseURL}/img/rifas/${imagem.path}`} alt={`Imagem ${index + 1}`} />
                 <div className="buttons">
                   <button onClick={() => handleExcluirImagem(imagem.id)}>
                     <i className="fas fa-trash-alt"></i> Excluir

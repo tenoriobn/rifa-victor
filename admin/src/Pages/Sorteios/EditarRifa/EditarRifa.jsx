@@ -31,6 +31,8 @@ export default function EditarRifa() {
     const obterDados = async () => {
       const response = await fetchDados(`/admin/dashboard/rifa/editar/${id}`, userLogin);
       setFormState(response.data);
+
+      console.log('response ObterDados: ', response)
     };
     
     if (id) {
@@ -48,6 +50,8 @@ export default function EditarRifa() {
         navigate("/dashboard/rifas/");
         resetFormState();
       }, 1350);
+
+      console.log('submit formState: ', formState)
 
       toast.success('Sorteio criado com sucesso!');
 

@@ -164,6 +164,7 @@ export default function TabelaSorteio() {
   const { formattedDate } = useFormattedDate();
   const { formatCurrency } = useCurrencyFormatTable();
   const { formatPercentage } = useFormatPercentage();
+  const baseURL = import.meta.env.VITE_BASE_URL;
 
   useEffect(() => {
     const obterDados = async () => {
@@ -229,6 +230,8 @@ export default function TabelaSorteio() {
     }
   }
 
+  console.log('sorteios', sorteios)
+
   return (
     <div className="">
       <Table>
@@ -254,7 +257,7 @@ export default function TabelaSorteio() {
               <td className="spacing">
               {sorteio?.rifa_image && sorteio?.rifa_image[0] && 
                 <img 
-                  src={`../../../../../public/imgRifas/${sorteio?.rifa_image[0]?.path}`} 
+                  src={`${baseURL}/img/rifas/${sorteio?.rifa_image[0]?.path}`} 
                   alt="#" 
                 />
               }
@@ -263,7 +266,7 @@ export default function TabelaSorteio() {
               <td>
                 <a href={`https://alimaprojetos.com/${sorteio?.slug}/${sorteio?.id}`} target="_blank">
                   <i className="fa-solid fa-link"></i>
-                </a>
+                </a> &nbsp;
                 <b>{sorteio?.title}</b>
               </td>
               <td>{formattedDate(sorteio?.data_sortition)}</td>

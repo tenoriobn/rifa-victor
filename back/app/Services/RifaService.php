@@ -6,6 +6,8 @@ use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Auth;
 use App\Models\V1\{Cotas, Rifas, RifasOthers, RifasAwarded, RifasPayment, RifaNumber, Clients, RifaPay, AwardedQuota, RifaImage};
+use Illuminate\Support\Facades\Storage;
+
 class RifaService
 {
     public function createRifas($datas)
@@ -60,7 +62,7 @@ class RifaService
         // Extrair a extensão da imagem
         preg_match('#^data:image/(?<type>.+);base64,#', $imgBase64, $matches);
         $type = $matches['type'];
-        $allowedTypes = ['jpg', 'jpeg', 'png'];
+        $allowedTypes = ['jpg', 'jpeg','png'];
 
         // Verificar se o tipo é permitido
         if (!in_array($type, $allowedTypes)) {
@@ -70,12 +72,12 @@ class RifaService
         // Decodificar a imagem base64
         $imgData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $imgBase64));
         $imgName = Str::random(10) . '.' . $type; // Manter a extensão original
-        $reactImagePathAdmin = '../../admin/public/imgRifas/' . $imgName;
-        $reactImagePathFront = '../../front-user/public/imgRifas/' . $imgName;
+        $reactImagePathAdmin = public_path('img/rifas/' . $imgName);
+        // $reactImagePathFront = public_path('front-user/public/imgRifas/' . $imgName);
 
         // Salvar a imagem na pasta imgRifas
         file_put_contents($reactImagePathAdmin, $imgData);
-        file_put_contents($reactImagePathFront, $imgData);
+        // file_put_contents($reactImagePathFront, $imgData);
 
         // Salvar a imagem no banco de dados
         return ["imgName" => $imgName, "rifaId" => $rifaId];

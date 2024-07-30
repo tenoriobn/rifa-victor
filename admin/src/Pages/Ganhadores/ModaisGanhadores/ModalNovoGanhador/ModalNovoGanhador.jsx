@@ -73,7 +73,7 @@ const Form = styled.form`
 export default function ModalNovoGanhador({setAtualizaTabela}) {
   const setOpenModalNovoGanhador = useSetRecoilState(stateOpenModalNovoGanhador);
   const [novoGanhador, setNovoGanhador] = useRecoilState(stateNovoGanhador);
-  const [novoGanhadorInfo, setNovoGanhadorInfo] = useRecoilState(stateNovoGanhadorInfo);
+  const setNovoGanhadorInfo = useSetRecoilState(stateNovoGanhadorInfo);
   const { handleFileChange } = useImageUpload(setNovoGanhador, novoGanhador);
   const [optionsRifa, setOptionsRifa] = useRecoilState(stateOptionsRifa);
 

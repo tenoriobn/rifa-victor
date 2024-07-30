@@ -1,6 +1,6 @@
 import Telefone from "../../assets/Icons/telefone.svg?react";
 import useFormatadorTelefone from "../../common/state/hooks/FormularioCadastro/useFormatadorTelefone";
-import { postDados } from "../../common/http/http";
+import { postDados, salvarToken } from "../../common/http/http";
 import {jwtDecode} from 'jwt-decode';
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { estadoErro, estadoRenderizaComponenteLogin, estadoRenderizaInfoUsuario, estadoUsuario } from "../../common/state/atom";
@@ -20,7 +20,9 @@ export default function FormularioLogin() {
       const dadosLogin = { "cellphone": telefone };
       const response = await postDados('client/login', dadosLogin);
 
-      localStorage.setItem('access_token', response.access_token);
+      // localStorage.setItem('access_token', response.access_token);
+
+      salvarToken(response.access_token);
 
       const decoded = jwtDecode(response.access_token);
       setUsuario(decoded);   

@@ -20,6 +20,7 @@ export default function CardProdutos({ categoria }) {
   const setRenderizaComponenteLogin = useSetRecoilState(estadoRenderizaComponenteLogin);
   const [erroConexao, setErroConexao] = useState(false);
   const { formattedDate } = useFormattedDate();
+  const baseURL = import.meta.env.VITE_BASE_URL;
 
   const [loading, setLoading] = useState(true);
 
@@ -87,7 +88,7 @@ export default function CardProdutos({ categoria }) {
           >
             <img 
               className="w-[80px] m-2 rounded-lg object-cover transition-all" 
-              src={`../../../public/imgRifas/${produto.rifa_image[0]?.path}`}
+              src={`${baseURL}/img/rifas/${produto.rifa_image[0]?.path}`}
               alt={`Imagem do ${produto.title}`}
             />
 

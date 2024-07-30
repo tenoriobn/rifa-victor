@@ -110,7 +110,7 @@ export default function Rifa() {
         </motion.div>
       )}
 
-      {(renderizaComponenteCadastro || renderizaComponenteLogin || renderizaInfoUsuario ? <AcessoUsuario /> : null)}
+      {((renderizaComponenteCadastro || renderizaComponenteLogin || renderizaInfoUsuario) && renderizaComponente ? <AcessoUsuario /> : null)}
     </section>
   )
 }

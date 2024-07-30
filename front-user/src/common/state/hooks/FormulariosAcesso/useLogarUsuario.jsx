@@ -1,7 +1,7 @@
 import { useRecoilState } from "recoil";
 import { jwtDecode } from "jwt-decode";
 import { estadoUsuario } from "../../atom";
-import { postDados } from "../../../http/http";
+import { postDados, salvarToken } from "../../../http/http";
 
 export default function useLogin() {
   const [, setUsuario] = useRecoilState(estadoUsuario);
@@ -12,7 +12,8 @@ export default function useLogin() {
       const response = await postDados('client/login', dadosLogin);
 
       if (response && response.access_token) {
-        localStorage.setItem('access_token', response.access_token);
+        // localStorage.setItem('access_token', response.access_token);
+        salvarToken(response.access_token);
         const decoded = jwtDecode(response.access_token);
         setUsuario(decoded);
 

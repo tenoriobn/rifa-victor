@@ -1,14 +1,17 @@
 import axios from 'axios';
+import Cookies from 'js-cookie';
+
+const baseURL = import.meta.env.VITE_BASE_URL;
 
 const apiClient = axios.create({
-  baseURL: 'http://127.0.0.1:8000/api/',
+  baseURL: `${baseURL}/api/`,
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
 apiClient.interceptors.request.use((config) => {
-  const token = localStorage.getItem('access_token');
+  const token = Cookies.get('access_token');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -28,7 +31,7 @@ export const postDados = async (rota, dados, incluirToken = false) => {
   };
 
   if (incluirToken) {
-    const token = localStorage.getItem('access_token');
+    const token = Cookies.get('access_token');
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
     }
@@ -51,4 +54,14 @@ export const postDados = async (rota, dados, incluirToken = false) => {
     }
     throw error;
   }
+};
+
+// Função para salvar o token em um cookie com expiração de 2 minutos
+export const salvarToken = (token) => {
+  Cookies.set('access_token', token, { expires: 20 / 24 });
+};
+
+// Função para remover o token do cookie
+export const removerToken = () => {
+  Cookies.remove('access_token');
 };

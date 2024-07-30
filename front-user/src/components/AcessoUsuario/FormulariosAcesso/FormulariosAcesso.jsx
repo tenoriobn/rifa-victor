@@ -7,6 +7,7 @@ import useAlternarFormularios from "../../../common/state/hooks/FormulariosAcess
 import DadosUsuario from "../../DadosUsuario/DadosUsuario";
 import { motion } from "framer-motion";
 import { transicaoAnimada } from "../../../common/util/transicaoAnimada";
+import { removerToken } from "../../../common/http/http";
 
 export default function FormulariosAcesso() {
   const renderizaComponenteCadastro = useRecoilValue(estadoRenderizaComponenteCadastro);
@@ -16,7 +17,8 @@ export default function FormulariosAcesso() {
   const setUsuario = useSetRecoilState(estadoUsuario);
 
   const handleLogout = () => {
-    localStorage.removeItem("access_token");
+    // localStorage.removeItem("access_token");
+    removerToken();
     setRenderizaInfoUsuario(false);
     setRenderizaComponenteLogin(true);
     setUsuario(null);

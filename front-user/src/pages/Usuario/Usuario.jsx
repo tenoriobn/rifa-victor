@@ -4,6 +4,7 @@ import Sair from "../../assets/Icons/sair.svg?react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { estadoRenderizaInfoUsuario, estadoUsuario } from "../../common/state/atom";
+import { removerToken } from "../../common/http/http";
 
 export default function Usuario() {
   const [, setBotaoSelecionado] = useState("perfil");
@@ -13,7 +14,8 @@ export default function Usuario() {
   const location = useLocation();
 
   const handleLogout = () => {
-    localStorage.removeItem("access_token");
+    // localStorage.removeItem("access_token");
+    removerToken();
     const rotaAtual = location.pathname;
     navigate(rotaAtual);
     setUsuario(null);
