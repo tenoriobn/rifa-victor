@@ -14,8 +14,8 @@ export default function Vendas() {
 
       <Main>
         <Titulo titulo="Filtros" />
-        <VendasForm />
-        <VendasCardInfo />
+        <VendasForm rotaObterDados="/admin/dashboard/vendas/filtro" />
+        <VendasCardInfo rotaObterDados="/admin/dashboard/vendas" />
         <VendasGraficos />
       </Main>
     </div>

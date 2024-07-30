@@ -2,6 +2,7 @@ import styled from "styled-components"
 import { stateIdModal } from "../../../../../common/states/atom";
 import { useRecoilValue } from "recoil";
 import useFormattedDate from "../../../../../common/states/Hook/useFormattedDate";
+import useCurrencyFormatTable from "../../../../../common/states/Hook/useCurrencyFormatTable/useCurrencyFormatTable";
 
 const Table = styled.table`
   border-collapse: separate;
@@ -44,6 +45,7 @@ const Table = styled.table`
 export default function ModalCotaPremiada() {
   const modalInfo = useRecoilValue(stateIdModal);
   const { formattedDate } = useFormattedDate();
+  const { formatCurrency } = useCurrencyFormatTable();
 
   console.log('modalInfo', modalInfo)
 
@@ -55,53 +57,49 @@ export default function ModalCotaPremiada() {
         </tr>
         <tr>
           <td width="30%"><b>ID:</b></td>
-          <td width="70%"><p name="cotaID" id="cotaID">{modalInfo.client_id}</p></td>
+          <td width="70%"><p name="cotaID" id="cotaID">{modalInfo?.client_id}</p></td>
         </tr>
         <tr>
           <td><b>Numero:</b></td>
-          <td><p name="cotaNumero" id="cotaNumero">{modalInfo.number_cota}</p></td>
+          <td><p name="cotaNumero" id="cotaNumero">{modalInfo?.number_cota}</p></td>
         </tr>
         <tr>
           <td><b>Status:</b></td>
-          <td><span name="cotaSt" id="cotaSt" className="status-tag status-rescued">{modalInfo.status}</span></td>
+          <td><span name="cotaSt" id="cotaSt" className="status-tag status-rescued">{modalInfo?.status}</span></td>
         </tr>
         <tr>
           <td><b>Resgatada em:</b></td>
-          <td><span name="cotaUpdate" id="cotaUpdate">{formattedDate(modalInfo.created_at)}</span></td>
+          <td><span name="cotaUpdate" id="cotaUpdate">{formattedDate(modalInfo?.created_at)}</span></td>
         </tr>
         <tr>
           <td align="center" colSpan="2"><br/><b>CLIENTE</b></td>
         </tr>
         <tr>
           <td><b>Nome:</b></td>
-          <td><p name="cotaCustomer" id="cotaCustomer">{modalInfo.client.name} {modalInfo.client.surname}</p></td>
+          <td><p name="cotaCustomer" id="cotaCustomer">{modalInfo?.client?.name} {modalInfo?.client?.surname}</p></td>
         </tr>
         <tr>
           <td><b>Telefone:</b></td>
-          <td><a id="whplnk" href="https://wa.me/5543991040203" target="_blank"><i className="fa-brands fa-whatsapp"></i></a> <span name="cotaCustomerPhone" id="cotaCustomerPhone">{modalInfo.client.cellphone}</span></td>
+          <td><a id="whplnk" href="https://wa.me/5543991040203" target="_blank"><i className="fa-brands fa-whatsapp"></i></a> <span name="cotaCustomerPhone" id="cotaCustomerPhone">{modalInfo?.client?.cellphone}</span></td>
         </tr>
         <tr>
             <td align="center" colSpan="2"><br/><b>PEDIDO</b></td>
         </tr>
         <tr>
           <td><b>Data:</b></td>
-          <td><p name="cotaPedidoData" id="cotaPedidoData">{modalInfo.rifa_pay.created_at}</p></td>
-          {/* <td><p name="cotaPedidoData" id="cotaPedidoData"></p></td> */}
+          <td><p name="cotaPedidoData" id="cotaPedidoData">{formattedDate(modalInfo?.rifa_pay?.created_at)}</p></td>
         </tr>
         <tr>
           <td><b>Pago em:</b></td>
-          <td><p name="cotaPedidoPaid" id="cotaPedidoPaid">{modalInfo.rifa_pay.updated_at}</p></td>
-          {/* <td><p name="cotaPedidoPaid" id="cotaPedidoPaid"></p></td> */}
+          <td><p name="cotaPedidoPaid" id="cotaPedidoPaid">{formattedDate(modalInfo?.rifa_pay?.updated_at)}</p></td>
         </tr>
         <tr>
           <td><b>Total:</b></td>
-          <td><p name="cotaPedidoPrice" id="cotaPedidoPrice">{modalInfo.rifa_pay.value}</p></td>
-          {/* <td><p name="cotaPedidoPrice" id="cotaPedidoPrice"></p></td> */}
+          <td><p name="cotaPedidoPrice" id="cotaPedidoPrice">{formatCurrency(modalInfo?.rifa_pay?.value)}</p></td>
         </tr>
         <tr>
           <td><b>Quantidade:</b></td>
-          <td><p name="cotaPedidoQuantidade" id="cotaPedidoQuantidade">{modalInfo.rifa_pay.qntd_number}</p></td>
-          <td><p name="cotaPedidoQuantidade" id="cotaPedidoQuantidade"></p></td>
+          <td><p name="cotaPedidoQuantidade" id="cotaPedidoQuantidade">{modalInfo?.rifa_pay?.qntd_number}</p></td>
         </tr>
       </tbody>
     </Table>

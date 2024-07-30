@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { postDados } from "../../../../../common/http/http";
 import { useRecoilState } from "recoil";
 import { stateTabelaCotasInfo } from "../../../../../common/states/atom";
+
 const Form = styled.form`
   display: flex;
   flex-wrap: wrap;
@@ -57,21 +58,19 @@ export default function CotasForm() {
   const { id } = useParams();
   const [tabelaCotasInfo, setTabelaCotasInfo] = useRecoilState(stateTabelaCotasInfo);
 
-
   const handleSubmit = async (e) => {
     if (e) e.preventDefault();
     try {
       const response = await postDados(`/admin/dashboard/bilhete-premiado/filtro/${id}`, orderFilter);
-      setTabelaCotasInfo(response);
+      setTabelaCotasInfo(response.data.data);
     } catch (error) {
       console.error("There was an error fetching the data!", error);
     }
   };
 
-  console.log(tabelaCotasInfo)
+  console.log('orderFilter', orderFilter)
     
   return (
-    // onSubmit={handleSubmit}
     <Form method="POST" onSubmit={handleSubmit}>
       <div className="filter-item" style={{ minWidth: "260px"}}>
         <label htmlFor="init_date">Mostrar no site:</label>

@@ -135,16 +135,15 @@ export default function TabelaCotas() {
     setOpenModalEditarCotaPremiada(!openModalEditarCotaPremiada)
 
     const response = await fetchDados(`admin/dashboard/bilhete-premiado/editar/${idModal}`, userLogin);
-    setCotaPremiada(response.data);
-
+    setCotaPremiada(response?.data);
     setIdModal(idModal);
+
+    console.log(response)
   }
 
   const handleDeletar = async (idCotaPremiada) => {
-    // const rifa = { rifas_id: id };
-
     const response = await deleteDados(`admin/dashboard/bilhete-premiado/delete/${idCotaPremiada}/${id}`, userLogin);
-    setTabelaCotasInfo(response.data.data);
+    setTabelaCotasInfo(response?.data?.data);
     setIdModal(idCotaPremiada);
   }
 
@@ -167,33 +166,33 @@ export default function TabelaCotas() {
 
         <tbody>
         {tabelaCotasInfo.map((cota, index) => (
-            <tr key={cota.id} className="raffle-cota">
+            <tr key={cota?.id} className="raffle-cota">
               <td>#{index + 1}</td>
-              <td>{cota.id}</td>
-              <td><b>{cota.number_cota}</b></td>
-              <td>{cota.award}</td>
+              <td>{cota?.id}</td>
+              <td><b>{cota?.number_cota}</b></td>
+              <td>{cota?.award}</td>
               <td>
-                <span className={`status-tag ${cota.status === 'disponivel' ? 'status-available' : cota.status === 'imediato' ? 'status-rescued': cota.status === 'resgatada' ? 'button-delete' : 'status-reserved'}`}>
-                  {cota.status}
+                <span className={`status-tag ${cota?.status === 'disponivel' ? 'status-available' : cota?.status === 'imediato' ? 'status-rescued': cota?.status === 'resgatada' ? 'button-delete' : 'status-reserved'}`}>
+                  {cota?.status}
                 </span>
               </td>
               <td>
-                <span className={`status-tag ${cota.show_site === 'sim' ? 'status-available' : 'status-reserved'}`}>
+                <span className={`status-tag ${cota?.show_site === 'sim' ? 'status-available' : 'status-reserved'}`}>
                   {cota.show_site}
                 </span>
               </td>
-              <td>{formattedDate(cota.created_at)}</td>
-              <td>{formattedDate(cota.updated_at)}</td>
+              <td>{formattedDate(cota?.created_at)}</td>
+              <td>{formattedDate(cota?.updated_at)}</td>
               <td>
                 <div className="button-group">
                   <button className="action-button button-edit" 
-                    onClick={() => handleEditar(cota.id)}
+                    onClick={() => handleEditar(cota?.id)}
                   >
                     <i className="fas fa-edit"></i> Editar
                   </button>
 
                   <button className="action-button button-delete" 
-                    onClick={() => handleDeletar(cota.id)}
+                    onClick={() => handleDeletar(cota?.id)}
                   >
                     <i className="fas fa-check-square"></i> Excluir
                   </button>

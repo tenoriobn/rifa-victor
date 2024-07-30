@@ -79,27 +79,28 @@ class RifasController extends Controller
                 ->withCount(['rifaNumberReservado as qntd_numeros_reservado' => function ($query) {
                     $query->select(DB::raw("SUM(LENGTH(numbers) - LENGTH(REPLACE(numbers, ',', '')) + 1) as number_count"));
                 }]);
-
-            // Adiciona filtros se os parâmetros estiverem presentes
-            if ($request->has('title')) {
+    
+            // Adiciona filtros se os parâmetros estiverem presentes e não estiverem vazios
+            if ($request->has('title') && $request->input('title') != '') {
                 $query->where('title', 'like', '%' . $request->input('title') . '%');
             }
-
-            if ($request->has('status')) {
+    
+            if ($request->has('status') && $request->input('status') != '') {
                 $query->where('status', $request->input('status'));
             }
-
+    
             $rifasData = $query->latest()->get();
-
-            if (!$rifasData) {
-                return response()->json(["success" => false, "msg" => "rifas não foram encontradas."], 404);
-            }
-
+    
+            // if ($rifasData->isEmpty()) {
+            //     return response()->json(["success" => false, "msg" => "Rifas não foram encontradas."], 404);
+            // }
+    
             return response()->json(["success" => true, "data" => $rifasData], 200);
         } catch (Exception $e) {
             return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
         }
     }
+    
 
 
     public function allRifas() {
@@ -262,30 +263,38 @@ class RifasController extends Controller
     public function getBilhetePremiadoFiltro(Request $request, $id) {
         try {
             $rifa = Rifas::find($id);
-            if ($rifa == []) {
-                return response()->json(['response' => false, 'msg' => 'Bilhete não encontrada'], 404);
+            if ($rifa == null) {
+                return response()->json(['response' => false, 'msg' => 'Bilhete não encontrado'], 404);
             }
-
+    
             $qntdCotaExist = AwardedQuota::with('client')->where('rifas_id', $id);
-
-             // Aplica os filtros adicionais
-            if ($request->has('status')) {
-                $qntdCotaExist = $qntdCotaExist->where('status', $request->input('status'));
+    
+            // Aplica os filtros adicionais
+            if ($request->has('status') && $request->input('status') != '') {
+                $qntdCotaExist->where('status', $request->input('status'));
             }
-
-            if ($request->has('mostraSite')) {
-                $qntdCotaExist = $qntdCotaExist->where('show_site', $request->input('mostraSite'));
+    
+            if ($request->has('mostraSite') && $request->input('mostraSite') != '') {
+                $qntdCotaExist->where('show_site', $request->input('mostraSite'));
             }
-            $qntdCotaExist = $qntdCotaExist->paginate(20);
-            return  response()->json(["success" => true, "data" => $qntdCotaExist], 200);
-
-
-
-
+    
+            $results = $qntdCotaExist->paginate(20);
+    
+            // Se não houver resultados, retorna todos
+            if ($results->isEmpty()) {
+                $qntdCotaExist = AwardedQuota::with('client')->where('rifas_id', $id)->paginate(20);
+                return response()->json(["success" => true, "data" => $qntdCotaExist], 200);
+            }
+    
+            return response()->json(["success" => true, "data" => $results], 200);
+    
         } catch (Exception $e) {
             return response()->json(["response" => false, "msg" => "Ocorreu um erro interno ao cadastrar a rifa", "error" => $e->getMessage()], 500);
         }
     }
+    
+    
+    
     public function getOneBilhetePremiado($id) {
         try {
             $bilhete = AwardedQuota::getOneBilhetePremiado($id);

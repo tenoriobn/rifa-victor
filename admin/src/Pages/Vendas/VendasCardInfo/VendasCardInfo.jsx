@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import styled from "styled-components"
 import { fetchDados } from "../../../common/http/http";
@@ -92,18 +94,20 @@ const DashboardItens = styled.div`
   }
 `;
 
-export default function VendasCardInfo() {
+export default function VendasCardInfo({rotaObterDados}) {
   const [dadosVendas, setDadosVendas] = useRecoilState(stateDadosVendas);
   const { formatCurrency } = useCurrencyFormatTable();
 
   const obterDados = async () => {
-    const response = await fetchDados(`/admin/dashboard/vendas`);
+    const response = await fetchDados(rotaObterDados);
     setDadosVendas(response.data); 
   };
 
   useEffect(() => {
     obterDados();
   }, []);
+
+  console.log('dadosVendas', dadosVendas)
 
   return (
     <DashboardItens>

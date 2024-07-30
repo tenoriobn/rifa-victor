@@ -1,7 +1,8 @@
+/* eslint-disable react/prop-types */
 import styled from "styled-components";
 import Datepicker from "react-tailwindcss-datepicker"; 
 import { postDados } from "../../../common/http/http";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { stateVendasOrderFilter, stateDadosVendas } from "../../../common/states/atom";
 
 const Form = styled.form`
@@ -50,20 +51,19 @@ const Form = styled.form`
   }
 `;
 
-export default function VendasForm() {
+export default function VendasForm({rotaObterDados}) {
   const [vendasOrderFilter, setVendasOrderFilter] = useRecoilState(stateVendasOrderFilter);
-  const [dadosVendas, setDadosVendas] = useRecoilState(stateDadosVendas)
+  const setDadosVendas = useSetRecoilState(stateDadosVendas);
 
   const handleSubmit = async (e) => {
     if (e) e.preventDefault();
     try {
-      const response = await postDados('/admin/dashboard/vendas/filtro', vendasOrderFilter);
+      const response = await postDados(rotaObterDados, vendasOrderFilter);
       setDadosVendas(response.data);
     } catch (error) {
       console.error("There was an error fetching the data!", error);
     }
   };
-    
 
   return (
     <Form onSubmit={handleSubmit}>
