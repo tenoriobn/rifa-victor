@@ -1,13 +1,21 @@
 import { useState, useEffect } from 'react';
 
 const useCurrencyInput = (initialValue = '', onChangeCallback) => {
-    const formatCurrency = (value) => {
-    if (!value) return 'R$ 0,00';
+  // Função para formatar o valor como moeda
+  const formatCurrency = (value) => {
+    if (value === '' || isNaN(value)) return 'R$ 0,00';
 
-    // Convert the value to float and format
-    const amount = parseFloat(value) / 100;
+    // Converte o valor para float e formata
+    const amount = parseFloat(value);
     return amount.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   };
+
+  // Função para extrair valor numérico do input
+  const parseValue = (value) => {
+    // Remove caracteres não numéricos e converte para float
+    return parseFloat(value.replace(/[^\d]/g, '')) / 100 || 0;
+  };
+
   const [value, setValue] = useState(formatCurrency(initialValue));
 
   useEffect(() => {
@@ -17,15 +25,11 @@ const useCurrencyInput = (initialValue = '', onChangeCallback) => {
   const handleChange = (event) => {
     const inputValue = event.target.value;
 
-    // Remove non-numeric characters
-    const numericValue = inputValue.replace(/[^\d]/g, '');
+    // Remove caracteres não numéricos e calcula o valor numérico
+    const numericValue = parseValue(inputValue);
 
-    // Format with currency symbol and commas
-    const formattedValue = formatCurrency(numericValue);
-
-    console.log('numericValue', inputValue)
-
-    setValue(formattedValue);
+    // Atualiza o estado com o valor numérico
+    setValue(formatCurrency(numericValue * 100));
 
     // Callback para atualizar o estado fora do hook, se fornecido
     if (onChangeCallback) {
@@ -35,7 +39,7 @@ const useCurrencyInput = (initialValue = '', onChangeCallback) => {
 
   const handleBlur = () => {
     // Limpar o valor se estiver vazio ou apenas com zeros
-    if (value === 'R$ 0,00' || value === '0' || value === '') {
+    if (value === 'R$ 0,00' || value === '') {
       setValue('');
     }
   };
