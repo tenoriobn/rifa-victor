@@ -57,6 +57,9 @@ class RifaNumber extends Model {
     public static function cancelarCompra($id) {
         return self::where('pay_id', $id)->update(['status' => 2]);
     }
+    public static function aprovarCompra($id) {
+        return self::where('pay_id', $id)->update(['status' => 1]);
+    }
 
     public static function applyRifa($rifaPay) {
         return DB::transaction(function() use ($rifaPay) {
@@ -67,7 +70,7 @@ class RifaNumber extends Model {
                 return false;
             }
 
-            AwardedQuota::winnerBilhetePremiado($numbers, $rifaPay->client_id, $rifaPay->rifas_id);
+            AwardedQuota::winnerBilhetePremiado($numbers, $rifaPay->client_id, $rifaPay->rifas_id, $rifaPay->id);
 
             self::create([
                 'pay_id' => $rifaPay->id,
@@ -94,7 +97,7 @@ class RifaNumber extends Model {
             })->toArray();
 
         $blockedNumbers = $payment->rifa->awardedQuota()
-            ->where('status', 'bloqueada')
+            ->whereIn('status', ['bloqueada', 'resgatada'])
             ->lockForUpdate()
             ->pluck('number_cota')
             ->toArray();

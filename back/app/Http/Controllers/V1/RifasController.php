@@ -259,6 +259,33 @@ class RifasController extends Controller
             return response()->json(["response" => false, "msg" => "Ocorreu um erro interno ao cadastrar a rifa", "error" => $e->getMessage()], 500);
         }
     }
+    public function getBilhetePremiadoFiltro(Request $request, $id) {
+        try {
+            $rifa = Rifas::find($id);
+            if ($rifa == []) {
+                return response()->json(['response' => false, 'msg' => 'Bilhete não encontrada'], 404);
+            }
+
+            $qntdCotaExist = AwardedQuota::with('client')->where('rifas_id', $id);
+
+             // Aplica os filtros adicionais
+            if ($request->has('status')) {
+                $qntdCotaExist = $qntdCotaExist->where('status', $request->input('status'));
+            }
+
+            if ($request->has('mostraSite')) {
+                $qntdCotaExist = $qntdCotaExist->where('show_site', $request->input('mostraSite'));
+            }
+            $qntdCotaExist = $qntdCotaExist->paginate(20);
+            return  response()->json(["success" => true, "data" => $qntdCotaExist], 200);
+
+
+
+
+        } catch (Exception $e) {
+            return response()->json(["response" => false, "msg" => "Ocorreu um erro interno ao cadastrar a rifa", "error" => $e->getMessage()], 500);
+        }
+    }
     public function getOneBilhetePremiado($id) {
         try {
             $bilhete = AwardedQuota::getOneBilhetePremiado($id);

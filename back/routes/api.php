@@ -42,6 +42,8 @@
 
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/bilhete-premiado/all/{id}", [RifasController::class, "getAllBilhetePremiado"])->name('admin.get.rifa.bilhete-premiado');
 
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/bilhete-premiado/filtro/{id}", [RifasController::class, "getBilhetePremiadoFiltro"])->name('admin.get.rifa.bilhete-premiado');
+
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/bilhete-premiado/editar/{id}", [RifasController::class, "getOneBilhetePremiado"])->name('admin.get.rifa.bilhete-premiado');
 
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->put("/dashboard/bilhete-premiado/editar", [RifasController::class, "editarBilhetePremiado"])->name('admin.get.rifa.bilhete-premiado');
@@ -84,7 +86,8 @@
 
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/pedidos/filtro", [AdminController::class, "getPedidosFiltro"])->name('admin.pedidos');
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/pedido/{idRifa}/{idClient}", [AdminController::class, "getOnePedidos"])->name('admin.one.pedidos');
-        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->put("/dashboard/pedido/{id}", [AdminController::class, "cancelarPedidos"])->name('admin.cancelar.pedidos');
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->put("/dashboard/deletar/pedido/{id}", [AdminController::class, "cancelarPedidos"])->name('admin.cancelar.pedidos');
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->put("/dashboard/aprovar/pedido/{id}", [AdminController::class, "aprovarPedidos"])->name('admin.aprovar.pedidos');
 
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/todos/clientes", [AdminController::class, "allClients"])->name('admin.todos.clientes');
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/todos/clientes/filtro", [AdminController::class, "allClientsFiltro"])->name('admin.filtro.clientes');
@@ -108,7 +111,7 @@
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->put("/dashboard/payment/update", [AdminController::class, "updateGateway"])->name('admin.editar.gateway');
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->delete("/dashboard/payment/delete", [AdminController::class, "destroyGateway"])->name('admin.editar.gateway');
 
-        
+
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/site-settings/editar", [AdminController::class, "storeConfigSite"])->name('admin.edit.site-config');
 
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/vendas", [AdminController::class, "getVendas"])->name('admin.get.vendas');

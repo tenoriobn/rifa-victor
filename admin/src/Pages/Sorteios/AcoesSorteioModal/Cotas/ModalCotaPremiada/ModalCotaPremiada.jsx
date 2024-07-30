@@ -84,28 +84,23 @@ export default function ModalCotaPremiada() {
             <td align="center" colSpan="2"><br/><b>PEDIDO</b></td>
         </tr>
         <tr>
-          <td><b>Numero:</b></td>
-          <td><p name="cotaPedido" id="cotaPedido"></p></td>
-          {/* <td><p name="cotaPedido" id="cotaPedido">1508695</p></td> */}
-        </tr>
-        <tr>
           <td><b>Data:</b></td>
-          {/* <td><p name="cotaPedidoData" id="cotaPedidoData">03/06 22:23</p></td> */}
-          <td><p name="cotaPedidoData" id="cotaPedidoData"></p></td>
+          <td><p name="cotaPedidoData" id="cotaPedidoData">{modalInfo.rifa_pay.created_at}</p></td>
+          {/* <td><p name="cotaPedidoData" id="cotaPedidoData"></p></td> */}
         </tr>
         <tr>
           <td><b>Pago em:</b></td>
-          {/* <td><p name="cotaPedidoPaid" id="cotaPedidoPaid">03/06 22:27</p></td> */}
-          <td><p name="cotaPedidoPaid" id="cotaPedidoPaid"></p></td>
+          <td><p name="cotaPedidoPaid" id="cotaPedidoPaid">{modalInfo.rifa_pay.updated_at}</p></td>
+          {/* <td><p name="cotaPedidoPaid" id="cotaPedidoPaid"></p></td> */}
         </tr>
         <tr>
           <td><b>Total:</b></td>
-          {/* <td><p name="cotaPedidoPrice" id="cotaPedidoPrice">R$ 95,00</p></td> */}
-          <td><p name="cotaPedidoPrice" id="cotaPedidoPrice"></p></td>
+          <td><p name="cotaPedidoPrice" id="cotaPedidoPrice">{modalInfo.rifa_pay.value}</p></td>
+          {/* <td><p name="cotaPedidoPrice" id="cotaPedidoPrice"></p></td> */}
         </tr>
         <tr>
           <td><b>Quantidade:</b></td>
-          {/* <td><p name="cotaPedidoQuantidade" id="cotaPedidoQuantidade">500</p></td> */}
+          <td><p name="cotaPedidoQuantidade" id="cotaPedidoQuantidade">{modalInfo.rifa_pay.qntd_number}</p></td>
           <td><p name="cotaPedidoQuantidade" id="cotaPedidoQuantidade"></p></td>
         </tr>
       </tbody>

@@ -124,7 +124,7 @@ class Rifas extends Model
         return self::with(['cota', 'rifaAwarded', 'rifaOthers', 'rifaPayment', 'awardedQuota.client', 'rifaImage', 'awardedQuotaClient'])->where('status','ativas')->latest()->get();
     }
     public static function getAllRifas() {
-        return self::with(['cota', 'rifaAwarded', 'rifaOthers', 'rifaPayment', 'awardedQuota.client', 'rifaImage', 'rifaPay', 'awardedQuotaClient'])->latest()->get();
+        return self::with(['cota', 'rifaAwarded', 'rifaOthers', 'rifaPayment', 'awardedQuota.client', 'rifaImage', 'rifaPay', 'awardedQuotaClient'])->where('show_site', 'sim')->latest()->get();
     }
     public static function getOneRifa($id) {
         return self::with(['cota', 'rifaAwarded', 'rifaOthers', 'rifaPayment', 'awardedQuota.client', 'discountPackage', 'rifaImage', 'awardedQuotaClient'])->where("id", $id)->first();
@@ -144,14 +144,14 @@ class Rifas extends Model
         $initialSaleDate =  Carbon::parse($rifa->initial_sale)->toDateString(); // Formatar a data para comparar apenas a data
         $todayDate = Carbon::today()->toDateString(); // Data de hoje no formato correto
         return [$initialSaleDate === $todayDate, $initialSaleDate , $todayDate];
-    
+
         if ($initialSaleDate === $todayDate) {
             $rifa->status = 'ativas';
             return $rifa->save();
-        } 
+        }
         // return $rifa->save(); // Salvar as alterações feitas no status e retornar o resultado da operação
     }
-    
-    
+
+
 
 }

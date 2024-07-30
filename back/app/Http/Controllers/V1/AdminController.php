@@ -279,6 +279,18 @@ class AdminController extends Controller
             return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
         }
     }
+    public function aprovarPedidos($id) {
+        try {
+            $buy = RifaPay::aprovarCompra($id);
+            RifaNumber::aprovarCompra($id);
+            if (!$buy) {
+                return response()->json(["success" => false, "msg" => "Pedido não encontrado"], 404);
+            }
+            return response()->json(["success" => true, "data"=> "Compra cancelada"], 200);
+        } catch (Exception $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
+        }
+    }
 
     public function allClients() {
         try {
@@ -296,14 +308,24 @@ class AdminController extends Controller
         try {
             $query = Clients::query();
 
-            // Adiciona filtros se os parâmetros estiverem presentes
             if ($request->has('id')) {
                 $query->where('id', $request->input('id'));
             }
 
             if ($request->has('name')) {
-                $query->where('name', 'like', '%' . $request->input('name') . '%');
+                $name = $request->input('name');
+                $nameParts = explode(' ', $name);
+
+                if (count($nameParts) > 1) {
+                    $query->where(function ($q) use ($nameParts) {
+                        $q->where('name', 'like', '%' . $nameParts[0] . '%')
+                          ->where('surname', 'like', '%' . $nameParts[1] . '%');
+                    });
+                } else {
+                    $query->where('name', 'like', '%' . $name . '%');
+                }
             }
+
 
             if ($request->has('cellphone')) {
                 $query->where('cellphone', 'like', '%' . $request->input('cellphone') . '%');

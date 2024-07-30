@@ -148,6 +148,18 @@ export default function PedidosForm() {
         </div>
 
         <div className="filter-item">
+        <label htmlFor="name">Nome do Cliente:</label>
+        <input
+          type="text"
+          name="name"
+          placeholder="Pesquise pelo nome"
+          onChange={(e) => setOrderFilter({ ...orderFilter, name: e.target.value })} 
+          value={orderFilter.name || ''}
+          autoComplete="off"
+        />
+      </div>
+
+        <div className="filter-item">
           <label htmlFor="id_customer">ID Cliente:</label>
           <input type="text" name="id_customer" placeholder="ID DO CLIENTE" autoComplete="off" 
             onChange={(e) => setOrderFilter({ ...orderFilter, client_id: e.target.value })} 

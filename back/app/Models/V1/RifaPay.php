@@ -116,6 +116,21 @@ class RifaPay extends Model
             $query->where('qntd_number', '<=', $filters['qntd_number_end']);
         }
 
+        if (isset($filters['name'])) {
+            $name = $filters['name'];
+            $nameParts = explode(' ', $name);
+
+            $query->whereHas('client', function ($q) use ($nameParts) {
+                if (count($nameParts) > 1) {
+                    $q->where('name', 'like', '%' . $nameParts[0] . '%')
+                      ->where('surname', 'like', '%' . $nameParts[1] . '%');
+                } else {
+                    $q->where('name', 'like', '%' . $nameParts[0] . '%')
+                      ->orWhere('surname', 'like', '%' . $nameParts[0] . '%');
+                }
+            });
+        }
+
 
         // Filtro para value com valores opcionais
         if (isset($filters['value_start'])) {
@@ -128,24 +143,24 @@ class RifaPay extends Model
         if (isset($filters['pix_id'])) {
             $query->where('pix_id', $filters['pix_id']);
         }
-        
+
 
         if (isset($filters['ordem']) && $filters['ordem'] == 'valor_menor') {
             $query->orderBy('value', 'asc'); // Ordena de forma crescente
-        } 
-        
+        }
+
         if (isset($filters['ordem']) && $filters['ordem'] == 'valor_maior') {
             $query->orderBy('value', 'desc'); // Ordena de forma decrescente
         }
-        
+
         if (isset($filters['ordem']) && $filters['ordem'] == 'qntd_menor') {
             $query->orderBy('qntd_number', 'asc'); // Ordena de forma crescente
         }
-        
+
         if (isset($filters['ordem']) && $filters['ordem'] == 'qntd_maior') {
             $query->orderBy('qntd_number', 'desc'); // Ordena de forma decrescente
         }
-        
+
 
         return $query->get();
     }
@@ -159,6 +174,9 @@ class RifaPay extends Model
     }
     public static function cancelarCompra($id) {
         return self::where('id', $id)->update(['status' => 2]);
+    }
+    public static function aprovarCompra($id) {
+        return self::where('id', $id)->update(['status' => 1]);
     }
 
 

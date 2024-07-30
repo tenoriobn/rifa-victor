@@ -20,7 +20,7 @@ class RifaService
         if (!$rifaResult) {
             return false;
         }
-    
+
         $cota = Cotas::cotaCreateOrUpdate($datas->cota['qntd_cota'] ?? 0, $datas->cota['qntd_cota_digit'] ?? 0, $datas->cota['qntd_cota_min_order'] ?? 0, $datas->cota['qntd_cota_max_order'] ?? 0, $datas->cota['qntd_cota_max_client']   ?? 0, $rifaResult ?? $rifasId);
 
         if (!$cota) {

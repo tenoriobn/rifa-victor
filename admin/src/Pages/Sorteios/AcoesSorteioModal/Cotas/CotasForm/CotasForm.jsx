@@ -1,6 +1,9 @@
 import { useState } from "react";
 import styled from "styled-components";
-
+import { useParams } from "react-router-dom";
+import { postDados } from "../../../../../common/http/http";
+import { useRecoilState } from "recoil";
+import { stateTabelaCotasInfo } from "../../../../../common/states/atom";
 const Form = styled.form`
   display: flex;
   flex-wrap: wrap;
@@ -51,27 +54,28 @@ const Form = styled.form`
 
 export default function CotasForm() {
   const [orderFilter, setOrderFilter] = useState({});
-  // const [tabelaCotasInfo, setTabelaCotasInfo] = useRecoilState(stateTabelaCotasInfo);
+  const { id } = useParams();
+  const [tabelaCotasInfo, setTabelaCotasInfo] = useRecoilState(stateTabelaCotasInfo);
 
 
-  // const handleSubmit = async (e) => {
-  //   if (e) e.preventDefault();
-  //   try {
-  //     const response = await postDados('/admin/dashboard/ rota aqui', orderFilter);
-  //     setTabelaCotasInfo(response);
-  //   } catch (error) {
-  //     console.error("There was an error fetching the data!", error);
-  //   }
-  // };
+  const handleSubmit = async (e) => {
+    if (e) e.preventDefault();
+    try {
+      const response = await postDados(`/admin/dashboard/bilhete-premiado/filtro/${id}`, orderFilter);
+      setTabelaCotasInfo(response);
+    } catch (error) {
+      console.error("There was an error fetching the data!", error);
+    }
+  };
 
-  // console.log(tabelaCotasInfo)
+  console.log(tabelaCotasInfo)
     
   return (
     // onSubmit={handleSubmit}
-    <Form method="POST" action="/dashboard/rifas/cotas/174">
+    <Form method="POST" onSubmit={handleSubmit}>
       <div className="filter-item" style={{ minWidth: "260px"}}>
         <label htmlFor="init_date">Mostrar no site:</label>
-        <select name="visible"
+        <select name="mostraSite"
           onChange={(e) => setOrderFilter({ ...orderFilter, mostraSite: e.target.value })} 
           value={orderFilter.mostraSite || ''}
         >
@@ -83,7 +87,7 @@ export default function CotasForm() {
 
       <div className="filter-item">
         <label htmlFor="init_date">Status:</label>
-        <select name="st" id="frm_st"
+        <select name="status" id="frm_st"
           onChange={(e) => setOrderFilter({ ...orderFilter, status: e.target.value })}
           value={orderFilter.status || ''}
         >

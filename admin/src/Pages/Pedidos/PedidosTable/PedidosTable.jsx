@@ -120,6 +120,21 @@ export const Table = styled.table`
     flex-wrap: wrap;
     gap: 2px;
   }
+  .button-aprovar {
+    background-color: #07b353;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    box-sizing: border-box;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2px;
+  }
 
   .action-button:hover {
     opacity: .8;
@@ -155,7 +170,12 @@ export default function PedidosTable({setAtualizaTabela}) {
   }
 
   const handleDeletar = async (idPedido) => {
-    await putDados(`admin/dashboard/pedido/${idPedido}`, userLogin);
+    await putDados(`admin/dashboard/deletar/pedido/${idPedido}`, userLogin);
+    setAtualizaTabela(true);
+    // setPedidosInfo(response.data);
+  }
+  const handleAprovar = async (idPedido) => {
+    await putDados(`admin/dashboard/aprovar/pedido/${idPedido}`, userLogin);
     setAtualizaTabela(true);
     // setPedidosInfo(response.data);
   }
@@ -220,6 +240,12 @@ export default function PedidosTable({setAtualizaTabela}) {
                     item?.status !== 2 &&
                     <a href={item?.cancelUrl} className="button-delete" onClick={() => handleDeletar(item?.id)}>
                       <i className="fas fa-ban"></i> Cancelar
+                    </a>
+                  }
+                  {
+                    item?.status === 0 &&
+                    <a href={item?.cancelUrl} className="button-aprovar" onClick={() => handleAprovar(item?.id)}>
+                      <i className="fas fa-check"></i> Aprovar
                     </a>
                   }
                 </div>
