@@ -115,7 +115,10 @@
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/site-settings/editar", [AdminController::class, "storeConfigSite"])->name('admin.edit.site-config');
 
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/vendas", [AdminController::class, "getVendas"])->name('admin.get.vendas');
-        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/vendas/filtro", [AdminController::class, "vendas"])->name('admin.filtro.vendas');
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/vendas/filtro", [AdminController::class, "vendasFiltro"])->name('admin.filtro.vendas');
+
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/one/venda/{id}", [AdminController::class, "getOneVendas"])->name('admin.one.vendas');
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/one/venda/filtro/{id}", [AdminController::class, "vendasFiltroOne"])->name('admin.filtro.one.vendas');
     });
     Route::group(['prefix' => 'produtos'], function () {
         Route::get("/", [RifasController::class, "allRifas"])->name('all.rifas');
