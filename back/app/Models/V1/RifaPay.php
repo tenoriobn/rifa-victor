@@ -5,7 +5,7 @@ namespace App\Models\V1;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\{BelongsTo, hasOne};
-
+use Carbon\Carbon;
 use App\Models\V1\{Rifas, Clients, RifaNumber};
 class RifaPay extends Model
 {
@@ -85,7 +85,9 @@ class RifaPay extends Model
         $query = self::with(['rifaNumber', 'rifa.rifaPayment', 'rifa.cota', 'client']);
 
         if (isset($filters['startDate']) && isset($filters['endDate'])) {
-            $query->whereBetween('created_at', [$filters['startDate'], $filters['endDate']]);
+            $startDate = Carbon::parse($filters['startDate'])->startOfDay();
+            $endDate = Carbon::parse($filters['endDate'])->endOfDay();
+            $query->whereBetween('created_at', [$startDate, $endDate]);
         }
 
         if (isset($filters['id'])) {
@@ -131,53 +133,26 @@ class RifaPay extends Model
             });
         }
 
-
-        // Filtro para value com valores opcionais
-        if (isset($filters['value_start'])) {
-            $query->where('value', '>=', $filters['value_start']);
-        }
-        if (isset($filters['value_end'])) {
-            $query->where('value', '<=', $filters['value_end']);
-        }
-
-        if (isset($filters['pix_id'])) {
-            $query->where('pix_id', $filters['pix_id']);
-        }
-
-
-        if (isset($filters['ordem']) && $filters['ordem'] == 'valor_menor') {
-            $query->orderBy('value', 'asc'); // Ordena de forma crescente
-        }
-
-        if (isset($filters['ordem']) && $filters['ordem'] == 'valor_maior') {
-            $query->orderBy('value', 'desc'); // Ordena de forma decrescente
-        }
-
-        if (isset($filters['ordem']) && $filters['ordem'] == 'qntd_menor') {
-            $query->orderBy('qntd_number', 'asc'); // Ordena de forma crescente
-        }
-
-        if (isset($filters['ordem']) && $filters['ordem'] == 'qntd_maior') {
-            $query->orderBy('qntd_number', 'desc'); // Ordena de forma decrescente
-        }
-
-
         return $query->get();
     }
+
 
 
     public static function getAllCompraAtivo() {
         return self::with(['rifaNumber', 'rifa.rifaPayment', 'rifa.cota', 'client'])->where('status', 1)->latest()->get();
     }
-    public static function getOneCompraAtivo($id) {
-        return self::with(['rifaNumber', 'rifa.rifaPayment', 'rifa.cota', 'client'])->where('rifas_id', $id)->where('status', 1)->latest()->get();
-    }
+
     public static function getAllCompraAguardando() {
         return self::with(['rifaNumber', 'rifa.rifaPayment', 'rifa.cota', 'client'])->where('status', 0)->latest()->get();
+    }
+    public static function getOneCompraAtivo($id) {
+        return self::with(['rifaNumber', 'rifa.rifaPayment', 'rifa.cota', 'client'])->where('rifas_id', $id)->where('status', 1)->latest()->get();
     }
     public static function getOneCompraAguardando($id) {
         return self::with(['rifaNumber', 'rifa.rifaPayment', 'rifa.cota', 'client'])->where('rifas_id', $id)->where('status', 0)->latest()->get();
     }
+
+
     public static function cancelarCompra($id) {
         return self::where('id', $id)->update(['status' => 2]);
     }
@@ -201,4 +176,90 @@ class RifaPay extends Model
 
         return $code;
     }
+
+    public static function faturamentoDiario($id, $mes, $ano) {
+        $inicioDoMes = Carbon::createFromDate($ano, $mes, 1)->startOfMonth();
+        $fimDoMes = $inicioDoMes->copy()->endOfMonth();
+
+        $resultados = [];
+
+        for ($dia = 1; $dia <= $fimDoMes->daysInMonth; $dia++) {
+            $inicioDoDia = $inicioDoMes->copy()->day($dia)->startOfDay();
+            $fimDoDia = $inicioDoMes->copy()->day($dia)->endOfDay();
+
+            $totalPedidosDia = self::where('rifas_id', $id)
+                ->whereBetween('created_at', [$inicioDoDia, $fimDoDia])
+                ->sum('value');
+
+            $pedidosAprovadosDia = self::where('rifas_id', $id)
+                ->where('status', 1)
+                ->whereBetween('created_at', [$inicioDoDia, $fimDoDia])
+                ->sum('value');
+
+            $resultados[$dia] = [
+                'totalPedidos' => $totalPedidosDia,
+                'pedidosAprovados' => $pedidosAprovadosDia,
+            ];
+        }
+
+        return $resultados;
+    }
+    public static function faturamentoAcumulado($id, $ano) {
+        $resultados = [];
+
+        for ($mes = 1; $mes <= 12; $mes++) {
+            $inicioDoMes = Carbon::createFromDate($ano, $mes, 1)->startOfMonth();
+            $fimDoMes = $inicioDoMes->copy()->endOfMonth();
+
+            $totalPedidosMes = self::where('rifas_id', $id)
+                ->whereBetween('created_at', [$inicioDoMes, $fimDoMes])
+                ->sum('value');
+
+            $totalAprovadoMes = self::where('rifas_id', $id)
+                ->where('status', 1)
+                ->whereBetween('created_at', [$inicioDoMes, $fimDoMes])
+                ->sum('value');
+
+            $resultados[$mes] = [
+                'totalPedidos' => $totalPedidosMes,
+                'totalAprovado' => $totalAprovadoMes,
+            ];
+        }
+
+        return $resultados;
+    }
+
+    public static function faturamentoSemanal($id) {
+        $resultados = [];
+
+        for ($i = 0; $i < 7; $i++) {
+            $inicioDoDia = Carbon::now()->startOfWeek()->addDays($i);
+            $fimDoDia = $inicioDoDia->copy()->endOfDay();
+
+            $totalPedidosDia = self::where('rifas_id', $id)
+                ->whereBetween('created_at', [$inicioDoDia, $fimDoDia])
+                ->sum('value');
+
+            $resultados[$inicioDoDia->format('l')] = $totalPedidosDia;
+        }
+
+        return $resultados;
+    }
+
+    public static function faturamentoPorHora($id) {
+        $resultados = array_fill(0, 24, 0); // Inicializa um array de 24 horas com valor 0
+
+        $pedidos = self::where('rifas_id', $id)->get();
+
+        foreach ($pedidos as $pedido) {
+            $hora = Carbon::parse($pedido->created_at)->format('H');
+            $resultados[$hora] += $pedido->value;
+        }
+
+        return $resultados;
+    }
+
+
+
+
 }
