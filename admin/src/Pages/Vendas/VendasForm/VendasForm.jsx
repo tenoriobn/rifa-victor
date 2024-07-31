@@ -4,6 +4,7 @@ import Datepicker from "react-tailwindcss-datepicker";
 import { postDados } from "../../../common/http/http";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { stateVendasOrderFilter, stateDadosVendas } from "../../../common/states/atom";
+import { useState } from "react";
 
 const Form = styled.form`
   display: flex;
@@ -58,11 +59,19 @@ const Form = styled.form`
     max-width: 114px;
     width: 100%;
   }
+
+
 `;
+
+const MessageError = styled.div`
+  color: red;
+  margin-bottom: 1rem;
+`
 
 export default function VendasForm({ rotaObterDados }) {
   const [vendasOrderFilter, setVendasOrderFilter] = useRecoilState(stateVendasOrderFilter);
   const setDadosVendas = useSetRecoilState(stateDadosVendas);
+  const [error, setError] = useState("");
 
   console.log('vendasOrderFilter', vendasOrderFilter);
 
@@ -75,6 +84,15 @@ export default function VendasForm({ rotaObterDados }) {
 
   const handleSubmit = async (e) => {
     if (e) e.preventDefault();
+
+      // Verifica se as datas são válidas
+  if (!vendasOrderFilter.startDate || !vendasOrderFilter.endDate) {
+    setError("Por favor, selecione um intervalo de datas.");
+    return;
+  }
+
+  setError("");
+
     try {
       const response = await postDados(rotaObterDados, vendasOrderFilter);
       setDadosVendas(response.data);
@@ -112,59 +130,64 @@ export default function VendasForm({ rotaObterDados }) {
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <div className="filter-item filter-item__time">
-        <label htmlFor="start_time">Início:</label>
-        <input 
-          type="time" 
-          id="start_time" 
-          className="time"
-          value={vendasOrderFilter.startTime || '00:00'} 
-          onChange={handleStartTimeChange} 
-          onFocus={(e) => e.target.showPicker()} 
-        />
-      </div>
-      <div className="filter-item">
-        <label htmlFor="init_date">Data:</label>
-        <Datepicker 
-          toggleClassName="hidden"
-          classNames="datapicker"
-          i18n={"pt-br"} 
-          showShortcuts={true} 
-          displayFormat={"DD/MM/YYYY"}
-          showFooter={true} 
-          value={vendasOrderFilter} 
-          onChange={handleDateChange}
-          configs={{
-            shortcuts: {
-              today: "Hoje", 
-              yesterday: "Ontem", 
-              past: period => `Ultimos ${period} Dias`, 
-              currentMonth: "Mês Atual", 
-              pastMonth: "Mês Anterior"
-            },
-            footer: {
-              cancel: "Cancelar", 
-              apply: "Aplicar"
-            }
-          }} 
-        />
-      </div>
-      <div className="filter-item filter-item__time">
-        <label htmlFor="end_time">Término:</label>
-        <input 
-          type="time" 
-          id="end_time" 
-          className="time"
-          value={vendasOrderFilter.endTime || '23:59'} 
-          onChange={handleEndTimeChange} 
-          onFocus={(e) => e.target.showPicker()} 
-          onClick={(e) => e.target.showPicker()} 
-        />
-      </div>
-      <button type="submit" className="button-search">
-        <i className="fas fa-search"></i> Filtrar
-      </button>
-    </Form>
+    <>
+      <Form onSubmit={handleSubmit}>
+        <div className="filter-item filter-item__time">
+          <label htmlFor="start_time">Início:</label>
+          <input 
+            type="time" 
+            id="start_time" 
+            className="time"
+            value={vendasOrderFilter.startTime || '00:00'} 
+            onChange={handleStartTimeChange} 
+            onFocus={(e) => e.target.showPicker()} 
+          />
+        </div>
+        <div className="filter-item">
+          <label htmlFor="init_date">Data:</label>
+          <Datepicker 
+            toggleClassName="hidden"
+            classNames="datapicker"
+            i18n={"pt-br"} 
+            showShortcuts={true} 
+            displayFormat={"DD/MM/YYYY"}
+            showFooter={true} 
+            value={vendasOrderFilter} 
+            onChange={handleDateChange}
+            configs={{
+              shortcuts: {
+                today: "Hoje", 
+                yesterday: "Ontem", 
+                past: period => `Ultimos ${period} Dias`, 
+                currentMonth: "Mês Atual", 
+                pastMonth: "Mês Anterior"
+              },
+              footer: {
+                cancel: "Cancelar", 
+                apply: "Aplicar"
+              }
+            }} 
+          />
+        </div>
+        <div className="filter-item filter-item__time">
+          <label htmlFor="end_time">Término:</label>
+          <input 
+            type="time" 
+            id="end_time" 
+            className="time"
+            value={vendasOrderFilter.endTime || '23:59'} 
+            onChange={handleEndTimeChange} 
+            onFocus={(e) => e.target.showPicker()} 
+            onClick={(e) => e.target.showPicker()} 
+          />
+        </div>
+        <button type="submit" className="button-search">
+          <i className="fas fa-search"></i> Filtrar
+        </button>
+      </Form>
+
+      {error && <MessageError className="error-message">{error}</MessageError>}
+    
+    </>
   );
 }
