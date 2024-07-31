@@ -9,7 +9,7 @@ const DashboardItens = styled.div`
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 10px;
-  margin: 30px 0;
+  margin: 30px 0 10px 0;
 `;
 
 export const ContainerCharts = styled.div`

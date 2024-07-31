@@ -28,6 +28,10 @@ const Form = styled.form`
     background: 0 0;
     border: 1px solid #275680;
     box-sizing: border-box;
+
+    &::-webkit-calendar-picker-indicator {
+      filter: invert(1);
+    }
   }
 
   .filter-item label {
@@ -49,11 +53,25 @@ const Form = styled.form`
     cursor: pointer;
     height: 38px;
   }
+
+  .time, .filter-item__time {
+    max-width: 114px;
+    width: 100%;
+  }
 `;
 
-export default function VendasForm({rotaObterDados}) {
+export default function VendasForm({ rotaObterDados }) {
   const [vendasOrderFilter, setVendasOrderFilter] = useRecoilState(stateVendasOrderFilter);
   const setDadosVendas = useSetRecoilState(stateDadosVendas);
+
+  console.log('vendasOrderFilter', vendasOrderFilter);
+
+  const formatDateTime = (date, time) => {
+    if (date && time) {
+      return new Date(`${date}T${time}:00`).toISOString();
+    }
+    return date;
+  };
 
   const handleSubmit = async (e) => {
     if (e) e.preventDefault();
@@ -65,12 +83,49 @@ export default function VendasForm({rotaObterDados}) {
     }
   };
 
+  const handleDateChange = (newValue) => {
+    setVendasOrderFilter(prevState => ({
+      ...prevState,
+      startDateCalendar: newValue.startDate,
+      endDateCalendar: newValue.endDate,
+      startDate: formatDateTime(newValue.startDate, prevState.startTime || '00:00'),
+      endDate: formatDateTime(newValue.endDate, prevState.endTime || '23:59')
+    }));
+  };
+
+  const handleStartTimeChange = (e) => {
+    const startTime = e.target.value;
+    setVendasOrderFilter(prevState => ({
+      ...prevState,
+      startTime,
+      startDate: formatDateTime(prevState.startDateCalendar, startTime)
+    }));
+  };
+
+  const handleEndTimeChange = (e) => {
+    const endTime = e.target.value;
+    setVendasOrderFilter(prevState => ({
+      ...prevState,
+      endTime,
+      endDate: formatDateTime(prevState.endDateCalendar, endTime)
+    }));
+  };
+
   return (
     <Form onSubmit={handleSubmit}>
+      <div className="filter-item filter-item__time">
+        <label htmlFor="start_time">Início:</label>
+        <input 
+          type="time" 
+          id="start_time" 
+          className="time"
+          value={vendasOrderFilter.startTime || '00:00'} 
+          onChange={handleStartTimeChange} 
+          onFocus={(e) => e.target.showPicker()} 
+        />
+      </div>
       <div className="filter-item">
         <label htmlFor="init_date">Data:</label>
-        {/* <input type="text" name="datetimes" /> */}
-
         <Datepicker 
           toggleClassName="hidden"
           classNames="datapicker"
@@ -79,26 +134,37 @@ export default function VendasForm({rotaObterDados}) {
           displayFormat={"DD/MM/YYYY"}
           showFooter={true} 
           value={vendasOrderFilter} 
-          onChange={(newValue) => setVendasOrderFilter(newValue)}
+          onChange={handleDateChange}
           configs={{
-              shortcuts: {
+            shortcuts: {
               today: "Hoje", 
               yesterday: "Ontem", 
               past: period => `Ultimos ${period} Dias`, 
               currentMonth: "Mês Atual", 
-              pastMonth: "Mês Anterior" 
+              pastMonth: "Mês Anterior"
             },
-              footer: {
+            footer: {
               cancel: "Cancelar", 
-              apply: "Aplicar" 
+              apply: "Aplicar"
             }
           }} 
-        /> 
+        />
       </div>
-
+      <div className="filter-item filter-item__time">
+        <label htmlFor="end_time">Término:</label>
+        <input 
+          type="time" 
+          id="end_time" 
+          className="time"
+          value={vendasOrderFilter.endTime || '23:59'} 
+          onChange={handleEndTimeChange} 
+          onFocus={(e) => e.target.showPicker()} 
+          onClick={(e) => e.target.showPicker()} 
+        />
+      </div>
       <button type="submit" className="button-search">
         <i className="fas fa-search"></i> Filtrar
       </button>
     </Form>
-  )
+  );
 }

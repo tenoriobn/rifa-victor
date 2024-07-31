@@ -1,11 +1,11 @@
 /* eslint-disable react/prop-types */
 import { ContainerTabelas, Table } from "../VendasTabelas";
 
-export default function TabelaFaturamentoCidade() {
+export default function TabelaFaturamentoPais() {
 
   return (
     <ContainerTabelas className="container-charts">
-      <h3>FATURAMENTO POR CIDADE</h3>
+      <h3>FATURAMENTO POR PAÍS</h3>
 
       <Table>
       <thead>
@@ -14,7 +14,6 @@ export default function TabelaFaturamentoCidade() {
             <th>COL 2</th>
             <th>COL 3</th>
             <th>COL 4</th>
-            <th>COL 5</th>
           </tr>
         </thead>
 
@@ -24,7 +23,6 @@ export default function TabelaFaturamentoCidade() {
               <td>info 2</td>
               <td>info 3</td>
               <td>info 4</td>
-              <td>info 5</td>
             </tr>
 
             <tr>
@@ -32,7 +30,6 @@ export default function TabelaFaturamentoCidade() {
               <td>info 2</td>
               <td>info 3</td>
               <td>info 4</td>
-              <td>info 5</td>
             </tr>
 
             <tr>
@@ -40,7 +37,6 @@ export default function TabelaFaturamentoCidade() {
               <td>info 2</td>
               <td>info 3</td>
               <td>info 4</td>
-              <td>info 5</td>
             </tr>
         </tbody>
       </Table>
