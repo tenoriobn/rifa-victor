@@ -97,6 +97,8 @@ export default function PedidosForm() {
   const [pedidosInfo, setPedidosInfo] =  useRecoilState(statePedidosInfo);
   const optionsRifa = useRecoilValue(stateOptionsRifa);
 
+  console.log(orderFilter)
+
     const handleSubmit = async (e) => {
     e.preventDefault();
     try {
