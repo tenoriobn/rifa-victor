@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useRecoilState, useSetRecoilState, useResetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState, useResetRecoilState, useRecoilValue } from "recoil";
 import { Main } from "../../components/AdminLayout/AdminLayout";
 import Header, { LinkItem } from "../../components/Header/Header";
 import GanhadoresTable from "./GanhadoresTable/GanhadoresTable";
-import { stateOpenModalNovoGanhador, stateOpenModalEditarGanhador, stateNovoGanhadorInfo, stateNovoGanhador } from "../../common/states/atom";
+import { stateOpenModalNovoGanhador, stateOpenModalEditarGanhador, stateNovoGanhadorInfo, stateNovoGanhador, stateUserLogin } from "../../common/states/atom";
 import ModalEditarGanhador from "./ModaisGanhadores/ModalEditarGanhador/ModalEditarGanhador";
 import ModalNovoGanhador from "./ModaisGanhadores/ModalNovoGanhador/ModalNovoGanhador";
 import Modal from "../../components/Modal/Modal";
@@ -16,9 +16,9 @@ export default function Ganhadores() {
   const setNovoGanhadorInfo = useSetRecoilState(stateNovoGanhadorInfo);
   const [atualizaTabela, setAtualizaTabela] = useState(false);
   const resetInputSorteio = useResetRecoilState(stateNovoGanhador);
-
+  const userLogin = useRecoilValue(stateUserLogin);
   const obterDados = async () => {
-    const response = await fetchDados(`/produtos/todos/ganhadores/`);
+    const response = await fetchDados(`/produtos/todos/ganhadores/`, userLogin);
     setNovoGanhadorInfo(response.data);
   };
 

@@ -46,7 +46,7 @@
 
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/bilhete-premiado/editar/{id}", [RifasController::class, "getOneBilhetePremiado"])->name('admin.get.rifa.bilhete-premiado');
 
-        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->put("/dashboard/bilhete-premiado/editar", [RifasController::class, "editarBilhetePremiado"])->name('admin.get.rifa.bilhete-premiado');
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->put("/dashboard/editar-bilhete-premiado/", [RifasController::class, "editarBilhetePremiado"])->name('admin.get.rifa.bilhete-premiado');
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->delete("/dashboard/bilhete-premiado/delete/{id}/{rifaId}", [RifasController::class, "destroyBilhetePremiado"])->name('admin.delete.rifa.bilhete-premiado');
 
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/todos-pacotes/{id}", [RifasController::class, "getAllPacotes"])->name('admin.pacote');
