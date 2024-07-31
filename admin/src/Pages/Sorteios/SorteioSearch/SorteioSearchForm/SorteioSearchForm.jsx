@@ -72,19 +72,64 @@ const Form = styled.form`
 export default function SorteioSearchForm() {
   const [orderFilter, setOrderFilter] = useState({});
 
+  const formatDateTime = (date, time) => {
+    if (date && time) {
+      return new Date(`${date}T${time}:00`).toISOString();
+    }
+    return date;
+  };
+  const handleDateChange = (newValue) => {
+    setOrderFilter(prevState => ({
+      ...prevState,
+      startDateCalendar: newValue.startDate,
+      endDateCalendar: newValue.endDate,
+      startDate: formatDateTime(newValue.startDate, prevState.startTime || '00:00'),
+      endDate: formatDateTime(newValue.endDate, prevState.endTime || '23:59')
+    }));
+  };
+
+  const handleStartTimeChange = (e) => {
+    const startTime = e.target.value;
+    setOrderFilter(prevState => ({
+      ...prevState,
+      startTime,
+      startDate: formatDateTime(prevState.startDateCalendar, startTime)
+    }));
+  };
+
+  const handleEndTimeChange = (e) => {
+    const endTime = e.target.value;
+    setOrderFilter(prevState => ({
+      ...prevState,
+      endTime,
+      endDate: formatDateTime(prevState.endDateCalendar, endTime)
+    }));
+  };
+
   return (
     <Form method="POST" action="/dashboard/rifas/cotas/174">
+      <div className="filter-item filter-item__time">
+        <label htmlFor="start_time">Início:</label>
+        <input 
+          type="time" 
+          id="start_time" 
+          className="time"
+          value={orderFilter.startTime || '00:00'} 
+          onChange={handleStartTimeChange} 
+          onFocus={(e) => e.target.showPicker()} 
+        />
+      </div>
+
       <div className="filter-item" style={{maxWidth: "300px"}}>
         <label>Periodo de Data:</label>
         {/* <input type="text" name="datetimes" value="" /> */}
-
         <Datepicker 
           toggleClassName="hidden"
           i18n={"pt-br"} 
           displayFormat={"DD/MM/YYYY"}
           showFooter={true} 
-          value={orderFilter.data} 
-          onChange={(newValue) => setOrderFilter(prevOrderFilter => ({ ...prevOrderFilter, data: newValue }))}
+          value={orderFilter} 
+          onChange={handleDateChange}
           configs={{
               shortcuts: {
               today: "Hoje", 
@@ -100,6 +145,19 @@ export default function SorteioSearchForm() {
           }} 
         /> 
       </div>
+
+      <div className="filter-item filter-item__time">
+          <label htmlFor="end_time">Término:</label>
+          <input 
+            type="time" 
+            id="end_time" 
+            className="time"
+            value={orderFilter.endTime || '23:59'} 
+            onChange={handleEndTimeChange} 
+            onFocus={(e) => e.target.showPicker()} 
+            onClick={(e) => e.target.showPicker()} 
+          />
+        </div>
 
       <div className="filter-item" style={{maxWidth: "180px"}}>
         <label htmlFor="status">Qtd Sortear:</label>
