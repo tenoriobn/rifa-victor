@@ -3,6 +3,7 @@ import styled from "styled-components"
 import { stateCotasPremiadas, stateOpenModalEditarCotaPremiada, stateUserLogin, stateTabelaCotasInfo } from "../../../../../common/states/atom";
 import { putDados } from "../../../../../common/http/http";
 import { PatternFormat } from "react-number-format";
+// import { useParams } from "react-router-dom";
 
 const Form = styled.form`
   font-size: .9rem;
@@ -65,12 +66,13 @@ export default function ModalEditarCotaPremiada() {
   const [openModalEditarCotaPremiada, setOpenModalEditarCotaPremiada] = useRecoilState(stateOpenModalEditarCotaPremiada);
   const [cotaPremiada, setCotaPremiada] = useRecoilState(stateCotasPremiadas);
   const setTabelaCotasInfo = useSetRecoilState(stateTabelaCotasInfo);
+  // const { id } = useParams();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await putDados('/admin/dashboard/bilhete-premiado/editar/', cotaPremiada, userLogin);
+      const response = await putDados(`/admin/dashboard/editar-bilhete-premiado`, cotaPremiada, userLogin);
 
       setOpenModalEditarCotaPremiada(!openModalEditarCotaPremiada)
       setTabelaCotasInfo(response.data.data)

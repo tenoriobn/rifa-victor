@@ -18,7 +18,7 @@ export default function Ganhadores() {
   const resetInputSorteio = useResetRecoilState(stateNovoGanhador);
 
   const obterDados = async () => {
-    const response = await fetchDados(`/produtos/todos/ganhadores/`);
+    const response = await fetchDados(`/produtos/todos/ganhadores`);
     setNovoGanhadorInfo(response.data);
   };
 
