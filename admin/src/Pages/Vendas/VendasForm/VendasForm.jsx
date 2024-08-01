@@ -59,8 +59,6 @@ const Form = styled.form`
     max-width: 114px;
     width: 100%;
   }
-
-
 `;
 
 const MessageError = styled.div`
