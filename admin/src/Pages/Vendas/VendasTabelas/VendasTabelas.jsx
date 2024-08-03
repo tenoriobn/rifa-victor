@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import TabelaFaturamentoCidade from './TabelaFaturamentoCidade/TabelaFaturamentoCidade';
 import TabelaFaturamentoPais from './TabelaFaturamentoPais/TabelaFaturamentoPais';
-import TabelaFaturamentoTres from './TabelaFaturamentoTres/TabelaFaturamentoTres';
-import TabelaFaturamentoQuatro from './TabelaFaturamentoQuatro/TabelaFaturamentoQuatro';
+import TabelaRankingAfiliados from './TabelaRankingAfiliados/TabelaRankingAfiliados';
+import TabelaFaturamentoEstado from './TabelaFaturamentoEstado/TabelaFaturamentoEstado';
 
 const DashboardItens = styled.div`
   display: flex;
@@ -77,9 +77,9 @@ export const Table = styled.table`
 export default function VendasTabelas() {
   return (
     <DashboardItens>
-      <TabelaFaturamentoTres />
-      <TabelaFaturamentoQuatro />
+      <TabelaRankingAfiliados />
       <TabelaFaturamentoCidade />
+      <TabelaFaturamentoEstado />
       <TabelaFaturamentoPais/>
     </DashboardItens>
   )
