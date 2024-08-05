@@ -226,7 +226,7 @@ export default function RankingForm() {
 
         <div className="filter-item">
           <label htmlFor="total_numbers">Quantidade:</label>
-          <input type="text" id="total_numbers" name="total_numbers" maxLength="3"
+          <input type="text" id="total_numbers" name="total_numbers"
             onChange={(e) => setOrderFilter({ ...orderFilter, total_numbers: e.target.value })} 
             value={orderFilter.total_numbers || ''}
           />
