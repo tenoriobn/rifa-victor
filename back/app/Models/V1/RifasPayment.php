@@ -15,6 +15,7 @@ class RifasPayment extends Model {
     protected $fillable = [
         'time_pay',
         'gateway',
+        'name',
         'service_charge',
         'text_service_charge',
         'rifas_id',

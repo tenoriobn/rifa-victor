@@ -79,28 +79,28 @@ class RifasController extends Controller
                 ->withCount(['rifaNumberReservado as qntd_numeros_reservado' => function ($query) {
                     $query->select(DB::raw("SUM(LENGTH(numbers) - LENGTH(REPLACE(numbers, ',', '')) + 1) as number_count"));
                 }]);
-    
+
             // Adiciona filtros se os parâmetros estiverem presentes e não estiverem vazios
             if ($request->has('title') && $request->input('title') != '') {
                 $query->where('title', 'like', '%' . $request->input('title') . '%');
             }
-    
+
             if ($request->has('status') && $request->input('status') != '') {
                 $query->where('status', $request->input('status'));
             }
-    
+
             $rifasData = $query->latest()->get();
-    
+
             // if ($rifasData->isEmpty()) {
             //     return response()->json(["success" => false, "msg" => "Rifas não foram encontradas."], 404);
             // }
-    
+
             return response()->json(["success" => true, "data" => $rifasData], 200);
         } catch (Exception $e) {
             return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
         }
     }
-    
+
 
 
     public function allRifas() {
@@ -175,10 +175,9 @@ class RifasController extends Controller
                 return response()->json(['response' => false, 'msg' => 'Bilhete não encontrada'], 404);
             }
 
-            $qntdCotaExist = AwardedQuota::where('rifas_id', $rifaId)->count();
-            $isMake = $rifa->cota->qntd_cota - $qntdCotaExist;
+            $qntdCotaExist = AwardedQuota::where('rifas_id', $rifaId)->where('number_cota',$request->qntd_cota )->first();
 
-            if (($qntdCota <= $isMake) || ($request->qntd_cota < 21)) {
+            if (!$qntdCotaExist) {
                 $bilhetePremiado = AwardedQuota::createAwardedQuota($qntdCota, $request->award, $request->show_site, $request->status, $rifaId);
 
                 if ($bilhetePremiado) {
@@ -191,7 +190,7 @@ class RifasController extends Controller
                 return response()->json(['response' => false, 'msg' => 'Erro ao criar a cota'], 500);
             }
 
-            return response()->json(['response' => false, 'msg' => 'Quantidade de Cotas inválida'], 400);
+            return response()->json(['response' => false, 'msg' => 'Número já inserido'], 400);
         } catch (Exception $e) {
             return response()->json(["response" => false, "msg" => "Ocorreu um erro interno ao cadastrar a rifa", "error" => $e->getMessage()], 500);
         }
@@ -266,35 +265,35 @@ class RifasController extends Controller
             if ($rifa == null) {
                 return response()->json(['response' => false, 'msg' => 'Bilhete não encontrado'], 404);
             }
-    
+
             $qntdCotaExist = AwardedQuota::with('client')->where('rifas_id', $id);
-    
+
             // Aplica os filtros adicionais
             if ($request->has('status') && $request->input('status') != '') {
                 $qntdCotaExist->where('status', $request->input('status'));
             }
-    
+
             if ($request->has('mostraSite') && $request->input('mostraSite') != '') {
                 $qntdCotaExist->where('show_site', $request->input('mostraSite'));
             }
-    
+
             $results = $qntdCotaExist->paginate(20);
-    
+
             // Se não houver resultados, retorna todos
             if ($results->isEmpty()) {
                 $qntdCotaExist = AwardedQuota::with('client')->where('rifas_id', $id)->paginate(20);
                 return response()->json(["success" => true, "data" => $qntdCotaExist], 200);
             }
-    
+
             return response()->json(["success" => true, "data" => $results], 200);
-    
+
         } catch (Exception $e) {
             return response()->json(["response" => false, "msg" => "Ocorreu um erro interno ao cadastrar a rifa", "error" => $e->getMessage()], 500);
         }
     }
-    
-    
-    
+
+
+
     public function getOneBilhetePremiado($id) {
         try {
             $bilhete = AwardedQuota::getOneBilhetePremiado($id);

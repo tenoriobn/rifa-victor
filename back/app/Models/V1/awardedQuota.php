@@ -26,13 +26,13 @@ class AwardedQuota extends Model
     public static function createAwardedQuota($qntdCota, $award, $show_site, $status, $rifaId) {
 
         $rifa = Rifas::with(['cota'])->find($rifaId);
-        $randomNumbers = self::makeRandomNumberBilhetePremiado($qntdCota, $rifa);
+        // $randomNumbers = self::makeRandomNumberBilhetePremiado($qntdCota, $rifa);
 
-        $quotas = [];
+        // $quotas = [];
 
-        foreach ($randomNumbers as $number) {
-            $quotas[] = [
-                'number_cota' => $number,
+        // foreach ($randomNumbers as $number) {
+            $quotas = [
+                'number_cota' => $qntdCota,
                 'award' => $award,
                 'show_site' => $show_site,
                 'status' => $status,
@@ -40,7 +40,7 @@ class AwardedQuota extends Model
                 'created_at' => now(),
                 'updated_at' => now()
             ];
-        }
+        // }
 
         $result = self::insert($quotas);
 

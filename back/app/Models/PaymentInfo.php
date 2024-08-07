@@ -15,6 +15,7 @@ class PaymentInfo extends Model
         'gateway',
         'token',
         'public_key',
+        'api_client_id',
         'billing_name',
     ];
 }

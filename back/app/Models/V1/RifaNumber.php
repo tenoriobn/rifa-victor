@@ -55,8 +55,9 @@ class RifaNumber extends Model {
     }
 
     public static function cancelarCompra($id) {
-        return self::where('pay_id', $id)->update(['status' => 2]);
+        return self::where('pay_id', $id)->update(['status' => 2, 'numbers' => null]);
     }
+
     public static function aprovarCompra($id) {
         return self::where('pay_id', $id)->update(['status' => 1]);
     }

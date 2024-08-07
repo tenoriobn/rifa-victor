@@ -154,7 +154,7 @@ class RifaPay extends Model
 
 
     public static function cancelarCompra($id) {
-        return self::where('id', $id)->update(['status' => 2]);
+        return self::where('id', $id)->update(['status' => 2, 'verify' => 1, 'qr_code' => null, 'qr_code_base64' => null, 'qntd_number' => 0]);
     }
     public static function aprovarCompra($id) {
         return self::where('id', $id)->update(['status' => 1]);
