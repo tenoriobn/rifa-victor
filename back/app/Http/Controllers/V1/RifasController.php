@@ -550,9 +550,9 @@ class RifasController extends Controller
                 return response()->json(["success" => false, "msg" => [$payment['status_code'], $payment['content'], $payment['message']]], 500);
             }
 
-            $rifaPayDetails->pixId = $payment->id;
-            $rifaPayDetails->qrCode = $payment->point_of_interaction->transaction_data->qr_code;
-            $rifaPayDetails->qrCodeBase64 = $payment->point_of_interaction->transaction_data->qr_code_base64;
+            $rifaPayDetails->pixId = $payment['hash'];
+            $rifaPayDetails->qrCode = $payment['payment'];
+            $rifaPayDetails->qrCodeBase64 = $payment['payment'];
 
             RifaPay::addPix($rifaPay->id, $rifaPayDetails->pixId, $rifaPayDetails->qrCode,$rifaPayDetails->qrCodeBase64);
 

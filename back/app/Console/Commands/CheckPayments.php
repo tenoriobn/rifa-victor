@@ -35,22 +35,20 @@ class CheckPayments extends Command
 
         foreach ($payments as $payment) {
             $paymentStatusResponse = $this->mercadoPagoService->checkPaymentStatus($payment->pix_id);
-   
             if ($paymentStatusResponse['status']) {
-                $paymentStatus = $paymentStatusResponse['payment']->status;
-                if ($paymentStatus === 'approved') {
+                $paymentStatus = $paymentStatusResponse['data']['status'];
+                if ($paymentStatus === 1) {
 
                     $payment->update(['status' => 1]);
-                    $this->info("O pagamento de {$payment->client->name} com o ID de pagamento {$payment->pix_id} foi aprovado.");
-                } elseif ($paymentStatus === 'expired') {
+                    $this->info("O pagamento de {$payment->client->name} com o ID  {$payment->id} foi aprovado.");
+                } elseif ($paymentStatus === 0) {
                     $payment->update(['status' => 0]);
-                    $this->info("O pagamento de {$payment->client->name} com o ID de pagamento {$payment->pix_id} foi expirado.");
+                    $this->info("O pagamento de {$payment->client->name} com o ID {$payment->id} está pendente.");
                 } else {
-                    $this->info("O pagamento de {$payment->client->name} com o ID de pagamento {$payment->pix_id} está pendente.");
+                    $this->info("O pagamento de {$payment->client->name} com o ID {$payment->id} foi expirado. ");
                 }
             } else {
-                $this->error("Erro ao verificar pagamento {$payment->pix_id}: {$paymentStatusResponse['message']}");
-                $this->error("details {$payment->pix_id}: {$paymentStatusResponse['content']['message']}");
+                $this->error("Erro ao verificar pagamento do(a) {$payment->client->name} {$payment->client->surname} id do pix: {$payment->pix_id}");
             }
         }
         $this->info('Fim da verificação de pagamento.');

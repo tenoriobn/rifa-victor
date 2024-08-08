@@ -2,82 +2,190 @@
 
 namespace App\Services;
 
-use MercadoPago\Client\Common\RequestOptions;
-use MercadoPago\Client\Payment\PaymentClient;
-use MercadoPago\Exceptions\MPApiException;
-use MercadoPago\MercadoPagoConfig;
+use App\Models\PaymentInfo;
+use App\Models\V1\RifaPay;
+use DateTime;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 
 class MercadoPagoService
 {
-    public function __construct()
-    {
-        MercadoPagoConfig::setAccessToken(env('MERCADOPAGO_ACCESS_TOKEN'));
-        MercadoPagoConfig::setRuntimeEnviroment(MercadoPagoConfig::LOCAL);
+    protected $client;
+    protected $baseUri;
+    protected $clientKey;
+    protected $clientSecret;
 
-
+    public function __construct() {
+        $gat = PaymentInfo::where('name', 'paggue')->first();
+        // $this->client = new Client([
+        //     'verify' => base_path('cert/certficado.pem'), // Adiciona a opção verify com o caminho para o certificado
+        // ]);
+        $this->baseUri = 'https://ms.paggue.io';
+        $this->clientKey = $gat->public_key;
+        $this->clientSecret = $gat->api_client_id;
     }
-    public function createPayment($rifa, $description) {
-        $client = new PaymentClient();
-        $timeLimit = $rifa->rifa->rifaPayment->time_pay ?? 30;
-        $expirationDate = now()->addMinutes($timeLimit)->setTimezone('UTC')->format('Y-m-d\TH:i:sP');
-        $value =  floatval($rifa->value);
-        $username = $rifa->client->name.'@gmail.com'; // Obter apenas o nome do usuário
-        $request = [
-            "transaction_amount" => $value,
-            "description" => $description,
-            // "date_of_expiration" =>  $expirationDate,
-            "installments" => 1,
-            "payment_method_id" => 'pix',
-            "payer" => [
-                "email" => $username, // Enviar apenas o nome do usuário
-            ]
+
+    public function getToken() {
+        $client = new Client();
+        $url = "https://ms.paggue.io/auth/v1/token";
+        $headers = [
+            'Content-Type' => 'application/json'
         ];
-    
-        $requestOptions = new RequestOptions();
-        $requestOptions->setCustomHeaders(["X-Idempotency-Key: " . uniqid()]);
-    
+
+        $payload = array(
+            'client_key' => $this->clientKey,
+            'client_secret' => $this->clientSecret ,
+        );
         try {
-            $payment = $client->create($request, $requestOptions);
-            
-            return $payment;
-    
-        } catch (MPApiException $e) {
-    
-            return [
-                'status' => false,
-                'status_code' => $e->getApiResponse()->getStatusCode(),
-                'content' => $e->getApiResponse()->getContent(),
-                'message' => $e->getMessage(),
-            ];
-        } catch (\Exception $e) {
-            return ['status' => false, 'message' => $e->getMessage()];
+            $paggue_curl = curl_init();
+
+            curl_setopt_array($paggue_curl, array(
+                CURLOPT_URL => 'https://ms.paggue.io/auth/v1/token',
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_SSL_VERIFYPEER => 0,
+                CURLOPT_SSL_VERIFYHOST => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'POST',
+                CURLOPT_POSTFIELDS =>'{
+                    "client_key": "996813194685267",
+                    "client_secret": "663738450829593904"
+                }',
+                CURLOPT_HTTPHEADER => array(
+                    'Content-Type: application/json'
+                  ),
+            ));
+
+            $auth_response = json_decode(curl_exec($paggue_curl));
+
+            curl_close($paggue_curl);
+            return $auth_response;
+        } catch (RequestException $e) {
+            return $e->getMessage();
         }
     }
-    
 
-    public function checkPaymentStatus($paymentId)
-    {
-        $client = new PaymentClient();
+    public function createPayment($rifa, $description) {
+        $tokenResponse = $this->getToken();
+
+        if (!isset($tokenResponse->access_token)) {
+            return [
+                'status' => false,
+                'message' => 'Unable to obtain access token',
+            ];
+        }
+
+        $paggue_company_id = $tokenResponse->user->companies[0]->id;
+        $token = $tokenResponse->access_token;
+        $value = floatval($rifa->value) * 100;
+
+
+        $timeLimit = $rifa->rifa->rifaPayment->time_pay ?? 30;
+        $expirationDate = now()->addMinutes($timeLimit)->setTimezone('UTC')->format('Y-m-d\TH:i:sP');
+
+        $currentDateTime = new DateTime();
+        $formattedDateTime = $currentDateTime->format('YmdHis');
+
+
+        $uniqueExternalId = $rifa->client->id . '_' . uniqid() . '_' . $formattedDateTime;
+
+        $payload = [
+            "payer_name" => $rifa->client->name,
+            "amount" => $value,
+            "external_id" => $uniqueExternalId,
+            "description" => $description,
+            "expiration_at" => $expirationDate
+        ];
+
+        // Calcular a assinatura com a hora atual e o ID do cliente
+        $signature = hash('sha256', json_encode($payload) . $token . $formattedDateTime . $rifa->client->id);
+
+        $headers = [
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer ' . $token,
+            'Content-Type' => 'application/json',
+            'X-Company-ID' => $paggue_company_id,
+            'Signature' => $signature,
+        ];
 
         try {
-            $payment = $client->get($paymentId);
+            $client = new Client();
+            $response = $client->post('https://ms.paggue.io/cashin/api/billing_order', [
+                'headers' => $headers,
+                'json' => $payload,
+                'verify' => false // Desativa a verificação SSL temporariamente
+            ]);
+
+            // Verifique a resposta antes de retornar
+            $responseBody = json_decode($response->getBody(), true);
+            if (isset($responseBody['error']) && $responseBody['error']) {
+                // Log ou debug da resposta completa
+                return $responseBody;
+            }
+            return $responseBody;
+        } catch (RequestException $e) {
+            // Log ou debug do erro completo
+            return $e->getMessage();
+        }
+    }
+
+
+
+
+
+    public function checkPaymentStatus($paymentId) {
+        $tokenResponse = $this->getToken();
+
+        if (!isset($tokenResponse->access_token)) {
+            return [
+                'status' => false,
+                'message' => 'Unable to obtain access token',
+            ];
+        }
+
+        $paggue_company_id = $tokenResponse->user->companies[0]->id;
+        $token = $tokenResponse->access_token;
+        $url = 'https://ms.paggue.io/cashin/api/billing_order/'.$paymentId;
+        $headers = [
+            'X-Company-ID' => $paggue_company_id,
+            'Authorization' => 'Bearer ' . $token,
+        ];
+
+        try {
+            $client = new \GuzzleHttp\Client();
+            $response = $client->get($url, [
+                'headers' => $headers,
+                'verify' => false
+            ]);
+
+            $responseBody = json_decode($response->getBody(), true);
 
             return [
                 'status' => true,
-                'payment' => $payment,
+                'data' => $responseBody,
             ];
+        } catch (\GuzzleHttp\Exception\RequestException $e) {
+            $response = $e->getResponse();
 
-        } catch (MPApiException $e) {
+            if ($response) {
+                $errorBody = json_decode($response->getBody()->getContents(), true);
+                return [
+                    'status' => false,
+                    'message' => $errorBody['message'] ?? 'Erro desconhecido',
+                ];
+            }
+
             return [
                 'status' => false,
-                'status_code' => $e->getApiResponse()->getStatusCode(),
-                'content' => $e->getApiResponse()->getContent(),
                 'message' => $e->getMessage(),
             ];
-        } catch (\Exception $e) {
-            return ['status' => false, 'message' => $e->getMessage()];
         }
     }
+
+
 
 
 }
