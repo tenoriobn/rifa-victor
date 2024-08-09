@@ -2,11 +2,32 @@ import { useState, useEffect } from "react";
 import Copia from "../../../../assets/Icons/copia.svg?react";
 import { useRecoilValue } from "recoil";
 import { estadoQrCode } from "../../../../common/state/atom";
+import QRCode from "qrcode"; // Importa a biblioteca QRCode
 
 export default function ModalPix() {
   const [modalVisivel, setModalVisivel] = useState(false);
   const [copiado, setCopiado] = useState(false);
+  const [qrCodeImage, setQrCodeImage] = useState(""); // Estado para armazenar a imagem do QR Code
   const qrCode = useRecoilValue(estadoQrCode);
+
+  useEffect(() => {
+    if (modalVisivel) {
+      document.body.style.overflow = 'hidden';
+
+      QRCode.toDataURL(qrCode[0])
+        .then(url => {
+          setQrCodeImage(url);
+        })
+        .catch(err => {
+          console.error("Erro ao gerar o QR Code: ", err);
+        });
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [modalVisivel, qrCode]);
 
   const copyToClipboard = () => {
     const qrCodeText = document.getElementById("qrcodeArea").value;
@@ -17,17 +38,6 @@ export default function ModalPix() {
       console.error("Erro ao copiar o código: ", err);
     });
   };
-
-  useEffect(() => {
-    if (modalVisivel) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto';
-    }
-    return () => {
-      document.body.style.overflow = 'auto';
-    };
-  }, [modalVisivel]);
 
   return (
     <>
@@ -51,7 +61,7 @@ export default function ModalPix() {
             <h1 className="text-xl text-center">PIX - SAVEIRO CROSS DOS SONHOS </h1>
 
             <div>
-              <img src={`data:image/png;base64, ${qrCode[1]}`} alt="QR Code" className="bg-white mx-auto w-[196px] h-[196px]"/>
+              <img src={qrCodeImage} alt="QR Code" className="bg-white mx-auto w-[196px] h-[196px]"/>
             </div>
 
             <div>
