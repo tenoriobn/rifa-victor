@@ -94,7 +94,7 @@ export default function CotasForm() {
           <option value="disponivel">Disponivel</option>
           <option value="bloqueada">Bloqueada</option>
           <option value="imediato">Imediato</option>
-          <option value="confirmada">Confirmada</option>
+          {/* <option value="confirmada">Confirmada</option> */}
           <option value="resgatada">Resgatada</option>
         </select>
       </div>

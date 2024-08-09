@@ -89,14 +89,14 @@ export default function AdicionarCota() {
   return (
     <Form id="frmAddPack" onSubmit={handleSubmit}>
       <label htmlFor="frm_add_qtd" id="frm_lb_qtd">
-        Quantidade (MAX: 20)
+        Quantidade
         <input
           type="number"
           className="number"
           id="frm_add_qtd"
           name="qntd_cota"
           min="1"
-          max="20"
+          // max="20"
           value={cotaPremiada.qntd_cota || ''}
           onChange={(e) => setCotaPremiada({...cotaPremiada, qntd_cota: e.target.value})}
           required
