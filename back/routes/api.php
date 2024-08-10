@@ -81,6 +81,7 @@
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/client/rifa/adicionar/bilhete-premiado", [AdminController::class, "adicionarBilhetePremiado"])->name('admin.adicionar.bilhete.premiado');
 
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/client/rifa/ativas", [AdminController::class, "rifaAtivas"])->name('admin.adicionar.bilhete.premiado');
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/consulta-cota/{id}", [AdminController::class, "consultaCota"])->name('admin.adicionar.bilhete.premiado');
 
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/pedidos", [AdminController::class, "getPedidos"])->name('admin.pedidos');
 

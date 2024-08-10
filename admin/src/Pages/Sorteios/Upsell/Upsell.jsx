@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { Main } from "../../../components/AdminLayout/AdminLayout";
 import Header, { LinkItem } from "../../../components/Header/Header";
@@ -19,10 +20,12 @@ export default function Upsell() {
   const setUpsellInfoTable = useSetRecoilState(stateUpsellInfoTable);
   const userLogin = useRecoilValue(stateUserLogin);
   const { id } = useParams();
+  const [title, setTitle] = useState('')
 
   const obterDados = async () => {
     const response = await fetchDados(`admin/dashboard/upsell/${id}`, userLogin);
     setUpsellInfoTable(response.data);
+    setTitle(response.nomeRifa.title)
   };
 
   useEffect(() => {
@@ -46,7 +49,7 @@ export default function Upsell() {
       </Header>
 
       <Main>
-        <Titulo titulo="SAVEIRO CROSS DOS SONHOS" />
+        <Titulo titulo={title} />
         <UpsellForm />
         <UpsellTable />
       </Main>

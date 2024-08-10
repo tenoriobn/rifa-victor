@@ -1,9 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
-import { stateAtualizaTableConsultaCota, stateConsultaCota, stateOptionsRifa } from "../../../../common/states/atom";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { stateConsultaCota } from "../../../../common/states/atom";
+import { useSetRecoilState } from "recoil";
 import { postDados } from "../../../../common/http/http";
+import { useParams } from "react-router-dom";
 
 const FilterItemRow = styled.div`
   display: flex;
@@ -73,27 +74,30 @@ const Button = styled.button`
 
 export default function FiltroUsuarioForm() {
   const [search, setSearch] = useState('');
-  const [selectSearch, setSelectSearch] = useState('');
+  // const [selectSearch, setSelectSearch] = useState('');
   const setConsultaCota = useSetRecoilState(stateConsultaCota);
-  const [atualizaTableConsultaCota, setAtualizaTableConsultaCota] = useRecoilState(stateAtualizaTableConsultaCota);
-  const optionsRifa = useRecoilValue(stateOptionsRifa);
+  // const [atualizaTableConsultaCota, setAtualizaTableConsultaCota] = useRecoilState(stateAtualizaTableConsultaCota);
+  const { id } = useParams();
+  // const optionsRifa = useRecoilValue(stateOptionsRifa);
 
   const handleSubmit = async (e) => {
     if (e) e.preventDefault();
     try {
-      const response = await postDados('/admin/dashboard/rifa/procurar-numero-premiado/procurar-ganhador', { numeroWinner:search, rifa_id:selectSearch });
+      const response = await postDados('/admin/dashboard/rifa/procurar-numero-premiado/procurar-ganhador', { numeroWinner:search, rifa_id: id});
       setConsultaCota({ data: response, search });
+
+      console.log('response cosulta', response)
     } catch (error) {
       console.error("There was an error fetching the data!", error);
     }
   };
 
-  useEffect(() => {
-    if (atualizaTableConsultaCota) {
-      setAtualizaTableConsultaCota(false)
-      handleSubmit();
-    }
-  }, [atualizaTableConsultaCota]);
+  // useEffect(() => {
+  //   if (atualizaTableConsultaCota) {
+  //     setAtualizaTableConsultaCota(false)
+  //     handleSubmit();
+  //   }
+  // }, [atualizaTableConsultaCota,  setAtualizaTableConsultaCota]);
 
   return (
     <form onSubmit={handleSubmit}>
@@ -110,7 +114,7 @@ export default function FiltroUsuarioForm() {
           />
         </FilterInputContainer>
 
-        <FilterInputContainer>
+        {/* <FilterInputContainer>
           <Label htmlFor="id">Selecionar sorteio:</Label>
 
           <select 
@@ -127,7 +131,7 @@ export default function FiltroUsuarioForm() {
               </option>
             ))}
           </select>
-        </FilterInputContainer>
+        </FilterInputContainer> */}
 
         <Button type="submit">
           <i className="fas fa-search"></i> Filtrar

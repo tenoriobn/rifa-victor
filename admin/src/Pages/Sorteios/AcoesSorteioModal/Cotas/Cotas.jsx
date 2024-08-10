@@ -26,10 +26,13 @@ export default function RifasCotas() {
   const resetCotaPremiada = useResetRecoilState(stateCotasPremiadas);
   const [pagination, setPagination] = useState(null)
   const [currentPage, setCurrentPage] = useState(1);
+  const [title, setTitle] = useState('')
 
   const obterDados = async (page = 1) => {
     const response = await fetchDados(`/admin/dashboard/bilhete-premiado/all/${id}?page=${page}`, userLogin);
     setTabelaCotasInfo(response.data.data);
+
+    setTitle(response.nomeRifa.title)
 
     setPagination(response.data);
   };
@@ -61,7 +64,7 @@ export default function RifasCotas() {
       </Header>
 
       <Main>
-        <Titulo titulo="SAVEIRO CROSS DOS SONHOS" />
+        <Titulo titulo={title} />
 
         <CotasForm />
 

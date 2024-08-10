@@ -75,6 +75,7 @@ export default function ImagensRifa() {
   const [imagemRifaDelete, setImagemRifaDelete] = useState('')
   const [isLoading, setIsLoading] = useState(true);
   const baseURL = import.meta.env.VITE_BASE_URL;
+  const [title, setTitle] = useState('')
 
   const handleExcluirImagem = async (idImg) => {
     const response = await deleteDados(`admin/dashboard/rifa/imagens/deletar/${idImg}`, userLogin);
@@ -86,6 +87,7 @@ export default function ImagensRifa() {
       try {
         setIsLoading(true);
         const response = await fetchDados(`/admin/dashboard/rifa/imagens/${id}`, userLogin);
+        setTitle(response.nomeRifa.title)
         
         if (response.data && response.data.length > 0) {
           setImagensRifa(response.data);
@@ -125,7 +127,7 @@ export default function ImagensRifa() {
 
       <Main>
         <TextImagesContainer>
-          <h2>SAVEIRO CROSS DOS SONHOS </h2>
+          <h2>{title} </h2>
 
           <center>
             <p><b>TAMANHO:</b> 16x9 (732x411 pixels)</p>

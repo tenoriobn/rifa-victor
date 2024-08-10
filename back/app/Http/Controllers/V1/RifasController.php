@@ -241,6 +241,8 @@ class RifasController extends Controller
     }
     public function getAllBilhetePremiado($id) {
         try {
+            $nomeRifa = Rifas::where('id', $id)->first();
+
             $rifa = Rifas::find($id);
             if ($rifa == []) {
                 return response()->json(['response' => false, 'msg' => 'Bilhete não encontrada'], 404);
@@ -250,7 +252,7 @@ class RifasController extends Controller
             if ($qntdCotaExist->isEmpty()) {
                 return response()->json(['response' => false, 'msg' => 'Bilhete não encontrada'], 404);
             }
-            return  response()->json(["success" => true, "data" => $qntdCotaExist], 200);
+            return  response()->json(["success" => true, "data" => $qntdCotaExist, 'nomeRifa' => $nomeRifa], 200);
 
 
 
@@ -354,13 +356,13 @@ class RifasController extends Controller
 
     public function getAllPacotes($id) {
         try {
-
+            $nomeRifa = Rifas::where('id', $id)->first();
             $pacotes = DiscountPackage::getAllPacotes($id);
             if (!$pacotes) {
                 return response()->json(['response' => false, 'msg' => 'Pacote não encontrada'], 404);
             }
 
-            return response()->json(["success" => true, "data" => $pacotes ], 200);
+            return response()->json(["success" => true, "data" => $pacotes, 'nomeRifa' => $nomeRifa ], 200);
 
 
         } catch (Exception $e) {
@@ -385,13 +387,15 @@ class RifasController extends Controller
 
     public function getUpsellRifa($id) {
         try {
+            $nomeRifa = Rifas::where('id', $id)->first();
+
             $upsell = RifaUpsell::getAllUpsellRifa( $id);
 
             if (!$upsell) {
                 return response()->json(["success" => false, "msg" => "Upsell não encontrado"], 404);
             }
 
-            return response()->json(['response' => true, 'data' => $upsell], 200);
+            return response()->json(['response' => true, 'data' => $upsell, 'nomeRifa' => $nomeRifa], 200);
 
         } catch (Exception $e) {
             return response()->json(["response" => false, "msg" => "Ocorreu um erro interno ao cadastrar a rifa", "error" => $e->getMessage()], 500);
@@ -443,13 +447,14 @@ class RifasController extends Controller
 
     public function getImagens($id) {
         try {
+            $nomeRifa = Rifas::where('id', $id)->first();
 
             $imagens = RifaImage::getRifaImagens($id);
             if (!count($imagens)) {
                 return response()->json(['response' => false, 'msg' => 'Imagem não encontrada'], 404);
             }
 
-            return response()->json(["success" => true, "data" => $imagens ], 200);
+            return response()->json(["success" => true, "data" => $imagens, 'nomeRifa' => $nomeRifa ], 200);
 
 
         } catch (Exception $e) {

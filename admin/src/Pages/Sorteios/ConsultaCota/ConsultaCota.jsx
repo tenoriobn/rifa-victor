@@ -4,11 +4,10 @@ import { Main } from "../../../components/AdminLayout/AdminLayout";
 import Header from "../../../components/Header/Header";
 import ConsultaCotaForm from "./ConsultaCotaForm/ConsultaCotaForm";
 import { useParams } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
-import { stateOptionsRifa } from "../../../common/states/atom";
 import { fetchDados } from "../../../common/http/http";
 import { useEffect } from "react";
 import FiltroCotaTable from "./FiltroCotaTable/FiltroCotaTable";
+import { useState } from "react";
 
 const ConsultaCotaContainer = styled.div`
   display: flex;
@@ -43,13 +42,13 @@ const ConsultaCotaContainer = styled.div`
 
 export default function ConsultaCota() {
   const { id } = useParams();
-  const setOptionsRifa = useSetRecoilState(stateOptionsRifa);
+  const [title, setTitle] = useState('')
 
   useEffect(() => {
     const obterDados = async () => {
-      const response = await fetchDados(`/admin/dashboard/client/rifa/ativas`);
+      const response = await fetchDados(`/admin/dashboard/consulta-cota/${id}`);
 
-      setOptionsRifa(response.data);
+      setTitle(response.data.title)
     };
   
     obterDados();
@@ -71,7 +70,7 @@ export default function ConsultaCota() {
             <img src="https://imagedelivery.net/TuyDlh37fwpu3jSKwZ3-9g/2a6e9600-32e1-44d2-8fff-801b4abe3e00/rifa?>" />
           </div>
 
-          <h1 className="title">SAVEIRO CROSS DOS SONHOS </h1>
+          <h1 className="title">{title} </h1>
 
           <ConsultaCotaForm />
           <FiltroCotaTable />

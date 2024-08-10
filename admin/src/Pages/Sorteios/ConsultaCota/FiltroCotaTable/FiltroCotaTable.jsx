@@ -127,13 +127,10 @@ export default function FiltroCotaTable() {
         <tbody>
           <tr className="raffle-item">
             <td>
-                {infoCota?.client?.name} {infoCota?.client?.surname}
-
-
-                <a href={`https://api.whatsapp.com/send?phone=${formatPhoneNumber(infoCota?.client?.cellphone)}`} target="_blank">{infoCota?.client?.name} {infoCota?.client?.surname}</a>
-                <a id="whplnk" href={`https://api.whatsapp.com/send?phone=${formatPhoneNumber(infoCota?.client?.cellphone)}`} target="_blank">&nbsp;
-                  &nbsp;<i className="fa-brands fa-whatsapp"></i>
-                </a>
+              <a href={`https://api.whatsapp.com/send?phone=${formatPhoneNumber(infoCota?.client?.cellphone)}`} target="_blank">{infoCota?.client?.name} {infoCota?.client?.surname}</a>
+              <a id="whplnk" href={`https://api.whatsapp.com/send?phone=${formatPhoneNumber(infoCota?.client?.cellphone)}`} target="_blank">&nbsp;
+                &nbsp;<i className="fa-brands fa-whatsapp"></i>
+              </a>
             </td>
             <td>{infoCota?.client?.cellphone}</td>
             <td>{infoCota?.rifa?.title}</td>

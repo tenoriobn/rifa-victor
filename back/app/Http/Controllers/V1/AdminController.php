@@ -229,6 +229,20 @@ class AdminController extends Controller
         }
     }
 
+    public function consultaCota($id) {
+        try {
+            $rifas = Rifas::getOneRifa($id);
+
+            if(!$rifas) {
+                return response()->json(["success" => true, "msg" => 'rifas não encontradas'], 404);
+            }
+
+            return response()->json(["success" => true, "data" => $rifas], 200);
+        } catch (Exception $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
+        }
+    }
+
     public function getPedidos() {
         try {
             $buy = RifaPay::getAllCompra();
@@ -853,6 +867,8 @@ class AdminController extends Controller
 
     public function getOneVendas($id) {
         try {
+            $nomeRifa = Rifas::where('id', $id)->first();
+
             // Lógica existente
             $totalPedido = RifaPay::getOneCompraAtivo($id)->sum('value');
             $pedidosAprovados = RifaPay::getOneCompraAtivo($id)->count('status');
@@ -898,7 +914,8 @@ class AdminController extends Controller
                     'faturamentoDoDia' => $faturamentoDoDia,
                     'faturamentoDiario' => $diario,
                     'faturamentoAcumulado' => $acumulado,
-                    'semanalPorDia' => $semanalPorDia
+                    'semanalPorDia' => $semanalPorDia,
+                    'nomeRifa' => $nomeRifa
                 ]
             ], 201);
         } catch (\Throwable $e) {

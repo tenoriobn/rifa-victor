@@ -74,11 +74,11 @@ export default function DataPagamento() {
           id="gateway"
           name="gateway"
           onChange={(e) => setFormState({ ...formStateUm, rifa_payment: {...formStateUm?.rifa_payment , gateway: e.target.value} })} 
-          value={formStateUm?.rifa_payment?.gateway || 'mercadopago'}
+          value={formStateUm?.rifa_payment?.gateway || 'paggue'}
 
           required
         >
-          <option value="mercadopago">MercadoPago</option>
+          <option value="paggue">Paggue</option>
         </select>
       </label>
 

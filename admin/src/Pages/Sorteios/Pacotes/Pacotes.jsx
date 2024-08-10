@@ -24,10 +24,13 @@ export default function Pacotes() {
   const resetPacote = useResetRecoilState(statePacote);
   const [pagination, setPagination] = useState(null)
   const [currentPage, setCurrentPage] = useState(1);
+  const [title, setTitle] = useState('')
 
   const obterDados = async (page = 1) => {
     const response = await fetchDados(`/admin/dashboard/todos-pacotes/${id}?page=${page}`, userLogin);
     setTabelaPacotesInfo(response.data.data);
+
+    setTitle(response.nomeRifa.title)
   
     setPagination(response.data);
   };
@@ -58,7 +61,7 @@ export default function Pacotes() {
       </Header>
 
       <Main>
-        <Titulo titulo="SAVEIRO CROSS DOS SONHOS" />
+        <Titulo titulo={title} />
         <FormPacotes />
         <PacoteTable />
 

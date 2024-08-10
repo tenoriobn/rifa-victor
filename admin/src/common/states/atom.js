@@ -133,7 +133,7 @@ export const stateInfoRifaForm = atom({
     show_site :  "sim",
     show_top: "nao",
     rifa_payment: {
-      gateway: "mercadopago"
+      gateway: "paggue"
     },
     rifa_awarded: {
       cotas_double: "nao"
