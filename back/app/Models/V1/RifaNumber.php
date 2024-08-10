@@ -73,14 +73,16 @@ class RifaNumber extends Model {
 
             AwardedQuota::winnerBilhetePremiado($numbers, $rifaPay->client_id, $rifaPay->rifas_id, $rifaPay->id);
 
-            self::create([
+            $resp = self::create([
                 'pay_id' => $rifaPay->id,
                 'rifas_id' => $rifaPay->rifas_id,
                 'numbers' => json_encode($numbers),
                 'client_id' => $rifaPay->client_id,
             ]);
 
-            return true;
+            $id = $resp->id;
+
+            return $id;
         }, 5); // 5 tentativas para resolver deadlocks
     }
 

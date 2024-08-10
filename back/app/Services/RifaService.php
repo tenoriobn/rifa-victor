@@ -169,6 +169,9 @@ class RifaService
 
             $result = RifaNumber::applyRifa($rifaPayDetails);
 
+            RifaNumber::where('id', $result)->update(['status' => 1]);
+
+
             if(!$result) {
                 $rifaPayDetails->delete();
                 return ["success" => false, "msg" => "Quantidade de número invalido", 404];
