@@ -85,7 +85,7 @@ export default function ModalEditarCotaPremiada() {
   return (
     <Form id="frmAddPack" onSubmit={handleSubmit}>
       <label htmlFor="frm_add_qtd" id="frm_lb_qtd">
-        Cota
+        Cota desejada
 
         <PatternFormat
           className="number"

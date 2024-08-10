@@ -89,7 +89,7 @@ export default function AdicionarCota() {
   return (
     <Form id="frmAddPack" onSubmit={handleSubmit}>
       <label htmlFor="frm_add_qtd" id="frm_lb_qtd">
-        Quantidade
+        Cota desejada
         <input
           type="number"
           className="number"
