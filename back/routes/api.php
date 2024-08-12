@@ -120,6 +120,12 @@
 
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/one/venda/{id}", [AdminController::class, "getOneVendas"])->name('admin.one.vendas');
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/one/venda/filtro/{id}", [AdminController::class, "vendasFiltroOne"])->name('admin.filtro.one.vendas');
+
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/afiliado/create", [AdminController::class, "createAfiliado"])->name('admin.create.afiliado');
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/todos/afiliados/", [AdminController::class, "getAllAfiliado"])->name('admin.get.all.afiliados');
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/one/afiliado/{id}", [AdminController::class, "getOneAfiliado"])->name('admin.get.one.afiliado');
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/one/afiliado/produto/{id}/{idProduto}", [AdminController::class, "getOneAfiliadoByProduto"])->name('admin.get.one.afiliado.by.produto');
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->put("/dashboard/afiliado/update/{id}", [AdminController::class, "afiliadoUpdate"])->name('admin.update.afiliado');
     });
     Route::group(['prefix' => 'produtos'], function () {
         Route::get("/", [RifasController::class, "allRifas"])->name('all.rifas');
@@ -127,7 +133,7 @@
 
         Route::get("/todos/ganhadores", [RifasController::class, "getAllWinners"])->name('admin.pegar.ganhador');
 
-        Route::post("/comprar-rifa", [RifasController::class, "buyRifa"])->name('buy.rifa');
+        Route::post("/comprar-rifa/{afiliadoId?}", [RifasController::class, "buyRifa"])->name('buy.rifa');
 
     });
 

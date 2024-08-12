@@ -525,7 +525,7 @@ class RifasController extends Controller
             return response()->json(["success" => false, "msg" => $e->getMessage()], $this->serverError);
         }
     }
-    public function buyRifa(OrderRifaRequest $request) {
+    public function buyRifa(Request $request, $afiliadoId = null) {
         try {
 
             $isBuyRifa =  $this->rifaService->isBuy($request);
@@ -561,11 +561,18 @@ class RifasController extends Controller
 
             RifaPay::addPix($rifaPay->id, $rifaPayDetails->pixId, $rifaPayDetails->qrCode,$rifaPayDetails->qrCodeBase64);
 
+            if($afiliadoId) {
+                $isBuyRifa =  $this->rifaService->calcularGanhoAfiliado($afiliadoId,$request );
+
+            }
+
              return response()->json(["success" => true, "data" => $rifaPayDetails], 200);
         } catch (Exception $e) {
             return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
         }
     }
+
+
 
 
 

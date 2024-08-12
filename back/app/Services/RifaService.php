@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Models\Afiliado;
+use App\Models\GanhoAfiliado;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Auth;
@@ -217,6 +219,24 @@ class RifaService
             return ['success' => false , 'msg' => 'Desculpe, você já atingiu o limite máximo de compras permitidas para esta rifa.'];
         }
         return ['success' => true];
+    }
+    public function calcularGanhoAfiliado($id, $rifa) {
+        $afiliado = Afiliado::where('id', $id)->first();
+
+        if(!$afiliado) {
+            return false;
+        }
+        $comissao = $afiliado->porcent * $rifa->value;
+        GanhoAfiliado::create([
+            'afiliado_id' => $afiliado->id ,
+            'pedidos' => 1,
+            'faturamento' => $rifa->value,
+            'comissao' => $comissao,
+            'rifas_id' => $rifa->rifas_id
+        ]);
+
+        return true;
+
     }
 
 

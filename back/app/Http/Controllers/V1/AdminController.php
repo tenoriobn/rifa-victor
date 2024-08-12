@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
+use App\Models\Afiliado;
+use App\Models\GanhoAfiliado;
 use App\Models\PaymentInfo;
 use App\Models\SiteSetting;
 use App\Models\V1\{Clients, Rifas, RifaWinner, RifaPay};
@@ -1066,5 +1068,83 @@ class AdminController extends Controller
 
     public function me(Request $request) {
         return response()->json($request->user());
+    }
+
+    public function createAfiliado(Request $request) {
+
+        try {
+            $client = Clients::findClient($request->cellphone);
+            $afiliado = Afiliado::findAfiliado($request->cellphone);
+
+            if(!$client) {
+                return response()->json(["success" => false, "msg" =>'Cliente não encontrado!'], 500);
+            }
+            if($afiliado) {
+                return response()->json(["success" => false, "msg" =>'Afiliado já existe!'], 500);
+            }
+            $afiliado =  Afiliado::createAfiliado($request, $client);
+
+            return response()->json(["success" => true, "data" => 'criado com sucesso'], 201);
+        } catch (\Throwable $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
+        }
+
+    }
+
+    public function getAllAfiliado(){
+        try {
+            $afiliados = Afiliado::findAllAfiliado(['ganhoAfiliado', 'client']);
+            if(!$afiliados) {
+                return response()->json(["success" => false, "msg" =>'Não tem nenhum afiliado no momento'], 500);
+            }
+            foreach ($afiliados as $afiliado) {
+                $afiliado->totalPedidos = $afiliado->ganhoAfiliado->count();
+            }
+
+            return response()->json(["success" => true, "data" =>  $afiliados], 200);
+        } catch (\Throwable $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
+        }
+    }
+    public function getOneAfiliado($id){
+        try {
+            $afiliado = Afiliado::findOneAfiliadoById($id);
+            if(!$afiliado) {
+                return response()->json(["success" => false, "msg" =>'Afiliado não existe'], 500);
+            }
+            $afiliado->totalPedidos = $afiliado->ganhoAfiliado->count();
+            return response()->json(["success" => true, "data" =>  $afiliado], 200);
+        } catch (\Throwable $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
+        }
+    }
+    public function getOneAfiliadoByProduto($id, $idProduto){
+        try {
+            $afiliado = GanhoAfiliado::findOneAfiliadoByProduto($id, $idProduto);
+
+            if(!$afiliado->count() > 0) {
+
+                return response()->json(["success" => false, "msg" =>'Afiliado não existe'], 500);
+            }
+            $afiliado->totalPedidos = $afiliado->ganhoAfiliado->count();
+
+            return response()->json(["success" => true, "data" =>  $afiliado], 200);
+        } catch (\Throwable $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
+        }
+    }
+    public function afiliadoUpdate(Request $request, $id){
+        try {
+            $afiliado = Afiliado::findOneAfiliadoById($id);
+
+            if(!$afiliado) {
+                return response()->json(["success" => false, "msg" =>'Afiliado não existe'], 500);
+            }
+           dd($afiliado );;
+
+            return response()->json(["success" => true, "data" =>  $afiliado], 200);
+        } catch (\Throwable $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
+        }
     }
 }
