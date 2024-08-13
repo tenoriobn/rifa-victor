@@ -1,24 +1,38 @@
-import { useRecoilState } from "recoil";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
 import { Main } from "../../components/AdminLayout/AdminLayout";
 import Header, { LinkItem } from "../../components/Header/Header";
 import Titulo from "../../components/Titulo/Titulo";
 import AfiliadosForm from "./AfiliadosForm/AfiliadosForm";
 import AfiliadosTable from "./AfiliadosTable/AfiliadosTable";
-import { stateOpenModalAdicionarAfiliados, stateOpenModalEditarAfiliados, stateOpenModalVerAfiliados } from "../../common/states/atom";
+import { stateAfiliadosInfoModal, stateAfiliadosInfoTable, stateOpenModalAdicionarAfiliados, stateOpenModalEditarAfiliados, stateOpenModalVerAfiliados } from "../../common/states/atom";
 import Modal from "../../components/Modal/Modal";
 import ModalAdicionarAfiliados from "./Modais/ModalAdicionarAfiliados/ModalAdicionarAfiliados";
 import ModalEditarAfiliados from "./Modais/ModalEditarAfiliados/ModalEditarAfiliados";
 import ModalVerAfiliados from "./Modais/ModalVerAfiliados/ModalVerAfiliados";
+import { fetchDados } from "../../common/http/http";
+import { useEffect } from "react";
 
 export default function Afiliados() {
   const [openModalAdicionarAfiliados, setOpenModalAdicionarAfiliados] = useRecoilState(stateOpenModalAdicionarAfiliados);
   const [openModalEditarAfiliados, setOpenModalEditarAfiliados] = useRecoilState(stateOpenModalEditarAfiliados);
   const [openModalVerAfiliados, setOpenModalVerAfiliados] = useRecoilState(stateOpenModalVerAfiliados);
+  const resetInputAfiliadosInfo = useResetRecoilState(stateAfiliadosInfoModal);
+  const setAfiliadosInfoTable =  useSetRecoilState(stateAfiliadosInfoTable);
 
   const handleOpenModalAdicionarAfiliados = () => {
     setOpenModalAdicionarAfiliados(!openModalAdicionarAfiliados)
-    // resetAfiliados();
+    resetInputAfiliadosInfo();
   } 
+
+  const obterDados = async () => {
+    const response = await fetchDados(`admin/dashboard/todos/afiliados/`);
+    setAfiliadosInfoTable(response.data);
+  };
+
+  useEffect(() => {
+    obterDados()
+  }, [])
 
   return (
     <section>
@@ -48,8 +62,6 @@ export default function Afiliados() {
       <Modal title="EDITAR AFILIADOS" openState={openModalEditarAfiliados} setOpenState={setOpenModalEditarAfiliados}>
         <ModalEditarAfiliados />
       </Modal>
-
-
     </section>
   )
 }

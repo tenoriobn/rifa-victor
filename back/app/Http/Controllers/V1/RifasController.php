@@ -560,10 +560,9 @@ class RifasController extends Controller
             $rifaPayDetails->qrCodeBase64 = $payment['payment'];
 
             RifaPay::addPix($rifaPay->id, $rifaPayDetails->pixId, $rifaPayDetails->qrCode,$rifaPayDetails->qrCodeBase64);
-
+        
             if($afiliadoId) {
-                $isBuyRifa =  $this->rifaService->calcularGanhoAfiliado($afiliadoId,$request );
-
+                $isBuyRifa =  $this->rifaService->calcularGanhoAfiliado($afiliadoId, $rifaPay );
             }
 
              return response()->json(["success" => true, "data" => $rifaPayDetails], 200);

@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Jobs\GenerateRifaNumbers;
 use App\Models\V1\RifaNumber;
+use App\Models\GanhoAfiliado;
 use Illuminate\Console\Command;
 use App\Services\PaymentService;
 use Exception;
@@ -34,6 +35,7 @@ class VerifyPayment extends Command
 
             if (!empty($cancelPayIds)) {
                 RifaNumber::cancelRifaNumber($cancelPayIds);
+                GanhoAfiliado::cancelPagamentoAfiliado($cancelPayIds);
                 $this->info('Pagamentos cancelados: ' . implode(', ', $cancelPayIds));
             }
             if (!empty($payMadeIds)) {

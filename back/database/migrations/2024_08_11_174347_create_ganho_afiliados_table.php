@@ -20,8 +20,10 @@ return new class extends Migration
             $table->unsignedBigInteger('rifas_id');
             $table->foreign("rifas_id")->references("id")->on("rifas");
             $table->tinyInteger('pago');
+            $table->bigInteger('rifa_pay_id');
             $table->timestamps();
             $table->foreign('afiliado_id')->references('id')->on('afiliados')->onDelete('cascade');
+            $table->foreign('rifa_pay_id')->references('id')->on('rifa_pays')->onDelete('cascade');
         });
     }
 

@@ -25,6 +25,7 @@ class PaymentService
 
         if (!empty($cancelPayIds)) {
             RifaPay::whereIn('id', $cancelPayIds)->update(['status' => 2, 'verify' => 1, 'qr_code' => null, 'qr_code_base64' => null]);
+            
         }
 
         if (!empty($payMadeIds)) {

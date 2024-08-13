@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\V1\Clients;
+use Illuminate\Support\Str;
+
 class Afiliado extends Model
 {
     use HasFactory;
@@ -54,7 +56,7 @@ class Afiliado extends Model
         do {
             $code = substr(str_shuffle(str_repeat('0123456789abcdefghijklmnopqrstuvwxyz', ceil(9 / 62))), 1,9);
         } while (self::where('link', $code)->exists());
-        $code = $client->name.'-'.$client->surname.'-'.$code;
+        $code = Str::slug($client->name).'-'.Str::slug($client->surname).'-'.$code;
 
         return $code;
     }

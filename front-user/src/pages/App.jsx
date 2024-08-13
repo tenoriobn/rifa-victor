@@ -27,7 +27,7 @@ export default function App() {
               <Route index element={<PaginaInicial />} />
               <Route path="produtos" element={<Produtos />} />
               <Route path="ganhadores" element={<Ganhadores />} />
-              <Route path=":slug/:id" element={<Rifa />} />
+              <Route path=":slug/:id/:affiliateId?" element={<Rifa />} />
               <Route path="cadastro" element={<Cadastro />} />
 
               <Route path="usuario" element={<ProtectedRoute element={<Usuario />} />}>

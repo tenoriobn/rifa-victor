@@ -220,20 +220,23 @@ class RifaService
         }
         return ['success' => true];
     }
-    public function calcularGanhoAfiliado($id, $rifa) {
-        $afiliado = Afiliado::where('id', $id)->first();
+    public function calcularGanhoAfiliado($link, $rifa) {
+        $afiliado = Afiliado::where('link', $link)->first();
 
         if(!$afiliado) {
             return false;
         }
         $comissao = $afiliado->porcent * $rifa->value;
-        GanhoAfiliado::create([
+  
+         GanhoAfiliado::create([
             'afiliado_id' => $afiliado->id ,
             'pedidos' => 1,
             'faturamento' => $rifa->value,
             'comissao' => $comissao,
-            'rifas_id' => $rifa->rifas_id
+            'rifas_id' => $rifa->rifas_id,
+            'rifa_pay_id' => $rifa->id,
         ]);
+
 
         return true;
 

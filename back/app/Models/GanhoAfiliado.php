@@ -16,6 +16,8 @@ class GanhoAfiliado extends Model
         'comissao',
         'rifas_id',
         'pago',
+        'rifa_pay_id',
+  
     ];
 
     public function afiliado()
@@ -35,5 +37,12 @@ class GanhoAfiliado extends Model
             'comissao' => 0.00,
             'pago' => 0,
         ]);
+    }
+    public static function cancelPagamentoAfiliado($rifaPayIds) {
+        foreach ($rifaPayIds as $id) {
+           $ganhoAfiliado = where('rifa_pay_id', $id)->first();
+           $ganhoAfiliado->delete();
+        }
+        return true;
     }
 }

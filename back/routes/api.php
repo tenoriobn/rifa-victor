@@ -129,7 +129,7 @@
     });
     Route::group(['prefix' => 'produtos'], function () {
         Route::get("/", [RifasController::class, "allRifas"])->name('all.rifas');
-        Route::get("/{slug}/{id}", [RifasController::class, "show"])->where(['slug' => '[a-zA-Z0-9\-_]+', 'id' => '[0-9]+'])->name('show.one.rifa');
+        Route::get("/{slug}/{id}/{afiliadoId?}", [RifasController::class, "show"])->where(['slug' => '[a-zA-Z0-9\-_]+', 'id' => '[0-9]+'])->name('show.one.rifa');
 
         Route::get("/todos/ganhadores", [RifasController::class, "getAllWinners"])->name('admin.pegar.ganhador');
 

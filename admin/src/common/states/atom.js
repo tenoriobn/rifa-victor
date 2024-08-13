@@ -417,5 +417,12 @@ export const stateOpenModalEditarAfiliados = atom({
 
 export const stateAfiliadosInfoModal = atom({
   key: 'stateAfiliadosInfoModal',
-  default: {},
+  default: {
+    type: "afiliado"
+  },
+});
+
+export const stateAfiliadosInfoTable = atom({
+  key: 'stateAfiliadosInfoTable',
+  default: [],
 });

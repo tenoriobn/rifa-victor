@@ -105,7 +105,7 @@ const linksData = [
   {
     id: "btn_afiliados",
     className: "button-godson",
-    to: "/dashboard/afiliados",
+    to: "/dashboard/afiliados/",
     iconClass: "ion-icon name='accessibility-sharp' role='img' class='md hydrated'",
     text: "Afiliados"
   }
@@ -122,7 +122,7 @@ export default function AcoesSorteioModal() {
           key={link.id}
           id={link.id}
           className={link.className}
-          to={link.id === "btn_afiliados" ? link.to : `${link.to}${idModalAcoesSorteio}`}
+          to={`${link.to}${idModalAcoesSorteio}`}
           onClick={() => setOpenModalAcoesSorteio(false)}
         >
           <i className={link.iconClass}></i> {link.text}

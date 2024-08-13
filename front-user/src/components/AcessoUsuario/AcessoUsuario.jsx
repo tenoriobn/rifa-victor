@@ -14,7 +14,7 @@ import { motion } from 'framer-motion';
 import { postDados } from '../../common/http/http';
 
 export default function AcessoUsuario() {
-  const { id } = useParams();
+  const { id, affiliateId } = useParams();
   const [finalizarPedido, setFinalizarPedido] = useRecoilState(estadoFinalizarPedido);
   const renderizaComponenteCadastro = useRecoilValue(estadoRenderizaComponenteCadastro);
   const [checkoutReq, setCheckoutReq] = useRecoilState(estadoCheckoutId);
@@ -34,6 +34,9 @@ export default function AcessoUsuario() {
 
   }, [id]);
 
+
+  console.log('affiliateId', affiliateId)
+
   useEffect(() => {
     if (usuario?.id && finalizarPedido) {
       const dadosParaEnviar = {
@@ -41,11 +44,12 @@ export default function AcessoUsuario() {
         client_id: usuario.id,
         qntd_number: valorRange,
         rifas_id: id,
+        ganho_afiliado: affiliateId,
       };
   
       const enviarDados = async () => {
         try {
-          const response = await postDados('produtos/comprar-rifa', dadosParaEnviar, true);
+          const response = await postDados(`produtos/comprar-rifa/${affiliateId}`, dadosParaEnviar, true);
 
           setQrCode([
             response.data.qrCode,

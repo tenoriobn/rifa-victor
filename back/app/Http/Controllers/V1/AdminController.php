@@ -1098,7 +1098,10 @@ class AdminController extends Controller
                 return response()->json(["success" => false, "msg" =>'Não tem nenhum afiliado no momento'], 500);
             }
             foreach ($afiliados as $afiliado) {
-                $afiliado->totalPedidos = $afiliado->ganhoAfiliado->count();
+                $afiliado->totalPedidos = $afiliado->ganhoAfiliado ? $afiliado->ganhoAfiliado->count() :  0;
+                $afiliado->faturamento = $afiliado->ganhoAfiliado ? $afiliado->ganhoAfiliado->sum('faturamento') :  0;
+                $afiliado->comissao = $afiliado->ganhoAfiliado ? $afiliado->ganhoAfiliado->sum('comissao') :  0;
+
             }
 
             return response()->json(["success" => true, "data" =>  $afiliados], 200);
@@ -1112,7 +1115,10 @@ class AdminController extends Controller
             if(!$afiliado) {
                 return response()->json(["success" => false, "msg" =>'Afiliado não existe'], 500);
             }
-            $afiliado->totalPedidos = $afiliado->ganhoAfiliado->count();
+            $afiliado->totalPedidos = $afiliado->ganhoAfiliado ? $afiliado->ganhoAfiliado->count() :  0;
+            $afiliado->faturamento = $afiliado->ganhoAfiliado ? $afiliado->ganhoAfiliado->sum('faturamento') :  0;
+            $afiliado->comissao = $afiliado->ganhoAfiliado ? $afiliado->ganhoAfiliado->sum('comissao') :  0;
+
             return response()->json(["success" => true, "data" =>  $afiliado], 200);
         } catch (\Throwable $e) {
             return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
@@ -1126,7 +1132,9 @@ class AdminController extends Controller
 
                 return response()->json(["success" => false, "msg" =>'Afiliado não existe'], 500);
             }
-            $afiliado->totalPedidos = $afiliado->ganhoAfiliado->count();
+            $afiliado->totalPedidos = $afiliado->ganhoAfiliado ? $afiliado->ganhoAfiliado->count() :  0;
+            $afiliado->faturamento = $afiliado->ganhoAfiliado ? $afiliado->ganhoAfiliado->sum('faturamento') :  0;
+            $afiliado->comissao = $afiliado->ganhoAfiliado ? $afiliado->ganhoAfiliado->sum('comissao') :  0;
 
             return response()->json(["success" => true, "data" =>  $afiliado], 200);
         } catch (\Throwable $e) {
