@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('cellphone')->unique();
             $table->string('link')->unique();
-            $table->decimal('porcent', 5, 2);
+            $table->integer('porcent');
             $table->string('type');
             $table->unsignedBigInteger('client_id');
             $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');

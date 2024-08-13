@@ -226,8 +226,8 @@ class RifaService
         if(!$afiliado) {
             return false;
         }
-        $comissao = $afiliado->porcent * $rifa->value;
-  
+        $comissao = ($afiliado->porcent / 100) * $rifa->value;
+
          GanhoAfiliado::create([
             'afiliado_id' => $afiliado->id ,
             'pedidos' => 1,

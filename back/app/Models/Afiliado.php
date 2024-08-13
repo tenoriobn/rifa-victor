@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 class Afiliado extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'cellphone',
         'link',
@@ -22,25 +23,34 @@ class Afiliado extends Model
     {
         return $this->belongsTo(Clients::class);
     }
+
     public function ganhoAfiliado()
     {
-        return $this->belongsTo(GanhoAfiliado::class, 'id', 'afiliado_id');
+        // Correção para refletir que um Afiliado pode ter muitos GanhoAfiliado
+        return $this->hasMany(GanhoAfiliado::class, 'afiliado_id');
     }
 
-    public static function findAfiliado($cellphone) {
-        $client = self::where('cellphone', $cellphone)->first();
-        return $client;
-    }
-    public static function findAllAfiliado($id) {
-        $client = self::with(['ganhoAfiliado', 'client'])->get();
-        return $client;
-    }
-    public static function findOneAfiliadoById($id) {
-        $client = self::where('id', $id)->first();
-        return $client;
+    public static function findAfiliado($cellphone)
+    {
+        return self::with(['ganhoAfiliado', 'client'])
+            ->where('cellphone', $cellphone)
+            ->first();
     }
 
-    public static function createAfiliado($data, $client){
+    public static function findAllAfiliado()
+    {
+        return self::with(['ganhoAfiliado', 'client'])->get();
+    }
+
+    public static function findOneAfiliadoById($id)
+    {
+        return self::with(['ganhoAfiliado', 'client'])
+            ->where('id', $id)
+            ->first();
+    }
+
+    public static function createAfiliado($data, $client)
+    {
         $link = self::createLinkAfiliado($data, $client);
 
         return self::create([

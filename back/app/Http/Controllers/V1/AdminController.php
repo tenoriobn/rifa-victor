@@ -12,6 +12,8 @@ use App\Models\V1\RifaNumber;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\User;
@@ -271,6 +273,52 @@ class AdminController extends Controller
             return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
         }
     }
+
+
+    public function filtroRifas(Request $request, $rifasId)
+    {
+        // Log dos dados recebidos para depuração
+
+        // Iniciar a consulta
+        $query = RifaPay::query()->where('rifas_id', $rifasId);
+
+        // Aplicar filtros baseados na solicitação
+        if ($request->has('startDate') && $request->input('startDate')) {
+            $query->where('created_at', '>=', $request->input('startDate'));
+        }
+        if ($request->has('endDate') && $request->input('endDate')) {
+            $query->where('created_at', '<=', $request->input('endDate'));
+        }
+        if ($request->has('qtdCotas') && is_numeric($request->input('qtdCotas'))) {
+            $query->where('qntd_number', '>=', (int) $request->input('qtdCotas'));
+        }
+
+        // Verificar o tipo e aplicar limite se necessário
+        $tipo = $request->input('tipo');
+        if ($tipo === 'TC') {
+            // Agrupar e somar por client_id
+            $result = $query->select('client_id', DB::raw('sum(qntd_number) as total_soma'))
+                ->groupBy('client_id')
+                ->get();
+        } else {
+            // Aplicar limite se a quantidade de sortear estiver presente
+            if ($request->has('qtdSortear') && is_numeric($request->input('qtdSortear'))) {
+                $query->limit((int) $request->input('qtdSortear'));
+            }
+            $result = $query->get();
+        }
+        dd($result);
+        // Retornar a resposta com os dados filtrados
+        return response()->json(['data' => $result]);
+    }
+
+
+
+
+
+
+
+
 
     public function getOnePedidos($idRifa, $idClient) {
         try {
@@ -1126,17 +1174,18 @@ class AdminController extends Controller
     }
     public function getOneAfiliadoByProduto($id, $idProduto){
         try {
-            $afiliado = GanhoAfiliado::findOneAfiliadoByProduto($id, $idProduto);
+            $ganhoAfiliado = GanhoAfiliado::findOneAfiliadoByProduto($id, $idProduto);
 
-            if(!$afiliado->count() > 0) {
+            if(!$ganhoAfiliado->count() > 0) {
 
                 return response()->json(["success" => false, "msg" =>'Afiliado não existe'], 500);
             }
-            $afiliado->totalPedidos = $afiliado->ganhoAfiliado ? $afiliado->ganhoAfiliado->count() :  0;
-            $afiliado->faturamento = $afiliado->ganhoAfiliado ? $afiliado->ganhoAfiliado->sum('faturamento') :  0;
-            $afiliado->comissao = $afiliado->ganhoAfiliado ? $afiliado->ganhoAfiliado->sum('comissao') :  0;
 
-            return response()->json(["success" => true, "data" =>  $afiliado], 200);
+            $ganhoAfiliado->totalPedidos = $ganhoAfiliado->count() ??   0;
+            $ganhoAfiliado->faturamento = $ganhoAfiliado->sum('faturamento') ??   0;
+            $ganhoAfiliado->comissao = $ganhoAfiliado->sum('comissao') ??   0;
+
+            return response()->json(["success" => true, "data" =>  $ganhoAfiliado], 200);
         } catch (\Throwable $e) {
             return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
         }
@@ -1148,7 +1197,15 @@ class AdminController extends Controller
             if(!$afiliado) {
                 return response()->json(["success" => false, "msg" =>'Afiliado não existe'], 500);
             }
-           dd($afiliado );;
+            if ($request->link != $afiliado->link && Afiliado::where('link', $request->link)->exists()) {
+                return response()->json(["success" => false, "msg" =>'Esse link ja esta cadastrado'], 500);
+            }
+
+            $afiliado->update([
+                'porcent' => $request->porcent,
+                'link' => $request->link,
+            ]);
+
 
             return response()->json(["success" => true, "data" =>  $afiliado], 200);
         } catch (\Throwable $e) {

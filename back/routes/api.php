@@ -84,6 +84,7 @@
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/consulta-cota/{id}", [AdminController::class, "consultaCota"])->name('admin.adicionar.bilhete.premiado');
 
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/pedidos", [AdminController::class, "getPedidos"])->name('admin.pedidos');
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post('/dashboard/rifas/{rifas_id}/filtro', [AdminController::class, 'filtroRifas'])->name('admin.filtro.rifas');
 
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/pedidos/filtro", [AdminController::class, "getPedidosFiltro"])->name('admin.pedidos');
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/pedido/{idRifa}/{idClient}", [AdminController::class, "getOnePedidos"])->name('admin.one.pedidos');

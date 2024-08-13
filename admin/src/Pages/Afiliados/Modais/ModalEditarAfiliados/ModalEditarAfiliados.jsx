@@ -70,6 +70,7 @@ export default function ModalEditarAfiliados() {
         <PatternFormat
           format="(##) #####-####"
           type="text"
+          disabled
           name="cellphone"
           onChange={(e) => setAfiliadosInfo({ ...afiliadosInfo, cellphone: e.target.value })} 
           value={afiliadosInfo.cellphone || ''}
@@ -78,28 +79,50 @@ export default function ModalEditarAfiliados() {
       </label>
 
       <label htmlFor="porcentagem">
-        Porcentagem
+  Porcentagem
 
-        <NumericFormat
-          type="text"
-          className="tax"
-          name="service_charge"
-          id="tax"
-          suffix="%"
-          decimalSeparator=","
-          thousandSeparator="."
-          fixedDecimalScale
-          allowNegative={false}
-          onValueChange={(values) => setAfiliadosInfo((prevPacote) => ({...prevPacote, porcent: values.floatValue} ))}
-          value={afiliadosInfo.porcent || ''}
-        />
+  <NumericFormat
+    type="text"
+    className="tax"
+    name="service_charge"
+    id="tax"
+    suffix="%"
+    decimalSeparator=","
+    thousandSeparator="."
+    fixedDecimalScale={false}  
+    allowNegative={false}
+    isAllowed={(values) => {
+      const { floatValue } = values;
+      return floatValue === undefined || (floatValue <= 100 && Number.isInteger(floatValue));
+    }}
+    onValueChange={(values) => {
+      const { floatValue } = values;
+      setAfiliadosInfo((prevPacote) => ({
+        ...prevPacote,
+        porcent: floatValue ? Math.round(floatValue) : '',
+      }));
+    }}
+    value={afiliadosInfo.porcent || ''}
+  />
+</label>
+
+
+      <label htmlFor="link_afiliado">
+        Link Afiliado
+        <input 
+          id="link_afiliado" 
+          name="type"
+          onChange={(e) => setAfiliadosInfo({ ...afiliadosInfo, link: e.target.value })} 
+          value={afiliadosInfo.link || ''}
+        >
+        </input>
       </label>
-
       <label htmlFor="frm_add_most_popular">
         Mais Popular
         <select 
           id="frm_add_most_popular" 
           name="type"
+          disabled
           onChange={(e) => setAfiliadosInfo({ ...afiliadosInfo, type: e.target.value })} 
           value={afiliadosInfo.type || ''}
         >
