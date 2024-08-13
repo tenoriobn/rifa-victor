@@ -1,7 +1,10 @@
 import styled from "styled-components";
 import Datepicker from "react-tailwindcss-datepicker";
 import { useState } from "react";
-import estados from "./options.json"
+import { postDados } from "../../../../common/http/http";
+import { useParams } from "react-router-dom";
+import { stateConsultaCota } from "../../../../common/states/atom";
+import { useSetRecoilState } from "recoil";
 
 const Form = styled.form`
   display: flex;
@@ -26,6 +29,10 @@ const Form = styled.form`
     background: 0 0;
     border: 1px solid #275680;
     box-sizing: border-box;
+
+    &::-webkit-calendar-picker-indicator {
+      filter: invert(1);
+    }
   }
 
   input[type="number"]::-webkit-inner-spin-button,
@@ -71,13 +78,17 @@ const Form = styled.form`
 
 export default function SorteioSearchForm() {
   const [orderFilter, setOrderFilter] = useState({});
+  const setConsultaCota = useSetRecoilState(stateConsultaCota);
+  const { id } = useParams();
 
   const formatDateTime = (date, time) => {
     if (date && time) {
-      return new Date(`${date}T${time}:00`).toISOString();
+      // Format date and time into 'YYYY-MM-DD HH:MM:SS'
+      return `${date} ${time}:00`;
     }
-    return date;
+    return null;
   };
+
   const handleDateChange = (newValue) => {
     setOrderFilter(prevState => ({
       ...prevState,
@@ -106,8 +117,18 @@ export default function SorteioSearchForm() {
     }));
   };
 
+  const handleSubmit = async (e) => {
+    if (e) e.preventDefault();
+    try {
+      const response = await postDados(`admin/dashboard/rifas/${id}/filtro`, orderFilter);
+      setConsultaCota(response.data)
+    } catch (error) {
+      console.error("There was an error fetching the data!", error);
+    }
+  };
+
   return (
-    <Form method="POST" action="/dashboard/rifas/cotas/174">
+    <Form method="POST" onSubmit={handleSubmit}>
       <div className="filter-item filter-item__time">
         <label htmlFor="start_time">Início:</label>
         <input 
@@ -184,20 +205,6 @@ export default function SorteioSearchForm() {
           <option value="">SELECIONE</option>
           <option value="PP">Por Pedido</option>
           <option value="TC">Soma dos Pedidos</option>
-        </select>
-      </div>
-
-      <div className="filter-item">
-        <label htmlFor="state">Estado:</label>
-        <select id="state" name="state"
-          onChange={(e) => setOrderFilter({ ...orderFilter, estado: e.target.value })}
-          value={orderFilter.estado || ''}
-        >
-          <option value="">SELECIONE</option>
-
-          {estados.map((estado, index) => (
-            <option key={index} value={estado}>{estado}</option>
-          ))}
         </select>
       </div>
 

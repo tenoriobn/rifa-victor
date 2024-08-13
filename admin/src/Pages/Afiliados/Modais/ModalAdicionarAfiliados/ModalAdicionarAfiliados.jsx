@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { NumericFormat, PatternFormat } from "react-number-format";
 import styled from "styled-components";
@@ -61,7 +62,7 @@ const Form = styled.form`
   }
 `;
 
-export default function ModalAdicionarAfiliados() {
+export default function ModalAdicionarAfiliados({setAtualizaTabela}) {
   const [afiliadosInfo, setAfiliadosInfo] = useRecoilState(stateAfiliadosInfoModal);
   const setOpenModalAdicionarAfiliados = useSetRecoilState(stateOpenModalAdicionarAfiliados);
 
@@ -71,7 +72,7 @@ export default function ModalAdicionarAfiliados() {
     try {
       const response = await postDados("admin/dashboard/afiliado/create", afiliadosInfo);
       console.log('response', response)
-
+      setAtualizaTabela(true);
       setOpenModalAdicionarAfiliados(false);
 
     } catch (error) {

@@ -1,6 +1,8 @@
 import { useState } from "react";
-import Datepicker from "react-tailwindcss-datepicker";
-import styled from "styled-components";
+import { PatternFormat } from "react-number-format";
+import { useSetRecoilState } from "recoil";import styled from "styled-components";
+import { stateAfiliadosInfoTable } from "../../../common/states/atom";
+import { postDados } from "../../../common/http/http";
 
 const Form = styled.form`
   display: flex;
@@ -54,111 +56,44 @@ const Form = styled.form`
 `;
 
 export default function AfiliadosForm() {
-  const [orderFilter, setOrderFilter] = useState({});
-  // const [tabelaAfiliadosInfo, setTabelaAfiliadosInfo] = useRecoilState(stateTabelaAfiliadoInfo);
+  const [filtro, setFiltro] = useState({});
+  const setAfiliadosInfoTable =  useSetRecoilState(stateAfiliadosInfoTable);
 
-  console.log('data', orderFilter)
-
-  // const handleSubmit = async (e) => {
-  //   if (e) e.preventDefault();
-  //   try {
-  //     const response = await postDados('/admin/dashboard/ rota aqui', orderFilter);
-  //     setTabelaPacotesInfo(response);
-  //   } catch (error) {
-  //     console.error("There was an error fetching the data!", error);
-  //   }
-  // };
-
-  // console.log(tabelaAfiliadosInfo)
-
-
-  const formatDateTime = (date, time) => {
-    if (date && time) {
-      return new Date(`${date}T${time}:00`).toISOString();
+  const handleSubmit = async (e) => {
+    if (e) e.preventDefault();
+    try {
+      const response = await postDados('/admin/dashboard/afiliado/filtro', filtro);
+      setAfiliadosInfoTable(response.data)
+    } catch (error) {
+      console.error("There was an error fetching the data!", error);
     }
-    return date;
-  };
-  const handleDateChange = (newValue) => {
-    setOrderFilter(prevState => ({
-      ...prevState,
-      startDateCalendar: newValue.startDate,
-      endDateCalendar: newValue.endDate,
-      startDate: formatDateTime(newValue.startDate, prevState.startTime || '00:00'),
-      endDate: formatDateTime(newValue.endDate, prevState.endTime || '23:59')
-    }));
-  };
-
-  const handleStartTimeChange = (e) => {
-    const startTime = e.target.value;
-    setOrderFilter(prevState => ({
-      ...prevState,
-      startTime,
-      startDate: formatDateTime(prevState.startDateCalendar, startTime)
-    }));
-  };
-
-  const handleEndTimeChange = (e) => {
-    const endTime = e.target.value;
-    setOrderFilter(prevState => ({
-      ...prevState,
-      endTime,
-      endDate: formatDateTime(prevState.endDateCalendar, endTime)
-    }));
   };
 
   return (
-    // onSubmit={handleSubmit}
-
-    <Form>
-      <div className="filter-item filter-item__time">
-        <label htmlFor="start_time">Início:</label>
-        <input 
-          type="time" 
-          id="start_time" 
-          className="time"
-          value={orderFilter.startTime || '00:00'} 
-          onChange={handleStartTimeChange} 
-          onFocus={(e) => e.target.showPicker()} 
+        // onSubmit={handleSubmit}
+    <Form onSubmit={handleSubmit} method="POST">
+      <div className="filter-item">
+        <label htmlFor="name">Nome:</label>
+        <input
+          type="text"
+          name="name"
+          placeholder="Pesquise pelo nome"
+          onChange={(e) => setFiltro({ ...filtro, name: e.target.value })} 
+          value={filtro.name || ''}
+          autoComplete="off"
         />
       </div>
 
       <div className="filter-item">
-        <label htmlFor="init_date">Data:</label>
-        {/* <input type="text" name="datetimes" /> */}
-
-        <Datepicker 
-          toggleClassName="hidden"
-          i18n={"pt-br"} 
-          displayFormat={"DD/MM/YYYY"}
-          showFooter={true} 
-          value={orderFilter} 
-          onChange={handleDateChange}
-          configs={{
-              shortcuts: {
-              today: "Hoje", 
-              yesterday: "Ontem", 
-              past: period => `Ultimos ${period} Dias`, 
-              currentMonth: "Mês Atual", 
-              pastMonth: "Mês Anterior" 
-            },
-              footer: {
-              cancel: "Cancelar", 
-              apply: "Aplicar" 
-            }
-          }} 
-        /> 
-      </div>
-
-      <div className="filter-item filter-item__time">
-        <label htmlFor="end_time">Término:</label>
-        <input 
-          type="time" 
-          id="end_time" 
-          className="time"
-          value={orderFilter.endTime || '23:59'} 
-          onChange={handleEndTimeChange} 
-          onFocus={(e) => e.target.showPicker()} 
-          onClick={(e) => e.target.showPicker()} 
+        <label htmlFor="cellphone">Telefone:</label>
+        <PatternFormat
+          format="(##) #####-####"
+          type="text"
+          name="cellphone"
+          placeholder="Pesquise pelo telefone"
+          onChange={(e) => setFiltro({ ...filtro, cellphone: e.target.value })} 
+          value={filtro.cellphone || ''}
+          autoComplete="off"
         />
       </div>
 
@@ -166,5 +101,5 @@ export default function AfiliadosForm() {
         <i className="fas fa-search"></i> Filtrar
       </button>
     </Form>
-  )
+  );
 }

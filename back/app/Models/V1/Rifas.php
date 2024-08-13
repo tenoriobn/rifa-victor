@@ -117,7 +117,7 @@ class Rifas extends Model
     }
 
     public static function findRifa($id) {
-        return self::with(['cota'])->where('id',$id)->first();
+        return self::with(['cota', 'rifaImage'])->where('id',$id)->first();
     }
 
     public static function getAllRifasActivas() {

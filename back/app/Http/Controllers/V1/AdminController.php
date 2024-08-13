@@ -277,39 +277,40 @@ class AdminController extends Controller
 
     public function filtroRifas(Request $request, $rifasId)
     {
-        // Log dos dados recebidos para depuração
-
-        // Iniciar a consulta
-        $query = RifaPay::query()->where('rifas_id', $rifasId);
-
-        // Aplicar filtros baseados na solicitação
-        if ($request->has('startDate') && $request->input('startDate')) {
-            $query->where('created_at', '>=', $request->input('startDate'));
-        }
-        if ($request->has('endDate') && $request->input('endDate')) {
-            $query->where('created_at', '<=', $request->input('endDate'));
-        }
-        if ($request->has('qtdCotas') && is_numeric($request->input('qtdCotas'))) {
-            $query->where('qntd_number', '>=', (int) $request->input('qtdCotas'));
-        }
-
-        // Verificar o tipo e aplicar limite se necessário
-        $tipo = $request->input('tipo');
-        if ($tipo === 'TC') {
-            // Agrupar e somar por client_id
-            $result = $query->select('client_id', DB::raw('sum(qntd_number) as total_soma'))
-                ->groupBy('client_id')
-                ->get();
-        } else {
-            // Aplicar limite se a quantidade de sortear estiver presente
-            if ($request->has('qtdSortear') && is_numeric($request->input('qtdSortear'))) {
-                $query->limit((int) $request->input('qtdSortear'));
+        try {
+            $query = RifaPay::query()->where('rifas_id', $rifasId)->with(['rifa', 'client']);
+            $rifa = Rifas::findRifa($rifasId);
+            // Aplicar filtros baseados na solicitação
+            if ($request->has('startDate') && $request->input('startDate')) {
+                $query->where('created_at', '>=', $request->input('startDate'));
             }
-            $result = $query->get();
+            if ($request->has('endDate') && $request->input('endDate')) {
+                $query->where('created_at', '<=', $request->input('endDate'));
+            }
+            if ($request->has('qtdCotas') && is_numeric($request->input('qtdCotas'))) {
+                $query->where('qntd_number', '>=', (int) $request->input('qtdCotas'));
+            }
+
+            // Verificar o tipo e aplicar limite se necessário
+            $tipo = $request->input('tipo');
+            if ($tipo === 'TC') {
+                // Agrupar e somar por client_id
+                $result = $query->select('rifas_id', 'created_at', 'client_id', DB::raw('sum(qntd_number) as qntd_number'))
+                    ->groupBy('client_id')
+                    ->get();
+            } else {
+                // Aplicar limite se a quantidade de sortear estiver presente
+                if ($request->has('qtdSortear') && is_numeric($request->input('qtdSortear'))) {
+                    $query->limit((int) $request->input('qtdSortear'));
+                }
+                $result = $query->get();
+            }
+            // Retornar a resposta com os dados filtrados
+            return response()->json(['data' => $result, 'rifa' => $rifa]);
+        } catch (\Throwable $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
         }
-        dd($result);
-        // Retornar a resposta com os dados filtrados
-        return response()->json(['data' => $result]);
+        
     }
 
 
@@ -1172,24 +1173,32 @@ class AdminController extends Controller
             return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
         }
     }
-    public function getOneAfiliadoByProduto($id, $idProduto){
+    public function getOneAfiliadoByProduto($idProduto) {
         try {
-            $ganhoAfiliado = GanhoAfiliado::findOneAfiliadoByProduto($id, $idProduto);
-
-            if(!$ganhoAfiliado->count() > 0) {
-
-                return response()->json(["success" => false, "msg" =>'Afiliado não existe'], 500);
+            // Busca o afiliado que tenha ganho afiliado com o produto específico
+            $afiliados = Afiliado::with(['client', 'ganhoAfiliado' => function($query) use ($idProduto) {
+                $query->where('rifas_id', $idProduto);
+            }])->get();
+    
+            if ($afiliados->isEmpty()) {
+                return response()->json(["success" => false, "msg" => 'Afiliado não existe'], 500);
             }
+            foreach ($afiliados as $afiliado) {
+                $afiliado->totalPedidos = $afiliado->ganhoAfiliado ? $afiliado->ganhoAfiliado->count() :  0;
+                $afiliado->faturamento = $afiliado->ganhoAfiliado ? $afiliado->ganhoAfiliado->sum('faturamento') :  0;
+                $afiliado->comissao = $afiliado->ganhoAfiliado ? $afiliado->ganhoAfiliado->sum('comissao') :  0;
 
-            $ganhoAfiliado->totalPedidos = $ganhoAfiliado->count() ??   0;
-            $ganhoAfiliado->faturamento = $ganhoAfiliado->sum('faturamento') ??   0;
-            $ganhoAfiliado->comissao = $ganhoAfiliado->sum('comissao') ??   0;
-
-            return response()->json(["success" => true, "data" =>  $ganhoAfiliado], 200);
+            }
+    
+          
+             
+            return response()->json(["success" => true, "data" => $afiliados], 200);
         } catch (\Throwable $e) {
             return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
         }
     }
+    
+    
     public function afiliadoUpdate(Request $request, $id){
         try {
             $afiliado = Afiliado::findOneAfiliadoById($id);
@@ -1212,4 +1221,54 @@ class AdminController extends Controller
             return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
         }
     }
+
+    public function afiliadoFiltro(Request $request) {
+        try {
+            // Inicializa a consulta usando o modelo Afiliado
+            $query = Afiliado::query();
+    
+            // Filtro pelo nome
+            if ($request->has('name')) {
+                $name = $request->input('name');
+                $nameParts = explode(' ', $name);
+    
+                // Adiciona condição para filtro pelo nome e sobrenome
+                $query->whereHas('client', function ($q) use ($nameParts) {
+                    if (count($nameParts) > 1) {
+                        $q->where('name', 'like', '%' . $nameParts[0] . '%')
+                          ->where('surname', 'like', '%' . $nameParts[1] . '%');
+                    } else {
+                        $q->where('name', 'like', '%' . $nameParts[0] . '%');
+                    }
+                });
+            }
+    
+            // Filtro pelo celular
+            if ($request->has('cellphone')) {
+                $query->where('cellphone', 'like', '%' . $request->input('cellphone') . '%');
+            }
+    
+            // Obtém os resultados da consulta
+            $afiliados = $query->with(['ganhoAfiliado', 'client'])->get();
+    
+            // Verifica se a consulta retornou algum resultado
+            if ($afiliados->isEmpty()) {
+                return response()->json(["success" => false, "msg" => "Clientes não encontrados"], 404);
+            }
+    
+            // Processa os afiliados para adicionar informações adicionais
+            foreach ($afiliados as $afiliado) {
+                $afiliado->totalPedidos = $afiliado->ganhoAfiliado ? $afiliado->ganhoAfiliado->count() :  0;
+                $afiliado->faturamento = $afiliado->ganhoAfiliado ? $afiliado->ganhoAfiliado->sum('faturamento') :  0;
+                $afiliado->comissao = $afiliado->ganhoAfiliado ? $afiliado->ganhoAfiliado->sum('comissao') :  0;
+            }
+    
+            // Retorna os resultados
+            return response()->json(["success" => true, "data" => $afiliados], 200);
+        } catch (\Throwable $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
+        }
+    }
+    
+    
 }

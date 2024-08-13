@@ -382,7 +382,7 @@ export const stateUpsellInfoTable = atom({
 
 export const stateConsultaCota = atom({
   key: 'stateConsultaCota',
-  default: {},
+  default: [],
 })
 
 export const stateAtualizaTableConsultaCota = atom({

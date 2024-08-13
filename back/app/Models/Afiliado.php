@@ -29,6 +29,11 @@ class Afiliado extends Model
         // Correção para refletir que um Afiliado pode ter muitos GanhoAfiliado
         return $this->hasMany(GanhoAfiliado::class, 'afiliado_id');
     }
+    public function ganhoAfiliadoOne()
+    {
+        // Correção para refletir que um Afiliado pode ter muitos GanhoAfiliado
+        return $this->hasOne(GanhoAfiliado::class, 'afiliado_id');
+    }
 
     public static function findAfiliado($cellphone)
     {

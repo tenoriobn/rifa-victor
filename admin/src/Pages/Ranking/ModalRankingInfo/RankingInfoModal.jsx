@@ -30,7 +30,7 @@ export default function ModalRankingInfo() {
 
   return (
     <ClientInfoModalContainer>
-      <label><b>Name</b></label>
+      <label><b>Nome</b></label>
       <p>{rankingInfoModal?.client?.name} {rankingInfoModal?.client?.surname}</p>
       <p>&nbsp;</p>
       <label>

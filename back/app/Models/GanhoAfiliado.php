@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use App\Models\V1\RifaPay;
 class GanhoAfiliado extends Model
 {
     use HasFactory;
@@ -24,9 +24,13 @@ class GanhoAfiliado extends Model
     {
         return $this->belongsTo(Afiliado::class);
     }
+    public function rifaPay()
+    {
+        return $this->belongsTo(RifaPay::class);
+    }
 
-    public static function findOneAfiliadoByProduto($id, $idProduto) {
-        return self::with(['afiliado.client'])->where('afiliado_id', $id)->where('rifas_id',  $idProduto)->get();
+    public static function findOneAfiliadoByProduto($idProduto) {
+        return self::with(['afiliado.client'])->where('rifas_id',  $idProduto)->get();
     }
 
     public static function createGanhoAfiliado($idAfiliado) {
@@ -41,7 +45,10 @@ class GanhoAfiliado extends Model
     public static function cancelPagamentoAfiliado($rifaPayIds) {
         foreach ($rifaPayIds as $id) {
            $ganhoAfiliado = self::where('rifa_pay_id', $id)->first();
-           $ganhoAfiliado->delete();
+           if($ganhoAfiliado) {
+            $ganhoAfiliado->delete();
+           }
+     
         }
         return true;
     }

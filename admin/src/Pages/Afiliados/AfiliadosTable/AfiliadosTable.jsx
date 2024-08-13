@@ -1,6 +1,9 @@
+/* eslint-disable react/prop-types */
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { stateAfiliadosInfoModal, stateAfiliadosInfoTable, stateIdModal, stateOpenModalEditarAfiliados, stateOpenModalVerAfiliados } from "../../../common/states/atom";
+import useFormatPercentage from "../../../common/states/Hook/useFormatPercentage";
+import useCurrencyFormatTable from "../../../common/states/Hook/useCurrencyFormatTable/useCurrencyFormatTable";
 
 const Table = styled.table`
   width: 100%;
@@ -116,12 +119,14 @@ const Table = styled.table`
   }
 `;
 
-export default function AfiliadosTable() {
+export default function AfiliadosTable({ocultarBotao}) {
   const setOpenModalEditarAfiliados = useSetRecoilState(stateOpenModalEditarAfiliados);
   const [openModalVerAfiliados, setOpenModalVerAfiliados] = useRecoilState(stateOpenModalVerAfiliados);
   const setAfiliadosInfo = useSetRecoilState(stateAfiliadosInfoModal);
   const setIdModal = useSetRecoilState(stateIdModal);
   const afiliadosInfoTable =  useRecoilValue(stateAfiliadosInfoTable);
+  const { formatPercentage } = useFormatPercentage();
+  const { formatCurrency } = useCurrencyFormatTable();
 
   console.log('afiliadosInfoTable', afiliadosInfoTable)
 
@@ -135,41 +140,6 @@ export default function AfiliadosTable() {
     setIdModal(afiliado.id)
     setAfiliadosInfo(afiliado);
   }
-
-
-  // const afiliados = [
-  //   {
-  //     id: 75,
-  //     name: 'Jessica',
-  //     porcent: '15,00%',
-  //     cellphone: '(43) 99672-6935',
-  //     type: 'Afiliado',
-  //     pedidos: 188,
-  //     faturamento: 'R$ 4.361,53',
-  //     comissao: 'R$ 654,23'
-  //   },
-  //   {
-  //     id: 76,
-  //     name: 'Carlos',
-  //     porcent: '10,00%',
-  //     cellphone: '(11) 98765-4321',
-  //     type: 'Afiliado',
-  //     pedidos: 250,
-  //     faturamento: 'R$ 7.200,00',
-  //     comissao: 'R$ 720,00'
-  //   },
-  //   {
-  //     id: 77,
-  //     name: 'Ana',
-  //     porcent: '12,00%',
-  //     cellphone: '(21) 91234-5678',
-  //     type: 'Afiliado',
-  //     pedidos: 300,
-  //     faturamento: 'R$ 8.400,00',
-  //     comissao: 'R$ 1.008,00'
-  //   },
-  // ];
-
 
   return (
     <Table>
@@ -193,12 +163,12 @@ export default function AfiliadosTable() {
             <td>#{index + 1}</td>
             <td>{afiliado?.id}</td>
             <td>{afiliado?.client?.name} {afiliado?.client?.surname}</td>
-            <td>{afiliado?.porcent}</td>
+            <td>{formatPercentage(afiliado?.porcent)}</td>
             <td>{afiliado?.cellphone}</td>
             <td><span className="status-tag status-inconsistente">{afiliado?.type}</span></td>
             <td>{afiliado?.totalPedidos}</td>
-            <td>{afiliado?.faturamento}</td>
-            <td>{afiliado?.comissao}</td>
+            <td>{formatCurrency(afiliado?.faturamento)}</td>
+            <td>{formatCurrency(afiliado?.comissao)}</td>
             <td>
               <div className="button-group">
                 <button
@@ -207,9 +177,11 @@ export default function AfiliadosTable() {
                 >
                   <i className="fas fa-eye"></i> VER
                 </button>
-                <a className="button-edit" onClick={() => handleEditar(afiliado)}>
-                  <i className="fas fa-edit"></i> Editar
-                </a>
+                { ocultarBotao === true ? '' :
+                  <a className="button-edit" onClick={() => handleEditar(afiliado)}>
+                    <i className="fas fa-edit"></i> Editar
+                  </a>
+                }
               </div>
             </td>
           </tr>

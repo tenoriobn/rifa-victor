@@ -11,7 +11,7 @@ import ModalAdicionarAfiliados from "./Modais/ModalAdicionarAfiliados/ModalAdici
 import ModalEditarAfiliados from "./Modais/ModalEditarAfiliados/ModalEditarAfiliados";
 import ModalVerAfiliados from "./Modais/ModalVerAfiliados/ModalVerAfiliados";
 import { fetchDados } from "../../common/http/http";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function Afiliados() {
   const [openModalAdicionarAfiliados, setOpenModalAdicionarAfiliados] = useRecoilState(stateOpenModalAdicionarAfiliados);
@@ -19,6 +19,7 @@ export default function Afiliados() {
   const [openModalVerAfiliados, setOpenModalVerAfiliados] = useRecoilState(stateOpenModalVerAfiliados);
   const resetInputAfiliadosInfo = useResetRecoilState(stateAfiliadosInfoModal);
   const setAfiliadosInfoTable =  useSetRecoilState(stateAfiliadosInfoTable);
+  const [atualizaTabela, setAtualizaTabela] = useState(false);
 
   const handleOpenModalAdicionarAfiliados = () => {
     setOpenModalAdicionarAfiliados(!openModalAdicionarAfiliados)
@@ -32,7 +33,14 @@ export default function Afiliados() {
 
   useEffect(() => {
     obterDados()
-  }, [])
+  }, []);
+
+  useEffect(() => {
+    if(atualizaTabela) {
+      obterDados();
+      setAtualizaTabela(false)
+    }
+  }, [atualizaTabela]);
 
   return (
     <section>
@@ -52,7 +60,7 @@ export default function Afiliados() {
       </Main>
 
       <Modal title="ADICIONAR AFILIADOS" openState={openModalAdicionarAfiliados} setOpenState={setOpenModalAdicionarAfiliados}>
-        <ModalAdicionarAfiliados />
+        <ModalAdicionarAfiliados setAtualizaTabela={setAtualizaTabela} />
       </Modal>
 
       <Modal title="VER AFILIADOS" openState={openModalVerAfiliados} setOpenState={setOpenModalVerAfiliados}>
@@ -60,7 +68,7 @@ export default function Afiliados() {
       </Modal>
 
       <Modal title="EDITAR AFILIADOS" openState={openModalEditarAfiliados} setOpenState={setOpenModalEditarAfiliados}>
-        <ModalEditarAfiliados />
+        <ModalEditarAfiliados setAtualizaTabela={setAtualizaTabela} />
       </Modal>
     </section>
   )

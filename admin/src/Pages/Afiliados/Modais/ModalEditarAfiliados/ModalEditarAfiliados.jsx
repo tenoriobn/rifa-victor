@@ -1,8 +1,10 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { NumericFormat, PatternFormat } from "react-number-format";
 import styled from "styled-components";
-import { stateAfiliadosInfoModal } from "../../../../common/states/atom";
-import { useRecoilState } from "recoil";
+import { stateAfiliadosInfoModal, stateOpenModalEditarAfiliados, stateUserLogin } from "../../../../common/states/atom";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { putDados } from "../../../../common/http/http";
 
 const Form = styled.form`
   font-size: .9rem;
@@ -60,11 +62,29 @@ const Form = styled.form`
   }
 `;
 
-export default function ModalEditarAfiliados() {
+export default function ModalEditarAfiliados({setAtualizaTabela}) {
   const [afiliadosInfo, setAfiliadosInfo] = useRecoilState(stateAfiliadosInfoModal);
+  const userLogin = useRecoilValue(stateUserLogin);  
+  const setOpenModalEditarAfiliados = useSetRecoilState(stateOpenModalEditarAfiliados);
+
+  console.log('afiliadosInfo', afiliadosInfo)
+
+  const handleSaveChanges = async (event) => {
+    event.preventDefault();
+
+    try {
+      const response = await putDados(`admin/dashboard/afiliado/update/${afiliadosInfo.id}`, afiliadosInfo, userLogin);
+      console.log('response', response)
+      setAtualizaTabela(true);
+      setOpenModalEditarAfiliados(false);
+
+    } catch (error) {
+      console.error("Erro ao enviar dados:", error);
+    }
+  };
 
   return (
-    <Form id="frmAddPack">
+    <Form id="frmAddPack" onSubmit={handleSaveChanges}>
       <label htmlFor="frm_add_price">
         Telefone do Afiliado
         <PatternFormat
@@ -79,32 +99,32 @@ export default function ModalEditarAfiliados() {
       </label>
 
       <label htmlFor="porcentagem">
-  Porcentagem
+        Porcentagem
 
-  <NumericFormat
-    type="text"
-    className="tax"
-    name="service_charge"
-    id="tax"
-    suffix="%"
-    decimalSeparator=","
-    thousandSeparator="."
-    fixedDecimalScale={false}  
-    allowNegative={false}
-    isAllowed={(values) => {
-      const { floatValue } = values;
-      return floatValue === undefined || (floatValue <= 100 && Number.isInteger(floatValue));
-    }}
-    onValueChange={(values) => {
-      const { floatValue } = values;
-      setAfiliadosInfo((prevPacote) => ({
-        ...prevPacote,
-        porcent: floatValue ? Math.round(floatValue) : '',
-      }));
-    }}
-    value={afiliadosInfo.porcent || ''}
-  />
-</label>
+        <NumericFormat
+          type="text"
+          className="tax"
+          name="service_charge"
+          id="tax"
+          suffix="%"
+          decimalSeparator=","
+          thousandSeparator="."
+          fixedDecimalScale={false}  
+          allowNegative={false}
+          isAllowed={(values) => {
+            const { floatValue } = values;
+            return floatValue === undefined || (floatValue <= 100 && Number.isInteger(floatValue));
+          }}
+          onValueChange={(values) => {
+            const { floatValue } = values;
+            setAfiliadosInfo((prevPacote) => ({
+              ...prevPacote,
+              porcent: floatValue ? Math.round(floatValue) : '',
+            }));
+          }}
+          value={afiliadosInfo.porcent || ''}
+        />
+      </label>
 
 
       <label htmlFor="link_afiliado">
@@ -117,6 +137,7 @@ export default function ModalEditarAfiliados() {
         >
         </input>
       </label>
+
       <label htmlFor="frm_add_most_popular">
         Mais Popular
         <select 

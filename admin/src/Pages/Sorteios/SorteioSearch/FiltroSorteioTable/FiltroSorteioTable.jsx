@@ -100,9 +100,10 @@ export default function FiltroSorteioTable() {
   const consultaCota = useRecoilValue(stateConsultaCota);
   const { formattedDate } = useFormattedDate();
 
-  const infoCota = consultaCota.data?.data;
-  const numeroVencedor = consultaCota.search;
+  console.log('consultaCota table: ', consultaCota);
 
+  const infoCota = Array.isArray(consultaCota) ? consultaCota : [];
+  
   const formatPhoneNumber = (number) => {
     if (!number) return '';
     // Remove tudo que não é número
@@ -114,46 +115,42 @@ export default function FiltroSorteioTable() {
 
   return (
     <div className="">
-    {infoCota ? (
-      <Table>
-        <thead>
-          <tr>
-            <th>Nome</th>
-            <th>Number</th>
-            <th>Rifa</th>
-            <th>Cota</th>
-            <th>Data</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr className="raffle-item">
-            <td>
-                {infoCota?.client?.name} {infoCota?.client?.surname}
-
-
-                <a href={`https://api.whatsapp.com/send?phone=${formatPhoneNumber(infoCota?.client?.cellphone)}`} target="_blank">{infoCota?.client?.name} {infoCota?.client?.surname}</a>
-                <a id="whplnk" href={`https://api.whatsapp.com/send?phone=${formatPhoneNumber(infoCota?.client?.cellphone)}`} target="_blank">&nbsp;
-                  &nbsp;<i className="fa-brands fa-whatsapp"></i>
-                </a>
-            </td>
-            <td>{infoCota?.client?.cellphone}</td>
-            <td>{infoCota?.rifa?.title}</td>
-            <td>{numeroVencedor}</td>
-            <td>{formattedDate(infoCota?.created_at)}</td>
-            {/* <td>
-              <button className="button-view" onClick={() => handleButtonId(item)}>
-                <i className="fas fa-eye"></i> VER
-              </button>
-            </td>  */}
-          </tr>
-        </tbody>
-      </Table>
-    ) : (
-      <h2 className="result-info">
-        <i className="fa-solid fa-circle-exclamation"></i>&nbsp; 
-        CLIQUE EM SORTEAR E VEJA O RESULTADO!
-      </h2>
-    )}
-  </div>
+      {infoCota.length > 0 ? (
+        <Table>
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Telefone</th>
+              <th>Rifa</th>
+              <th>Cota</th>
+              <th>Data</th>
+            </tr>
+          </thead>
+          <tbody>
+            {infoCota.map((cota, index) => (
+              <tr key={index} className="raffle-item">
+                <td>
+                  <a href={`https://api.whatsapp.com/send?phone=${formatPhoneNumber(cota?.client?.cellphone)}`} target="_blank">
+                    {cota?.client?.name} {cota?.client?.surname}
+                  </a>
+                  <a id="whplnk" href={`https://api.whatsapp.com/send?phone=${formatPhoneNumber(cota?.client?.cellphone)}`} target="_blank">&nbsp;
+                    &nbsp;<i className="fa-brands fa-whatsapp"></i>
+                  </a>
+                </td>
+                <td>{cota?.client?.cellphone}</td>
+                <td>{cota?.rifa?.title}</td>
+                <td>{cota?.qntd_number}</td>
+                <td>{formattedDate(cota?.created_at)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      ) : (
+        <h2 className="result-info">
+          <i className="fa-solid fa-circle-exclamation"></i>&nbsp; 
+          CLIQUE EM SORTEAR E VEJA O RESULTADO!
+        </h2>
+      )}
+    </div>
   );
 }
