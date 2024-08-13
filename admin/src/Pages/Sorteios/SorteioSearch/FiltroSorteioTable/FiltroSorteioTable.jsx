@@ -122,7 +122,7 @@ export default function FiltroSorteioTable() {
               <th>Nome</th>
               <th>Telefone</th>
               <th>Rifa</th>
-              <th>Cota</th>
+              <th>Qtd Cotas</th>
               <th>Data</th>
             </tr>
           </thead>

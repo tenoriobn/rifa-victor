@@ -4,6 +4,9 @@ import SorteioSearchForm from "./SorteioSearchForm/SorteioSearchForm";
 import { Main } from "../../../components/AdminLayout/AdminLayout";
 import { useParams } from "react-router-dom";
 import FiltroSorteioTable from "./FiltroSorteioTable/FiltroSorteioTable";
+import { useState } from "react";
+import { useEffect } from "react";
+import { fetchDados } from "../../../common/http/http";
 
 const SorteioSearchContainer = styled.div`
   display: flex;
@@ -34,6 +37,19 @@ const SorteioSearchContainer = styled.div`
 
 export default function SorteioSearch() {
   const { id } = useParams();
+  const [rifaInfo, setRifaInfo] = useState('')
+  const baseURL = import.meta.env.VITE_BASE_URL;
+
+  useEffect(() => {
+    const obterDados = async () => {
+      const response = await fetchDados(`/admin/dashboard/consulta-cota/${id}`);
+
+      setRifaInfo(response.data)
+    };
+  
+    obterDados();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <section>
@@ -41,16 +57,19 @@ export default function SorteioSearch() {
         <h2>
           <a href={`/dashboard/rifas/editar/${id}`}>
             <i style={{ color: "orangered" }} className="fa-solid fa-angle-double-left"></i>
-          </a> <i className="fas fa-gift"></i> SORTEIO - SAVEIRO CROSS DOS SONHOS 
+          </a> <i className="fas fa-gift"></i> SORTEIO - {rifaInfo.title} 
         </h2>
       </Header>
 
       <Main>
         <SorteioSearchContainer>
-          <h2>
-            <img src="https://imagedelivery.net/TuyDlh37fwpu3jSKwZ3-9g/2a6e9600-32e1-44d2-8fff-801b4abe3e00/rifa?>" />
-          </h2>
-
+          {
+            rifaInfo?.rifa_image?.[0]?.path ? 
+            <h2>
+              <img src={`${baseURL}/img/rifas/${rifaInfo.rifa_image[0].path}`} alt={rifaInfo?.title || 'Imagem não disponível'} />
+            </h2>
+            : ''
+          }
           <SorteioSearchForm />
           <FiltroSorteioTable />
         </SorteioSearchContainer>

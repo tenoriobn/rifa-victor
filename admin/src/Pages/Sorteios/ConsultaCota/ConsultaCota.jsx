@@ -42,13 +42,14 @@ const ConsultaCotaContainer = styled.div`
 
 export default function ConsultaCota() {
   const { id } = useParams();
-  const [title, setTitle] = useState('')
+  const [rifaInfo, setRifaInfo] = useState('')
+  const baseURL = import.meta.env.VITE_BASE_URL;
 
   useEffect(() => {
     const obterDados = async () => {
       const response = await fetchDados(`/admin/dashboard/consulta-cota/${id}`);
 
-      setTitle(response.data.title)
+      setRifaInfo(response.data)
     };
   
     obterDados();
@@ -67,10 +68,14 @@ export default function ConsultaCota() {
       <Main>
         <ConsultaCotaContainer>
           <div className="container-img">
-            <img src="https://imagedelivery.net/TuyDlh37fwpu3jSKwZ3-9g/2a6e9600-32e1-44d2-8fff-801b4abe3e00/rifa?>" />
+          {
+            rifaInfo?.rifa_image?.[0]?.path ? 
+            <img src={`${baseURL}/img/rifas/${rifaInfo.rifa_image[0].path}`} alt={rifaInfo?.title || 'Imagem não disponível'} />
+            : ''
+          }
           </div>
 
-          <h1 className="title">{title} </h1>
+          <h1 className="title">{rifaInfo.title} </h1>
 
           <ConsultaCotaForm />
           <FiltroCotaTable />

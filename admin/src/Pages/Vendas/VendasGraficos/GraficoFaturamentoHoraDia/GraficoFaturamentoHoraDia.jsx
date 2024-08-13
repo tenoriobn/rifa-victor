@@ -1,8 +1,12 @@
 import { useEffect, useRef } from 'react';
 import Chart from 'chart.js/auto';
 import { ContainerCharts } from '../VendasGraficos';
+import { stateDadosVendas } from '../../../../common/states/atom';
+import {  useRecoilValue } from "recoil";
 
 export default function GraficoFaturamentoHora() {
+  const dadosVendas = useRecoilValue(stateDadosVendas);
+
   const canvasRef = useRef(null);
   const chartRef = useRef(null);
 
@@ -14,17 +18,34 @@ export default function GraficoFaturamentoHora() {
         chartRef.current.destroy();
       }
 
+
+
+      // Gera as labels de horas no formato 'HH:00'
+      const horasLabels = Array.from({ length: 24 }, (_, i) => `${String(i).padStart(2, '0')}:00`);
+
+      // Dados formatados
+      const dadosFormatados = (dadosVendas?.horaDoDia || Array(24).fill(0)).map(valor => parseFloat(valor));
+
       chartRef.current = new Chart(ctx, {
         type: 'bar', // ou 'line', 'pie', etc.
         data: {
-          labels: ['10', '11', '16', '17', '19', '9', '23', '22', '21', '20', '15', '14', '13', '7', '8', '12', '5', '1', '0', '6'],
+          labels: horasLabels,
           datasets: [
             {
               label: 'Faturamento',
-              data: [12, 19, 3, 5, 2, 3, 10, 12, 19, 3, 5, 2, 3, 10, 12, 19, 3, 5, 2, 6],
+              data: dadosFormatados,
               backgroundColor: '#b5179e',
               borderColor: '#b5179e',
               borderWidth: 1,
+              // Adiciona formatação ao tooltip
+              tooltip: {
+                callbacks: {
+                  label: function (context) {
+                    const valor = context.raw;
+                    return `R$ ${valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+                  },
+                },
+              },
             },
           ],
         },
@@ -34,6 +55,12 @@ export default function GraficoFaturamentoHora() {
           scales: {
             y: {
               beginAtZero: true,
+              ticks: {
+                callback: function (value) {
+                  // Formata os valores no eixo Y
+                  return `R$ ${value.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+                },
+              },
             },
           },
         },
@@ -45,7 +72,7 @@ export default function GraficoFaturamentoHora() {
         chartRef.current.destroy();
       }
     };
-  }, []);
+  }, [dadosVendas]);
 
   return (
     <ContainerCharts className="container-charts">

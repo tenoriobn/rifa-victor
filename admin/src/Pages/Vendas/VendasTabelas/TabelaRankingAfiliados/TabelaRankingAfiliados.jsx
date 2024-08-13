@@ -1,7 +1,13 @@
 /* eslint-disable react/prop-types */
+import useCurrencyFormatTable from "../../../../common/states/Hook/useCurrencyFormatTable/useCurrencyFormatTable";
+import { stateDadosVendas } from "../../../../common/states/atom";
 import { ContainerTabelas, Table } from "../VendasTabelas";
+import {  useRecoilValue } from "recoil";
 
 export default function TabelaRankingAfiliados() {
+  const dadosVendas = useRecoilValue(stateDadosVendas);
+  const { formatCurrency } = useCurrencyFormatTable();
+  const afiliados = dadosVendas?.afiliados
 
   return (
     <ContainerTabelas className="container-charts">
@@ -20,32 +26,16 @@ export default function TabelaRankingAfiliados() {
         </thead>
 
         <tbody>
-            <tr>
-            <td>#1</td>
-              <td>77</td>
-              <td>ANA</td>
-              <td>300</td>
-              <td>R$ 8.400,00</td>
-              <td>R$ 1.008,00</td>
-            </tr>
-
-            <tr>
-              <td>#2</td>
-              <td>75</td>
-              <td>JESSICA</td>
-              <td>188</td>
-              <td>R$ 4.361,53</td>
-              <td>R$ 654,23</td>
-            </tr>
-
-            <tr>
-              <td>#3</td>
-              <td>76</td>
-              <td>CARLOS</td>
-              <td>250	</td>
-              <td>R$ 7.200,00</td>
-              <td>R$ 720,00</td>
-            </tr>
+        {afiliados?.map((afiliado, index) => (
+          <tr className="raffle-item" key={afiliado?.id}>
+            <td>#{index + 1}</td>
+            <td>{afiliado?.id}</td>
+            <td>{afiliado?.client?.name}</td>
+            <td>{afiliado?.totalPedidos}</td>
+            <td>{formatCurrency(afiliado?.faturamento)}</td>
+            <td>{formatCurrency(afiliado?.comissao)}</td>
+          </tr>
+        ))}
         </tbody>
       </Table>
     </ContainerTabelas>
