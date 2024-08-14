@@ -27,7 +27,7 @@ export default function Afiliados() {
   } 
 
   const obterDados = async () => {
-    const response = await fetchDados(`admin/dashboard/todos/afiliados/`);
+    const response = await fetchDados(`admin/dashboard/todos/afiliados`);
     setAfiliadosInfoTable(response.data);
   };
 

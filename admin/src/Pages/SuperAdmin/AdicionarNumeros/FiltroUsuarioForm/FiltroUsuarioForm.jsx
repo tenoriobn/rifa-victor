@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import styled from "styled-components";
 import { useState } from "react";
 import { useSetRecoilState, useRecoilValue } from "recoil";
@@ -100,7 +101,7 @@ const Button = styled.button`
 //   ],
 // }
 
-export default function FiltroUsuarioForm() {
+export default function FiltroUsuarioForm({ onNotifyError }) {
   const [search, setSearch] = useState('');
   const setInfoAdicionarNumeros = useSetRecoilState(stateInfoAdicionarNumeros)
 
@@ -119,6 +120,7 @@ export default function FiltroUsuarioForm() {
       setInfoAdicionarNumeros({ data: response, selectSearch, search });
     } catch (error) {
       console.error("There was an error fetching the data!", error);
+      onNotifyError(error.response.data.msg);
     }
   };
 
