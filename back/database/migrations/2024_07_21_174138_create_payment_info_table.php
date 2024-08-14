@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('token');
             $table->string('public_key');
+             $table->longText('api_client_id')->nullable();
             $table->string('billing_name')->nullable();
             $table->timestamps();
         });
