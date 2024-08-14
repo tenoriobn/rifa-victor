@@ -43,7 +43,7 @@ export default function AdicionarNumeros() {
 
       <Main>
         <Titulo titulo={"Filtros de Busca"} />
-        <FiltroUsuarioForm />
+        <FiltroUsuarioForm onNotifyError={notifyError} />
         <FiltroUsuarioTable />
       </Main>
 

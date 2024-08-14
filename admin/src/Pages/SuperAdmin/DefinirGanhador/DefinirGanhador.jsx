@@ -42,7 +42,7 @@ export default function DefinirGanhador() {
 
       <Main>
         <Titulo titulo={"Filtros de Busca"} />
-        <FiltroUsuarioForm />
+        <FiltroUsuarioForm onNotifyError={notifyError} />
         <FiltroUsuarioTable />
       </Main>
 

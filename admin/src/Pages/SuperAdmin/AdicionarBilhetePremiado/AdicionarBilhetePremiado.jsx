@@ -43,7 +43,7 @@ export default function AdicionarBilhetePremiado() {
 
       <Main>
         <Titulo titulo={"Filtros de Busca"} />
-        <FiltroUsuarioForm />
+        <FiltroUsuarioForm onNotifyError={notifyError} />
         <FiltroUsuarioTable />
       </Main>
 
