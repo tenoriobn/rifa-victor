@@ -40,6 +40,10 @@ const Form = styled.form`
     background: 0 0;
     border: 1px solid #275680;
     box-sizing: border-box;
+
+    &::-webkit-calendar-picker-indicator {
+      filter: invert(1);
+    }
   }
 
   .filter-item label {

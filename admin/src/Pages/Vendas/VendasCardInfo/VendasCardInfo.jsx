@@ -98,6 +98,8 @@ export default function VendasCardInfo({rotaObterDados}) {
   const [dadosVendas, setDadosVendas] = useRecoilState(stateDadosVendas);
   const { formatCurrency } = useCurrencyFormatTable();
 
+  console.log('vendas', dadosVendas)
+
   const obterDados = async () => {
     const response = await fetchDados(rotaObterDados);
     setDadosVendas(response.data); 
@@ -106,8 +108,6 @@ export default function VendasCardInfo({rotaObterDados}) {
   useEffect(() => {
     obterDados();
   }, []);
-
-  console.log('dadosVendas', dadosVendas)
 
   return (
     <DashboardItens>

@@ -67,7 +67,10 @@ export default function GraficoFaturamentoAcumulado() {
                 label: function (context) {
                   const label = context.dataset.label || '';
                   const value = context.raw;
-                  return `${label}: R$ ${value.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+                  if (label === 'Faturamento') {
+                    return `${label}: R$ ${value.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+                  }
+                  return `${label}: ${value}`; // Para Pedidos, apenas mostra o número
                 },
               },
             },

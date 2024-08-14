@@ -45,13 +45,13 @@ export default function EditarRifa() {
     setSubmitting(true);
 
     try {
-      await putDados(`/admin/dashboard/rifa/editar/${id}`, formState, userLogin);
+      const response  = await putDados(`/admin/dashboard/rifa/editar/${id}`, formState, userLogin);
       setTimeout(() => {
         navigate("/dashboard/rifas/");
         resetFormState();
       }, 1350);
 
-      console.log('submit formState: ', formState)
+      console.log('response: ', response)
 
       toast.success('Sorteio criado com sucesso!');
 

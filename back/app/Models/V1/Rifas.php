@@ -113,7 +113,7 @@ class Rifas extends Model
 
             $rifa_id = $result->id;
 
-            return $is_created ? $rifa_id : false;
+            return $result->id ?? false;
     }
 
     public static function findRifa($id) {

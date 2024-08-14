@@ -12,6 +12,7 @@ import MensagemErro from "../MensagemErro/MensagemErro";
 import { transicaoAnimada } from "../../common/util/transicaoAnimada";
 import { motion } from 'framer-motion';
 import { postDados } from '../../common/http/http';
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function AcessoUsuario() {
   const { id, affiliateId } = useParams();
@@ -60,6 +61,7 @@ export default function AcessoUsuario() {
           setFinalizarPedido(false);
         } catch (error) {
           console.error('Erro ao comprar rifa:', error);
+          notifyError(error.response.data.msg);
         }
       };
 
@@ -79,6 +81,11 @@ export default function AcessoUsuario() {
   const handleClick = () => {
     setFinalizarPedido(true);
   };
+
+  const notifyError = (message) => {
+    toast.error(message);
+  };
+
 
   return (
     <motion.div {...animacao}>
@@ -124,6 +131,8 @@ export default function AcessoUsuario() {
           </div>
         </button>
       </div>
+
+      <ToastContainer theme="colored" />
     </motion.div>
   );
 }
