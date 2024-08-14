@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('token');
             $table->string('public_key');
-            $table->string('billing_name');
+            $table->string('billing_name')->nullable();
             $table->timestamps();
         });
     }

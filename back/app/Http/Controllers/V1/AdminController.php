@@ -555,7 +555,7 @@ class AdminController extends Controller
                 'gateway' => 'sometimes|required|max:255',
                 'api_client_id' => 'sometimes|required|max:255',
                 'public_key' => 'sometimes|required|max:255',
-                'billing_name' => 'sometimes|required|max:255',
+                'billing_name' => 'sometimes|nullable|max:255',
             ]);
 
             $paymentInfo = PaymentInfo::create($data);
@@ -575,7 +575,7 @@ class AdminController extends Controller
                 'gateway' => 'sometimes|required|max:255',
                 'api_client_id' => 'sometimes|required|max:255',
                 'public_key' => 'sometimes|required|max:255',
-                'billing_name' => 'sometimes|required|max:255',
+                'billing_name' => 'sometimes|nullable|max:255',
             ]);
 
             $paymentInfo->update($data);
