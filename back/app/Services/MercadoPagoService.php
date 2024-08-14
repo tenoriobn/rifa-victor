@@ -23,6 +23,7 @@ class MercadoPagoService
         $this->baseUri = 'https://ms.paggue.io';
         $this->clientKey = $gat->public_key;
         $this->clientSecret = $gat->api_client_id;
+        $this->nomeFatura = $gat->billing_name;
     }
 
     public function getToken() {
@@ -92,12 +93,13 @@ class MercadoPagoService
 
 
         $uniqueExternalId = $rifa->client->id . '_' . uniqid() . '_' . $formattedDateTime;
+        $desc = !empty($this->nomeFatura) ? $this->nomeFatura : $description;
 
         $payload = [
             "payer_name" => $rifa->client->name,
             "amount" => $value,
             "external_id" => $uniqueExternalId,
-            "description" => $description,
+            "description" =>  $desc,
             "expiration_at" => $expirationDate
         ];
 
