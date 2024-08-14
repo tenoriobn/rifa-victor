@@ -64,7 +64,7 @@ const Form = styled.form`
 export default function ModalAdicionarNumeros({ onNotifySuccess, onNotifyError }) {
   const setOpenModalAdicionarNumeros = useSetRecoilState(stateOpenModalAdicionarNumeros);
   const infoAdicionarNumeros = useRecoilValue(stateInfoAdicionarNumeros)
-  const [qntdNumero, setQntdNumero] = useState("");
+  const [adicionarNumero, setAdicionarNumero] = useState({})
 
   const telefoneVencedor = infoAdicionarNumeros.search;
   const rifaId = infoAdicionarNumeros.selectSearch.id;
@@ -73,12 +73,12 @@ export default function ModalAdicionarNumeros({ onNotifySuccess, onNotifyError }
     e.preventDefault();
 
     try {
-      await postDados("/admin/dashboard/client/rifa/adicionar-numero", { qntd_number: qntdNumero,  cellphone: telefoneVencedor, rifa_id : rifaId });
+      await postDados("/admin/dashboard/client/rifa/adicionar-numero", {...adicionarNumero,  cellphone: telefoneVencedor, rifa_id : rifaId });
       setOpenModalAdicionarNumeros(false);
       onNotifySuccess('Números adicionados com sucesso!');
 
     } catch (error) {
-      onNotifyError('Erro ao adicionar números:');
+      onNotifyError(error.response.data.msg);
       console.error("Erro ao adicionar números:", error);
     }
   };
@@ -86,17 +86,58 @@ export default function ModalAdicionarNumeros({ onNotifySuccess, onNotifyError }
   return (
     <>
       <Form onSubmit={handleSubmit}>
-        <label htmlFor="qntdNumero">
-          Qntd. números
-          <input
-            type="text"
-            name="qntdNumero"
-            id="qntdNumero"
-            value={qntdNumero}
-            onChange={(e) => setQntdNumero(e.target.value)}
+        <label htmlFor="frm_add_st">
+          Status
+          <select
+            name="status"
+            id="frm_add_st"
+            value={adicionarNumero.tipo || ''}
+            onChange={(e) => setAdicionarNumero({...adicionarNumero, tipo: e.target.value})}
             required
-          />
+          >
+            <option value="">Selecione</option>
+            <option value="aleatorio">Aleatório</option>
+            <option value="definir">Definir</option>
+          </select>
         </label>
+
+        {
+          adicionarNumero.tipo === "aleatorio" 
+            ? (
+              <label htmlFor="qntdNumero">
+                Qntd. números
+                <input
+                  type="text"
+                  name="qntdNumero"
+                  id="qntdNumero"
+                  value={adicionarNumero.qntd_number || ''}
+                  onChange={(e) => setAdicionarNumero({
+                    ...adicionarNumero, 
+                    qntd_number: e.target.value
+                  })}
+                  required
+                />
+              </label>
+            )
+            : adicionarNumero.tipo === "definir" 
+            ? (
+              <label htmlFor="qntdNumero">
+                Definir Número
+                <input
+                  type="text"
+                  name="qntdNumero"
+                  id="qntdNumero"
+                  value={adicionarNumero.qntd_number || ''}
+                  onChange={(e) => setAdicionarNumero({
+                    ...adicionarNumero, 
+                    qntd_number: e.target.value
+                  })}
+                  required
+                />
+              </label>
+            )
+            : ''
+        }
 
         <input id="sendEditPack" type="submit" value="ADICIONAR" />
       </Form>

@@ -138,9 +138,6 @@ class RifaService
         return ["success" => true, "data" => $novoGanhador];
     }
 
-
-
-
     public function adicionarNumerosRifasClient($cellphone, $qntdNumero, $rifasId) {
         try {
             $client = Clients::findClient($cellphone);
@@ -173,6 +170,49 @@ class RifaService
 
             RifaNumber::where('id', $result)->update(['status' => 1]);
 
+
+            if(!$result) {
+                $rifaPayDetails->delete();
+                return ["success" => false, "msg" => "Quantidade de número invalido", 404];
+            }
+
+            return ["success" => true, "msg" => "Numero adicionado com sucesso", 201];
+        } catch (Exception $e) {
+            return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
+        }
+
+    }
+    public function adicionarNumerosDefinidoRifasClient($cellphone, $numero, $rifasId) {
+        try {
+            $client = Clients::findClient($cellphone);
+            $qntdCota = Cotas::findQntdCota($rifasId);
+
+            if (!$client) {
+                return ["success" => false, "msg" => 'Usuário não encontrado'];
+            }
+
+            $isNumero = self::procurarGanhador($numero, $rifasId);
+            if ($isNumero) {
+                return ["success" => false, "msg" => 'Numero já existe'];
+            }
+
+            $qntdNumeroEmUso = RifaNumber::countTotalNumber($rifasId);
+            $isAddNumero = ($qntdCota->qntd_cota - intval($qntdNumeroEmUso->total)) - 1 ;
+            if($isAddNumero < 0) {
+                return ["success" => false, "msg" => 'Quantidade invalida', $isAddNumero ];
+            }
+
+
+            $rifaPay = RifaPay::addNumeroDefinidoClient($client->id , $rifasId);
+            if (!$rifaPay) {
+                return ["success" => false, "msg" => 'Pagamento não existe', 404];
+
+            }
+
+            $rifaPayDetails = RifaPay::with(['rifa.cota', 'rifa.awardedQuota'])
+                ->find($rifaPay->id);
+
+            $result = RifaNumber::addNumeroDefinidoClient($rifaPayDetails, $numero);
 
             if(!$result) {
                 $rifaPayDetails->delete();

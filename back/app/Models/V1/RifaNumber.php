@@ -86,6 +86,22 @@ class RifaNumber extends Model {
         }, 5); // 5 tentativas para resolver deadlocks
     }
 
+    public static function addNumeroDefinidoClient($rifaPay, $numbers) {
+        
+
+        $resp = self::create([
+            'pay_id' => $rifaPay->id,
+            'rifas_id' => $rifaPay->rifas_id,
+            'numbers' => "[".$numbers."]",
+            'client_id' => $rifaPay->client_id,
+            'status' => 1,
+        ]);
+
+        $id = $resp->id;
+
+        return $id;
+    }
+
     public static function generateUniqueNumbers($payment) {
         $maxNumbers = $payment->rifa->cota->qntd_cota;
         $numToGenerate = $payment->qntd_number;

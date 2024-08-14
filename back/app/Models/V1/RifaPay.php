@@ -40,6 +40,23 @@ class RifaPay extends Model
 
         return $payId ?? false;
     }
+    public static function addNumeroDefinidoClient($client , $rifasId) {
+        $cod = self::generateUniqueNumericCode();
+        $checkout = self::generateUniqueAlphanumericCode(12);
+
+        $payId = self::create([
+            'value' => 0,
+            'qntd_number' => 1,
+            'status' => 1,
+            'verify' => 0,
+            'cod' => $cod,
+            'checkout' => $checkout,
+            'rifas_id' => $rifasId,
+            'client_id' => $client,
+        ]);
+
+        return $payId ?? false;
+    }
     public static function addPix($paymentId, $pixId, $qrCode, $qrCodeBase64) {
         $payId = self::where('id', $paymentId)->update([
             'pix_id' => $pixId,

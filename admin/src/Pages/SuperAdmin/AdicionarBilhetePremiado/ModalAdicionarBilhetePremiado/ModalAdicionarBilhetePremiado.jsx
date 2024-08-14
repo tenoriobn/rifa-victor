@@ -84,7 +84,7 @@ export default function ModalAdicionarBilhetePremiado({ onNotifySuccess, onNotif
       onNotifySuccess('Bilhete adicionado com sucesso!');
 
     } catch (error) {
-      onNotifyError('Erro ao adicionar Bilhete:');
+      onNotifyError(error.response.data.msg);
       console.error("Erro ao adicionar Bilhete:", error);
     }
   };

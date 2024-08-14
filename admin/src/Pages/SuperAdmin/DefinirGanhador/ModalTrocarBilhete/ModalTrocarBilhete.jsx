@@ -79,7 +79,7 @@ export default function ModalTrocarBilhete({ onNotifySuccess, onNotifyError }) {
       onNotifySuccess('Ganhador definido com sucesso!');
       setAtualizaTableInfoCotaSorteada(true);
     } catch (error) {
-      onNotifyError('Erro ao definir ganhador:');
+      onNotifyError(error.response.data.msg);
       console.error("Erro ao trocar bilhete:", error);
     }
   };

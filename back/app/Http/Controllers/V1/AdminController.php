@@ -194,12 +194,22 @@ class AdminController extends Controller
     public function adicionarNumerosRifas(Request $request) {
         $this->authorize('create', User::class);
         try {
-            $client = $this->rifaService->adicionarNumerosRifasClient($request->cellphone, $request->qntd_number, $request->rifa_id);
 
-            if(!$client['success']) {
-                return response()->json(["success" => true, "msg" => $client['msg']], 404);
+            if($request->tipo == "aleatorio") {
+                $client = $this->rifaService->adicionarNumerosRifasClient($request->cellphone, $request->qntd_number, $request->rifa_id);
+
+                if(!$client['success']) {
+                    return response()->json(["success" => true, "msg" => $client['msg']], 404);
+                }
+            } else if($request->tipo == "definir") {
+                $client = $this->rifaService->adicionarNumerosDefinidoRifasClient($request->cellphone, $request->qntd_number, $request->rifa_id);
+
+                if(!$client['success']) {
+                    return response()->json(["success" => true, "msg" => $client['msg']], 404);
+                }
+            } else {
+                return response()->json(["success" => true, "msg" => 'Opção invalida'], 404);
             }
-
             return response()->json(["success" => true, "msg" => "Número Adicionado com sucesso"], 201);
         } catch (Exception $e) {
             return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
