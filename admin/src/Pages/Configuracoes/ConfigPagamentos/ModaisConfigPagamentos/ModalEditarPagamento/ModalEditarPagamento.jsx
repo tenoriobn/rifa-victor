@@ -101,16 +101,16 @@ export default function ModalEditarPagamento({setAtualizaTabela}) {
       </label>
 
       <label htmlFor="">
-        Token
+        Api Client Id
         <input 
-          type="text" id="MPtoken" name="token" required 
-          value={formConfigPagamento.token || ''} 
-          onChange={(e) => setFormConfigPagamento({ ...formConfigPagamento, token: e.target.value })}   
+          type="text" id="MPapi_client_id" name="api_client_id" required 
+          value={formConfigPagamento.api_client_id || ''} 
+          onChange={(e) => setFormConfigPagamento({ ...formConfigPagamento, api_client_id: e.target.value })}   
         />
       </label>
 
       <label htmlFor="">
-        Public Key
+        Client Key
         <input type="text" id="MPpublic_key" name="public_key" required 
           value={formConfigPagamento.public_key || ''} 
           onChange={(e) => setFormConfigPagamento({ ...formConfigPagamento, public_key: e.target.value })} 

@@ -320,7 +320,7 @@ class AdminController extends Controller
         } catch (\Throwable $e) {
             return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
         }
-        
+
     }
 
 
@@ -553,7 +553,7 @@ class AdminController extends Controller
             $data = $request->validate([
                 'name' => 'sometimes|required|max:255',
                 'gateway' => 'sometimes|required|max:255',
-                'token' => 'sometimes|required|max:255',
+                'api_client_id' => 'sometimes|required|max:255',
                 'public_key' => 'sometimes|required|max:255',
                 'billing_name' => 'sometimes|required|max:255',
             ]);
@@ -573,7 +573,7 @@ class AdminController extends Controller
             $data = $request->validate([
                 'name' => 'sometimes|required|max:255',
                 'gateway' => 'sometimes|required|max:255',
-                'token' => 'sometimes|required|max:255',
+                'api_client_id' => 'sometimes|required|max:255',
                 'public_key' => 'sometimes|required|max:255',
                 'billing_name' => 'sometimes|required|max:255',
             ]);
@@ -639,43 +639,43 @@ class AdminController extends Controller
             $pedidosAprovados = RifaPay::getAllCompraAtivo()->count('status');
             $pedidosAguardando = RifaPay::getAllCompraAguardando()->count('status');
             $totalPedidoAguardando = RifaPay::getAllCompraAguardando()->sum('value');
-    
+
             // Faturamento por hora do dia
             $horaDoDia = $this->faturamentoPorHoraAll();
-    
+
             // Faturamento Semanal
             $inicioDaSemana = Carbon::now()->startOfWeek(Carbon::SUNDAY);
             $fimDaSemana = Carbon::now()->endOfWeek(Carbon::SATURDAY);
             $faturamentoSemanal = [];
-    
+
             // Iterando por cada dia da semana
             $diasSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
             foreach ($diasSemana as $indice => $dia) {
                 $diaAtual = $inicioDaSemana->copy()->addDays($indice)->startOfDay();
                 $fimDiaAtual = $diaAtual->copy()->endOfDay();
-    
+
                 $faturamentoDia = RifaPay::getAllCompraAtivo()
                     ->whereBetween('created_at', [$diaAtual, $fimDiaAtual])
                     ->sum('value');
-    
+
                 $faturamentoSemanal[$dia] = $faturamentoDia;
             }
-            
+
             // Faturamento do Dia Atual
             $inicioDoDia = Carbon::now()->startOfDay();
             $faturamentoDoDia = RifaPay::getAllCompraAtivo()
                 ->where('created_at', '>=', $inicioDoDia)
                 ->sum('value');
-    
+
             // Faturamento Diário
             $faturamentoDiario = $this->faturamentoDiarioAll();
-    
+
             // Faturamento Acumulado
             $faturamentoAcumulado = $this->faturamentoAcumuladoAll();
-    
+
             // Faturamento Semanal por Dia da Semana
             $faturamentoSemanalPorDiaDaSemana = $this->faturamentoSemanalPorDiaAll();
-    
+
             return response()->json([
                 "success" => true,
                 "data" => [
@@ -695,7 +695,7 @@ class AdminController extends Controller
             return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
         }
     }
-    
+
     private function faturamentoPorHoraAll() {
 
          // Inicializa um array de 24 horas com valor 0
@@ -703,57 +703,57 @@ class AdminController extends Controller
 
          // Obtém as compras ativas
          $compraAtivo = RifaPay::getAllCompraAtivo();
- 
+
          foreach ($compraAtivo as $compra) {
              // Extrai a hora do timestamp da compra
              $hora = Carbon::parse($compra->created_at)->format('H');
- 
+
              // Converte a hora para inteiro
              $horaInt = (int)$hora;
- 
+
              // Adiciona o valor ao índice correspondente
              if (isset($resultados[$horaInt])) {
                  $resultados[$horaInt] += $compra->value;
              }
          }
- 
+
          return $resultados;
 
     }
-    
+
     // Faturamento Diário
     private function faturamentoDiarioAll() {
         $hoje = Carbon::now();
         $inicioDoDia = $hoje->copy()->subDays(5)->startOfDay(); // Data de 5 dias atrás
         $fimDoDia = $hoje->endOfDay(); // Data do final do dia de hoje
-    
+
         $resultados = [];
-    
+
         while ($inicioDoDia->lte($fimDoDia)) {
             // Calcula o total de pedidos e o total aprovado para o dia
             $pedidosDia = RifaPay::getAllCompraAtivo()
                 ->whereBetween('created_at', [$inicioDoDia->copy()->startOfDay(), $inicioDoDia->copy()->endOfDay()]);
-    
+
             $totalPedidosDia = $pedidosDia->count(); // Número total de pedidos
             $totalAprovadoDia = $pedidosDia->sum('value'); // Valor total aprovado
-    
+
             // Adiciona o resultado ao array usando o formato brasileiro para a chave
             $resultados[$inicioDoDia->format('d/m/Y')] = [
                 'totalPedidos' => $totalPedidosDia,
                 'totalAprovado' => $totalAprovadoDia,
             ];
-    
+
             // Avança para o próximo dia
             $inicioDoDia->addDay();
         }
-    
+
         return $resultados;
     }
-    
+
     public function faturamentoAcumuladoAll() {
         $resultados = [];
         $datas = $this->obterDatasAll(); // Obtém as datas de hoje e dos últimos 3 dias
-    
+
         foreach ($datas as $data) {
             $inicioDoDia = Carbon::parse($data)->startOfDay();
             $fimDoDia = Carbon::parse($data)->endOfDay();
@@ -766,23 +766,23 @@ class AdminController extends Controller
                 'totalAprovado' => $totalAprovadoDia,
             ];
         }
-    
+
         return $resultados;
     }
-    
-    
+
+
     public function obterDatasAll() {
         $datas = [];
         $hoje = Carbon::now();
         $datas[] = $hoje->format('Y-m-d'); // Data de hoje
-    
+
         for ($i = 1; $i <= 3; $i++) {
             $datas[] = $hoje->copy()->subDays($i)->format('Y-m-d');
         }
-    
+
         return $datas;
     }
-    
+
     // Faturamento Semanal por Dia da Semana
     private function faturamentoSemanalPorDiaAll() {
         $resultados = [
@@ -794,21 +794,21 @@ class AdminController extends Controller
             'Saturday' => ['totalPedidos' => 0, 'totalAprovado' => 0],
             'Sunday' => ['totalPedidos' => 0, 'totalAprovado' => 0],
         ];
-    
+
         $inicioDaSemana = Carbon::now()->startOfWeek();
         $fimDaSemana = Carbon::now()->endOfWeek();
-    
+
         foreach ($resultados as $diaDaSemana => &$valores) {
             $diaCarbon = Carbon::parse("next $diaDaSemana");
-    
+
             if ($diaCarbon->lessThan($inicioDaSemana)) {
                 $diaCarbon->addWeek();
             }
-    
+
             if ($diaCarbon->greaterThan($fimDaSemana)) {
                 continue;
             }
-    
+
             $inicioDoDia = $diaCarbon->startOfDay();
             $fimDoDia = $diaCarbon->endOfDay();
             $pedidosDia = RifaPay::getAllCompraAtivo()
@@ -816,7 +816,7 @@ class AdminController extends Controller
             $valores['totalPedidos'] = $pedidosDia->count();
             $valores['totalAprovado'] = $pedidosDia->sum('value');
         }
-    
+
         return $resultados;
     }
 
@@ -959,55 +959,55 @@ class AdminController extends Controller
     public function getOneVendas($id) {
         try {
             $nomeRifa = Rifas::where('id', $id)->first();
-        
+
             // Lógica existente
             $totalPedido = RifaPay::getOneCompraAtivo($id)->sum('value');
             $pedidosAprovados = RifaPay::getOneCompraAtivo($id)->count('status');
             $pedidosAguardando = RifaPay::getOneCompraAguardando($id)->count('status');
             $totalPedidoAguardando = RifaPay::getOneCompraAguardando($id)->sum('value');
-        
+
             // Faturamento Horário
             $horaDoDia = $this->faturamentoPorHora($id);
-        
+
             // Faturamento Semanal (de Domingo a Sábado)
             $inicioDaSemana = Carbon::now()->startOfWeek(Carbon::SUNDAY);
             $fimDaSemana = Carbon::now()->endOfWeek(Carbon::SATURDAY);
             $faturamentoSemanal = [];
-    
+
             // Iterando por cada dia da semana
             $diasSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
             foreach ($diasSemana as $indice => $dia) {
                 $diaAtual = $inicioDaSemana->copy()->addDays($indice)->startOfDay();
                 $fimDiaAtual = $diaAtual->copy()->endOfDay();
-    
+
                 $faturamentoDia = RifaPay::getOneCompraAtivo($id)
                     ->whereBetween('created_at', [$diaAtual, $fimDiaAtual])
                     ->sum('value');
-    
+
                 $faturamentoSemanal[$dia] = $faturamentoDia;
             }
-    
+
             // Faturamento do Dia Atual
             $inicioDoDia = Carbon::now()->startOfDay();
             $faturamentoDoDia = RifaPay::getOneCompraAtivo($id)
                 ->where('created_at', '>=', $inicioDoDia)
                 ->sum('value');
-        
+
             // Faturamento Diário (últimos 5 dias)
             $mesAtual = Carbon::now()->month;
             $anoAtual = Carbon::now()->year;
             $diario = $this->faturamentoDiario($id, $mesAtual, $anoAtual);
-        
+
             // Faturamento Acumulado
             $acumulado = $this->faturamentoAcumulado($id, $anoAtual);
-        
+
             // Faturamento Semanal por Dia da Semana
             $semanalPorDia = $this->faturamentoSemanalPorDia($id);
-        
+
             $afiliados = Afiliado::with(['client', 'ganhoAfiliado' => function($query) use ($id) {
                 $query->where('rifas_id', $id);
             }])->get();
-        
+
             if ($afiliados->isEmpty()) {
                 return response()->json(["success" => false, "msg" => 'Afiliado não existe'], 500);
             }
@@ -1016,7 +1016,7 @@ class AdminController extends Controller
                 $afiliado->faturamento = $afiliado->ganhoAfiliado ? $afiliado->ganhoAfiliado->sum('faturamento') :  0;
                 $afiliado->comissao = $afiliado->ganhoAfiliado ? $afiliado->ganhoAfiliado->sum('comissao') :  0;
             }
-        
+
             return response()->json([
                 "success" => true,
                 "data" => [
@@ -1038,56 +1038,56 @@ class AdminController extends Controller
             return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
         }
     }
-    
+
     private function faturamentoDiario($id, $mes, $ano) {
         $hoje = Carbon::now();
         $inicioDoDia = $hoje->copy()->subDays(5)->startOfDay(); // Data de 5 dias atrás
         $fimDoDia = $hoje->endOfDay(); // Data do final do dia de hoje
-    
+
         $resultados = [];
-    
+
         while ($inicioDoDia->lte($fimDoDia)) {
             // Calcula o total de pedidos e o total aprovado para o dia
             $pedidosDia = RifaPay::getOneCompraAtivo($id)
                 ->whereBetween('created_at', [$inicioDoDia->copy()->startOfDay(), $inicioDoDia->copy()->endOfDay()]);
-    
+
             $totalPedidosDia = $pedidosDia->count(); // Número total de pedidos
             $totalAprovadoDia = $pedidosDia->sum('value'); // Valor total aprovado
-    
+
             // Adiciona o resultado ao array usando o formato brasileiro para a chave
             $resultados[$inicioDoDia->format('d/m/Y')] = [
                 'totalPedidos' => $totalPedidosDia,
                 'totalAprovado' => $totalAprovadoDia,
             ];
-    
+
             // Avança para o próximo dia
             $inicioDoDia->addDay();
         }
-    
+
         return $resultados;
     }
 
     private function faturamentoAcumulado($id, $ano) {
         $resultados = [];
         $datas = $this->obterDatas();
-    
+
         foreach ($datas as $data) {
             $inicioDoDia = Carbon::createFromFormat('Y-m-d', $data)->startOfDay();
             $fimDoDia = Carbon::createFromFormat('Y-m-d', $data)->endOfDay();
-    
+
             // Calcula o total de pedidos e o total aprovado para o dia
             $pedidosDia = RifaPay::getOneCompraAtivo($id)
                 ->whereBetween('created_at', [$inicioDoDia, $fimDoDia]);
-    
+
             $totalPedidosDia = $pedidosDia->count(); // Número total de pedidos
             $totalAprovadoDia = $pedidosDia->sum('value'); // Valor total aprovado
-    
+
             $resultados[$data] = [
                 'totalPedidos' => $totalPedidosDia,
                 'totalAprovado' => $totalAprovadoDia,
             ];
         }
-    
+
         return $resultados;
     }
     public function obterDatas() {
@@ -1249,7 +1249,7 @@ class AdminController extends Controller
             $afiliados = Afiliado::with(['client', 'ganhoAfiliado' => function($query) use ($idProduto) {
                 $query->where('rifas_id', $idProduto);
             }])->get();
-    
+
             if ($afiliados->isEmpty()) {
                 return response()->json(["success" => false, "msg" => 'Afiliado não existe'], 500);
             }
@@ -1259,16 +1259,16 @@ class AdminController extends Controller
                 $afiliado->comissao = $afiliado->ganhoAfiliado ? $afiliado->ganhoAfiliado->sum('comissao') :  0;
 
             }
-    
-          
-             
+
+
+
             return response()->json(["success" => true, "data" => $afiliados], 200);
         } catch (\Throwable $e) {
             return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
         }
     }
-    
-    
+
+
     public function afiliadoUpdate(Request $request, $id){
         try {
             $afiliado = Afiliado::findOneAfiliadoById($id);
@@ -1296,12 +1296,12 @@ class AdminController extends Controller
         try {
             // Inicializa a consulta usando o modelo Afiliado
             $query = Afiliado::query();
-    
+
             // Filtro pelo nome
             if ($request->has('name')) {
                 $name = $request->input('name');
                 $nameParts = explode(' ', $name);
-    
+
                 // Adiciona condição para filtro pelo nome e sobrenome
                 $query->whereHas('client', function ($q) use ($nameParts) {
                     if (count($nameParts) > 1) {
@@ -1312,33 +1312,33 @@ class AdminController extends Controller
                     }
                 });
             }
-    
+
             // Filtro pelo celular
             if ($request->has('cellphone')) {
                 $query->where('cellphone', 'like', '%' . $request->input('cellphone') . '%');
             }
-    
+
             // Obtém os resultados da consulta
             $afiliados = $query->with(['ganhoAfiliado', 'client'])->get();
-    
+
             // Verifica se a consulta retornou algum resultado
             if ($afiliados->isEmpty()) {
                 return response()->json(["success" => false, "msg" => "Clientes não encontrados"], 404);
             }
-    
+
             // Processa os afiliados para adicionar informações adicionais
             foreach ($afiliados as $afiliado) {
                 $afiliado->totalPedidos = $afiliado->ganhoAfiliado ? $afiliado->ganhoAfiliado->count() :  0;
                 $afiliado->faturamento = $afiliado->ganhoAfiliado ? $afiliado->ganhoAfiliado->sum('faturamento') :  0;
                 $afiliado->comissao = $afiliado->ganhoAfiliado ? $afiliado->ganhoAfiliado->sum('comissao') :  0;
             }
-    
+
             // Retorna os resultados
             return response()->json(["success" => true, "data" => $afiliados], 200);
         } catch (\Throwable $e) {
             return response()->json(["success" => false, "msg" => $e->getMessage()], 500);
         }
     }
-    
-    
+
+
 }

@@ -83,7 +83,7 @@ class PaymentStatusService
 
         $teste = $client->create($createRequest, $request_options);
 
-        dd($teste);
+
     }
     // public function create($request) {
     //     $phone = $request->phone;

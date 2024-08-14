@@ -80,7 +80,8 @@ class MercadoPagoService
 
         $paggue_company_id = $tokenResponse->user->companies[0]->id;
         $token = $tokenResponse->access_token;
-        $value = floatval($rifa->value) * 100;
+        $value = intval(round(floatval($rifa->value) * 100));
+
 
 
         $timeLimit = $rifa->rifa->rifaPayment->time_pay ?? 30;
@@ -110,7 +111,6 @@ class MercadoPagoService
             'X-Company-ID' => $paggue_company_id,
             'Signature' => $signature,
         ];
-
         try {
             $client = new Client();
             $response = $client->post('https://ms.paggue.io/cashin/api/billing_order', [
@@ -118,9 +118,9 @@ class MercadoPagoService
                 'json' => $payload,
                 'verify' => false // Desativa a verificação SSL temporariamente
             ]);
-
             // Verifique a resposta antes de retornar
             $responseBody = json_decode($response->getBody(), true);
+
             if (isset($responseBody['error']) && $responseBody['error']) {
                 // Log ou debug da resposta completa
                 return $responseBody;
