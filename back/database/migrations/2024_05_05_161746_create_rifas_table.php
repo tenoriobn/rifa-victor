@@ -32,8 +32,7 @@ return new class extends Migration
             $table->dateTime('end_rifa')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->foreign("user_id")->references("id")->on("users");
-            $table->unsignedBigInteger('winner_id');
-            $table->foreign("winner_id")->references("id")->on("clients");
+
 
             $table->timestamps();
         });
