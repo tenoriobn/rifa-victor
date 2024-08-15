@@ -22,6 +22,8 @@ export default function CardProdutos({ categoria }) {
   const { formattedDate } = useFormattedDate();
   const baseURL = import.meta.env.VITE_BASE_URL;
 
+  console.log('produtos', produtos)
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

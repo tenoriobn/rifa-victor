@@ -62,6 +62,8 @@ export default function AcessoUsuario() {
         } catch (error) {
           console.error('Erro ao comprar rifa:', error);
           notifyError(error.response.data.msg);
+
+          setFinalizarPedido(false);
         }
       };
 

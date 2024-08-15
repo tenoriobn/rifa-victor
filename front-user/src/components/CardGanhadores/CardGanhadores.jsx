@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import Bilhete from "../../assets/Icons/bilhete.svg?react";
 import Calendario from "../../assets/Icons/calendario.svg?react";
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import { estadoGanhadores, estadoProdutoSelecionado } from '../../common/state/atom';
+import { estadoGanhadores, estadoProdutoSelecionado, estadoRenderizaInfoUsuario } from '../../common/state/atom';
 import { useEffect, useState } from 'react';
 import { fetchDados } from '../../common/http/http';
 import CardAviso from '../CardAviso/CardAviso';
@@ -14,6 +14,7 @@ export default function CardGanhadores() {
   const [loading, setLoading] = useState(true);
   const [erroConexao, setErroConexao] = useState(false);
   const setProdutoSelecionado = useSetRecoilState(estadoProdutoSelecionado);
+  const setRenderizaInfoUsuario = useSetRecoilState(estadoRenderizaInfoUsuario);
   const { formattedDate } = useFormattedDate();
   const baseURL = import.meta.env.VITE_BASE_URL;
 
@@ -60,7 +61,7 @@ export default function CardGanhadores() {
               <Link 
                 className="flex items-center w-auto overflow-hidden rounded-lg bg-neutral-200 hover:shadow-[4px_4px_4px_#0002] border border-solid border-neutral-400 ring-0 ring-amber-500/60 hover:ring-offset-4 hover:ring-2 transition-all duration-300"
                 to={`/${ganhadores?.rifa?.slug}/${ganhadores?.rifa?.id}`}
-                onClick={() => setProdutoSelecionado(ganhadores)}
+                onClick={() => {setProdutoSelecionado(ganhadores); setRenderizaInfoUsuario(false)}}
               >
                 <img 
                   className="w-[80px] h-[80px] items-center m-2 rounded-lg object-cover transition-all" 

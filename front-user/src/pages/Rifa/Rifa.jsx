@@ -80,7 +80,7 @@ export default function Rifa() {
       </motion.div> 
 
       <SlidePremio />
-      
+      {console.log('renderizaInfoUsuario: ', renderizaInfoUsuario)}
       {!renderizaComponenteCadastro && !renderizaComponenteLogin && !renderizaInfoUsuario && (
         <motion.div
           {...animacao}
@@ -103,6 +103,7 @@ export default function Rifa() {
           )}
 
           <AccordionDescricao display={`${renderizaComponente ? "flex" : "hidden"}`} />
+          {console.log('accordions: ', renderizaComponente)}
 
           {renderizaComponente && (
             <RankingVendas />
