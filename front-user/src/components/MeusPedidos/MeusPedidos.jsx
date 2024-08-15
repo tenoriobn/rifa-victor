@@ -45,13 +45,16 @@ export default function MeusPedidos() {
 
   return (
     <div 
-      className="rounded-lg ring-1 ring-gray-200 shadow bg-white w-full mt-4 mb-8 px-4 py-5 sm:px-6"
+      className="rounded-lg ring-1 ring-gray-200 shadow bg-white w-full mt-4 mb-8 p-4"
     >
       {
         !erroConexao ? (
           pedidosUsuario && pedidosUsuario.length > 0 ? (
             <>
-              <Paginacao />
+              <Paginacao 
+                pagination={pagination} 
+                onPageChange={(page) => setCurrentPage(page)}
+              />
               <TabelaPedidos />
 
               <div className="mt-5">

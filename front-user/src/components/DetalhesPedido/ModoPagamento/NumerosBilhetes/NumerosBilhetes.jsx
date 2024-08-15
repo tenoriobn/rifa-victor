@@ -23,7 +23,7 @@ export default function NumerosBilhetes() {
     <div className="flex flex-col gap-2 mt-4">
       <p className="font-bold whitespace-nowrap text-neutral-700">Seus números:</p>
 
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-2 max-h-[194px] overflow-auto">
         {numeros.map((valor, index) => (
           <div 
             key={index}
