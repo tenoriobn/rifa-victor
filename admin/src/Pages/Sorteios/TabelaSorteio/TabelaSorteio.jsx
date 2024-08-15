@@ -8,6 +8,7 @@ import { fetchDados, putDados } from "../../../common/http/http";
 import useFormattedDate from "../../../common/states/Hook/useFormattedDate";
 import useCurrencyFormatTable from "../../../common/states/Hook/useCurrencyFormatTable/useCurrencyFormatTable";
 import useFormatPercentage from "../../../common/states/Hook/useFormatPercentage";
+import { useState } from "react";
 
 const Table = styled.table`
   width: 100%;
@@ -161,27 +162,36 @@ export default function TabelaSorteio() {
   const { formatCurrency } = useCurrencyFormatTable();
   const { formatPercentage } = useFormatPercentage();
   const baseURL = import.meta.env.VITE_BASE_URL;
+  const [atualizaTabela, setAtualizaTabela] = useState(false);
+
+  const obterDados = async () => {
+    try {
+      const response = await fetchDados('/admin/dashboard/todas-rifas', userLogin);
+      setSorteios(response.data)
+    } catch (error) {
+      console.error('Erro ao fazer POST:', error);
+    }
+  };
 
   useEffect(() => {
-    const obterDados = async () => {
-      try {
-        const response = await fetchDados('/admin/dashboard/todas-rifas', userLogin);
-        setSorteios(response.data)
-      } catch (error) {
-        console.error('Erro ao fazer POST:', error);
-      }
-    };
-    
     obterDados();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (atualizaTabela) {
+      obterDados();
+      setAtualizaTabela(false);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [atualizaTabela]);
 
   const handleFinalizar = async (id) => {
     const confirmacao = window.confirm('Tem certeza que deseja finalizar esta rifa?');
     if (confirmacao) {
       try {
         await putDados(`admin/dashboard/rifa/finalizar/${id}`, userLogin);
-        setSorteios((prevSorteios) => prevSorteios.filter(sorteio => sorteio.id !== id));
+        setAtualizaTabela(true);
         alert('Rifa finalizada com sucesso!');
       } catch (error) {
         console.error('Erro ao finalizar a rifa:', error);
