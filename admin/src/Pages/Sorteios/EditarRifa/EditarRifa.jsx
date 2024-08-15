@@ -78,7 +78,7 @@ export default function EditarRifa() {
             <Geral />
             <Cotas />
             <DataPagamento />
-            <Promocoes mostrarCampo={true} />
+            <Promocoes mostrarCampo={false} />
             <Campanhas />
             <Outros />
             <DescricaoProduto />
