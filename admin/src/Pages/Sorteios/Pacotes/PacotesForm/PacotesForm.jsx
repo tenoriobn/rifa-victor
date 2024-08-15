@@ -65,21 +65,21 @@ export default function FormPacotes() {
   const [orderFilter, setOrderFilter] = useState({});
   // const [tabelaPacotesInfo, setTabelaPacotesInfo] = useRecoilState(stateTabelaPacotesInfo);
 
-  // const handleSubmit = async (e) => {
-  //   if (e) e.preventDefault();
-  //   try {
-  //     const response = await postDados('/admin/dashboard/ rota aqui', orderFilter);
-  //     setTabelaPacotesInfo(response);
-  //   } catch (error) {
-  //     console.error("There was an error fetching the data!", error);
-  //   }
-  // };
+  const handleSubmit = async (e) => {
+    if (e) e.preventDefault();
+    try {
+      // const response = await postDados('/admin/dashboard/ rota aqui', orderFilter);
+      // setTabelaPacotesInfo(response);
+    } catch (error) {
+      console.error("There was an error fetching the data!", error);
+    }
+  };
 
   // console.log(tabelaPacotesInfo)
 
   return (
     // onSubmit={handleSubmit}
-    <Form method="POST" action="/dashboard/rifas/cotas/174">
+    <Form onSubmit={handleSubmit}>
       <div className="filter-item">
         <label htmlFor="cod_promo">Cod. Promocional</label>
         <input type="text" className="frm_add_pkg" name="cod_promo" 

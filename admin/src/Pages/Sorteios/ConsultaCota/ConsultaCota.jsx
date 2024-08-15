@@ -8,6 +8,7 @@ import { fetchDados } from "../../../common/http/http";
 import { useEffect } from "react";
 import FiltroCotaTable from "./FiltroCotaTable/FiltroCotaTable";
 import { useState } from "react";
+import { ToastContainer, toast } from 'react-toastify';
 
 const ConsultaCotaContainer = styled.div`
   display: flex;
@@ -55,6 +56,10 @@ export default function ConsultaCota() {
     obterDados();
   }, []);
 
+  const notifyError = (message) => {
+    toast.error(message);
+  };
+
   return (
     <div>
       <Header>
@@ -77,11 +82,12 @@ export default function ConsultaCota() {
 
           <h1 className="title">{rifaInfo.title} </h1>
 
-          <ConsultaCotaForm />
+          <ConsultaCotaForm onNotifyError={notifyError} />
           <FiltroCotaTable />
         </ConsultaCotaContainer>
       </Main>
 
+      <ToastContainer theme="colored" />
     </div>
   )
 }

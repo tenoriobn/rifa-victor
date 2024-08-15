@@ -55,21 +55,20 @@ export default function UpsellForm() {
 
   console.log(orderFilter)
 
-    // const handleSubmit = async (e) => {
-  //   if (e) e.preventDefault();
-  //   try {
-  //     const response = await postDados('/admin/dashboard/ rota aqui', orderFilter);
-  //     setTabelaUpsellInfo(response);
-  //   } catch (error) {
-  //     console.error("There was an error fetching the data!", error);
-  //   }
-  // };
+  const handleSubmit = async (e) => {
+    if (e) e.preventDefault();
+    try {
+      // const response = await postDados('/admin/dashboard/ rota aqui', orderFilter);
+      // setTabelaUpsellInfo(response);
+    } catch (error) {
+      console.error("There was an error fetching the data!", error);
+    }
+  };
 
   // console.log(tabelaUpsellInfo)
 
   return (
-        // onSubmit={handleSubmit}
-    <Form method="POST" action="/dashboard/rifas/cotas/174">
+    <Form onSubmit={handleSubmit}>
       <div className="filter-item">
         <label htmlFor="init_date">Localização:</label>
         <select name="position"

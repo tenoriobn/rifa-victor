@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState } from "react";
 import styled from "styled-components";
@@ -72,7 +73,7 @@ const Button = styled.button`
   }
 `;
 
-export default function FiltroUsuarioForm() {
+export default function FiltroUsuarioForm({ onNotifyError }) {
   const [search, setSearch] = useState('');
   // const [selectSearch, setSelectSearch] = useState('');
   const setConsultaCota = useSetRecoilState(stateConsultaCota);
@@ -88,6 +89,7 @@ export default function FiltroUsuarioForm() {
 
       console.log('response cosulta', response)
     } catch (error) {
+      onNotifyError(error.response.data.msg);
       console.error("There was an error fetching the data!", error);
     }
   };
