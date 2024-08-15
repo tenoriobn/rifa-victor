@@ -42,7 +42,7 @@ export default function Menu() {
           <motion.div 
             {...animacao}
             ref={menuRef} 
-            className="absolute top-0 right-0 h-full w-full max-w-sm bg-black/90"
+            className="absolute top-0 right-0 h-full w-full max-w-sm bg-gray-50 border-l border-neutral-700	"
           >
             <div className="absolute top-0 right-0 p-4">
               <button
@@ -52,7 +52,7 @@ export default function Menu() {
                   setTimeout(() => setMenuAtivo(false), 290);
                 }}
               >
-                <Fechamento className="stroke-white fill-white" />
+                <Fechamento className="stroke-neutral-700 fill-neutral-700" />
               </button>
             </div>
 
@@ -65,8 +65,8 @@ export default function Menu() {
                     // setEsmaecendoFechar(true);
                     setTimeout(() => setMenuAtivo(false), 0);
                   }}
-                  className={`flex items-center gap-4 hover:text-neutral-100 transition-all duration-300 stroke-neutral-400 hover:stroke-neutral-100 ${
-                    location.pathname === to ? 'text-neutral-100' : ''
+                  className={`flex items-center gap-4  transition-all duration-300 hover:stroke-green-400 ${
+                    location.pathname === to ? 'text-green-400 stroke-green-400' : 'text-neutral-800 stroke-neutral-800 hover:text-green-400'
                   }`}
                 >
                   <Icon />

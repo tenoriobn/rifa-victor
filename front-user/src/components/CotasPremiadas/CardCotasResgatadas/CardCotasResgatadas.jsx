@@ -17,7 +17,7 @@ export default function CardCotasResgatadas() {
             className="bg-green-200 border border-solid border-green-400 p-1 rounded-lg text-center"
           >
             <div className="flex items-center justify-center gap-1 text-lg font-bold">
-              <EmojiFeliz className="icon stroke-amber-500" />
+              <EmojiFeliz className="icon stroke-green-500" />
               <p className='text-neutral-700'> {cotaResgatada.client.name}</p>
             </div>
   

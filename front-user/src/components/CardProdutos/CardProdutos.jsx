@@ -86,7 +86,7 @@ export default function CardProdutos({ categoria }) {
             key={produto.id} 
             to={`/${produto.slug}/${produto.id}`}
             onClick={handleClick(produto)}
-            className="flex w-auto overflow-hidden rounded-lg bg-neutral-200 hover:shadow-[4px_4px_4px_#0002] border border-solid border-neutral-400 ring-0 ring-amber-500/60 hover:ring-offset-4 hover:ring-2 transition-all duration-300"
+            className="flex w-auto overflow-hidden rounded-lg bg-neutral-200 hover:shadow-[4px_4px_4px_#0002] border border-solid border-neutral-300 ring-0 ring-green-500/60 hover:ring-offset-4 hover:ring-2 transition-all duration-300"
           >
             <img 
               className="w-[80px] m-2 rounded-lg object-cover transition-all" 
@@ -107,14 +107,14 @@ export default function CardProdutos({ categoria }) {
                 <div className="flex flex-col">
                   {categoria === "finalizadas" && (
                     <div className='flex items-center gap-2'>
-                      <Calendario className="icon text-amber-500" />
+                      <Calendario className="icon text-green-500" />
                       <p className="text-sm font-semibold text-zinc-700">{formatarData(produto.end_rifa)}</p>
                     </div>
                   )}
 
                   {categoria === "futuras" && (
                     <div className='flex items-center gap-2'>
-                      <Calendario className="icon text-amber-500" />
+                      <Calendario className="icon text-green-500" />
                       <p className="text-sm font-semibold text-zinc-700">{formattedDate(produto.initial_sale)}</p>
                     </div>
                   )}
@@ -128,10 +128,10 @@ export default function CardProdutos({ categoria }) {
                 </div>
 
                 <button 
-                  className="relative inline-block group bg-amber-500 text-white rounded overflow-hidden shadow-transparent shadow-md hover:shadow-black/30"
+                  className="relative inline-block group bg-green-500 text-white rounded overflow-hidden shadow-transparent shadow-md hover:shadow-black/30"
                 >
-                  <div className="absolute left-0 top-0 bg-amber-600 w-0 group-hover:w-full transition-all duration-300 h-1/2"></div>
-                  <div className="absolute right-0 bottom-0 bg-amber-600 w-0 group-hover:w-full transition-all duration-300 h-1/2"></div>
+                  <div className="absolute left-0 top-0 bg-green-600 w-0 group-hover:w-full transition-all duration-300 h-1/2"></div>
+                  <div className="absolute right-0 bottom-0 bg-green-600 w-0 group-hover:w-full transition-all duration-300 h-1/2"></div>
                   <div className="relative px-4 py-1 transition-all duration-300">
                     {categoria === "ativas" ? "Comprar" : "Ver"}
                   </div>

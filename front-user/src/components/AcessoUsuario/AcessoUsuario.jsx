@@ -117,7 +117,7 @@ export default function AcessoUsuario() {
         </button>
 
         <button 
-          className="relative inline-block group text-white rounded overflow-hidden shadow-transparent shadow-md hover:shadow-black/3 0 bg-emerald-600 disabled:bg-slate-300"
+          className="relative inline-block group text-white rounded overflow-hidden shadow-transparent shadow-md hover:shadow-black/3 0 bg-emerald-600 disabled:bg-gray-300"
           disabled={!termosAceito || (renderizaComponenteCadastro && !camposPreenchidos) || (!renderizaComponenteCadastro && (!termosAceito || !usuario))}
           onClick={handleClick}
         >

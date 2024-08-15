@@ -29,7 +29,7 @@ export default function Usuario() {
 
   return (
     <>
-      <div className="flex items-center justify-between flex-wrap gap-2 bg-slate-300 rounded p-2 mb-2">
+      <div className="flex items-center justify-between flex-wrap gap-2 bg-gray-200 rounded p-2 mb-2">
         <div className="flex items-center gap-2 text-xl ">
           <Perfil className="w-6 h-6" />
           <h2 className="text-xl font-semibold text-neutral-800">Usuário</h2>
@@ -48,7 +48,7 @@ export default function Usuario() {
         </button>
       </div>
 
-      <div className="relative rounded-lg p-1 bg-slate-400 h-10 inline-grid items-center grid-cols-2">
+      <div className="relative rounded-lg p-1 bg-gray-200 h-10 inline-grid items-center grid-cols-2">
         {links.map((link) => (
           <Link
             key={link.id}

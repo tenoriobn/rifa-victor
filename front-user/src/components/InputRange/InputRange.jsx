@@ -37,14 +37,14 @@ export default function InputRange() {
         className="w-full border border-solid border-neutral-900/80 p-2 inline-flex items-center rounded-full gap-x-2 mb-6"
       >
         <button 
-          className="inline-flex items-center h-10 w-10 text-xl shrink-0 justify-center text-white font-bold rounded-full bg-amber-500 hover:bg-amber-600 transition-all duration-300 disabled:bg-neutral-400 active:scale-110"
+          className="inline-flex items-center h-10 w-10 text-xl shrink-0 justify-center text-white font-bold rounded-full bg-green-500 hover:bg-green-600 transition-all duration-300 disabled:bg-neutral-400 active:scale-110"
           onClick={() => handleButtonQntd('decrementar', 5)}
         > 
           -5 
         </button>
 
         <button 
-          className="inline-flex items-center justify-center text-white rounded-full bg-amber-500 hover:bg-amber-600 transition-all duration-300 disabled:bg-neutral-400 active:scale-110"
+          className="inline-flex items-center justify-center text-white rounded-full bg-green-500 hover:bg-green-600 transition-all duration-300 disabled:bg-neutral-400 active:scale-110"
           onClick={() => handleButtonQntd('decrementar', 1)}
         >
             <SinalMenos />
@@ -57,14 +57,14 @@ export default function InputRange() {
         />
 
         <button 
-          className="inline-flex items-center justify-center text-white rounded-full bg-amber-500 hover:bg-amber-600 transition-all duration-300 disabled:bg-neutral-400 active:scale-110"
+          className="inline-flex items-center justify-center text-white rounded-full bg-green-500 hover:bg-green-600 transition-all duration-300 disabled:bg-neutral-400 active:scale-110"
           onClick={() => handleButtonQntd('incrementar', 1)}
         >
           <SinalMais />
         </button>
 
         <button 
-          className="inline-flex items-center h-10 w-10 text-xl shrink-0 justify-center text-white font-bold rounded-full bg-amber-500 hover:bg-amber-600 transition-all duration-300 disabled:bg-neutral-400 active:scale-110 "
+          className="inline-flex items-center h-10 w-10 text-xl shrink-0 justify-center text-white font-bold rounded-full bg-green-500 hover:bg-green-600 transition-all duration-300 disabled:bg-neutral-400 active:scale-110 "
           onClick={() => handleButtonQntd('incrementar', 5)}
         > 
             +5 
@@ -84,10 +84,10 @@ export default function InputRange() {
             type="range" 
             value={valorRange}
             onChange={(event) => setValorRange(event.target.value)}
-            className="w-full absolute appearance-none cursor-pointer disabled:cursor-not-allowed disabled:bg-opacity-50 focus:outline-none peer group bg-transparent rounded-lg focus-visible:ring-2 focus-visible:ring-amber-500 dark:focus-visible:ring-amber-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-900 h-5 [&::-webkit-slider-thumb]:relative [&::-moz-range-thumb]:relative [&::-webkit-slider-thumb]:z-[1] [&::-moz-range-thumb]:z-[1] [&::-webkit-slider-thumb]:appearance-none [&::-moz-range-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-0 text-amber-500 dark:text-amber-500 [&::-webkit-slider-thumb]:ring-2 [&::-webkit-slider-thumb]:ring-current [&::-webkit-slider-thumb]:bg-white  [&::-moz-range-thumb]:bg-current [&::-webkit-slider-thumb]:h-5 [&::-moz-range-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 [&::-moz-range-thumb]:w-5 [&::-webkit-slider-thumb]:-mt-1 [&::-moz-range-thumb]:-mt-1 [&::-webkit-slider-runnable-track]:group-disabled:bg-opacity-50 [&::-moz-range-track]:group-disabled:bg-opacity-50 [&::-webkit-slider-runnable-track]:bg-gray-400   [&::-moz-range-track]:dark:bg-gray-400 [&::-webkit-slider-runnable-track]:rounded-lg [&::-moz-range-track]:rounded-lg [&::-webkit-slider-runnable-track]:h-3 [&::-moz-range-track]:h-3" 
+            className="w-full absolute appearance-none cursor-pointer disabled:cursor-not-allowed disabled:bg-opacity-50 focus:outline-none peer group bg-transparent rounded-lg focus-visible:ring-2 focus-visible:ring-green-500 dark:focus-visible:ring-amber-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-900 h-5 [&::-webkit-slider-thumb]:relative [&::-moz-range-thumb]:relative [&::-webkit-slider-thumb]:z-[1] [&::-moz-range-thumb]:z-[1] [&::-webkit-slider-thumb]:appearance-none [&::-moz-range-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-0 text-green-500 dark:text-green-500 [&::-webkit-slider-thumb]:ring-2 [&::-webkit-slider-thumb]:ring-current [&::-webkit-slider-thumb]:bg-white  [&::-moz-range-thumb]:bg-current [&::-webkit-slider-thumb]:h-5 [&::-moz-range-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 [&::-moz-range-thumb]:w-5 [&::-webkit-slider-thumb]:-mt-1 [&::-moz-range-thumb]:-mt-1 [&::-webkit-slider-runnable-track]:group-disabled:bg-opacity-50 [&::-moz-range-track]:group-disabled:bg-opacity-50 [&::-webkit-slider-runnable-track]:bg-gray-400   [&::-moz-range-track]:dark:bg-gray-400 [&::-webkit-slider-runnable-track]:rounded-lg [&::-moz-range-track]:rounded-lg [&::-webkit-slider-runnable-track]:h-3 [&::-moz-range-track]:h-3" 
           />
 
-          <span className="absolute pointer-events-none peer-disabled:bg-opacity-50 rounded-s-lg bg-amber-500 dark:bg-amber-500 h-3" style={{width: `${calcularPorcentagem(valorRange, `${rifa.cota.qntd_cota_min_order}` , `${rifa.cota.qntd_cota_max_order}`)}%`}}></span>
+          <span className="absolute pointer-events-none peer-disabled:bg-opacity-50 rounded-s-lg bg-green-500 dark:bg-green-500 h-3" style={{width: `${calcularPorcentagem(valorRange, `${rifa.cota.qntd_cota_min_order}` , `${rifa.cota.qntd_cota_max_order}`)}%`}}></span>
         </div>
 
         <p className="font-bold">{rifa.cota.qntd_cota_max_order}</p>

@@ -16,7 +16,7 @@ export default function Cabecalho() {
 
   return (
     <>    
-      <div className="bg-neutral-950 text-neutral-200">
+      <div className="bg-white border-b text-neutral-200">
         <div className="flex justify-between items-center max-w-2xl mx-auto pt-4 pb-8 px-4">
           
           {logoSrc ? (
@@ -30,10 +30,10 @@ export default function Cabecalho() {
               <Link 
                 aria-current="page" 
                 to="/usuario/meu-perfil" 
-                className="router-link-active router-link-exact-active flex flex-row-reverse items-center gap-2 p-2 hover:bg-amber-300/20 transition-all duration-300 rounded-lg"
+                className="router-link-active router-link-exact-active flex flex-row-reverse items-center gap-2 p-2 hover:bg-gray-100 transition-all duration-300 rounded-lg text-neutral-800"
               >
                 <div 
-                  className="bg-slate-700 h-8 w-8 rounded-full inline-flex items-center justify-center ring-offset-2"
+                  className="bg-slate-700 text-neutral-200 h-8 w-8 rounded-full inline-flex items-center justify-center ring-offset-2"
                 >
                   {inicialNome}
                 </div> 
@@ -43,18 +43,18 @@ export default function Cabecalho() {
               :
 
               <Link 
-                className="p-2 hover:bg-amber-300/10 transition-all duration-300 rounded-lg"
+                className="p-2 hover:bg-gray-100 transition-all duration-300 rounded-lg"
                 to="/usuario/meu-perfil"
               >
-                <Perfil className="fill-neutral-200 w-7 h-7"  />
+                <Perfil className="fill-black/90 w-7 h-7"  />
               </Link>
             }
 
             <button 
-              className="p-2 hover:bg-amber-300/20 transition-all duration-300 rounded-lg"
+              className="p-2 hover:bg-gray-100 transition-all duration-300 rounded-lg"
               onClick={() => setMenuAtivo(!menuAtivo)}
             >
-              <MenuIcon />
+              <MenuIcon className="fill-black/90" />
             </button>
           </div>
         </div>

@@ -59,7 +59,7 @@ export default function CardGanhadores() {
           {ganhadoresFiltrados.map(ganhadores => (
             <div key={ganhadores.id} className="flex flex-col gap-4">
               <Link 
-                className="flex items-center w-auto overflow-hidden rounded-lg bg-neutral-200 hover:shadow-[4px_4px_4px_#0002] border border-solid border-neutral-400 ring-0 ring-amber-500/60 hover:ring-offset-4 hover:ring-2 transition-all duration-300"
+                className="flex items-center w-auto overflow-hidden rounded-lg bg-neutral-200 hover:shadow-[4px_4px_4px_#0002] border border-solid border-neutral-300 ring-0 ring-green-500/60 hover:ring-offset-4 hover:ring-2 transition-all duration-300"
                 to={`/${ganhadores?.rifa?.slug}/${ganhadores?.rifa?.id}`}
                 onClick={() => {setProdutoSelecionado(ganhadores); setRenderizaInfoUsuario(false)}}
               >
@@ -85,7 +85,7 @@ export default function CardGanhadores() {
                   </div>
   
                   <div className='flex items-center gap-2'>
-                    <Calendario className="icon text-amber-500" />
+                    <Calendario className="icon text-green-500" />
                     <p className="text-sm text-neutral-600 text-left truncate">Data do Sorteio: </p>
                     <p className="text-sm font-semibold text-zinc-700">{formattedDate(ganhadores?.rifa?.end_rifa)}</p>
                   </div>

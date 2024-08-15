@@ -57,7 +57,7 @@ export default function Rifa() {
         className="flex flex-col-reverse md:flex-row items-center justify-between font-semibold text-neutral-800 mb-2"
       >
         <div className="flex items-center gap-x-1">
-          <Estrela className="icon stroke-amber-500" />
+          <Estrela className="icon stroke-green-500" />
           <h2>{produto.title}</h2>
         </div>
 
@@ -87,7 +87,7 @@ export default function Rifa() {
         >
           <OpcoesDoEvento display={`${renderizaComponente ? "flex" : "hidden"}`} />
 
-          <div className="bg-slate-100 p-2 rounded-lg">
+          <div className="bg-gray-100 p-2 rounded-lg">
             <h3 className="text-neutral-700">{produto.description_resume}</h3>
           </div>
 

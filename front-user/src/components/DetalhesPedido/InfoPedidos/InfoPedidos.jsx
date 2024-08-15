@@ -36,7 +36,7 @@ export default function InfoPedidos() {
         {checkoutInfo?.status === 0 &&
           <div className="mt-4 flex gap-2 text-neutral-700">
             <p className="font-bold">⚠ Status:</p>
-            <p className="text-amber-500">Aguardando pagamento</p>
+            <p className="text-green-500">Aguardando pagamento</p>
           </div>
         }
 

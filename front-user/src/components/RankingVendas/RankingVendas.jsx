@@ -18,7 +18,7 @@ export default function RankingVendas() {
            usuario && usuario.client ? (
           <div 
             key={usuario.client_id}
-            className="bg-slate-300 rounded-lg p-4 flex items-center gap-x-2 text-neutral-700"
+            className="bg-gray-100 rounded-lg p-4 flex items-center gap-x-2 text-neutral-700"
           >
             <Medalha />
   

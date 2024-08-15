@@ -10,7 +10,7 @@ export default function Footer() {
   const formattedPhone = formatPhone(siteConfig.whatsapp);
 
   return (
-    <footer className="border-0 border-t border-solid border-t-neutral-700 text-neutral-300">
+    <footer className="border-0 border-t border-solid border-t-neutral-300 text-neutral-300">
       <div className="max-w-2xl m-auto relative text-center flex flex-col mt-2 mb-4">
 
         <div className="inline-flex flex-wrap items-center justify-center gap-2">
@@ -19,7 +19,7 @@ export default function Footer() {
             className="hover:scale-125 hover:px-2 transition-all"
             target="_blank"
           >
-            <Whatsapp />
+            <Whatsapp className="fill-black/90" />
           </a>
 
           <a 
@@ -27,17 +27,17 @@ export default function Footer() {
             className="hover:scale-125 hover:px-2 transition-all"
             target="_blank"
           >            
-            <Instagram />
+            <Instagram className="fill-black/90" />
           </a>
         </div>
 
         <div className="inline-block group text-xs my-3">
-          <p className="text-xs text-white text-center mb-1">
+          <p className="text-xs text-neutral-800 text-center mb-1">
             {/* <span className="font-semibold">OVERZ</span>  */}
             {siteConfig.footer_company}
           </p>
 
-          <a href={siteConfig.helpdesk_url} className="px-2 border" target="_blank">CONTATO</a>
+          <a href={siteConfig.helpdesk_url} className="text-neutral-800 px-2 border border-neutral-800" target="_blank">CONTATO</a>
         </div>
       </div>
     </footer>

@@ -59,7 +59,7 @@ export default function Ganhadores() {
   return (
     <div>
       <article className="flex flex-col gap-2">
-        <div className="text-xl bg-slate-300 rounded p-2">
+        <div className="text-xl bg-gray-300 rounded p-2">
         <IconeGanhadores />
           <h2 className="text-xl font-semibold text-neutral-800">
             Ganhadores
@@ -67,7 +67,7 @@ export default function Ganhadores() {
           </h2>
         </div>
         {winner && (
-          <Link className="flex w-auto overflow-hidden rounded-lg bg-neutral-200 hover:shadow-[4px_4px_4px_#0002] border border-solid border-neutral-400 ring-0 ring-amber-500/60 hover:ring-offset-4 hover:ring-2 transition-all">
+          <Link className="flex w-auto overflow-hidden rounded-lg bg-neutral-200 hover:shadow-[4px_4px_4px_#0002] border border-solid border-neutral-300 ring-0 ring-green-500/60 hover:ring-offset-4 hover:ring-2 transition-all">
             <div className="flex w-full">
                 <img 
                   className="w-[80px] m-2 rounded-lg object-cover transition-all" 

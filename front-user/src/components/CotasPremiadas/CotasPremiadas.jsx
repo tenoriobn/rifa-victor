@@ -20,12 +20,12 @@ export default function CotasPremiadas() {
   };
 
   return (
-    <div className="bg-slate-300 p-2 rounded-lg mt-4 mb-4">
+    <div className="bg-gray-100 p-2 rounded-lg mt-4 mb-4">
       <p className="font-semibold text-neutral-700 mb-2">
         Cotas premiadas! Achou? Levou na hora
       </p>
 
-      <div className="relative rounded-lg p-1 bg-slate-400 h-10 inline-grid items-center grid-cols-2">
+      <div className="relative rounded-lg p-1 bg-gray-200 h-10 inline-grid items-center grid-cols-2">
         {botoes.map((botao) => (
           <button
             key={botao.id}

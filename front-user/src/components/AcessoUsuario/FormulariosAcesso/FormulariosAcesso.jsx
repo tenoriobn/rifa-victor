@@ -29,7 +29,7 @@ export default function FormulariosAcesso() {
   return (
     <motion.div 
       {...animacao}
-      className="bg-slate-100 p-4 rounded-lg mb-4"
+      className="bg-gray-100 p-4 rounded-lg mb-4"
     >
       <div className="flex flex-wrap justify-between border-b border-solid border-b-slate-300 mb-4  pb-2">
         {renderizaComponenteLogin &&

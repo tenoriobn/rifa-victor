@@ -10,7 +10,7 @@ export default function CardDuvidas() {
 
   return (
     <div className="flex items-center justify-center mb-4">
-      <div className="grow md:grow-0 h-full box-border relative text-neutral-600 mx-4 p-2 bg-slate-100 rounded-xl">
+      <div className="grow md:grow-0 h-full box-border relative text-neutral-600 mx-4 p-2 bg-gray-100 rounded-xl">
         <div className="flex items-end gap-2">
           <p 
             className="text-xl font-semibold text-neutral-800 mb-2"

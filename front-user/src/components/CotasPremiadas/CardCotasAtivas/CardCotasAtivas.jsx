@@ -14,10 +14,10 @@ export default function CardCotasAtivas() {
           cotasAtivas.map((cotaAtiva, index) => (
             <article
               key={index}
-              className='bg-sky-200 border border-solid border-sky-400 p-1 rounded-lg text-center'
+              className='bg-white border border-solid border-green-500 p-1 rounded-lg text-center'
             >
               <div className='flex items-center justify-center gap-1 text-lg font-bold'>
-                <Estrela className="icon stroke-amber-500" />
+                <Estrela className="icon stroke-green-500" />
                 <p className='text-neutral-700'>{cotaAtiva.number_cota}</p>
               </div>
               <p className="text-neutral-700 mt-1">{cotaAtiva.award}</p>

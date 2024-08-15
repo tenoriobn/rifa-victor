@@ -56,15 +56,15 @@ export default function PacotesPromocionais() {
           <button
             key={pacote.id}
             className={`relative rounded px-2 py-1 transition-all duration-300 cursor-pointer text-center border-2 border-solid ${
-              pacote.popular === "sim" ? 'border-emerald-700' : 'border-transparent'} 
-              ${pacoteSelecionado.id === pacote.id ? 'bg-green-200 text-neutral-700' : 'bg-slate-300 text-black'}
-              ${pacoteSelecionado.id === pacote.id ? '' : 'hover:bg-slate-400'}`
+              pacote.popular === "sim" ? 'border-green-400' : 'border-transparent'} 
+              ${pacoteSelecionado.id === pacote.id ? 'bg-green-200 text-neutral-700' : 'bg-gray-100 text-black'}
+              ${pacoteSelecionado.id === pacote.id ? '' : 'hover:bg-gray-200'}`
             }
             onClick={() => handlePacoteSelecionado(pacote)}
           >
             {pacote.popular === "sim"  && (
               <div className="flex gap-2 absolute -top-5 left-1/2 -translate-x-1/2 z-[999]">
-                <p className="px-4 py-0.5 rounded-t-2xl text-[10px] text-emerald-50 whitespace-nowrap bg-emerald-700">
+                <p className="px-4 py-0.5 rounded-t-2xl text-[10px] text-emerald-50 whitespace-nowrap bg-green-400">
                   Mais popular
                 </p>
               </div>
@@ -107,7 +107,7 @@ export default function PacotesPromocionais() {
         </div>
 
         <button 
-          className="rounded-full px-8 py-4 bg-amber-500 ring-1 ring-amber-800 ring-offset-4 hover:bg-amber-600 transition-all duration-300 disabled:bg-neutral-400 text-white"
+          className="rounded-full px-8 py-4 bg-green-500 ring-1 ring-green-700 ring-offset-4 hover:bg-green-600 transition-all duration-300 disabled:bg-neutral-400 text-white"
           onClick={handleClick}
         >
           Comprar por <span className="font-bold">R$&nbsp;{valorCompra}</span>

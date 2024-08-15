@@ -26,8 +26,8 @@ export default function Produtos() {
           <button
             key={botao.categoria}
             className={`px-2 py-1 rounded-lg transition-all duration-300 cursor-pointer ${
-              categoria === botao.categoria ? "bg-sky-600 text-white" : "bg-neutral-300 text-neutral-700"
-            } ${botao.disabled ? "cursor-not-allowed disabled:bg-neutral-400" : "hover:bg-sky-300"}`}
+              categoria === botao.categoria ? "bg-green-500 text-white" : "bg-neutral-300 text-neutral-700"
+            } ${botao.disabled ? "cursor-not-allowed disabled:bg-neutral-400" : "hover:bg-green-400"}`}
             onClick={() => setCategoria(botao.categoria)}
             disabled={botao.disabled}
           >

@@ -17,7 +17,7 @@ export default function Paginacao({pagination, onPageChange}) {
           <button 
             key={index}
             onClick={() => onPageChange(link.url ? new URL(link.url).searchParams.get('page') : 1)}
-            className={`${ link.label === '&laquo; Previous' ? "h-10 px-4 transition-colors duration-300 rounded-l-lg focus:shadow-outline hover:bg-slate-100 flex items-center" : link.label === 'Next &raquo;' ? "h-10 px-4 transition-colors duration-300 rounded-r-lg focus:shadow-outline hover:bg-slate-200 flex items-center" :""}`}
+            className={`${ link.label === '&laquo; Previous' ? "h-10 px-4 transition-colors duration-300 rounded-l-lg focus:shadow-outline hover:bg-gray-100 flex items-center" : link.label === 'Next &raquo;' ? "h-10 px-4 transition-colors duration-300 rounded-r-lg focus:shadow-outline hover:bg-gray-200 flex items-center" :""}`}
           >
             { link.label === '&laquo; Previous' 
               ? <SetaPaginacao className="stroke-slate-500 " />
@@ -27,7 +27,7 @@ export default function Paginacao({pagination, onPageChange}) {
               ? <SetaPaginacao className="stroke-slate-500 rotate-180" />
               
               : <span 
-                className={`w-6 h-6 inline-flex items-center justify-center rounded-full transition-colors duration-300 focus:shadow-outline  ${link.active ? 'bg-slate-500 text-white' : 'hover:bg-slate-200 text-slate-700'}`}
+                className={`w-6 h-6 inline-flex items-center justify-center rounded-full transition-colors duration-300 focus:shadow-outline  ${link.active ? 'bg-slate-500 text-white' : 'hover:bg-gray-200 text-slate-700'}`}
               >
                 {link.label}
               </span>
