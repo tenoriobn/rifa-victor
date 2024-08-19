@@ -1,5 +1,10 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 import styled from "styled-components";
+import { postDados } from "../../../../common/http/http";
+import { useRecoilState } from "recoil";
+import { stateTabelaPacotesInfo } from "../../../../common/states/atom";
+import { useParams } from "react-router-dom";
 
 const Form = styled.form`
   display: flex;
@@ -61,21 +66,22 @@ const Form = styled.form`
   }
 `;
 
-export default function FormPacotes() {
+export default function FormPacotes({ onNotifyError }) {
   const [orderFilter, setOrderFilter] = useState({});
-  // const [tabelaPacotesInfo, setTabelaPacotesInfo] = useRecoilState(stateTabelaPacotesInfo);
-
+  const [tabelaPacotesInfo, setTabelaPacotesInfo] = useRecoilState(stateTabelaPacotesInfo);
+  const { id } = useParams();
   const handleSubmit = async (e) => {
     if (e) e.preventDefault();
     try {
-      // const response = await postDados('/admin/dashboard/ rota aqui', orderFilter);
-      // setTabelaPacotesInfo(response);
+      const response = await postDados(`/admin/dashboard/pacote/filtro/${id}`, orderFilter);
+      setTabelaPacotesInfo(response.data);
     } catch (error) {
       console.error("There was an error fetching the data!", error);
+      onNotifyError(error.response.data.msg);
     }
   };
 
-  // console.log(tabelaPacotesInfo)
+  console.log(tabelaPacotesInfo)
 
   return (
     // onSubmit={handleSubmit}
@@ -107,8 +113,8 @@ export default function FormPacotes() {
           value={orderFilter.status || ''}
         >
           <option value="">- Todos -</option>
-          <option value="A">Ativo</option>
-          <option value="F">Finalizado</option>
+          <option value="ativo">Ativo</option>
+          <option value="finalizado">Finalizado</option>
         </select>
       </div>
 

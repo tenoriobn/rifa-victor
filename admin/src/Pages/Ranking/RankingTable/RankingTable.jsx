@@ -108,7 +108,7 @@ export default function RankingTable() {
               )}
               {isibilidadeColunaTabelaRanking.cliente && (
                 <td align="center" className="cliente">
-                  <a href={`https://dash.alimaprojetos.com/dashboard/pedidos?id_customer=${item.id}`} target="_blank" rel="noopener noreferrer">
+                  <a href={`https://dash.vvpremiacoes.com/dashboard/pedidos?id_customer=${item.id}`} target="_blank" rel="noopener noreferrer">
                     {item?.client?.name} {item?.client?.surname}
                   </a>
                 </td>

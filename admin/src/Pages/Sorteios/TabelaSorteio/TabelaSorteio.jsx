@@ -17,7 +17,7 @@ const Table = styled.table`
   margin: 4.5rem 0 1.5rem 0;
   border-collapse: separate;
   border-spacing: 0 1em;
-
+  display: block;
   overflow-x: auto;
   white-space: nowrap;
 
@@ -143,10 +143,6 @@ const Table = styled.table`
     opacity: .8;
   }
 
-  @media (max-width: 1879px) {
-    display: block;
-  }
-
   ::-webkit-scrollbar {
     width: 8px;
     height: 6px;
@@ -196,6 +192,20 @@ export default function TabelaSorteio() {
       } catch (error) {
         console.error('Erro ao finalizar a rifa:', error);
         alert('Erro ao finalizar a rifa. Tente novamente.');
+      }
+    }
+  };
+
+  const handleExcluir = async (id) => {
+    const confirmacao = window.confirm('Tem certeza que deseja excluir esta rifa?');
+    if (confirmacao) {
+      try {
+        await putDados(`admin/dashboard/rifa/excluir/${id}`, userLogin);
+        setAtualizaTabela(true);
+        alert('Rifa Excluida com sucesso!');
+      } catch (error) {
+        console.error('Erro ao excluir a rifa:', error);
+        alert('Erro ao excluir a rifa. Tente novamente.');
       }
     }
   };
@@ -270,7 +280,7 @@ export default function TabelaSorteio() {
               </td>
               <td>#{sorteio?.id}</td>
               <td>
-                <a href={`https://alimaprojetos.com/${sorteio?.slug}/${sorteio?.id}`} target="_blank">
+                <a href={`https://vvpremiacoes.com/${sorteio?.slug}/${sorteio?.id}`} target="_blank">
                   <i className="fa-solid fa-link"></i>
                 </a> &nbsp;
                 <b>{sorteio?.title}</b>
@@ -279,7 +289,6 @@ export default function TabelaSorteio() {
               <td>{formatCurrency(sorteio?.fat_total)}</td>
               <td>{formatCurrency(sorteio?.fat_hoje)}</td>
               <td>{sorteio?.qntd_numeros}</td>
-              {/* <td><b>{formatPercentage((sorteio.qntd_numeros / sorteio.cota.qntd_cota * 100).toFixed(2))}%</b></td> */}
               <td>
                 <b>
                   {sorteio?.cota ? formatPercentage((sorteio?.qntd_numeros / sorteio?.cota?.qntd_cota) * 100) : '0,00%'}
@@ -302,17 +311,26 @@ export default function TabelaSorteio() {
               <td>
                 <div className="button-group">
                   {sorteio?.status !== 'finalizadas' && (
-                    <a className="button-delete" href="#" onClick={() => handleFinalizar(sorteio?.id)} >
-                      <i className="fa-solid fa-toggle-on"></i> Finalizar
-                    </a>
+                    <>
+                      <a className="button-delete" href="#" onClick={() => handleFinalizar(sorteio?.id)} >
+                        <i className="fa-solid fa-toggle-on"></i> Finalizar
+                      </a>
+                    </>
                   )}
 
                   {sorteio?.status === 'finalizadas' && (
-                  <button className="status-inactive button-ativar"
-                    onClick={() => handleAtivar(sorteio?.id)}
-                  >
-                    <ion-icon name="stats-chart" role="img" className="md hydrated"></ion-icon> Ativar
-                  </button>
+                    <>
+                    
+                      <button className="status-inactive button-ativar"
+                        onClick={() => handleAtivar(sorteio?.id)}
+                      >
+                        <ion-icon name="stats-chart" role="img" className="md hydrated"></ion-icon> Ativar
+                      </button>
+
+                      <a className="button-delete" href="#" onClick={() => handleExcluir(sorteio?.id)} >
+                        <i className="fa-solid fa-toggle-on"></i> Excluir
+                      </a>
+                    </>
                   )}
 
                   <Link className="button-dashboard" to={`/dashboard/rifa/${sorteio?.id}`}>

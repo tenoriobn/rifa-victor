@@ -164,6 +164,21 @@ class RifasController extends Controller
             return response()->json(["response" => false, "msg" => "Ocorreu um erro interno ao cadastrar a rifa", "error" => $e->getMessage()], $this->serverError);
         }
     }
+    public function excluirRifa($id) {
+        try {
+            $rifasData = Rifas::getOneRifa($id);
+            if (!$rifasData) {
+                return response()->json(["success" => false, "msg" => "Rifa não encontrada" ], 404);
+            }
+
+            $rifasData->delete();
+            return response()->json(["success" => true, "msg" => "Rifa excluida com sucesso" ], $this->success);
+
+
+        } catch (Exception $e) {
+            return response()->json(["response" => false, "msg" => "Ocorreu um erro interno ao cadastrar a rifa", "error" => $e->getMessage()], $this->serverError);
+        }
+    }
 
     public function storeBilhetePremiado(Request $request) {
         try {
@@ -384,6 +399,70 @@ class RifasController extends Controller
             return response()->json(["response" => false, "msg" => "Ocorreu um erro interno ao cadastrar a rifa", "error" => $e->getMessage()], 500);
         }
     }
+    public function filtroPacotes(Request $request, $id) {
+        try {
+            // Inicializa a query base, filtrando pelo 'rifas_id'
+            $query = DiscountPackage::where('rifas_id', $id);
+
+            // Aplica os filtros se forem fornecidos
+            if ($request->filled('codPromo')) {
+                $query->where('cod_promo', 'like', '%' . $request->input('codPromo') . '%');
+            }
+
+            if ($request->filled('maisPopular')) {
+                $query->where('popular', $request->input('maisPopular'));
+            }
+
+            if ($request->filled('status')) {
+                $query->where('status', $request->input('status'));
+            }
+
+            // Aplica ordenação conforme o filtro
+            if ($request->filled('ordem')) {
+                switch ($request->input('ordem')) {
+                    case 'qtdAsc':
+                        $query->orderBy('qntd_cota', 'asc');
+                        break;
+                    case 'qtdDesc':
+                        $query->orderBy('qntd_cota', 'desc');
+                        break;
+                    case 'faturadoAsc':
+                        $query->orderBy('valor_total', 'asc');
+                        break;
+                    case 'faturadoDesc':
+                        $query->orderBy('valor_total', 'desc');
+                        break;
+                    case 'totalAsc':
+                        $query->orderBy('value_cota', 'asc');
+                        break;
+                    case 'totalDesc':
+                        $query->orderBy('value_cota', 'desc');
+                        break;
+                    case 'created':
+                        $query->orderBy('created_at', 'desc');
+                        break;
+                    case 'updated':
+                        $query->orderBy('updated_at', 'desc');
+                        break;
+                }
+            }
+
+            // Obtém os resultados
+            $pacotes = $query->get();
+
+            // Verifica se encontrou algum resultado
+            if ($pacotes->isEmpty()) {
+                return response()->json(['response' => false, 'msg' => 'Nenhum pacote encontrado com os filtros aplicados'], 404);
+            }
+
+            return response()->json(["success" => true, "data" => $pacotes], 200);
+
+        } catch (Exception $e) {
+            return response()->json(["response" => false, "msg" => "Ocorreu um erro interno ao filtrar os pacotes", "error" => $e->getMessage()], 500);
+        }
+    }
+
+
 
     public function getUpsellRifa($id) {
         try {
@@ -560,7 +639,7 @@ class RifasController extends Controller
             $rifaPayDetails->qrCodeBase64 = $payment['payment'];
 
             RifaPay::addPix($rifaPay->id, $rifaPayDetails->pixId, $rifaPayDetails->qrCode,$rifaPayDetails->qrCodeBase64);
-        
+
             if($afiliadoId) {
                 $isBuyRifa =  $this->rifaService->calcularGanhoAfiliado($afiliadoId, $rifaPay );
             }

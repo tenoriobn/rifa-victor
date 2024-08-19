@@ -1,9 +1,10 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react-hooks/exhaustive-deps */
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { postDados } from "../../../../../common/http/http";
-import { statePacote, stateTabelaPacotesInfo, stateUserLogin, stateOpenModalAdicionarPacote } from "../../../../../common/states/atom";
+import { statePacote, stateUserLogin, stateOpenModalAdicionarPacote } from "../../../../../common/states/atom";
 import { NumericFormat } from 'react-number-format';
 import { useEffect, useState } from "react";
 import useCurrencyInputPacote from "../../../../../common/states/Hook/useCurrencyInputPacote";
@@ -64,10 +65,9 @@ const Form = styled.form`
   }
 `;
 
-export default function ModalAdicionarPacote() {
+export default function ModalAdicionarPacote({setAtualizaTabela}) {
   const { id } = useParams();
   const userLogin = useRecoilValue(stateUserLogin);
-  const setTabelaPacotesInfo = useSetRecoilState(stateTabelaPacotesInfo);
   const [pacote, setPacote] = useRecoilState(statePacote)
   const [openModalAdicionarPacote, setOpenModalAdicionarPacote] = useRecoilState(stateOpenModalAdicionarPacote);
   const [, setQntdCota] = useState()
@@ -92,9 +92,11 @@ export default function ModalAdicionarPacote() {
     e.preventDefault();
 
     try {
-      const response = await postDados('/admin/dashboard/pacote/cadastrar', pacote, userLogin);
+      await postDados('/admin/dashboard/pacote/cadastrar', pacote, userLogin);
 
-      setTabelaPacotesInfo(response.data)
+      setAtualizaTabela(true)
+
+      // setTabelaPacotesInfo(response.data)
       setOpenModalAdicionarPacote(!openModalAdicionarPacote)
       
     } catch (error) {

@@ -11,7 +11,9 @@ export default function NumerosBilhetes() {
   if (typeof numbersValue === 'string') {
     try {
       const parsedNumbers = JSON.parse(numbersValue);
-      numeros = Array.isArray(parsedNumbers) ? parsedNumbers.map(Number) : [];
+      // numeros = Array.isArray(parsedNumbers) ? parsedNumbers.map(Number) : [];
+
+      numeros = Array.isArray(parsedNumbers) ? parsedNumbers : [];
     } catch (e) {
       console.error('Erro ao parsear números:', e);
     }

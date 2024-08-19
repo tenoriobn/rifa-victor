@@ -14,6 +14,7 @@ import { fetchDados } from "../../../common/http/http";
 import { useParams } from "react-router-dom";
 import PedidosPagination from "../../Pedidos/PedidosPagination/PedidosPagination";
 import { useState } from "react";
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function Pacotes() {
   const [openModalAdicionarPacote, setOpenModalAdicionarPacote] = useRecoilState(stateOpenModalAdicionarPacote);
@@ -25,6 +26,7 @@ export default function Pacotes() {
   const [pagination, setPagination] = useState(null)
   const [currentPage, setCurrentPage] = useState(1);
   const [title, setTitle] = useState('')
+  const [atualizaTabela, setAtualizaTabela] = useState(false);
 
   const obterDados = async (page = 1) => {
     const response = await fetchDados(`/admin/dashboard/todos-pacotes/${id}?page=${page}`, userLogin);
@@ -41,10 +43,21 @@ export default function Pacotes() {
     }
   }, [currentPage]);
 
+  useEffect(() => {
+    if (atualizaTabela) {
+      obterDados();
+      setAtualizaTabela(false);
+    }
+  }, [atualizaTabela]);
+
   const handleOpenModalAdicionarPacote = () => {
     setOpenModalAdicionarPacote(!openModalAdicionarPacote)
     resetPacote();
   } 
+
+  const notifyError = (message) => {
+    toast.error(message);
+  };
 
   return (
     <section>
@@ -62,7 +75,7 @@ export default function Pacotes() {
 
       <Main>
         <Titulo titulo={title} />
-        <FormPacotes />
+        <FormPacotes onNotifyError={notifyError} />
         <PacoteTable />
 
         <PedidosPagination
@@ -72,12 +85,14 @@ export default function Pacotes() {
       </Main>
 
       <Modal title="ADICIONAR PACOTE" openState={openModalAdicionarPacote} setOpenState={setOpenModalAdicionarPacote}>
-        <ModalAdicionarPacote />
+        <ModalAdicionarPacote setAtualizaTabela={setAtualizaTabela} />
       </Modal>
 
       <Modal title="EDITAR PACOTE" openState={openModalEditarPacote} setOpenState={setOpenModalEditarPacote}>
         <ModalEditarPacote />
       </Modal>
+
+      <ToastContainer theme="colored" />
     </section>
   )
 }

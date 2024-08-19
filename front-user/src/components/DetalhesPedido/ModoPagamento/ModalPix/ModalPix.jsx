@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Copia from "../../../../assets/Icons/copia.svg?react";
 import { useRecoilValue } from "recoil";
-import { estadoQrCode } from "../../../../common/state/atom";
+import { estadoCheckoutInfo, estadoQrCode } from "../../../../common/state/atom";
 import QRCode from "qrcode"; // Importa a biblioteca QRCode
 
 export default function ModalPix() {
@@ -9,6 +9,7 @@ export default function ModalPix() {
   const [copiado, setCopiado] = useState(false);
   const [qrCodeImage, setQrCodeImage] = useState(""); // Estado para armazenar a imagem do QR Code
   const qrCode = useRecoilValue(estadoQrCode);
+  const checkoutInfo = useRecoilValue(estadoCheckoutInfo);
 
   useEffect(() => {
     if (modalVisivel) {
@@ -58,7 +59,7 @@ export default function ModalPix() {
           <div 
             className="vfm__content vfm--outline-none box-border flex flex-col max-w-xl mx-4 p-4 bg-white text-neutral-800 border rounded-lg overflow-auto"
           >
-            <h1 className="text-xl text-center">PIX - SAVEIRO CROSS DOS SONHOS </h1>
+            <h1 className="text-xl text-center">{checkoutInfo?.rifa?.title} </h1>
 
             <div>
               <img src={qrCodeImage} alt="QR Code" className="bg-white mx-auto w-[196px] h-[196px]"/>

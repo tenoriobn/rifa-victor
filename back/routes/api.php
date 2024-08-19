@@ -37,6 +37,7 @@
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/rifas/cadastrar", [RifasController::class, "storeRifa"])->name('admin.create.rifa');
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/rifa/editar/{id}", [RifasController::class, "getOneRifa"])->name('admin.get.edit.rifa');
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->put("/dashboard/rifa/editar/{id}", [RifasController::class, "editRifa"])->name('admin.edit.rifa');
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->put("/dashboard/rifa/excluir/{id}", [RifasController::class, "excluirRifa"])->name('admin.excluit.rifa');
 
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/bilhete-premiado/cadastrar", [RifasController::class, "storeBilhetePremiado"])->name('admin.create.rifa.bilhete-premiado');
 
@@ -52,6 +53,7 @@
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/todos-pacotes/{id}", [RifasController::class, "getAllPacotes"])->name('admin.pacote');
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/pacote/{id}", [RifasController::class, "getOnePacotes"])->name('admin.pacote');
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/pacote/cadastrar", [RifasController::class, "storePacote"])->name('admin.create.rifa.pacote');
+        Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->post("/dashboard/pacote/filtro/{id}", [RifasController::class, "filtroPacotes"])->name('admin.create.rifa.pacote');
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->put("/dashboard/pacotes/editar", [RifasController::class, "editarPacote"])->name('admin.create.rifa.pacote');
 
         Route::middleware(['auth:sanctum', 'checkAdmin:admin,superadmin'])->get("/dashboard/rifa/imagens/{id}", [RifasController::class, "getImagens"])->name('admin.pegar.rifa.imagem');
