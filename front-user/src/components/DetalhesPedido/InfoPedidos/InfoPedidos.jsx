@@ -3,18 +3,18 @@ import { useRecoilValue } from "recoil";
 import { estadoCheckoutInfo } from "../../../common/state/atom";
 import useCurrencyFormat from "../../../common/state/hooks/useCurrencyFormat/useCurrencyFormat";
 import useFormattedDate from "../../../common/state/hooks/useFormattedDate/useFormattedDate ";
-import usePhoneFormat from "../../../common/state/hooks/usePhoneFormat/usePhoneFormat";
+// import usePhoneFormat from "../../../common/state/hooks/usePhoneFormat/usePhoneFormat";
 
 export default function InfoPedidos() {
   const checkoutInfo = useRecoilValue(estadoCheckoutInfo);
   const { formattedDate } = useFormattedDate();
   const { formatCurrency } = useCurrencyFormat();
   // const siteConfig = useRecoilValue(stateSiteConfig);
-  const { formatPhone } = usePhoneFormat();
+  // const { formatPhone } = usePhoneFormat();
 
   // console.log('checkoutInfo', checkoutInfo.rifa.rifa_others.whatsapp_group)
 
-  const formattedPhone = formatPhone(checkoutInfo.rifa.rifa_others.whatsapp_group);
+  // const formattedPhone = formatPhone(checkoutInfo.rifa.rifa_others.whatsapp_group);
 
   const informacoes = [
     { label: '🔢 Código:', value: checkoutInfo?.cod },
@@ -62,7 +62,7 @@ export default function InfoPedidos() {
         }
 
         <a 
-          href={`https://wa.me/${formattedPhone}`}
+          href={checkoutInfo?.rifa?.rifa_others?.whatsapp_group}
           target="_blank"
           className="relative cursor-pointer inline-block group text-white rounded overflow-hidden shadow-transparent shadow-md hover:shadow-black/3 0 text-xs bg-green-500"
         >

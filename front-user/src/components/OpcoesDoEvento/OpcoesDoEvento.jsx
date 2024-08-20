@@ -5,14 +5,14 @@ import Whatsapp from "../../assets/Icons/whatsapp.svg?react";
 import { estadoRifa } from "../../common/state/atom";
 import useCompartilharRifa from "../../common/state/hooks/opcoesDoEvento/useCompartilharRifa";
 import ModalRegulamento from "./ModalRegulamento/ModalRegulamento";
-import usePhoneFormat from "../../common/state/hooks/usePhoneFormat/usePhoneFormat";
+// import usePhoneFormat from "../../common/state/hooks/usePhoneFormat/usePhoneFormat";
 
 export default function OpcoesDoEvento({ display }) {
   const { compartilharRifa } = useCompartilharRifa();
   const rifa = useRecoilValue(estadoRifa)
 
-  const { formatPhone } = usePhoneFormat();
-  const formattedPhone = formatPhone(rifa.rifa_others.whatsapp_group);
+  // const { formatPhone } = usePhoneFormat();
+  // const formattedPhone = formatPhone(rifa.rifa_others.whatsapp_group);
 
   return (
     <div className="mb-4 flex flex-wrap max-sm:justify-around gap-2">
@@ -31,7 +31,7 @@ export default function OpcoesDoEvento({ display }) {
       </button>
 
       <a 
-        href={`https://wa.me/${formattedPhone}`}
+        href={rifa?.rifa_others?.whatsapp_group}
         className={`relative inline-block group text-white rounded overflow-hidden shadow-transparent shadow-md hover:shadow-black/3 0 text-xs cursor-pointer bg-green-500 ${display}`}
         target="_blank"
       >

@@ -63,7 +63,7 @@ export default function PacotesPromocionais() {
             onClick={() => handlePacoteSelecionado(pacote)}
           >
             {pacote.popular === "sim"  && (
-              <div className="flex gap-2 absolute -top-5 left-1/2 -translate-x-1/2 z-[999]">
+              <div className="flex gap-2 absolute -top-5 left-1/2 -translate-x-1/2 z-[998]">
                 <p className="px-4 py-0.5 rounded-t-2xl text-[10px] text-emerald-50 whitespace-nowrap bg-green-400">
                   Mais popular
                 </p>
