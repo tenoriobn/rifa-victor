@@ -17,6 +17,7 @@ import { fetchDados } from "../../common/http/http";
 import { motion } from 'framer-motion';
 import { transicaoAnimada } from "../../common/util/transicaoAnimada";
 import useFormattedDate from "../../common/state/hooks/useFormattedDate/useFormattedDate ";
+import { initFacebookPixel } from "../../common/util/facebookPixel";
 
 export default function Rifa() {
   const renderizaComponenteCadastro = useRecoilValue(estadoRenderizaComponenteCadastro);
@@ -37,6 +38,10 @@ export default function Rifa() {
       setLoading(false); 
       setRifa(dados.data.rifa)
       setRanking(dados.data.ranking);
+
+      if (dados.data.rifa.rifa_others.facebook_pixel) {
+        initFacebookPixel(dados?.data?.rifa?.rifa_others?.facebook_pixel);
+      }
     };
 
     obterDados();    
