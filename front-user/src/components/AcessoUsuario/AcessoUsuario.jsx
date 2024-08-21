@@ -13,6 +13,7 @@ import { transicaoAnimada } from "../../common/util/transicaoAnimada";
 import { motion } from 'framer-motion';
 import { postDados } from '../../common/http/http';
 import { ToastContainer, toast } from 'react-toastify';
+import { trackPurchase } from "../../common/util/facebookPixel";
 
 export default function AcessoUsuario() {
   const { id, affiliateId } = useParams();
@@ -51,6 +52,9 @@ export default function AcessoUsuario() {
       const enviarDados = async () => {
         try {
           const response = await postDados(`produtos/comprar-rifa/${affiliateId}`, dadosParaEnviar, true);
+
+          const valorConvertido = parseFloat(valorCompra.replace(',', '.')); 
+          trackPurchase(valorConvertido, 'BRL', [id]);
 
           setQrCode([
             response.data.qrCode,
