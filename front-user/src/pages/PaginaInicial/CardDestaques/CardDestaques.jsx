@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useRecoilState, useSetRecoilState } from "recoil";
 import Bilhete from "../../../assets/Icons/bilhete.svg?react";
-import { estadoProdutoSelecionado, estadoProdutos } from "../../../common/state/atom";
+import { estadoProdutoSelecionado, estadoProdutos, estadoRenderizaComponenteCadastro, estadoRenderizaComponenteLogin, estadoRenderizaInfoUsuario } from "../../../common/state/atom";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { fetchDados } from "../../../common/http/http";
@@ -14,6 +14,9 @@ export default function CardDestaques() {
   const setProdutoSelecionado = useSetRecoilState(estadoProdutoSelecionado);
   const [erroConexao, setErroConexao] = useState(false);
   const baseURL = import.meta.env.VITE_BASE_URL;
+  const setRenderizaInfoUsuario = useSetRecoilState(estadoRenderizaInfoUsuario);
+  const setRenderizaComponenteCadastro = useSetRecoilState(estadoRenderizaComponenteCadastro);
+  const setRenderizaComponenteLogin = useSetRecoilState(estadoRenderizaComponenteLogin);
 
   const obterDados = async () => {
     try {
@@ -56,13 +59,21 @@ export default function CardDestaques() {
     );
   }
 
+  const handleClick = (produto) => () => {
+    setProdutoSelecionado(produto);
+    setRenderizaInfoUsuario(false);
+    setRenderizaComponenteCadastro(false);
+    setRenderizaComponenteLogin(false);
+  };
+
   return (
     <>
       {produto ? (
         <Link 
           key={produto.id} 
           to={`/${produto.slug}/${produto.id}`}
-          onClick={() => setProdutoSelecionado(produto)}
+          // onClick={() => setProdutoSelecionado(produto)}
+          onClick={handleClick(produto)}
           className="flex w-auto overflow-hidden rounded-lg bg-neutral-200 hover:shadow-[4px_4px_4px_#0002] border border-solid border-neutral-300 ring-0 ring-green-500/60 hover:ring-offset-4 hover:ring-2 transition-all duration-300 flex-col mb-6 cursor-pointer"
         >
           <img 

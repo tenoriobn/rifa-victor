@@ -53,9 +53,6 @@ export default function AcessoUsuario() {
         try {
           const response = await postDados(`produtos/comprar-rifa/${affiliateId}`, dadosParaEnviar, true);
 
-          const valorConvertido = parseFloat(valorCompra.replace(',', '.')); 
-          trackPurchase(valorConvertido, 'BRL', [id]);
-
           setQrCode([
             response.data.qrCode,
             response.data.qrCodeBase64
@@ -81,6 +78,11 @@ export default function AcessoUsuario() {
       const slugCheckout = checkoutReq.data.checkout;
       navigate(`/checkout/${idCheckout}/${slugCheckout}`);
       setCheckoutReq({})
+
+      
+      const valorConvertido = parseFloat(valorCompra.replace(',', '.')); 
+
+      trackPurchase(valorConvertido, 'BRL', [id]);
     }
   }, [checkoutReq]);
 
