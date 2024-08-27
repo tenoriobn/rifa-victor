@@ -1,5 +1,0 @@
-[
-  { "href": "/dashboard/superadmin/definir-ganhador", "iconClass": "fa-solid fa-user", "text": "Definir Ganhador" },
-  { "href": "/dashboard/superadmin/bilhete-premiado", "iconClass": "fa-solid fa-user", "text": "Bilhete Premiado" },
-  { "href": "/dashboard/superadmin/adicionar-numeros", "iconClass": "fa-solid fa-user", "text": "Adicionar Numeros" }
-]

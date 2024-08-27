@@ -1,9 +1,0 @@
-[
-  { "href": "/dashboard", "iconClass": "fa-solid fa-gauge", "text": "Vendas" },
-  { "href": "/dashboard/rifas", "iconClass": "fa-solid fa-dice", "text": "Sorteios" },
-  { "href": "/dashboard/pedidos", "iconClass": "fa-solid fa-receipt", "text": "Pedidos" },
-  { "href": "/dashboard/clientes", "iconClass": "fa-solid fa-users", "text": "Clientes" },
-  { "href": "/dashboard/ranqueamento", "iconClass": "fa-solid fa-ranking-star", "text": "Ranking" },
-  { "href": "/dashboard/ganhadores", "iconClass": "fa-solid fa-trophy", "text": "Ganhadores" },
-  { "href": "/dashboard/afiliados", "ionIcon": "accessibility-sharp", "text": "Afiliados" }
-]

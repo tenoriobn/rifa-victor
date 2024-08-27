@@ -52,7 +52,7 @@ export default function PacotesPromocionais() {
       </h3>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 my-2">
-        {pacotes.map((pacote) => (
+        {pacotes.filter((pacote) => pacote.status === "Ativo").map((pacote) => (
           <button
             key={pacote.id}
             className={`relative rounded px-2 py-1 transition-all duration-300 cursor-pointer text-center border-2 border-solid ${

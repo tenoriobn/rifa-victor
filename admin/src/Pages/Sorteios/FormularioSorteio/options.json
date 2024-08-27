@@ -1,6 +1,0 @@
-[
-  { "value": "", "label": "selecione" },
-  { "value": "ativas", "label": "Ativo" },
-  { "value": "finalizadas", "label": "Finalizado" },
-  { "value": "I", "label": "Inativo" }
-]

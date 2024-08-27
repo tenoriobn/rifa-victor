@@ -2,7 +2,7 @@
 import {  useEffect } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { estadoErroCadastro, estadoFinalizarPedido, estadoFormularioPreenchido, estadoRenderizaComponenteCadastro, estadoTermosAceito, estadoUsuario, estadoValorCompra, estadoCheckoutId, estadoValorRange, estadoQrCode } from "../../common/state/atom";
+import { estadoErroCadastro, estadoFinalizarPedido, estadoFormularioPreenchido, estadoRenderizaComponenteCadastro, estadoTermosAceito, estadoUsuario, estadoValorCompra, estadoCheckoutId, estadoValorRange, estadoQrCode, estadoProdutos } from "../../common/state/atom";
 import useAlternarFormularios from "../../common/state/hooks/FormulariosAcesso/useAlternarFormularios";
 import FormulariosAcesso from "./FormulariosAcesso/FormulariosAcesso";
 import TermosCondicoes from "./TermosCondicoes/TermosCondicoes";
@@ -31,6 +31,7 @@ export default function AcessoUsuario() {
   const animacao = transicaoAnimada();
   const navigate = useNavigate();
   const setQrCode = useSetRecoilState(estadoQrCode);
+  const produto = useRecoilValue(estadoProdutos);
 
   useEffect(() => {
 
@@ -44,7 +45,7 @@ export default function AcessoUsuario() {
       const dadosParaEnviar = {
         value: parseFloat(valorCompra.replace(',', '.')),
         client_id: usuario.id,
-        qntd_number: valorRange,
+        qntd_number: produto.rifa_awarded.cotas_double === "sim" ? valorRange * 2 : valorRange,
         rifas_id: id,
         ganho_afiliado: affiliateId,
       };

@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Estrela from "../../assets/Icons/estrela.svg?react";
+import Presente from "../../assets/Icons/gift.svg?react";
 import SlidePremio from "../../components/SlidePremio/SlidePremio";
 import OpcoesDoEvento from "../../components/OpcoesDoEvento/OpcoesDoEvento";
 import InputRange from "../../components/InputRange/InputRange";
@@ -95,6 +96,17 @@ export default function Rifa() {
           <div className="bg-gray-100 p-2 rounded-lg">
             <h3 className="text-neutral-700">{produto.description_resume}</h3>
           </div>
+
+          { renderizaComponente &&
+            produto?.rifa_awarded?.cotas_double === "sim" ?
+              <div className="flex items-center gap-2 bg-slate-100 p-2 rounded-lg mt-4">
+                <Presente />
+                <h3 className="text-neutral-700 leading-normal">
+                  {produto?.rifa_awarded?.text_cotas_double}
+                </h3>
+              </div>
+            : ''
+          }
 
           {renderizaComponente && (
             <>
