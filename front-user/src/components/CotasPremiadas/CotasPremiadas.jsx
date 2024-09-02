@@ -25,11 +25,11 @@ export default function CotasPremiadas() {
         Cotas premiadas! Achou? Levou na hora
       </p>
 
-      <div className="relative rounded-lg p-1 bg-gray-200 h-10 inline-grid items-center grid-cols-2">
+      <div className="relative rounded-lg p-1 bg-gray-200 min-h-10 inline-grid items-center grid-cols-2">
         {botoes.map((botao) => (
           <button
             key={botao.id}
-            className={`outline-none disabled:cursor-not-allowed h-8 px-3 text-sm font-medium rounded-md transition-colors ${
+            className={`outline-none disabled:cursor-not-allowed min-h-8 px-3 text-sm font-medium rounded-md transition-colors ${
               botaoSelecionado === botao.id ? `bg-white text-gray-900 ${animacao}` : 'text-gray-500'
             }`}
             type="button"

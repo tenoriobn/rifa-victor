@@ -16,9 +16,11 @@ export default function CardCotasResgatadas() {
             key={cotaResgatada.id} 
             className="bg-green-200 border border-solid border-green-400 p-1 rounded-lg text-center"
           >
-            <div className="flex items-center justify-center gap-1 text-lg font-bold">
+            <div className="flex flex-col mid-mobile:flex-row flex-wrap items-center justify-center gap-1 text-lg font-bold">
               <EmojiFeliz className="icon stroke-green-500" />
-              <p className='text-neutral-700'> {cotaResgatada.client.name}</p>
+              <p className='text-neutral-700'>
+                {cotaResgatada?.client?.name?.split(' ').slice(0, 2).join(' ')}
+              </p>
             </div>
   
             <p className="text-neutral-700 mt-1">{cotaResgatada.award}</p>

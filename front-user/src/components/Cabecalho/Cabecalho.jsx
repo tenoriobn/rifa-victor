@@ -38,7 +38,7 @@ export default function Cabecalho() {
                   {inicialNome}
                 </div> 
                 
-                  Olá, {nomeFormatado}
+                  Olá, {nomeFormatado?.split(' ')[0]}
               </Link>
               :
 

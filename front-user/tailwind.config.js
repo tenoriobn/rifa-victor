@@ -8,13 +8,8 @@ export default {
         secondary: "#00051F",
         tertiary: "#080812",
 
-
-
         darkGray: "#171717",
         lightGray: "#e2e8f0",
-
-
-
 
         customBlue: "#0D6EFD",
         grayBlue: "#929FB0",
@@ -39,6 +34,9 @@ export default {
 
         lightRed: "#DC3545",
         darkRed: "#AB2B38",
+      },
+      screens: {
+        'mid-mobile': '425px', // Breakpoint para 425px
       },
     },
   },
